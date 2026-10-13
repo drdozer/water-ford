@@ -91,3 +91,19 @@ the paint work; the painter's floor is too low.
   raise to deck level; the mask should keep its shader access (crowns lift).
 - C (py-ford-exp-2): unmasked rule + overlay_layer_group = "ground-natural"
   - the proven out-of-family move (round 4); masks are inert there.
+
+## Rounds 9-10 — script routes banned; the variant-overlay channel
+
+Round 9 (render sprites in control.lua) crashed the game; the user forbade
+all scripting solutions permanently. Everything since round 8's entity
+failure reverted: control.lua = the placement guard only, no sprite
+prototypes, no water-owned rules.
+
+Round 10: the last untapped data channel - the tile's OWN
+variants.transition overlay pieces (previously only tested by REMOVAL, in
+round 1). They render at the ford's own layer over its own border cells:
+visible by construction, claiming no territory, so the effect over them
+is the deck's own watery wash. Sheets generated in the vanilla variant
+layout (inner/outer/side 6x4, u 1x4, o 1x1, 64px pieces, scale 0.5).
+B = control (inherited overlays), A = centred posts, C = outward-snugged
+posts. Direction-row convention assumed N,E,S,W for the snug shift.
