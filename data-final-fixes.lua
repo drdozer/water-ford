@@ -109,30 +109,18 @@ for _, v in ipairs(V.list) do
       t.variants.main = {{picture = v.texture, count = 8, size = 1, scale = 0.5}}
       t.variants.material_background = nil
     elseif v.kind == "flooded" then
-      -- landfill clone wearing the water shader: sharp land seams by construction
-      -- (identical transitions to landfill), under-water visuals via effect copy.
-      t = table.deepcopy(data.raw.tile["landfill"])
-      t.effect = shallow.effect
-      t.effect_color = table.deepcopy(shallow.effect_color)
-      t.effect_color_secondary = table.deepcopy(shallow.effect_color_secondary)
-      -- planks surface as a size-1 main strip (see planks-land note); drop the dirt background
+      -- water-shallow clone: lives in the water layer group, so it renders at water
+      -- height with the water shader (like planks-under), not at landfill height.
+      t = table.deepcopy(data.raw.tile["water-shallow"])
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
-      t.variants.material_background = nil
-      -- re-sprite the inherited waterfront rule with the piling art (identical sheet geometry
-      -- to vanilla's landfill shore sheet; effect_map kept so the shader still laps the edge)
-      for _, rule in ipairs(t.transitions or {}) do
-        if rule.transition_group == (water_transition_group_id or 1) then
-          rule.spritesheet = G .. "pilings.png"
-        end
-      end
       if v.ramp then
-        -- sit ABOVE landfill (60) so our own ramp sprites render onto it; landfill cannot
-        -- draw onto a higher tile, so the land seam is entirely ours. Layout inlined from
-        -- base's tile_spritesheet_layout.transition_3_3_3_1_0 (base locals are not visible here).
-        t.layer = 61
-        t.transitions[#t.transitions + 1] = {
-          to_tiles = {"landfill", "stone-path", "concrete", "refined-concrete"},
-          transition_group = (default_transition_group_id or 0),
+        -- At water height our own transitions render below neighbouring land, so this
+        -- tile cannot draw the ramp itself. Instead, give the adjacent artificial
+        -- ground tiles a rule that draws the ramp sheet onto this tile only - the same
+        -- mechanism vanilla shore art uses (land draws its bank onto the water tile).
+        local ramp_rule = {
+          to_tiles = {v.name},
+          transition_group = (water_transition_group_id or 1),
           spritesheet = G .. "ramp.png",
           background_enabled = false,
           layout = {
@@ -146,6 +134,13 @@ for _, v in ipairs(V.list) do
             overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
           },
         }
+        for _, land_name in ipairs({"landfill", "stone-path", "concrete", "refined-concrete"}) do
+          local land = data.raw.tile[land_name]
+          if land then
+            land.transitions = land.transitions or {}
+            table.insert(land.transitions, table.deepcopy(ramp_rule))
+          end
+        end
       end
     elseif v.kind == "water" then
       t = water_style(v)

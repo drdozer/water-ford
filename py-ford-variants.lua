@@ -17,15 +17,17 @@
 --   water       water-shallow clone; bed_texture = our own strip;
 --               effect_scale multiplies the water alpha;
 --               effect_from = copy water colours from another water tile
---   flooded     landfill clone + water-shallow's water shader + planks main;
---               the inherited waterfront rule is re-sprited with pilings.png;
---               ramp = true additionally adds a custom ramp-to-land rule
---               (tile sits above landfill so its own sprites render onto it)
+--   flooded     water-shallow clone with planks main (renders at water height
+--               with the water shader, same placement family as planks-under);
+--               ramp = true makes the adjacent artificial ground tiles
+--               (landfill/stone-path/concrete/refined-concrete) draw the ramp
+--               sheet onto this tile - at water height our own rules render
+--               below land, so the land side must draw it
 --
 -- flags:
 --   next_direction : R-rotation partner tile (in-hand rotation)
 --   shore          : false = keep out of water_tile_type_names (land-style shore edges)
---   ramp           : flooded only - add the ramp-to-land transition rule
+--   ramp           : flooded only - land neighbours draw the ramp onto this tile
 
 local M = {}
 
