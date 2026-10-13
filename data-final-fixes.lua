@@ -111,81 +111,15 @@ for _, v in ipairs(V.list) do
     elseif v.kind == "flooded" then
       -- water-shallow clone: lives in the water layer group, so it renders at water
       -- height with the water shader (like planks-under), not at landfill height.
-      -- WATER side (both variants): a rule draws post pilings onto adjacent water -
-      -- synthesized cylinders (solid crown, translucent foot, painted foam rings,
-      -- one post per tile edge, jittered per slot). to_tiles is a FROZEN vanilla-water
-      -- list so the rule never targets fords themselves. NO effect map: the water-dirt
-      -- mask's splash anchors one tile south on north/south edges (unresolved), so the
-      -- lapping is painted into the sprite instead.
+      -- FINAL ARCHITECTURE (docs/shadow-experiments.md): the inherited
+      -- effect = "water" is what renders water OVER the deck and blends its edges -
+      -- it also darkens any transition territory the tile's rules claim on
+      -- neighbouring water tiles, so the tile declares NO water-targeting
+      -- transitions at all (rounds 1-6). Pilings are script-placed entities
+      -- (control.lua) on adjacent water cells instead of transition pieces.
       t = table.deepcopy(data.raw.tile["water-shallow"])
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
-      t.layer = (v.water_level and 3) or 9  -- bisect arm C: water's own layer(3)
-      -- vs 9: above shallow(6)/mud(7) so edge overlays draw onto them
-      if v.drop_effect then
-        -- bisect arm B: drop the inherited water-shallow tile effect machinery
-        -- (effect = "water" + effect_color/-secondary) entirely
-        t.effect = nil
-        t.effect_color = nil
-        t.effect_color_secondary = nil
-      elseif v.clear_effect_color then
-        -- bisect arm C: keep the effect type, zero both tint colours
-        t.effect_color = {r = 0, g = 0, b = 0, a = 0}
-        t.effect_color_secondary = {r = 0, g = 0, b = 0, a = 0}
-      end
-      if v.no_edge_overlays then
-        -- bisect arm C: drop the inherited water-shallow variant edge overlays;
-        -- whether C then loses the soft shadow names the engine mechanism.
-        -- variants.transition is MANDATORY unless empty_transitions = true (the
-        -- load error at 68e497d proved it)
-        t.variants.empty_transitions = true
-        t.variants.transition = nil
-      end
-
-      if not v.no_piling then
-        local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
-        local piling_rule = {
-          to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
-          transition_group = (v.own_group and 40) or (water_transition_group_id or 1),
-          overlay_layer_group = (v.above_shader and "ground-natural") or nil,
-                                 -- bisect arm C: render the pieces ABOVE the water
-                                 -- shader pass (TileRenderLayer doc: "water" sprites sit
-                                 -- below the shaders) - alpha feet still blend, but the
-                                 -- pass can't pre-darken their territory
-          spritesheet = posts_sheet,
-          background_enabled = false,
-          mask_enabled = false,  -- the transition's own mask layer yields the water mask;
-                                 -- left empty it broke the water rendering around fords (the shadow)
-          layout = {
-            scale = 0.5,
-            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-            u_transition_count = 2, o_transition_count = 4,
-            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-            u_transition_y = 1728, o_transition_y = 2304,
-            -- square pieces: tile_height defaults to 2 when absent (dump-verified),
-            -- so it MUST be declared as 1 for the 64x64 piece grid
-            inner_corner_tile_height = 1, outer_corner_tile_height = 1,
-            side_tile_height = 1, u_transition_tile_height = 1,
-            overlay = {x_offset = 0},
-          },
-        }
-        if v.masked then
-        -- Gray dryness mask (the effect map WAS silently missing from the loaded
-        -- data for two rounds - the square-piece edit dropped this assignment;
-        -- found via --dump-data field diff).
-        piling_rule.effect_map_layout = {
-          spritesheet = G .. "pilings-mask.png",
-          scale = 0.5,
-          inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-          u_transition_count = 2, o_transition_count = 4,
-          inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-          u_transition_y = 1728, o_transition_y = 2304,
-          inner_corner_tile_height = 1, outer_corner_tile_height = 1,
-          side_tile_height = 1, u_transition_tile_height = 1,
-        }
-        end
-        t.transitions = t.transitions or {}
-        t.transitions[#t.transitions + 1] = piling_rule
-      end
+      t.layer = 9  -- above shallow(6)/mud(7) so edge overlays draw onto them
 
       -- LAND side: register in water_tile_type_names so the land tiles draw their
       -- vanilla dirt bank onto the join. (The wood-join experiment - a solid band

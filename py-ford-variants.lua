@@ -31,23 +31,14 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- shadow bisect round 4. Round 3 verdict: the shadow follows the piling
-  -- rule's existence regardless of mask (B had none) and group (C private:
-  -- still shadow). TileRenderLayer doc: pieces in the "water" family render
-  -- BELOW the water shaders - the pass pre-darkens their territory. New arms:
-  -- A = control; B = pure declaration (blank art, no mask); C = pieces raised
-  -- ABOVE the shader pass via overlay_layer_group = "ground-natural".
-  -- shadow bisect round 5: the tile effect machinery. The ford inherited
-  -- water-shallow's effect = "water" + dark effect colours; hypothesis: the
-  -- engine renders the tile effect over the transition territory its rules
-  -- claim on neighbouring water tiles = the soft band. A = control,
-  -- B = effect dropped, C = effect kept, colours zeroed.
-  -- shadow fixed: the tile effect was the vehicle (round-5 B proved it). All
-  -- three fords: no tile effect, pieces above the shader, deck washed in the
-  -- generator (static painted underwater look instead of the waving effect).
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford A", tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B", tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford C", tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
+  -- Final architecture (round 6, docs/shadow-experiments.md): the tile effect
+  -- is RESTORED (it is the water over the deck) and the piling transitions are
+  -- GONE (they were what invited the effect's dark band onto neighbour water).
+  -- Pilings are script-placed entities on adjacent water cells (control.lua).
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", title = "Ford A", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", title = "Ford B", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", title = "Ford C", tint = {r = 1, g = 1, b = 1}},
+, above_shader = true, drop_effect = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
