@@ -122,7 +122,10 @@ for _, v in ipairs(V.list) do
       t.layer = 9  -- match planks-under: above shallow(6)/mud(7) so edge overlays draw onto them
       if v.no_edge_overlays then
         -- bisect arm C: drop the inherited water-shallow variant edge overlays;
-        -- whether C then loses the soft shadow names the engine mechanism
+        -- whether C then loses the soft shadow names the engine mechanism.
+        -- variants.transition is MANDATORY unless empty_transitions = true (the
+        -- load error at 68e497d proved it)
+        t.variants.empty_transitions = true
         t.variants.transition = nil
       end
 
