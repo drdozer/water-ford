@@ -125,3 +125,22 @@ Round 11 (data-only): the variant sheets are now the vanilla water-shallow
 blending art with the posts composited on top (same filenames, same data).
 Prediction: the treatment is covered as in vanilla; pilings stand in
 shore-blended water on the rim; no shadow on A/C.
+
+## Round 12 verdict — A is correct; B's shadow was self-inflicted
+
+A (piling rule + mask + opaque water-composite sheets): "looks correct
+visually. No shadow, water over the ford, poles semi-submerged."
+C (same, no mask): no shadow, submerged poles (the comparison arm).
+B (no piling rule, no edge overlays): SHADOW - because removing all border
+rendering left the pre-darkening uncovered; the vanilla halo had been its
+camouflage all along (explains the clean rounds 2-B and 7: the overlays
+were present). The shore pre-darkening is structural - every ford needs
+covered border cells.
+
+## Round 13 - the control keeps its cover
+
+B = piling rule + pilings-water.png: the identical opaque plain-water
+composite, POSTLESS - invisible coverage for the border cells, zero wood
+pixels (verified), no pilings, no mask. Jitter question: the numbers are
+unchanged from the approved sheet (jpos +-3, h 38-46); the perceived calm
+comes from the static baked water base. Knob: jpos.
