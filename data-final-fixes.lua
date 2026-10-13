@@ -139,12 +139,12 @@ for _, v in ipairs(V.list) do
         },
       }
       if v.masked then
-        -- Crown water-effect mask (exp-2): 0 over the post crowns (dry - sprite shows
-        -- crisp), 170 elsewhere (full water effect, per vanilla's own mask scale) -
-        -- the shader's waterline wraps each post at the crown/foot boundary = lapping.
-        -- OPEN RISK: the splash anchored one tile south on N/S edges with the single-
-        -- piece mask layout; this full-piece-layout mask may align better. The
-        -- experiment exists to find out.
+        -- Crown water-effect mask (exp-2), vanilla's CHANNEL-PACKED format:
+        -- R = dryness (255 over the crowns, feathering below the waterline),
+        -- B = a narrow lap band at each post's waterline (the shader wraps water
+        -- there), G = always 0. v1/v2 wrote gray into all channels - B over whole
+        -- crowns rendered the shader's large lap geometry as a very-large ghost
+        -- post, and G=170 never occurs in vanilla.
         piling_rule.effect_map_layout = {
           spritesheet = G .. "pilings-mask.png",
           scale = 0.5,

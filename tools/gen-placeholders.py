@@ -5,13 +5,14 @@
   pilings-exp.png  experiment posts (exp-1 and exp-2): 2/3 size, wood rings on the
                    cut faces, softer shading (anti-"barcode"), north-facing posts
                    shifted half a tile south so the tops sit closer to the planks
-  pilings-mask.png water-effect strength mask for exp-2: 170 over the post crowns
-                   (fully dry - sprite shows crisp), a 170->0 gradient at the
-                   crown/foot line (the shader draws its waterline wrap there =
-                   lapping), 0 everywhere else (water renders normally).
-                   POLARITY (measured + in-game confirmed): value = DRYNESS /
-                   water suppression. v1 had this inverted (170 = water) which
-                   blacked out the tile and filled the posts with water.
+  pilings-mask.png exp-2's water-effect mask in vanilla's CHANNEL-PACKED format
+                   (decoded from water-dirt-mask.png): R = dryness (255 = fully
+                   dry over the crowns, feathering out below the waterline),
+                   B = the waterline/lap zone (a narrow band at each post's
+                   waterline so the shader wraps water around it), G = always 0.
+                   v1/v2 wrote gray into all channels incl. G - the B=170 over
+                   whole crowns rendered the shader's large lap geometry as a
+                   very-large ghost post; G=170 never occurs in vanilla.
 
 Sheet structure (decoded from base): 64px columns = one slot per tile edge;
 bands at y 0/576/1152/1728 hold 8 columns x 4 rotation rows of 64x128 pieces;
@@ -44,7 +45,10 @@ EXP = dict(w=16, hmin=40, hmax=50, jpos=3, foot=115.0, seed=41000,
            wf=0.18, wfac=0.72, rings=True)
 
 FOAM = np.array([205, 226, 232], np.float32)
-DRY = 170.0       # mask value = fully dry (vanilla's own maximum)
+DRY = 255.0       # R channel: fully dry (vanilla uses 255 over its own art)
+LAP = 120.0       # B channel: waterline wrap intensity (vanilla's lap band ~76-142)
+LAP_H = 16        # lap band height (px)
+FEATHER = 24      # dryness feather below the waterline (px)
 FOAM_RINGS = ((22, 9, 70), (14, 6, 110))  # (rx, ry, alpha); clipped to piece cells
 
 van = np.asarray(Image.open(BASE + "landfill.png").convert("RGBA")).astype(np.float32)
@@ -89,7 +93,8 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
 
 def gen(p, out, mask_out=None):
     art = np.zeros((2368, 3200, 4), np.float32)
-    mask = np.zeros((2368, 512), np.float32) if mask_out else None
+    mask = np.zeros((2368, 512, 3), np.float32) if mask_out else None
+    n = 0
     n = 0
     for y0, cols, ch, rows in BANDS:
         for r in range(rows):
@@ -115,23 +120,25 @@ def gen(p, out, mask_out=None):
                         draw_foam(art, bx + dx, by, rx, ry, fa, clip)
                     draw_post(art, bx + dx, by, ry0, h, w, p)
                 if mask is not None:
-                    # crown = fully dry; short DRY->0 gradient at the crown/foot line
-                    # so the shader draws its waterline wrap around each post
+                    # R = dryness: 255 over the crown, feathering below the waterline
+                    # B = narrow lap band at the waterline (shader wraps water there)
+                    # G = 0 always (vanilla never writes it)
                     rx = w / 2.0; ry = max(int(rx * 0.55), 3)
                     cy_cap = top + ry
                     xa, xb = max(bx - int(rx), 0), min(bx + int(rx) + 1, 512)
                     for dy in range(-ry, ry + 1):
                         hw = int(rx * math.sqrt(max(1.0 - (dy / ry) ** 2, 0.0)))
-                        mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512)] = DRY
+                        mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512), 0] = DRY
                     mid = int(by - h * 0.5)
-                    mask[top + ry:mid, xa:xb] = DRY
-                    for i, y in enumerate(range(mid, min(mid + 6, int(by)))):
-                        mask[y, xa:xb] = DRY * (1 - (i + 1) / 6.0)
+                    mask[top + ry:mid, xa:xb, 0] = DRY
+                    for i, y in enumerate(range(mid, min(mid + FEATHER, int(by)))):
+                        mask[y, xa:xb, 0] = DRY * (1 - (i + 1) / FEATHER)
+                    mask[mid:min(mid + LAP_H, int(by)), xa:xb, 2] = LAP
                 n += 1
     Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save(out)
     if mask is not None:
         m = np.zeros((2368, 512, 4), np.float32)
-        m[..., 0] = m[..., 1] = m[..., 2] = mask
+        m[..., :3] = mask
         m[..., 3] = 255.0
         Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save(mask_out)
     print(f"{out}: {n} posts" + (f" (+ {mask_out})" if mask_out else ""))
