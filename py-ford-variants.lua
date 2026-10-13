@@ -35,9 +35,9 @@ M.list = {
   -- is RESTORED (it is the water over the deck) and the piling transitions are
   -- GONE (they were what invited the effect's dark band onto neighbour water).
   -- Pilings are script-placed entities on adjacent water cells (control.lua).
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", title = "Ford A: masked rim pilings",   tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", title = "Ford B: CONTROL (no pilings)", tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", title = "Ford C: unmasked rim pilings", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", title = "Ford A: centred rim posts",   tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", title = "Ford B: CONTROL (vanilla edges)", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", title = "Ford C: snugged rim posts", tint = {r = 1, g = 1, b = 1}},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

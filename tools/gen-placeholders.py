@@ -37,6 +37,29 @@ CELL = 64          # square piece, px on the 2x sheet (= 1 water tile)
 DECK_WASH = (38, 70, 82)   # painted "seen through shallow water" tint for the deck
 DECK_WASH_STRENGTH = 0.0   # 0 = pristine deck (the water effect provides the wet look)
 
+# variant-edge post sheets: layout copied from vanilla water-shallow overlays
+# (inner/outer/side = 6 cols x 4 direction rows of 64x64; u = 1x4; o = 1x1).
+# v1 = posts centred (Ford A); v2 = posts snugged outward per row (Ford C).
+# Direction rows follow the transition convention N,E,S,W for the shift.
+VSPEC = [("inner", 6), ("outer", 6), ("side", 6), ("u", 1), ("o", 1)]
+SNUG = {0: (0, -6), 1: (8, 0), 2: (0, 8), 3: (-8, 0)}
+
+def emit_variant_sheets():
+    for tag, do_snug in (("v1", False), ("v2", True)):
+        for name, cols in VSPEC:
+            W = 64 * cols
+            H = 64 * (4 if name != "o" else 1)
+            sh = np.zeros((H, W, 4), np.float32)
+            for col in range(cols):
+                for row in range(4 if name != "o" else 1):
+                    ox, oy = col * 64, row * 64
+                    sx, sy = SNUG[row] if do_snug else (0, 0)
+                    h = min(rng.randint(P["hmin"], P["hmax"]), 40)
+                    w = P["w"] + rng.randint(-2, 2)
+                    draw_post(sh, ox + 32 + sx, oy + 54 + sy, oy, h, w, P)
+            Image.fromarray(sh.clip(0, 255).astype(np.uint8), "RGBA").save(f"piling-{tag}-{name}.png")
+    print(f"piling-v1/v2-*: variant edge sheets ({', '.join(n for n, _ in VSPEC)}); ", end="")
+
 P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
          dark=(70, 48, 26), lite=(224, 186, 122), cap=(238, 204, 142), capedge=(184, 144, 90),
          wet=(36, 52, 47),
@@ -122,6 +145,7 @@ for y0, cols, rows in BANDS:
             n += 1
 
 Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-exp.png")
+emit_variant_sheets()
 m = np.zeros((2368, 512, 4), np.float32)
 m[..., 0] = m[..., 1] = m[..., 2] = mask
 m[..., 3] = 255.0

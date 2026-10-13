@@ -68,21 +68,3 @@ if #effects > 0 then
 end
 
 
--- ---------------------------------------------------------------------------
--- Round 9: pilings as SCRIPT-RENDERED SPRITES (rendering.draw_sprite), not
--- entities and not transitions. Entities broke tile placement (they occupy the
--- water cells), transitions claim territory the deck's water effect darkens.
--- Render objects are pure visuals: zero interaction, shadow-immune.
--- 8 jittered variants come from pilings-entity.png (one 64x64 post each).
-for i = 0, 7 do
-  data:extend{
-    {
-      type = "sprite",
-      name = string.format("py-ford-piling-%d", i),
-      filename = "__py-caravan-ford__/graphics/pilings-entity.png",
-      x = i * 64, y = 0,
-      width = 64, height = 64,
-      priority = "extra-high",
-    },
-  }
-end

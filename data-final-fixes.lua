@@ -121,6 +121,24 @@ for _, v in ipairs(V.list) do
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = 9  -- above shallow(6)/mud(7) so edge overlays draw onto them
 
+      -- ROUND 10 (data-only, docs/shadow-experiments.md): overlay the tile's OWN
+      -- variant edge pieces with post art. The pieces render at the ford's own
+      -- layer on the ford's own border cells: visible, no territory claim, no
+      -- effect spill. B (exp-1) = control: keeps the inherited water-shallow
+      -- overlays. A (flooded) = posts centred; C (exp-2) = posts snugged outward
+      -- per direction row. Sheet layout copied from the vanilla overlays
+      -- (inner/outer/side = 6 cols x 4 rows; u = 1x4; o = 1x1; 64x64 pieces).
+      local vsuf = ({["py-ford-flooded"] = "v1", ["py-ford-exp-2"] = "v2"})[v.name]
+      if vsuf then
+        t.variants.transition.overlay_layout = {
+          inner_corner = {spritesheet = G .. "piling-" .. vsuf .. "-inner.png", count = 6, scale = 0.5},
+          outer_corner = {spritesheet = G .. "piling-" .. vsuf .. "-outer.png", count = 6, scale = 0.5},
+          side         = {spritesheet = G .. "piling-" .. vsuf .. "-side.png",  count = 6, scale = 0.5},
+          u_transition = {spritesheet = G .. "piling-" .. vsuf .. "-u.png",     count = 1, scale = 0.5},
+          o_transition = {spritesheet = G .. "piling-" .. vsuf .. "-o.png",     count = 1, scale = 0.5},
+        }
+      end
+
       -- LAND side: register in water_tile_type_names so the land tiles draw their
       -- vanilla dirt bank onto the join. (The wood-join experiment - a solid band
       -- drawn by the land tiles - bled the land sheets into the planks in every
