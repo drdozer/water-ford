@@ -31,14 +31,14 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- shadow bisect round 2. Round-1 arms (foundation flag, edge overlays) kept
-  -- the shadow, and "show-raw-tile-transitions" removes it: the darkening is
-  -- manufactured by the shader's transition processing, not our art. New arms:
-  -- A keeps everything (control); B drops the piling transitions entirely;
-  -- C keeps them but sits at water's own layer (3) instead of 9.
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control",                    tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford B: no piling transitions",     tint = {r = 1, g = 1, b = 1}, no_piling = true},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: water layer (3)",           tint = {r = 1, g = 1, b = 1}, water_level = true},
+  -- shadow bisect round 3. Round 2 proved the trigger is the piling rule's
+  -- existence (B without it: no shadow) and that layer 3 keeps it (C), so the
+  -- last coupling suspect is the WATER TRANSITION GROUP pairing. A = control,
+  -- B = posts without the effect map (re-tests the pre-restore evidence that
+  -- the mask is not required), C = posts + mask in a PRIVATE transition group.
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control (water group + mask)",   tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: posts, NO mask",                 tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: PRIVATE transition group",       tint = {r = 1, g = 1, b = 1}, own_group = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

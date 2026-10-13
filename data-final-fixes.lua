@@ -134,7 +134,10 @@ for _, v in ipairs(V.list) do
         local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
         local piling_rule = {
           to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
-          transition_group = (water_transition_group_id or 1),
+          transition_group = (v.own_group and 40) or (water_transition_group_id or 1),
+                                 -- bisect arm C: a PRIVATE group (40) breaks the vanilla
+                                 -- shore-machinery coupling (banks/junctions/shader prepass
+                                 -- all pair through the water group)
           spritesheet = posts_sheet,
           background_enabled = false,
           mask_enabled = false,  -- the transition's own mask layer yields the water mask;
