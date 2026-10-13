@@ -59,3 +59,18 @@ into the deck art instead: the generator re-washes pristine `planks-base.png`
 into `planks.png` (knobs DECK_WASH / DECK_WASH_STRENGTH). Final config on all
 three fords: no tile effect, pieces in `ground-natural` (above the shader
 pass), painted wet feet, painted underwater deck.
+## Round 6 — final architecture
+
+Round-5 B proved the effect = both the deck's water AND the shadow's vehicle;
+the painted wash was rejected (hard edges, no real water). Resolution:
+- RESTORE the tile effect (effect = "water" inherited): deck under water again.
+- REMOVE all water-targeting transitions from the ford (the territory claim
+  was the only thing that carried the effect's darkening onto neighbours).
+- Pilings = script-placed simple-entity "py-ford-piling" (8 jittered sprites,
+  zero collision, non-selectable, destructible=false), placed on water cells
+  adjacent to fords by control.lua on player/robot built/mined tile events,
+  removed when the adjacent water changes or the ford goes.
+
+Dump-verified: fords carry only the out-of-map rule; effect = water; entity
+prototype present with 8 pictures. NOTE: pilings appear only on fords placed
+after loading this build (old placements had no entities).
