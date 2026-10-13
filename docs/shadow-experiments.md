@@ -107,3 +107,21 @@ is the deck's own watery wash. Sheets generated in the vanilla variant
 layout (inner/outer/side 6x4, u 1x4, o 1x1, 64px pieces, scale 0.5).
 B = control (inherited overlays), A = centred posts, C = outward-snugged
 posts. Direction-row convention assumed N,E,S,W for the snug shift.
+
+## Round 10 verdict + Round 11 — the shore-slot treatment
+
+Round 10: with NO piling transition at all (fords' rules = out-of-map only),
+merely swapping the ford's variant-edge sheet content (vanilla shore art ->
+sparse posts) brought the shadow back on A/C; B (vanilla art) stayed clean.
+The user's challenge answered from the grid: the pilings' ART never caused
+the shadow (rounds 3-B/4-B: blank art + rule = shadow); round 2-B removed
+the transition entirely (effect untouched) and the shadow vanished; round
+5-B removed the effect (transition present) and the shadow vanished. The
+shadow = the deck's water effect's shore treatment applied wherever art
+renders toward water; vanilla shore art covers its own footprint, sparse
+post art exposes it.
+
+Round 11 (data-only): the variant sheets are now the vanilla water-shallow
+blending art with the posts composited on top (same filenames, same data).
+Prediction: the treatment is covered as in vanilla; pilings stand in
+shore-blended water on the rim; no shadow on A/C.
