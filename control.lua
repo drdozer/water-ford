@@ -1,18 +1,15 @@
--- Control-stage guard for ford tile placement.
+-- Control-stage guard for Water Ford tile placement.
 --
--- Why this exists: in 2.0 the tile placement rules consult the tile stack, and water stays
--- hidden under landfill. Since ford tiles must keep the water_tile collision layer (Cargo
--- Ships waterways, offshore pumps), the engine sees "water" under landfill and allows fords
--- (and landfill!) over it. No data-stage place_as_tile config can distinguish "landfill with
--- hidden water" from plain water, so we enforce the rule here instead: any ford tile placed
--- over a non-water tile is reverted in the same tick and the items are refunded.
+-- In 2.0 the tile placement rules consult the tile stack, and water stays
+-- hidden under landfill. Since the ford tile keeps the water_tile collision
+-- layer (Cargo Ships waterways, offshore pumps), the engine sees "water" under
+-- landfill and allows fords over it. No data-stage place_as_tile config can
+-- distinguish "landfill with hidden water" from plain water, so the rule is
+-- enforced here: any ford placed over a non-water tile is reverted in the same
+-- tick and the items are refunded.
 
-local V = require("py-ford-variants")
+local ford_name = "water-ford"
 
-local ford_tiles = {}
-for _, v in ipairs(V.list) do ford_tiles[v.name] = true end
-
--- Tiles that carry the water_tile layer but are not water you may build on.
 local not_water_names = {["out-of-map"] = true, ["empty-space"] = true}
 
 local function is_waterish(tile_prototype)
@@ -22,7 +19,7 @@ local function is_waterish(tile_prototype)
 end
 
 local function on_built(event)
-  if not ford_tiles[event.tile.name] then return end
+  if event.tile.name ~= ford_name then return end
 
   local surface = game.surfaces[event.surface_index]
   if not surface then return end
@@ -49,7 +46,7 @@ local function on_built(event)
         }
       end
       player.create_local_flying_text{
-        text = "Ford tiles can only be placed on water",
+        text = "Water Ford can only be placed on water",
         position = revert[1].position,
       }
     end
@@ -58,5 +55,3 @@ end
 
 script.on_event(defines.events.on_player_built_tile, on_built)
 script.on_event(defines.events.on_robot_built_tile, on_built)
-
-

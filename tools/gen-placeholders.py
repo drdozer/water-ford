@@ -38,7 +38,9 @@ CELL = 64          # square piece, px on the 2x sheet (= 1 water tile)
 DECK_WASH = (38, 70, 82)   # painted "seen through shallow water" tint for the deck
 DECK_WASH_STRENGTH = 0.0   # 0 = pristine deck (the water effect provides the wet look)
 
-P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
+NORTH_SHIFT = 4      # px every post is shifted north within its 64px cell
+
+P = dict(w=16, hmin=38 - NORTH_SHIFT, hmax=46 - NORTH_SHIFT, jpos=3, foot=115.0, seed=41000,
          dark=(70, 48, 26), lite=(224, 186, 122), cap=(238, 204, 142), capedge=(184, 144, 90),
          wet=(36, 52, 47),
          wf=0.18, wfac=0.72, rings=True)
@@ -105,7 +107,7 @@ for y0, cols, rows in BANDS:
             ys, xs = np.nonzero(ca > 128)
             if len(ys) == 0: continue
             px_rel = min(max(int(xs.mean()) + rng.randint(-P["jpos"], P["jpos"]), 14), 50)
-            base_rel = CELL - 8 + rng.randint(-2, 2)   # base near the window bottom
+            base_rel = CELL - 8 - NORTH_SHIFT + rng.randint(-2, 2)   # base near the window bottom, nudged north
             w = P["w"] + rng.randint(-2, 2)
             h = min(rng.randint(P["hmin"], P["hmax"]), base_rel - 12)
             if rng.random() < P["wf"]: h = int(h * P["wfac"])
@@ -130,23 +132,12 @@ for y0, cols, rows in BANDS:
             n += 1
 
 Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-exp.png")
-# pilings-water.png: the same composite WITHOUT posts - the invisible coverage
-# variant for the control arm (the shore pre-darkening is structural; every
-# ford needs covered edge cells, B's just carry no posts)
-wcover = np.zeros((2368, 3200, 4), np.float32)
-for y0, cols, rows in BANDS:
-    for r in range(rows):
-        wy = y0 + r * CELL
-        for c in range(cols):
-            wcover[wy:wy + CELL, c * 64:c * 64 + CELL, :] = WATER_FRAMES[c % 8]
-Image.fromarray(wcover.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-water.png")
 m = np.zeros((2368, 512, 4), np.float32)
 m[..., 0] = m[..., 1] = m[..., 2] = mask
 m[..., 3] = 255.0
 Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-mask.png")
-print(f"pilings-exp.png: {n} posts in 64x64 pieces (+ the postless pilings-water.png cover); "
-      f"pilings-mask.png (gray, foot holds at "
-      f"{int(DRY * (1 - FOOT_DRY))}); pilings-blank.png")
+print(f"pilings-exp.png: {n} posts, composite (water base + posts, north shift {NORTH_SHIFT}px); "
+      f"pilings-mask.png (crowns {int(DRY)}, feet hold at {int(DRY * (1 - FOOT_DRY))})")
 
 # --- deck: re-wash planks.png from the pristine planks-base.png every run ---
 import os

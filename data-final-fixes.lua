@@ -1,209 +1,100 @@
--- Builds the ford tiles. Runs after Py Alien Life (data-updates.lua stamps its caravan layers on
--- every water tile) and after Cargo Ships (data-final-fixes.lua), thanks to the hard dependencies.
+-- Water Ford -- tile definition.
 --
--- Core idea: every ford keeps `water_tile` (so Cargo Ships waterways/buoys, which require it, still
--- work on it) but has NO Py caravan layers (so caravans, whose mask is only
--- `caravan_collision_mask`, can path over it). Only the visuals differ between variants.
+-- ONE tile, straight-line construction, no variant machinery. Config is the
+-- former "Ford A" gold standard, proven across the rounds documented in
+-- docs/shadow-experiments.md:
+--   * water-shallow clone so the tile lives in the water layer group and the
+--     "water" tile effect renders animated water OVER the planks deck;
+--   * no water-targeting transition claims beyond the piling rule, and its
+--     pieces are OPAQUE plain-water composites so the engine's shore
+--     pre-darkening never shows (that was the "shadow");
+--   * the gray effect map lifts the post crowns above the waterline while
+--     their feet stay semi-submerged;
+--   * no variant edge overlays (their pale halo on bordering water was
+--     rejected); land tiles still draw their vanilla bank onto the join.
 
-local V = require("py-ford-variants")
-local cmu = require("__core__/lualib/collision-mask-util")
+local pf = {  -- post parameters shared with tools/gen-placeholders.py
+  sheet    = "__water-ford__/graphics/pilings-exp.png",
+  mask     = "__water-ford__/graphics/pilings-mask.png",
+}
 
-local G = "__py-caravan-ford__/graphics/"
+local tile = table.deepcopy(data.raw.tile["water-shallow"])
 
-local shallow = assert(data.raw.tile["water-shallow"], "py-caravan-ford: water-shallow missing")
+tile.name = "water-ford"
+tile.localised_name = {"", "Water Ford"}
+tile.localised_description = {"", "A walkable ford over water. Wooden pilings stand in the shallows; ships still cross."}
+tile.subgroup = "artificial-tiles"
+tile.order = "c[landfill]-a2[water-ford]"
+tile.minable = {mining_time = 0.1, result = "water-ford"}
+tile.autoplace = nil
+tile.fluid = nil
+tile.default_cover_tile = nil
+tile.ambient_sounds = nil
+tile.is_foundation = true
 
--- NOTE: collision_mask_util.get_mask() returns the LIVE table, not a copy. 0.1.x edited it in
--- place, which also removed Py's layers from vanilla water-shallow. Always copy first.
-local base_mask = table.deepcopy(cmu.get_mask(shallow))
-assert(base_mask.layers.water_tile, "py-caravan-ford: water-shallow has no water_tile layer")
-base_mask.layers.caravan_collision_mask = nil
-base_mask.layers.dingrido_collision_mask = nil   -- remove this line if dingrido creatures should NOT cross
+tile.variants.main = {{picture = "__water-ford__/graphics/planks.png", count = 8, size = 1, scale = 0.5}}
+-- the inherited water-shallow edge overlays produced a pale halo on bordering
+-- water and have no mask channel; the piling rule covers these cells instead
+tile.variants.empty_transitions = true
+tile.variants.transition = nil
 
-local function finish(tile, v)
-  tile.name = v.name
-  tile.localised_name = {"", v.title}
-  tile.localised_description = nil
-  tile.minable = {mining_time = 0.1, result = v.name}
-  tile.autoplace = nil
-  tile.fluid = nil
-  tile.default_cover_tile = nil
-  tile.ambient_sounds = nil
-  if not v.no_foundation then tile.is_foundation = true end
-  tile.subgroup = "artificial-tiles"
-  tile.order = "z[py-ford]-" .. v.name
-  tile.collision_mask = table.deepcopy(base_mask)
-  if v.next_direction then tile.next_direction = v.next_direction end
-  return tile
+-- above shallow(6)/mud(7) so the piling pieces on the water side render above
+-- shallow-water neighbours (the planks-under convention)
+tile.layer = 9
+
+-- walkable: the caravan/dingrido collision layers from water-shallow are not
+-- wanted (land caravans must cross); water_tile stays so Cargo Ships and
+-- offshore pumps treat the ford as water
+tile.collision_mask = {
+  layers = {
+    water_tile = true,
+    resource = true,
+    floor = true,
+  }
+}
+
+-- ---------------------------------------------------------------------------
+-- Piling transition: pieces render on the water cells adjacent to the ford.
+-- The sheets are opaque plain-water composites (posts over a water frame), so
+-- the engine's shore pre-darkening beneath them is covered - the shadow that
+-- cost twelve rounds is the space those cells would otherwise show.
+-- The effect map is the gray dryness mask: crowns 170 (above the waterline),
+-- feet ramping to 50% dryness and holding - the semi-submerged look.
+-- ---------------------------------------------------------------------------
+tile.transitions = tile.transitions or {}
+tile.transitions[#tile.transitions + 1] = {
+  to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
+  transition_group = (water_transition_group_id or 1),
+  spritesheet = pf.sheet,
+  background_enabled = false,
+  mask_enabled = false,
+  layout = {
+    scale = 0.5,
+    inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+    u_transition_count = 2, o_transition_count = 4,
+    inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+    u_transition_y = 1728, o_transition_y = 2304,
+    inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+    side_tile_height = 1, u_transition_tile_height = 1,
+    overlay = {x_offset = 0},
+  },
+  effect_map_layout = {
+    spritesheet = pf.mask,
+    scale = 0.5,
+    inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+    u_transition_count = 2, o_transition_count = 4,
+    inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+    u_transition_y = 1728, o_transition_y = 2304,
+    inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+    side_tile_height = 1, u_transition_tile_height = 1,
+  },
+}
+
+-- LAND side: register the name so vanilla land tiles draw their bank onto the
+-- join. The land tiles carry no tile effect, so this produces no darkening.
+-- The list is a base global; guard it exactly as the sandbox-era code did.
+if water_tile_type_names then
+  table.insert(water_tile_type_names, "water-ford")
 end
 
-local function scale_alpha(color, factor)
-  color = table.deepcopy(color)
-  if color.r ~= nil or color.g ~= nil or color.b ~= nil then
-    color.a = math.min((color.a or 1) * factor, 1)
-  else
-    color[4] = math.min((color[4] or 255) * factor, 255)
-  end
-  return color
-end
-
--- The engine rule: a tile needs a size-1 entry in variants.main OR a variants.material_background,
--- else it is rejected with "missing 1x1 version or material background". Factorio 2.0's concrete
--- family (concrete, refined-concrete, landfill) has NO variants.main; its ground texture lives in
--- variants.material_background. Water-style beds are drawn from `main`, so when a bed only has a
--- material_background we synthesize a size-1 main from it and copy the background through as well.
-local function bed_main_and_background(bed, v)
-  local bv = bed.variants or {}
-  local main, background
-  if bv.main then
-    main = table.deepcopy(bv.main)
-  elseif bv.material_background then
-    local mb = bv.material_background
-    main = {{picture = mb.picture, count = mb.count or 1, size = 1, scale = mb.scale or 0.5}}
-  end
-  if bv.material_background then
-    background = table.deepcopy(bv.material_background)
-  end
-  if not main then
-    error(string.format(
-      "py-caravan-ford: bed tile '%s' (used by variant '%s') has neither variants.main nor variants.material_background",
-      bed.name, v.name))
-  end
-  return main, background
-end
-
-local function water_style(v)
-  local t = table.deepcopy(shallow)
-  t.layer = 9  -- above shallow(6)/mud(7), so its edge overlay is drawn onto them
-  if v.bed then
-    local main, background = bed_main_and_background(data.raw.tile[v.bed], v)
-    t.variants.main = main
-    if background then t.variants.material_background = background end
-  elseif v.bed_texture then
-    t.variants.main = {{picture = v.bed_texture, count = 8, size = 1, scale = 0.5}}
-  end
-  if v.effect_from then
-    local e = data.raw.tile[v.effect_from]
-    t.effect = e.effect or t.effect
-    if e.effect_color then t.effect_color = table.deepcopy(e.effect_color) end
-    if e.effect_color_secondary then t.effect_color_secondary = table.deepcopy(e.effect_color_secondary) end
-  end
-  if v.effect_scale and t.effect_color then
-    t.effect_color = scale_alpha(t.effect_color, v.effect_scale)
-  end
-  return t
-end
-
-local new_tiles, water_type_names = {}, {}
-
-for _, v in ipairs(V.list) do
-  if V.enabled(v) then
-    local t
-    if v.kind == "clone" then
-      t = table.deepcopy(data.raw.tile[v.src])
-    elseif v.kind == "planks-land" then
-      t = table.deepcopy(data.raw.tile["landfill"])
-      -- Vanilla material_background frames are 8x8-tile (512x512 px) sheets; our generated textures
-      -- are 1x1-tile (64x64 px) strips. Claiming them as material_background makes the atlas
-      -- builder read 512x512 out of a 512x64 file. Render them as a `main` set instead (as water
-      -- tiles do) and drop landfill's dirt material_background.
-      t.variants.main = {{picture = v.texture, count = 8, size = 1, scale = 0.5}}
-      t.variants.material_background = nil
-    elseif v.kind == "flooded" then
-      -- water-shallow clone: lives in the water layer group, so it renders at water
-      -- height with the water shader (like planks-under), not at landfill height.
-      -- FINAL ARCHITECTURE (docs/shadow-experiments.md): the inherited
-      -- effect = "water" is what renders water OVER the deck and blends its edges -
-      -- it also darkens any transition territory the tile's rules claim on
-      -- neighbouring water tiles, so the tile declares NO water-targeting
-      -- transitions at all (rounds 1-6). Pilings are script-placed entities
-      -- (control.lua) on adjacent water cells instead of transition pieces.
-      t = table.deepcopy(data.raw.tile["water-shallow"])
-      t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
-      t.layer = 9  -- above shallow(6)/mud(7) so edge overlays draw onto them
-
-      -- ROUND 12: the piling pipeline back in full (the ford's own transition
-      -- rules with the gray effect map = emerging crowns), with two round-11
-      -- lessons folded in: (1) the sheets are opaque plain-water composites, so
-      -- the engine's pre-darkening beneath shore renders is covered - no shadow;
-      -- (2) the variant edge overlays are retired (empty_transitions), removing
-      -- their pale halo on the bordering water.
-      t.variants.empty_transitions = true
-      t.variants.transition = nil
-
-      local posts_sheet = (v.posts == "water") and (G .. "pilings-water.png")
-        or (v.posts == "blank") and (G .. "pilings-blank.png") or G .. "pilings-exp.png"
-      if true then
-        local piling_rule = {
-          to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
-          transition_group = (water_transition_group_id or 1),
-          spritesheet = posts_sheet,
-          background_enabled = false,
-          mask_enabled = false,
-          layout = {
-            scale = 0.5,
-            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-            u_transition_count = 2, o_transition_count = 4,
-            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-            u_transition_y = 1728, o_transition_y = 2304,
-            -- tile_height defaults to 2 when absent (dump-verified); 1 = square
-            inner_corner_tile_height = 1, outer_corner_tile_height = 1,
-            side_tile_height = 1, u_transition_tile_height = 1,
-            overlay = {x_offset = 0},
-          },
-        }
-        if v.masked then
-          piling_rule.effect_map_layout = {
-            spritesheet = G .. "pilings-mask.png",
-            scale = 0.5,
-            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-            u_transition_count = 2, o_transition_count = 4,
-            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-            u_transition_y = 1728, o_transition_y = 2304,
-            inner_corner_tile_height = 1, outer_corner_tile_height = 1,
-            side_tile_height = 1, u_transition_tile_height = 1,
-          }
-        end
-        t.transitions = t.transitions or {}
-        t.transitions[#t.transitions + 1] = piling_rule
-      end
-
-      -- LAND side: register in water_tile_type_names so the land tiles draw their
-      -- vanilla dirt bank onto the join. (The wood-join experiment - a solid band
-      -- drawn by the land tiles - bled the land sheets into the planks in every
-      -- transition group we tried and was dropped; its art stays in git history.)
-      water_type_names[#water_type_names + 1] = v.name
-    elseif v.kind == "water" then
-      t = water_style(v)
-      -- shore = false opts a variant out of water_tile_type_names, so LAND tiles draw their
-      -- normal land-style edge transitions onto it instead of their waterfront cliff overlay.
-      if v.shore ~= false then
-        water_type_names[#water_type_names + 1] = v.name
-      end
-    end
-    t = finish(t, v)
-    -- Sandbox safety net: apply the engine's own rule here so a bad variant fails with a message
-    -- naming the variant, instead of the engine aborting the whole load on a generic error.
-    local has_1x1 = t.variants and t.variants.material_background ~= nil
-    for _, entry in ipairs(t.variants and t.variants.main or {}) do
-      if (entry.size or 1) == 1 then has_1x1 = true end
-    end
-    if not has_1x1 then
-      error(string.format(
-        "py-caravan-ford: variant '%s' (kind '%s') produced a tile with no size-1 main and no material_background",
-        v.name, v.kind))
-    end
-    new_tiles[#new_tiles + 1] = t
-  end
-end
-
-if #new_tiles > 0 then
-  data:extend(new_tiles)
-  -- Land tiles' shoreline transitions use `to_tiles = water_tile_type_names` (a shared global list in
-  -- base). Registering water-style fords there lets land edges draw towards them. Done after cloning
-  -- so land-style fords don't pick the names up.
-  if water_tile_type_names then
-    for _, name in ipairs(water_type_names) do table.insert(water_tile_type_names, name) end
-  end
-  log("py-caravan-ford: created " .. #new_tiles .. " ford tiles")
-end
-
+data:extend{tile}

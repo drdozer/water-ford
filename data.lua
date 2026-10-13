@@ -1,70 +1,39 @@
--- Items, recipes and technology for every enabled ford variant.
--- All variants share the same PLACEHOLDER recipe (see `ingredients` below) and one tech.
--- The tiles themselves are built in data-final-fixes.lua.
+-- Water Ford -- items, recipes. Tile built in data-final-fixes.lua.
+--
+-- Standalone mod; the Pyanodon integration will be revisited deliberately.
+-- Until then the recipe is vanilla-only and enabled from the start.
 
-local V = require("py-ford-variants")
-
-local ingredients = {
-  {type = "item", name = "treated-wood", amount = 2},
-  {type = "item", name = "iron-stick",   amount = 2},
-}
-
-local recipe_names = {}
-for i, v in ipairs(V.list) do
-  if V.enabled(v) then
-    data:extend{
-      {
-        type = "item",
-        name = v.name,
-        localised_name = {"", v.title},
-        localised_description = {"", "Experimental walkable ford tile. Place on water. Caravans can cross it; Cargo Ships waterways still work on it."},
-        icons = {{icon = "__base__/graphics/icons/landfill.png", icon_size = 64, tint = v.tint}},
-        subgroup = "terrain",
-        order = string.format("c[landfill]-z[py-ford]-%02d", i),
-        stack_size = 100,
-        -- `invert` flips the condition from a conflict mask into a permission mask:
-        -- placeable ONLY where the existing tile carries the water_tile layer (vanilla +
-        -- modded waters), so it cannot be built over landfill or any other land tile.
-        place_as_tile = {
-          result = v.name,
-          condition_size = 1,
-          condition = {layers = {water_tile = true}},
-          invert = true,
-        },
+local function water_ford_item()
+  return {
+    {
+      type = "item",
+      name = "water-ford",
+      localised_name = {"", "Water Ford"},
+      localised_description = {"", "A walkable ford over water. Wooden pilings stand in the shallows; ships still cross."},
+      icon = "__base__/graphics/icons/landfill.png",
+      icon_size = 64,
+      subgroup = "terrain",
+      order = "c[landfill]-a2[water-ford]",
+      stack_size = 100,
+      place_as_tile = {
+        result = "water-ford",
+        condition_size = 1,
+        condition = {layers = {water_tile = true}},
+        invert = true,
       },
-      {
-        type = "recipe",
-        name = v.name,
-        enabled = false,
-        energy_required = 1,
-        ingredients = ingredients,
-        results = {{type = "item", name = v.name, amount = 2}},
+    },
+    {
+      type = "recipe",
+      name = "water-ford",
+      enabled = true,
+      energy_required = 1,
+      ingredients = {
+        {type = "item", name = "wood",        amount = 4},
+        {type = "item", name = "iron-stick",  amount = 2},
       },
-    }
-    recipe_names[#recipe_names + 1] = v.name
-  end
+      results = {{type = "item", name = "water-ford", amount = 1}},
+    },
+  }
 end
 
-local prereqs = {}
-for _, name in pairs{"zoology", "creosote"} do
-  if data.raw.technology[name] then prereqs[#prereqs + 1] = name end
-end
-
-local effects = {}
-for _, name in ipairs(recipe_names) do
-  effects[#effects + 1] = {type = "unlock-recipe", recipe = name}
-end
-
-if #effects > 0 then
-  data:extend{{
-    type = "technology",
-    name = "py-caravan-ford",
-    icon = "__base__/graphics/technology/landfill.png",
-    icon_size = 256,
-    prerequisites = prereqs,
-    effects = effects,
-    unit = {count = 50, ingredients = {{"automation-science-pack", 1}}, time = 30},
-  }}
-end
-
-
+data:extend(water_ford_item())
