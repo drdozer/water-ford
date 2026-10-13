@@ -87,6 +87,9 @@ data:extend{
     type = "simple-entity",
     name = "py-ford-piling",
     flags = {"placeable-neutral"},
+    -- entities require an icon even when script-only and non-selectable
+    icon = "__base__/graphics/icons/landfill.png",
+    icon_size = 64,
     pictures = piling_sprites,
     collision_box = {{0, 0}, {0, 0}},
     -- no selection_box: posts are not selectable, bots ignore them,
