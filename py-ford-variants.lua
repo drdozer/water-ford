@@ -17,11 +17,12 @@
 --   water       water-shallow clone; bed_texture = our own strip;
 --               effect_scale multiplies the water alpha;
 --               effect_from = copy water colours from another water tile
---   flooded     water-shallow clone with planks main (renders at water height
---               with the water shader, same placement family as planks-under);
---               ramp = true makes the adjacent artificial ground tiles
---               (landfill/stone-path/concrete/refined-concrete) draw the ramp
---               sheet onto this tile - at water height our own rules render
+--   flooded     water-shallow clone with planks main, layer 9 (renders at water
+--               height with the water shader, same placement family as planks-under);
+--               NOT in water_tile_type_names, so land tiles draw no dirt bank on it;
+--               ramp = true makes the adjacent artificial ground tiles (landfill/
+--               stone-path/concrete/refined-concrete) draw the ramp band onto this
+--               tile via explicit to_tiles - at water height our own rules render
 --               below land, so the land side must draw it
 --
 -- flags:
