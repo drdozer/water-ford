@@ -44,12 +44,13 @@ DECK_WASH_STRENGTH = 0.0   # 0 = pristine deck (the water effect provides the we
 VSPEC = [("inner", 6), ("outer", 6), ("side", 6), ("u", 1), ("o", 1)]
 SNUG = {0: (0, -6), 1: (8, 0), 2: (0, 8), 3: (-8, 0)}
 
+VB = "/home/nmrp3/.local/share/factorio_2_dlc/data/base/graphics/terrain"
 VANILLA_SHEETS = {
-    "inner": "/water-shallow/water-shallow-inner-corner.png",
+    "inner": "water-shallow/water-shallow-inner-corner.png",
     "outer": "/water-shallow/water-shallow-outer-corner.png",
-    "side":  "/water-shallow/water-shallow-side.png",
-    "u":     "/water-shallow/water-shallow-u.png",
-    "o":     "/water-shallow/water-shallow-o.png",
+    "side":  "water-shallow/water-shallow-side.png",
+    "u":     "water-shallow/water-shallow-u.png",
+    "o":     "water-shallow/water-shallow-o.png",
 }
 
 def emit_variant_sheets():
@@ -59,7 +60,7 @@ def emit_variant_sheets():
     # the post composited on top. Data layer unchanged; only the sheet content.
     for tag, do_snug in (("v1", False), ("v2", True)):
         for name, cols in VSPEC:
-            base = np.asarray(Image.open(BASE + VANILLA_SHEETS[name]).convert("RGBA")).astype(np.float32)
+            base = np.asarray(Image.open(VB + "/" + VANILLA_SHEETS[name]).convert("RGBA")).astype(np.float32)
             sh = base.copy()
             H, W = sh.shape[0], sh.shape[1]
             rows = H // 64
