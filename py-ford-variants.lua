@@ -37,9 +37,9 @@ M.list = {
   -- BELOW the water shaders - the pass pre-darkens their territory. New arms:
   -- A = control; B = pure declaration (blank art, no mask); C = pieces raised
   -- ABOVE the shader pass via overlay_layer_group = "ground-natural".
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control (in the water shader pass)", tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "blank", masked = false, title = "Ford B: invisible rule (declaration only)",       tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: posts above the water shader",       tint = {r = 1, g = 1, b = 1}, above_shader = true},
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford A", tint = {r = 1, g = 1, b = 1}, above_shader = true},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B", tint = {r = 1, g = 1, b = 1}, above_shader = true},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford C", tint = {r = 1, g = 1, b = 1}, above_shader = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

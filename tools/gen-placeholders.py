@@ -36,6 +36,7 @@ CELL = 64          # square piece, px on the 2x sheet (= 1 water tile)
 
 P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
          dark=(70, 48, 26), lite=(224, 186, 122), cap=(238, 204, 142), capedge=(184, 144, 90),
+         wet=(36, 52, 47),
          wf=0.18, wfac=0.72, rings=True)
 
 DRY = 170.0        # mask gray dryness: 170 = dry (empirically the working form)
@@ -62,7 +63,14 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
         for y in range(int(cy_cap), int(base_y)):
             frac = (y - y_min) / max(base_y - y_min, 1)
             a = 255.0 if frac < 0.5 else 255.0 - (frac - 0.5) / 0.5 * (255.0 - p["foot"])
-            cv[y, x, :3], cv[y, x, 3] = col, a
+            col_y = col
+            if frac >= 0.5:
+                # painted submersion (posts now render ABOVE the water shader, so
+                # the shader no longer wets them): cool/dark the wood toward p["wet"]
+                # with depth; max blend 55% at the base. No foam, no painted shadows.
+                wetk = ((frac - 0.5) / 0.5) * 0.55
+                col_y = col + (npv(p["wet"]) - col) * wetk
+            cv[y, x, :3], cv[y, x, 3] = col_y, a
     for dy in range(-ry, ry + 1):                      # elliptical cut face
         hw = rx * math.sqrt(max(1.0 - (dy / ry) ** 2, 0.0))
         xa, xb = int(px - hw), int(px + hw)
