@@ -67,32 +67,3 @@ if #effects > 0 then
   }}
 end
 
--- The piling entity: script-placed (control.lua) on water cells adjacent to ford
--- tiles. It deliberately is NOT a tile transition - transitions from a ford onto
--- water claim territory that the deck's water effect then darkens (the shadow).
--- 8 jittered sprite variants (the art sheet's row 0, 64x64 pieces at scale 0.5).
-local piling_sprites = {}
-for i = 0, 7 do
-  piling_sprites[#piling_sprites + 1] = {
-    filename = "__py-caravan-ford__/graphics/pilings-entity.png",
-    priority = "extra-high",
-    x = i * 64, y = 0,
-    width = 64, height = 64,
-    scale = 0.5,
-  }
-end
-
-data:extend{
-  {
-    type = "simple-entity",
-    name = "py-ford-piling",
-    flags = {"placeable-neutral"},
-    -- entities require an icon even when script-only and non-selectable
-    icon = "__base__/graphics/icons/landfill.png",
-    icon_size = 64,
-    pictures = piling_sprites,
-    collision_box = {{0, 0}, {0, 0}},
-    -- no selection_box: posts are not selectable, bots ignore them,
-    -- destructible defaults false so nothing removes them but the manager.
-  },
-}

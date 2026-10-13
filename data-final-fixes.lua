@@ -160,3 +160,66 @@ if #new_tiles > 0 then
   end
   log("py-caravan-ford: created " .. #new_tiles .. " ford tiles")
 end
+
+-- ---------------------------------------------------------------------------
+-- ROUND 7: pilings via rules OWNED BY THE WATER TILES, targeting the fords.
+-- The pieces render on the FORD's rim cells, so any effect spill lands on the
+-- deck - no water cell is ever claimed, nothing can darken the surrounding
+-- water (docs/shadow-experiments.md rounds 5-6).
+--   py-ford-flooded (A): masked rule -> dry crowns above the waterline
+--   py-ford-exp-1 (B):   CONTROL - nothing targets it
+--   py-ford-exp-2 (C):   unmasked rule -> submerged-style posts at the rim
+-- ---------------------------------------------------------------------------
+local PILING_TO_TILES = {
+  ["py-ford-flooded"] = true,
+  ["py-ford-exp-2"] = true,
+}
+
+local function piling_layout()
+  return {
+    scale = 0.5,
+    inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+    u_transition_count = 2, o_transition_count = 4,
+    inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+    u_transition_y = 1728, o_transition_y = 2304,
+    -- tile_height MUST be declared 1: it defaults to 2 when absent (dump-verified)
+    inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+    side_tile_height = 1, u_transition_tile_height = 1,
+    overlay = {x_offset = 0},
+  }
+end
+
+for _, wname in ipairs({"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"}) do
+  local w = data.raw.tile[wname]
+  if w then
+    w.transitions = w.transitions or {}
+    -- masked: crowns render above the waterline on A's rim
+    table.insert(w.transitions, {
+      to_tiles = {"py-ford-flooded"},
+      transition_group = (water_transition_group_id or 1),
+      spritesheet = G .. "pilings-exp.png",
+      background_enabled = false,
+      mask_enabled = false,
+      layout = piling_layout(),
+      effect_map_layout = {
+        spritesheet = G .. "pilings-mask.png",
+        scale = 0.5,
+        inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+        u_transition_count = 2, o_transition_count = 4,
+        inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+        u_transition_y = 1728, o_transition_y = 2304,
+        inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+        side_tile_height = 1, u_transition_tile_height = 1,
+      },
+    })
+    -- unmasked: submerged-style posts on C's rim
+    table.insert(w.transitions, {
+      to_tiles = {"py-ford-exp-2"},
+      transition_group = (water_transition_group_id or 1),
+      spritesheet = G .. "pilings-exp.png",
+      background_enabled = false,
+      mask_enabled = false,
+      layout = piling_layout(),
+    })
+  end
+end

@@ -126,11 +126,6 @@ m = np.zeros((2368, 512, 4), np.float32)
 m[..., 0] = m[..., 1] = m[..., 2] = mask
 m[..., 3] = 255.0
 Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-mask.png")
-# entity strip: direction-agnostic posts = row 0 of the art sheet, one 64x64
-# sprite per column, consumed by the script-placed py-ford-piling entity
-Image.fromarray(art[0:64, 0:512, :].clip(0, 255).astype(np.uint8), "RGBA").save("pilings-entity.png")
-print("pilings-entity.png: 8 sprite variants for the piling entities", end="; ")
-Image.new("RGBA", (3200, 2368), (0, 0, 0, 0)).save("pilings-blank.png")
 print(f"pilings-exp.png: {n} posts in 64x64 pieces; pilings-mask.png (gray, foot holds at "
       f"{int(DRY * (1 - FOOT_DRY))}); pilings-blank.png")
 
