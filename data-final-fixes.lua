@@ -127,21 +127,35 @@ for _, v in ipairs(V.list) do
         transition_group = (water_transition_group_id or 1),
         spritesheet = posts_sheet,
         background_enabled = false,
+        mask_enabled = false,  -- the transition's own mask layer yields the water mask;
+                               -- left empty it broke the water rendering around fords (the shadow)
         layout = {
           scale = 0.5,
           inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
           u_transition_count = 2, o_transition_count = 4,
           inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
           u_transition_y = 1728, o_transition_y = 2304,
-          overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
+          -- square pieces: tile_height defaults to 2 when absent (dump-verified),
+          -- so it MUST be declared as 1 for the 64x64 piece grid
+          inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+          side_tile_height = 1, u_transition_tile_height = 1,
+          overlay = {x_offset = 0},
         },
       }
       if v.masked then
-        -- KNOWN-GOOD gray dryness mask (the 304df33 form - the round that gave
-        -- visible pilings above water): crowns 170, ramp to 50% held to the base,
-        -- else 0, all channels equal. SQUARE 64x64 pieces (tile_height defaults
-        -- to 1, matching the art layout which also declares none now) - both art
-        -- and mask cells are one water tile each, aligned piece-for-piece.
+        -- Gray dryness mask (the effect map WAS silently missing from the loaded
+        -- data for two rounds - the square-piece edit dropped this assignment;
+        -- found via --dump-data field diff).
+        piling_rule.effect_map_layout = {
+          spritesheet = G .. "pilings-mask.png",
+          scale = 0.5,
+          inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+          u_transition_count = 2, o_transition_count = 4,
+          inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+          u_transition_y = 1728, o_transition_y = 2304,
+          inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+          side_tile_height = 1, u_transition_tile_height = 1,
+        }
       end
       t.transitions = t.transitions or {}
       t.transitions[#t.transitions + 1] = piling_rule
