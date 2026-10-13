@@ -119,7 +119,8 @@ for _, v in ipairs(V.list) do
       -- lapping is painted into the sprite instead.
       t = table.deepcopy(data.raw.tile["water-shallow"])
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
-      t.layer = 9  -- match planks-under: above shallow(6)/mud(7) so edge overlays draw onto them
+      t.layer = (v.water_level and 3) or 9  -- bisect arm C: water's own layer(3)
+      -- vs 9: above shallow(6)/mud(7) so edge overlays draw onto them
       if v.no_edge_overlays then
         -- bisect arm C: drop the inherited water-shallow variant edge overlays;
         -- whether C then loses the soft shadow names the engine mechanism.
@@ -129,28 +130,29 @@ for _, v in ipairs(V.list) do
         t.variants.transition = nil
       end
 
-      local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
-      local piling_rule = {
-        to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
-        transition_group = (water_transition_group_id or 1),
-        spritesheet = posts_sheet,
-        background_enabled = false,
-        mask_enabled = false,  -- the transition's own mask layer yields the water mask;
-                               -- left empty it broke the water rendering around fords (the shadow)
-        layout = {
-          scale = 0.5,
-          inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-          u_transition_count = 2, o_transition_count = 4,
-          inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-          u_transition_y = 1728, o_transition_y = 2304,
-          -- square pieces: tile_height defaults to 2 when absent (dump-verified),
-          -- so it MUST be declared as 1 for the 64x64 piece grid
-          inner_corner_tile_height = 1, outer_corner_tile_height = 1,
-          side_tile_height = 1, u_transition_tile_height = 1,
-          overlay = {x_offset = 0},
-        },
-      }
-      if v.masked then
+      if not v.no_piling then
+        local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
+        local piling_rule = {
+          to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
+          transition_group = (water_transition_group_id or 1),
+          spritesheet = posts_sheet,
+          background_enabled = false,
+          mask_enabled = false,  -- the transition's own mask layer yields the water mask;
+                                 -- left empty it broke the water rendering around fords (the shadow)
+          layout = {
+            scale = 0.5,
+            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+            u_transition_count = 2, o_transition_count = 4,
+            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+            u_transition_y = 1728, o_transition_y = 2304,
+            -- square pieces: tile_height defaults to 2 when absent (dump-verified),
+            -- so it MUST be declared as 1 for the 64x64 piece grid
+            inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+            side_tile_height = 1, u_transition_tile_height = 1,
+            overlay = {x_offset = 0},
+          },
+        }
+        if v.masked then
         -- Gray dryness mask (the effect map WAS silently missing from the loaded
         -- data for two rounds - the square-piece edit dropped this assignment;
         -- found via --dump-data field diff).
@@ -164,9 +166,10 @@ for _, v in ipairs(V.list) do
           inner_corner_tile_height = 1, outer_corner_tile_height = 1,
           side_tile_height = 1, u_transition_tile_height = 1,
         }
+        end
+        t.transitions = t.transitions or {}
+        t.transitions[#t.transitions + 1] = piling_rule
       end
-      t.transitions = t.transitions or {}
-      t.transitions[#t.transitions + 1] = piling_rule
 
       -- LAND side: register in water_tile_type_names so the land tiles draw their
       -- vanilla dirt bank onto the join. (The wood-join experiment - a solid band

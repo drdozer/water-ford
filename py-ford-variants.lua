@@ -31,12 +31,14 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- shadow-source bisect round: A keeps everything (control), B drops
-  -- is_foundation, C drops the inherited water-shallow edge overlays.
-  -- The variant that loses the soft water shadow names the engine mechanism.
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control",                      tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford B: no is_foundation",             tint = {r = 1, g = 1, b = 1}, no_foundation = true},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: no water-shallow edge overlays", tint = {r = 1, g = 1, b = 1}, no_edge_overlays = true},
+  -- shadow bisect round 2. Round-1 arms (foundation flag, edge overlays) kept
+  -- the shadow, and "show-raw-tile-transitions" removes it: the darkening is
+  -- manufactured by the shader's transition processing, not our art. New arms:
+  -- A keeps everything (control); B drops the piling transitions entirely;
+  -- C keeps them but sits at water's own layer (3) instead of 9.
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control",                    tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford B: no piling transitions",     tint = {r = 1, g = 1, b = 1}, no_piling = true},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: water layer (3)",           tint = {r = 1, g = 1, b = 1}, water_level = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
