@@ -41,10 +41,10 @@ P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
 DRY = 170.0        # mask gray dryness: 170 = dry (empirically the working form)
 FOOT_DRY = 0.5     # foot holds at 50% dryness - grounds the post in the water bottom
 FOOT_RAMP = 12     # px over which the dryness ramps 170 -> 50% below the waterline
-DECK_DRY = 85.0    # baseline dryness AWAY from the posts (else-0 rendered the water
-                   # surface pass at full density over the whole deck = the "ford
-                   # shadow"); 85 = the held-foot value = shallow half-density water
-                   # over the bed. Feet ramp down to this instead of to 0.
+DECK_DRY = 0.0      # else-value MUST be 0: vanilla's own water-side effect map
+                    # (water-dirt-mask.png, landfill's shore rule) is R=0 outside
+                    # its art = "water renders normally"; R>0 = suppression = dark
+                    # patches on plain water tiles (the tile-wide neighbour shadows)
 
 van = np.asarray(Image.open(BASE + "landfill.png").convert("RGBA")).astype(np.float32)
 alpha2 = van[..., 3]

@@ -31,10 +31,11 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- ===== isolation experiment A/B/C - names fixed, contents are the three arms =====
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: posts + mask (known good)", tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: posts only (no mask)",      tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "blank", masked = true,  title = "Ford C: mask only (no posts)",      tint = {r = 1, g = 1, b = 1}},
+  -- the three fords now share the known-good config (posts + feet mask, else 0):
+  -- the isolation arms served their purpose; all render the liked submersion look
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford B", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C", tint = {r = 1, g = 1, b = 1}},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
