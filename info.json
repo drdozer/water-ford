@@ -1,0 +1,13 @@
+{
+  "name": "py-caravan-ford",
+  "version": "0.2.0",
+  "title": "Py Caravan Ford (visual variants sandbox)",
+  "author": "sketch",
+  "factorio_version": "2.1",
+  "description": "Walkable ford tiles for Pyanodons land caravans that still work as water for Cargo Ships waterways. 0.2.0 adds many visual variants for testing.",
+  "dependencies": [
+    "base >= 2.1.0",
+    "pyalienlife >= 3.1.8",
+    "cargo-ships >= 2.1.8"
+  ]
+}
