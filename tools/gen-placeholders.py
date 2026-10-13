@@ -5,16 +5,16 @@
   pilings-exp.png  experiment posts (exp-1 and exp-2): 2/3 size, wood rings on the
                    cut faces, softer shading (anti-"barcode"), north-facing posts
                    shifted half a tile south so the tops sit closer to the planks
-  pilings-mask.png exp-2's water-effect mask in Wube's own channel format
-                   (reverse-engineered from their effect-maps + posila's forum
-                   note that effect maps are per-shader, per-channel):
-                   R = dryness, 255 = fully dry over the post crowns, feathering
-                   below the waterline (Wube uses 255 over their art)
-                   B = the lap/foam band - a narrow strip at each post's
-                   waterline (Wube's masks put a 142/76 band at the art fringe;
-                   gray masks with B over whole crowns render the shader's large
-                   foam geometry = the 'very large ghost post')
-                   G = 0 always (unused in every Wube water mask)
+  pilings-mask.png the KNOWN-GOOD gray dryness mask (304df33 form, in-game A/B'd):
+                   crowns 170 (dry, renders above water), 6px 170->0 ramp at the
+                   crown/foot line, 0 elsewhere (water renders normally). All three
+                   channels equal. HISTORY: channel-split masks (v2: R=255/G=0/B=lap;
+                   v3: Wube format + tile_height declarations) both rendered the
+                   posts submerged - the dryness signal empirically follows the
+                   uniform gray level. Vanilla's channel semantics remain unknown.
+  pilings-blank.png fully transparent sheet (same dimensions) - exp-2 (mask only)
+                   uses it as its spritesheet so the water-shader reaction to the
+                   mask renders with NO post sprites at all.
 
 Sheet structure (decoded from base): 64px columns = one slot per tile edge;
 bands at y 0/576/1152/1728 hold 8 columns x 4 rotation rows of 64x128 pieces;
@@ -47,10 +47,7 @@ EXP = dict(w=16, hmin=40, hmax=50, jpos=3, foot=115.0, seed=41000,
            wf=0.18, wfac=0.72, rings=True)
 
 FOAM = np.array([205, 226, 232], np.float32)
-DRY = 255.0       # R channel: fully dry (Wube's value over their own art)
-LAP = 120.0       # B channel: lap band intensity (Wube's fringe band runs 76-142)
-LAP_H = 16        # lap band height (px, on the 2x sheet)
-FEATHER = 24      # dryness feather below the waterline (px)
+DRY = 170.0       # gray dryness level: 170 = dry (empirically the working form)
 FOAM_RINGS = ((22, 9, 70), (14, 6, 110))  # (rx, ry, alpha); clipped to piece cells
 
 van = np.asarray(Image.open(BASE + "landfill.png").convert("RGBA")).astype(np.float32)
@@ -95,7 +92,8 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
 
 def gen(p, out, mask_out=None):
     art = np.zeros((2368, 3200, 4), np.float32)
-    mask = np.zeros((2368, 512, 3), np.float32) if mask_out else None
+    mask = np.zeros((2368, 512), np.float32) if mask_out else None
+    n = 0
     n = 0
     n = 0
     n = 0
@@ -124,27 +122,28 @@ def gen(p, out, mask_out=None):
                         draw_foam(art, bx + dx, by, rx, ry, fa, clip)
                     draw_post(art, bx + dx, by, ry0, h, w, p)
                 if mask is not None:
-                    # Wube channel format: R = dryness (255 crown, feather below the
-                    # waterline), B = narrow lap band at the waterline, G = 0
+                    # KNOWN-GOOD gray dryness: crowns 170, 6px ramp to 0 below the
+                    # crown/foot line, 0 elsewhere
                     rx = w / 2.0; ry = max(int(rx * 0.55), 3)
                     cy_cap = top + ry
                     xa, xb = max(bx - int(rx), 0), min(bx + int(rx) + 1, 512)
                     for dy in range(-ry, ry + 1):
                         hw = int(rx * math.sqrt(max(1.0 - (dy / ry) ** 2, 0.0)))
-                        mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512), 0] = DRY
+                        mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512)] = DRY
                     mid = int(by - h * 0.5)
-                    mask[top + ry:mid, xa:xb, 0] = DRY
-                    for i, y in enumerate(range(mid, min(mid + FEATHER, int(by)))):
-                        mask[y, xa:xb, 0] = DRY * (1 - (i + 1) / FEATHER)
-                    mask[mid:min(mid + LAP_H, int(by)), xa:xb, 2] = LAP
+                    mask[top + ry:mid, xa:xb] = DRY
+                    for i, y in enumerate(range(mid, min(mid + 6, int(by)))):
+                        mask[y, xa:xb] = DRY * (1 - (i + 1) / 6.0)
                 n += 1
     Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save(out)
     if mask is not None:
         m = np.zeros((2368, 512, 4), np.float32)
-        m[..., :3] = mask
+        m[..., 0] = m[..., 1] = m[..., 2] = mask
         m[..., 3] = 255.0
         Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save(mask_out)
     print(f"{out}: {n} posts" + (f" (+ {mask_out})" if mask_out else ""))
 
 gen(GOLD, "pilings.png")
 gen(EXP, "pilings-exp.png", mask_out="pilings-mask.png")
+Image.new("RGBA", (3200, 2368), (0, 0, 0, 0)).save("pilings-blank.png")
+print("pilings-blank.png: fully transparent (exp-2 mask-only arm)")

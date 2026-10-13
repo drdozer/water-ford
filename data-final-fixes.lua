@@ -121,7 +121,7 @@ for _, v in ipairs(V.list) do
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = 9  -- match planks-under: above shallow(6)/mud(7) so edge overlays draw onto them
 
-      local posts_sheet = (v.posts == "exp") and (G .. "pilings-exp.png") or (G .. "pilings.png")
+      local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
       local piling_rule = {
         to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
         transition_group = (water_transition_group_id or 1),
@@ -139,13 +139,10 @@ for _, v in ipairs(V.list) do
         },
       }
       if v.masked then
-        -- Crown water-effect mask in Wube's own format (factorio-data repo + measured
-        -- from their effect-maps): R = dryness (255 over the art, feathering below),
-        -- B = a narrow lap band at the art's water-side fringe, G = 0. Per posila
-        -- (factorio forums), tile effect maps are interpreted per-shader with per-
-        -- channel semantics - no official channel doc exists; this matches every
-        -- water-*.png mask Wube ships. tile_height = 2 declarations are REQUIRED:
-        -- without them the mask samples at half vertical size (v3 bug: crowns wet).
+        -- KNOWN-GOOD gray dryness mask (the 304df33 form - the round that gave
+        -- visible pilings above water): crowns 170, 6px ramp, else 0, all channels
+        -- equal. NOTE: no tile_height declarations - the layout is exactly the one
+        -- from the working round (adding them later changed nothing visible).
         piling_rule.effect_map_layout = {
           spritesheet = G .. "pilings-mask.png",
           scale = 0.5,
@@ -153,8 +150,6 @@ for _, v in ipairs(V.list) do
           u_transition_count = 2, o_transition_count = 4,
           inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
           u_transition_y = 1728, o_transition_y = 2304,
-          inner_corner_tile_height = 2, outer_corner_tile_height = 2,
-          side_tile_height = 2, u_transition_tile_height = 2,
         }
       end
       t.transitions = t.transitions or {}

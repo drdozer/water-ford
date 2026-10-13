@@ -17,9 +17,10 @@
 --               jittered)
 --
 -- flags:
---   posts          : "exp" = use the experiment post sheet (pilings-exp.png)
---   masked         : add the crown water-effect mask (pilings-mask.png): crowns
---                    render out of the water, shader laps around the feet
+--   posts          : "exp" = experiment post sheet; "blank" = fully transparent
+--                    sheet (mask-only arm renders no post sprites)
+--   masked         : add the gray crown dryness mask (pilings-mask.png, the
+--                    known-good 304df33 form)
 --   next_direction : R-rotation partner tile (in-hand rotation)
 --   shore          : false = keep out of water_tile_type_names (land-style shore edges)
 
@@ -30,12 +31,10 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- ===== gold standard - do not change =====
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded",                    title = "Ford: flooded planks",                 tint = {r = 0.60, g = 0.55, b = 0.35}},
-
-  -- ===== experiment slots (up to 3; one free) =====
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",     title = "Ford experiment: posts v2",            tint = {r = 0.55, g = 0.58, b = 0.32}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp", masked = true, title = "Ford experiment: shader-lapped posts", tint = {r = 0.50, g = 0.60, b = 0.30}},
+  -- ===== isolation experiment A/B/C - names fixed, contents are the three arms =====
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: posts + mask (known good)", tint = {r = 0.60, g = 0.55, b = 0.35}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: posts only (no mask)",      tint = {r = 0.55, g = 0.58, b = 0.32}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "blank", masked = true,  title = "Ford C: mask only (no posts)",      tint = {r = 0.50, g = 0.60, b = 0.30}},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
