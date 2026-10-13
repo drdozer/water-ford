@@ -140,40 +140,11 @@ for _, v in ipairs(V.list) do
       t.transitions = t.transitions or {}
       t.transitions[#t.transitions + 1] = piling_rule
 
-      if v.wood_join then
-        -- LAND side, wood-join variant: land tiles draw a solid wood edge band onto
-        -- this tile. transition_group stays OUT of the water group (0/default): the
-        -- engine merges same-group rules at render time, which made the land tiles'
-        -- own shore sheets (bank/stone) bleed onto the planks. No effect map - hard
-        -- cut, no blending, no bank. The variant stays OUT of water_tile_type_names.
-        local land_rule = {
-          to_tiles = {v.name},
-          transition_group = (default_transition_group_id or 0),
-          spritesheet = G .. "ramp.png",
-          background_enabled = false,
-          layout = {
-            scale = 0.5,
-            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-            u_transition_count = 2, o_transition_count = 4,
-            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-            u_transition_y = 1728, o_transition_y = 2304,
-            inner_corner_tile_height = 2, outer_corner_tile_height = 2,
-            side_tile_height = 2, u_transition_tile_height = 2,
-            overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
-          },
-        }
-        for _, land_name in ipairs({"landfill", "stone-path", "concrete", "refined-concrete"}) do
-          local land = data.raw.tile[land_name]
-          if land then
-            land.transitions = land.transitions or {}
-            table.insert(land.transitions, table.deepcopy(land_rule))
-          end
-        end
-      else
-        -- LAND side, bank-join variant: register in water_tile_type_names so the land
-        -- tiles draw their vanilla dirt bank onto it (the planks-under look).
-        water_type_names[#water_type_names + 1] = v.name
-      end
+      -- LAND side: register in water_tile_type_names so the land tiles draw their
+      -- vanilla dirt bank onto the join. (The wood-join experiment - a solid band
+      -- drawn by the land tiles - bled the land sheets into the planks in every
+      -- transition group we tried and was dropped; its art stays in git history.)
+      water_type_names[#water_type_names + 1] = v.name
     elseif v.kind == "water" then
       t = water_style(v)
       -- shore = false opts a variant out of water_tile_type_names, so LAND tiles draw their
