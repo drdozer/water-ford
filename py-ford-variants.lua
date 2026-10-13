@@ -31,11 +31,12 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- the three fords now share the known-good config (posts + feet mask, else 0):
-  -- the isolation arms served their purpose; all render the liked submersion look
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A", tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford B", tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C", tint = {r = 1, g = 1, b = 1}},
+  -- shadow-source bisect round: A keeps everything (control), B drops
+  -- is_foundation, C drops the inherited water-shallow edge overlays.
+  -- The variant that loses the soft water shadow names the engine mechanism.
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control",                      tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford B: no is_foundation",             tint = {r = 1, g = 1, b = 1}, no_foundation = true},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: no water-shallow edge overlays", tint = {r = 1, g = 1, b = 1}, no_edge_overlays = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

@@ -28,7 +28,7 @@ local function finish(tile, v)
   tile.fluid = nil
   tile.default_cover_tile = nil
   tile.ambient_sounds = nil
-  tile.is_foundation = true
+  if not v.no_foundation then tile.is_foundation = true end
   tile.subgroup = "artificial-tiles"
   tile.order = "z[py-ford]-" .. v.name
   tile.collision_mask = table.deepcopy(base_mask)
@@ -120,6 +120,11 @@ for _, v in ipairs(V.list) do
       t = table.deepcopy(data.raw.tile["water-shallow"])
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = 9  -- match planks-under: above shallow(6)/mud(7) so edge overlays draw onto them
+      if v.no_edge_overlays then
+        -- bisect arm C: drop the inherited water-shallow variant edge overlays;
+        -- whether C then loses the soft shadow names the engine mechanism
+        t.variants.transition = nil
+      end
 
       local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
       local piling_rule = {
