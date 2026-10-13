@@ -121,10 +121,11 @@ for _, v in ipairs(V.list) do
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = 9  -- match planks-under: above shallow(6)/mud(7) so edge overlays draw onto them
 
+      local posts_sheet = (v.posts == "exp") and (G .. "pilings-exp.png") or (G .. "pilings.png")
       local piling_rule = {
         to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
         transition_group = (water_transition_group_id or 1),
-        spritesheet = G .. "pilings.png",
+        spritesheet = posts_sheet,
         background_enabled = false,
         layout = {
           scale = 0.5,
@@ -137,6 +138,22 @@ for _, v in ipairs(V.list) do
           overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
         },
       }
+      if v.masked then
+        -- Crown water-effect mask (exp-2): 0 over the post crowns (dry - sprite shows
+        -- crisp), 170 elsewhere (full water effect, per vanilla's own mask scale) -
+        -- the shader's waterline wraps each post at the crown/foot boundary = lapping.
+        -- OPEN RISK: the splash anchored one tile south on N/S edges with the single-
+        -- piece mask layout; this full-piece-layout mask may align better. The
+        -- experiment exists to find out.
+        piling_rule.effect_map_layout = {
+          spritesheet = G .. "pilings-mask.png",
+          scale = 0.5,
+          inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+          u_transition_count = 2, o_transition_count = 4,
+          inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+          u_transition_y = 1728, o_transition_y = 2304,
+        }
+      end
       t.transitions = t.transitions or {}
       t.transitions[#t.transitions + 1] = piling_rule
 
