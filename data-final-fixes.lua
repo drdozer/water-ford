@@ -200,6 +200,10 @@ for _, wname in ipairs({"water", "deepwater", "water-green", "deepwater-green", 
       spritesheet = G .. "pilings-exp.png",
       background_enabled = false,
       mask_enabled = false,
+      -- round 8: water-owned pieces render at the SOURCE's layer (3) = beneath
+      -- the layer-9 deck (round-7: all invisible). Offset to deck level, still
+      -- inside the water render family so the mask keeps shader access.
+      overlay_layer_offset = 6,
       layout = piling_layout(),
       effect_map_layout = {
         spritesheet = G .. "pilings-mask.png",
@@ -219,6 +223,9 @@ for _, wname in ipairs({"water", "deepwater", "water-green", "deepwater-green", 
       spritesheet = G .. "pilings-exp.png",
       background_enabled = false,
       mask_enabled = false,
+      -- round 8: out-of-family move (proven to render above water-family sprites
+      -- in the round-4 arm); mask inert here, posts fully above the water surface
+      overlay_layer_group = "ground-natural",
       layout = piling_layout(),
     })
   end
