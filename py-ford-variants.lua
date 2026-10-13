@@ -37,9 +37,14 @@ M.list = {
   -- BELOW the water shaders - the pass pre-darkens their territory. New arms:
   -- A = control; B = pure declaration (blank art, no mask); C = pieces raised
   -- ABOVE the shader pass via overlay_layer_group = "ground-natural".
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford A", tint = {r = 1, g = 1, b = 1}, above_shader = true},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B", tint = {r = 1, g = 1, b = 1}, above_shader = true},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford C", tint = {r = 1, g = 1, b = 1}, above_shader = true},
+  -- shadow bisect round 5: the tile effect machinery. The ford inherited
+  -- water-shallow's effect = "water" + dark effect colours; hypothesis: the
+  -- engine renders the tile effect over the transition territory its rules
+  -- claim on neighbouring water tiles = the soft band. A = control,
+  -- B = effect dropped, C = effect kept, colours zeroed.
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford A: control (water effect intact)", tint = {r = 1, g = 1, b = 1}, above_shader = true},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: no water effect",              tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford C: effect, colours zeroed",       tint = {r = 1, g = 1, b = 1}, above_shader = true, clear_effect_color = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

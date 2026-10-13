@@ -121,6 +121,17 @@ for _, v in ipairs(V.list) do
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = (v.water_level and 3) or 9  -- bisect arm C: water's own layer(3)
       -- vs 9: above shallow(6)/mud(7) so edge overlays draw onto them
+      if v.drop_effect then
+        -- bisect arm B: drop the inherited water-shallow tile effect machinery
+        -- (effect = "water" + effect_color/-secondary) entirely
+        t.effect = nil
+        t.effect_color = nil
+        t.effect_color_secondary = nil
+      elseif v.clear_effect_color then
+        -- bisect arm C: keep the effect type, zero both tint colours
+        t.effect_color = {r = 0, g = 0, b = 0, a = 0}
+        t.effect_color_secondary = {r = 0, g = 0, b = 0, a = 0}
+      end
       if v.no_edge_overlays then
         -- bisect arm C: drop the inherited water-shallow variant edge overlays;
         -- whether C then loses the soft shadow names the engine mechanism.
