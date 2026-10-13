@@ -21,10 +21,10 @@
 --               height with the water shader, same placement family as planks-under);
 --               NOT in water_tile_type_names, so land tiles draw no dirt bank on it;
 --               draws a pilings band onto adjacent water via a shared-reference
---               to_tiles; ramp = true additionally makes the adjacent artificial
---               ground tiles (landfill/stone-path/concrete/refined-concrete) draw
---               the ramp band onto this tile via explicit to_tiles - at water height
---               our own rules render below land, so the land side must draw it
+--               to_tiles; the land tiles draw a flat wood band onto it via explicit
+--               to_tiles; ramp = true swaps the flat band for a placeholder palisade
+--               (one cylinder per tile edge) - at water height our own rules render
+--               below land, so the land side must be drawn by the land tiles
 --
 -- flags:
 --   next_direction : R-rotation partner tile (in-hand rotation)

@@ -148,38 +148,32 @@ for _, v in ipairs(V.list) do
       t.transitions = t.transitions or {}
       t.transitions[#t.transitions + 1] = piling_rule
 
-      if v.ramp then
-        -- At water height our own transitions render below neighbouring land, so this
-        -- tile cannot draw the ramp itself. Instead, the adjacent artificial ground
-        -- tiles draw the ramp band onto this tile only (explicit to_tiles, so no dirt
-        -- bank comes with it). Same shore-sheet geometry and effect map as landfill's
-        -- bank rule, so it renders as one clean band with the water lapping its edge.
-        local ramp_rule = {
-          to_tiles = {v.name},
-          transition_group = (water_transition_group_id or 1),
-          spritesheet = G .. "ramp.png",
-          background_enabled = false,
-          layout = {
-            scale = 0.5,
-            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
-            u_transition_count = 2, o_transition_count = 4,
-            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-            u_transition_y = 1728, o_transition_y = 2304,
-            inner_corner_tile_height = 2, outer_corner_tile_height = 2,
-            side_tile_height = 2, u_transition_tile_height = 2,
-            overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
-          },
-          effect_map_layout = {
-            spritesheet = "__base__/graphics/terrain/effect-maps/water-dirt-mask.png",
-            o_transition_count = 1,
-          },
-        }
-        for _, land_name in ipairs({"landfill", "stone-path", "concrete", "refined-concrete"}) do
-          local land = data.raw.tile[land_name]
-          if land then
-            land.transitions = land.transitions or {}
-            table.insert(land.transitions, table.deepcopy(ramp_rule))
-          end
+      -- Land-side edge: the land tiles draw it onto this tile (explicit to_tiles, so no
+      -- dirt bank comes with water-group membership). NO effect map: the water-dirt mask
+      -- lets the ford's own water shader wash the band (read as "bank showing through"),
+      -- so the land side must cut clean. The ramp variant investigates a placeholder
+      -- palisade (one cylinder per tile edge) instead of the flat wood band.
+      local land_rule = {
+        to_tiles = {v.name},
+        transition_group = (water_transition_group_id or 1),
+        spritesheet = v.ramp and (G .. "palisade.png") or (G .. "ramp.png"),
+        background_enabled = false,
+        layout = {
+          scale = 0.5,
+          inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+          u_transition_count = 2, o_transition_count = 4,
+          inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+          u_transition_y = 1728, o_transition_y = 2304,
+          inner_corner_tile_height = 2, outer_corner_tile_height = 2,
+          side_tile_height = 2, u_transition_tile_height = 2,
+          overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
+        },
+      }
+      for _, land_name in ipairs({"landfill", "stone-path", "concrete", "refined-concrete"}) do
+        local land = data.raw.tile[land_name]
+        if land then
+          land.transitions = land.transitions or {}
+          table.insert(land.transitions, table.deepcopy(land_rule))
         end
       end
     elseif v.kind == "water" then
