@@ -42,3 +42,20 @@ nothing); show-raw skips the effect passes.
 
 Arms: A = control (effect untouched) · B = effect/effect_color/secondary nil'd
 · C = effect kept, both colours zeroed.
+
+## Round 5 verdict — mechanism found and fixed
+
+| Ford | Config | Result |
+|------|--------|--------|
+| A | effect intact | pilings + shadow |
+| B | effect nil'd | pilings, **NO shadow** — deck looked dry/above water |
+| C | effect kept, colours zeroed | pilings + shadow; degraded edge-only water look |
+
+Mechanism: the tile's inherited `effect = "water"` machinery renders over the
+transition territory the piling rule claims on neighbouring water tiles - the
+soft dark band. The colours were irrelevant (C). Removing the effect removes
+both the shadow and the deck's watery wash, so the submerged look is painted
+into the deck art instead: the generator re-washes pristine `planks-base.png`
+into `planks.png` (knobs DECK_WASH / DECK_WASH_STRENGTH). Final config on all
+three fords: no tile effect, pieces in `ground-natural` (above the shader
+pass), painted wet feet, painted underwater deck.
