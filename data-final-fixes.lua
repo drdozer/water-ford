@@ -8,6 +8,8 @@
 local V = require("py-ford-variants")
 local cmu = require("__core__/lualib/collision-mask-util")
 
+local G = "__py-caravan-ford__/graphics/"
+
 local shallow = assert(data.raw.tile["water-shallow"], "py-caravan-ford: water-shallow missing")
 
 -- NOTE: collision_mask_util.get_mask() returns the LIVE table, not a copy. 0.1.x edited it in
@@ -106,6 +108,45 @@ for _, v in ipairs(V.list) do
       -- tiles do) and drop landfill's dirt material_background.
       t.variants.main = {{picture = v.texture, count = 8, size = 1, scale = 0.5}}
       t.variants.material_background = nil
+    elseif v.kind == "flooded" then
+      -- landfill clone wearing the water shader: sharp land seams by construction
+      -- (identical transitions to landfill), under-water visuals via effect copy.
+      t = table.deepcopy(data.raw.tile["landfill"])
+      t.effect = shallow.effect
+      t.effect_color = table.deepcopy(shallow.effect_color)
+      t.effect_color_secondary = table.deepcopy(shallow.effect_color_secondary)
+      -- planks surface as a size-1 main strip (see planks-land note); drop the dirt background
+      t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
+      t.variants.material_background = nil
+      -- re-sprite the inherited waterfront rule with the piling art (identical sheet geometry
+      -- to vanilla's landfill shore sheet; effect_map kept so the shader still laps the edge)
+      for _, rule in ipairs(t.transitions or {}) do
+        if rule.transition_group == (water_transition_group_id or 1) then
+          rule.spritesheet = G .. "pilings.png"
+        end
+      end
+      if v.ramp then
+        -- sit ABOVE landfill (60) so our own ramp sprites render onto it; landfill cannot
+        -- draw onto a higher tile, so the land seam is entirely ours. Layout inlined from
+        -- base's tile_spritesheet_layout.transition_3_3_3_1_0 (base locals are not visible here).
+        t.layer = 61
+        t.transitions[#t.transitions + 1] = {
+          to_tiles = {"landfill", "stone-path", "concrete", "refined-concrete"},
+          transition_group = (default_transition_group_id or 0),
+          spritesheet = G .. "ramp.png",
+          background_enabled = false,
+          layout = {
+            scale = 0.5,
+            inner_corner_count = 3, outer_corner_count = 3, side_count = 3,
+            u_transition_count = 1, o_transition_count = 0,
+            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+            u_transition_y = 1728, o_transition_y = 2304,
+            inner_corner_tile_height = 2, outer_corner_tile_height = 2,
+            side_tile_height = 2, u_transition_tile_height = 2,
+            overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
+          },
+        }
+      end
     elseif v.kind == "water" then
       t = water_style(v)
       -- shore = false opts a variant out of water_tile_type_names, so LAND tiles draw their
