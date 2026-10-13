@@ -142,11 +142,13 @@ for _, v in ipairs(V.list) do
 
       if v.wood_join then
         -- LAND side, wood-join variant: land tiles draw a solid wood edge band onto
-        -- this tile (explicit to_tiles; no effect map - hard cut, no blending, no
-        -- bank). The variant stays OUT of water_tile_type_names.
+        -- this tile. transition_group stays OUT of the water group (0/default): the
+        -- engine merges same-group rules at render time, which made the land tiles'
+        -- own shore sheets (bank/stone) bleed onto the planks. No effect map - hard
+        -- cut, no blending, no bank. The variant stays OUT of water_tile_type_names.
         local land_rule = {
           to_tiles = {v.name},
-          transition_group = (water_transition_group_id or 1),
+          transition_group = (default_transition_group_id or 0),
           spritesheet = G .. "ramp.png",
           background_enabled = false,
           layout = {
