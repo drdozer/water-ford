@@ -32,9 +32,9 @@ local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
   -- ===== isolation experiment A/B/C - names fixed, contents are the three arms =====
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: posts + mask (known good)", tint = {r = 0.60, g = 0.55, b = 0.35}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: posts only (no mask)",      tint = {r = 0.55, g = 0.58, b = 0.32}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "blank", masked = true,  title = "Ford C: mask only (no posts)",      tint = {r = 0.50, g = 0.60, b = 0.30}},
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: posts + mask (known good)", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: posts only (no mask)",      tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "blank", masked = true,  title = "Ford C: mask only (no posts)",      tint = {r = 1, g = 1, b = 1}},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

@@ -41,6 +41,10 @@ P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
 DRY = 170.0        # mask gray dryness: 170 = dry (empirically the working form)
 FOOT_DRY = 0.5     # foot holds at 50% dryness - grounds the post in the water bottom
 FOOT_RAMP = 12     # px over which the dryness ramps 170 -> 50% below the waterline
+DECK_DRY = 85.0    # baseline dryness AWAY from the posts (else-0 rendered the water
+                   # surface pass at full density over the whole deck = the "ford
+                   # shadow"); 85 = the held-foot value = shallow half-density water
+                   # over the bed. Feet ramp down to this instead of to 0.
 
 van = np.asarray(Image.open(BASE + "landfill.png").convert("RGBA")).astype(np.float32)
 alpha2 = van[..., 3]
@@ -73,7 +77,7 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
                     cv[y, x, :3] = ring
 
 art = np.zeros((2368, 3200, 4), np.float32)
-mask = np.zeros((2368, 512), np.float32)
+mask = np.full((2368, 512), DECK_DRY, np.float32)
 n = 0
 for y0, cols, rows in BANDS:
     for r in range(rows):
@@ -103,7 +107,7 @@ for y0, cols, rows in BANDS:
             mask[cy_cap:mid, xa:xb] = DRY
             for i, y in enumerate(range(mid, int(by))):
                 f = min(1.0, (i + 1) / FOOT_RAMP)
-                mask[y, xa:xb] = DRY * (1.0 - FOOT_DRY * f)
+                mask[y, xa:xb] = DECK_DRY + (DRY - DECK_DRY) * (1.0 - FOOT_DRY * f)
             n += 1
 
 Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-exp.png")
