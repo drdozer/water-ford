@@ -130,8 +130,9 @@ for _, v in ipairs(V.list) do
       t.variants.empty_transitions = true
       t.variants.transition = nil
 
-      if not v.no_piling then
-        local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
+      local posts_sheet = (v.posts == "water") and (G .. "pilings-water.png")
+        or (v.posts == "blank") and (G .. "pilings-blank.png") or G .. "pilings-exp.png"
+      if true then
         local piling_rule = {
           to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
           transition_group = (water_transition_group_id or 1),

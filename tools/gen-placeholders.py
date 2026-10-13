@@ -130,11 +130,22 @@ for y0, cols, rows in BANDS:
             n += 1
 
 Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-exp.png")
+# pilings-water.png: the same composite WITHOUT posts - the invisible coverage
+# variant for the control arm (the shore pre-darkening is structural; every
+# ford needs covered edge cells, B's just carry no posts)
+wcover = np.zeros((2368, 3200, 4), np.float32)
+for y0, cols, rows in BANDS:
+    for r in range(rows):
+        wy = y0 + r * CELL
+        for c in range(cols):
+            wcover[wy:wy + CELL, c * 64:c * 64 + CELL, :] = WATER_FRAMES[c % 8]
+Image.fromarray(wcover.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-water.png")
 m = np.zeros((2368, 512, 4), np.float32)
 m[..., 0] = m[..., 1] = m[..., 2] = mask
 m[..., 3] = 255.0
 Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-mask.png")
-print(f"pilings-exp.png: {n} posts in 64x64 pieces; pilings-mask.png (gray, foot holds at "
+print(f"pilings-exp.png: {n} posts in 64x64 pieces (+ the postless pilings-water.png cover); "
+      f"pilings-mask.png (gray, foot holds at "
       f"{int(DRY * (1 - FOOT_DRY))}); pilings-blank.png")
 
 # --- deck: re-wash planks.png from the pristine planks-base.png every run ---

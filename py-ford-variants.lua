@@ -36,7 +36,7 @@ M.list = {
   -- GONE (they were what invited the effect's dark band onto neighbour water).
   -- Pilings are script-placed entities on adjacent water cells (control.lua).
   {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp", masked = true,  title = "Ford A: emerging posts (mask)",    tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "blank", masked = false, title = "Ford B: CONTROL (no pilings)",     tint = {r = 1, g = 1, b = 1}, no_piling = true},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "water", masked = false, title = "Ford B: CONTROL (covered, no pilings)", tint = {r = 1, g = 1, b = 1}},
   {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp", masked = false, title = "Ford C: submerged posts (no mask)", tint = {r = 1, g = 1, b = 1}},
 }
 
