@@ -74,3 +74,20 @@ the painted wash was rejected (hard edges, no real water). Resolution:
 Dump-verified: fords carry only the out-of-map rule; effect = water; entity
 prototype present with 8 pictures. NOTE: pilings appear only on fords placed
 after loading this build (old placements had no entities).
+
+## Round 7 — water-owned rules: shadow dead, pieces buried
+
+Vanilla water tiles gained rules targeting the fords (source = water,
+target = ford, pieces on the FORD's rim cells). Result on the user's test:
+ALL THREE identical - no shadow anywhere (the vintage, second confirmation:
+effect + no water-claiming rules = clean) - but NO pilings: pieces render
+at the SOURCE's layer (3), beneath the opaque layer-9 deck. The claim and
+the paint work; the painter's floor is too low.
+
+## Round 8 — raising the pieces (control + two tests)
+
+- B (py-ford-exp-1): control, untouched (vintage, no pilings).
+- A (py-ford-flooded): masked rule + overlay_layer_offset = 6 - in-family
+  raise to deck level; the mask should keep its shader access (crowns lift).
+- C (py-ford-exp-2): unmasked rule + overlay_layer_group = "ground-natural"
+  - the proven out-of-family move (round 4); masks are inert there.
