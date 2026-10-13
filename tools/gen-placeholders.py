@@ -31,48 +31,12 @@ from PIL import Image
 import numpy as np, random, math
 
 BASE = "/home/nmrp3/.local/share/factorio_2_dlc/data/base/graphics/terrain/water-transitions/"
+VB = "/home/nmrp3/.local/share/factorio_2_dlc/data/base/graphics/terrain"
 BANDS = [(0, 8, 4), (576, 8, 4), (1152, 8, 4), (1728, 2, 4), (2304, 4, 1)]  # (band y, columns, direction rows)
 CELL = 64          # square piece, px on the 2x sheet (= 1 water tile)
 
 DECK_WASH = (38, 70, 82)   # painted "seen through shallow water" tint for the deck
 DECK_WASH_STRENGTH = 0.0   # 0 = pristine deck (the water effect provides the wet look)
-
-# variant-edge post sheets: layout copied from vanilla water-shallow overlays
-# (inner/outer/side = 6 cols x 4 direction rows of 64x64; u = 1x4; o = 1x1).
-# v1 = posts centred (Ford A); v2 = posts snugged outward per row (Ford C).
-# Direction rows follow the transition convention N,E,S,W for the shift.
-VSPEC = [("inner", 6), ("outer", 6), ("side", 6), ("u", 1), ("o", 1)]
-SNUG = {0: (0, -6), 1: (8, 0), 2: (0, 8), 3: (-8, 0)}
-
-VB = "/home/nmrp3/.local/share/factorio_2_dlc/data/base/graphics/terrain"
-VANILLA_SHEETS = {
-    "inner": "water-shallow/water-shallow-inner-corner.png",
-    "outer": "/water-shallow/water-shallow-outer-corner.png",
-    "side":  "water-shallow/water-shallow-side.png",
-    "u":     "water-shallow/water-shallow-u.png",
-    "o":     "water-shallow/water-shallow-o.png",
-}
-
-def emit_variant_sheets():
-    # round 11: each variant piece = the vanilla shoreline blending art (the
-    # engine pre-darkens whatever renders in the shore slot; vanilla art is
-    # shaped to cover that treatment - round-10's sparse posts exposed it) with
-    # the post composited on top. Data layer unchanged; only the sheet content.
-    for tag, do_snug in (("v1", False), ("v2", True)):
-        for name, cols in VSPEC:
-            base = np.asarray(Image.open(VB + "/" + VANILLA_SHEETS[name]).convert("RGBA")).astype(np.float32)
-            sh = base.copy()
-            H, W = sh.shape[0], sh.shape[1]
-            rows = H // 64
-            for col in range(cols):
-                for row in range(rows):
-                    ox, oy = col * 64, row * 64
-                    sx, sy = SNUG[row] if do_snug else (0, 0)
-                    h = min(rng.randint(P["hmin"], P["hmax"]), 40)
-                    w = P["w"] + rng.randint(-2, 2)
-                    draw_post(sh, ox + 32 + sx, oy + 54 + sy, oy, h, w, P)
-            Image.fromarray(sh.clip(0, 255).astype(np.uint8), "RGBA").save(f"piling-{tag}-{name}.png")
-    print(f"piling-v1/v2-*: variant edge sheets ({', '.join(n for n, _ in VSPEC)}); ", end="")
 
 P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
          dark=(70, 48, 26), lite=(224, 186, 122), cap=(238, 204, 142), capedge=(184, 144, 90),
@@ -86,6 +50,9 @@ DECK_DRY = 0.0      # else-value MUST be 0: vanilla's own water-side effect map
                     # (water-dirt-mask.png, landfill's shore rule) is R=0 outside
                     # its art = "water renders normally"; R>0 = suppression = dark
                     # patches on plain water tiles (the tile-wide neighbour shadows)
+
+wf_img = np.asarray(Image.open(VB + "/water/water1.png").convert("RGBA")).astype(np.float32)
+WATER_FRAMES = [wf_img[:, i * 64:(i + 1) * 64, :].copy() for i in range(8)]
 
 van = np.asarray(Image.open(BASE + "landfill.png").convert("RGBA")).astype(np.float32)
 alpha2 = van[..., 3]
@@ -142,6 +109,10 @@ for y0, cols, rows in BANDS:
             w = P["w"] + rng.randint(-2, 2)
             h = min(rng.randint(P["hmin"], P["hmax"]), base_rel - 12)
             if rng.random() < P["wf"]: h = int(h * P["wfac"])
+            # composite base: opaque plain-water frame under the post (round 12) -
+            # covers the engine's pre-darkening beneath transition renders (round-11
+            # lesson) while staying seamless with the surrounding water (no pale halo)
+            art[win_y:win_y + CELL, cx0:cx0 + CELL, :] = WATER_FRAMES[c % 8]
             bx, by = cx0 + px_rel, win_y + base_rel
             draw_post(art, bx, by, win_y, h, w, P)
             # mask: crown fully dry; foot ramps to 50% dryness and HOLDS to the base
@@ -159,7 +130,6 @@ for y0, cols, rows in BANDS:
             n += 1
 
 Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-exp.png")
-emit_variant_sheets()
 m = np.zeros((2368, 512, 4), np.float32)
 m[..., 0] = m[..., 1] = m[..., 2] = mask
 m[..., 3] = 255.0

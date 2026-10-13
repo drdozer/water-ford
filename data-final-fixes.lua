@@ -121,22 +121,49 @@ for _, v in ipairs(V.list) do
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = 9  -- above shallow(6)/mud(7) so edge overlays draw onto them
 
-      -- ROUND 10 (data-only, docs/shadow-experiments.md): overlay the tile's OWN
-      -- variant edge pieces with post art. The pieces render at the ford's own
-      -- layer on the ford's own border cells: visible, no territory claim, no
-      -- effect spill. B (exp-1) = control: keeps the inherited water-shallow
-      -- overlays. A (flooded) = posts centred; C (exp-2) = posts snugged outward
-      -- per direction row. Sheet layout copied from the vanilla overlays
-      -- (inner/outer/side = 6 cols x 4 rows; u = 1x4; o = 1x1; 64x64 pieces).
-      local vsuf = ({["py-ford-flooded"] = "v1", ["py-ford-exp-2"] = "v2"})[v.name]
-      if vsuf then
-        t.variants.transition.overlay_layout = {
-          inner_corner = {spritesheet = G .. "piling-" .. vsuf .. "-inner.png", count = 6, scale = 0.5},
-          outer_corner = {spritesheet = G .. "piling-" .. vsuf .. "-outer.png", count = 6, scale = 0.5},
-          side         = {spritesheet = G .. "piling-" .. vsuf .. "-side.png",  count = 6, scale = 0.5},
-          u_transition = {spritesheet = G .. "piling-" .. vsuf .. "-u.png",     count = 1, scale = 0.5},
-          o_transition = {spritesheet = G .. "piling-" .. vsuf .. "-o.png",     count = 1, scale = 0.5},
+      -- ROUND 12: the piling pipeline back in full (the ford's own transition
+      -- rules with the gray effect map = emerging crowns), with two round-11
+      -- lessons folded in: (1) the sheets are opaque plain-water composites, so
+      -- the engine's pre-darkening beneath shore renders is covered - no shadow;
+      -- (2) the variant edge overlays are retired (empty_transitions), removing
+      -- their pale halo on the bordering water.
+      t.variants.empty_transitions = true
+      t.variants.transition = nil
+
+      if not v.no_piling then
+        local posts_sheet = (v.posts == "blank") and (G .. "pilings-blank.png") or (G .. "pilings-exp.png")
+        local piling_rule = {
+          to_tiles = {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
+          transition_group = (water_transition_group_id or 1),
+          spritesheet = posts_sheet,
+          background_enabled = false,
+          mask_enabled = false,
+          layout = {
+            scale = 0.5,
+            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+            u_transition_count = 2, o_transition_count = 4,
+            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+            u_transition_y = 1728, o_transition_y = 2304,
+            -- tile_height defaults to 2 when absent (dump-verified); 1 = square
+            inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+            side_tile_height = 1, u_transition_tile_height = 1,
+            overlay = {x_offset = 0},
+          },
         }
+        if v.masked then
+          piling_rule.effect_map_layout = {
+            spritesheet = G .. "pilings-mask.png",
+            scale = 0.5,
+            inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+            u_transition_count = 2, o_transition_count = 4,
+            inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+            u_transition_y = 1728, o_transition_y = 2304,
+            inner_corner_tile_height = 1, outer_corner_tile_height = 1,
+            side_tile_height = 1, u_transition_tile_height = 1,
+          }
+        end
+        t.transitions = t.transitions or {}
+        t.transitions[#t.transitions + 1] = piling_rule
       end
 
       -- LAND side: register in water_tile_type_names so the land tiles draw their
