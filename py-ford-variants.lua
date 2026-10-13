@@ -38,7 +38,6 @@ M.list = {
   {name = "py-ford-flooded",          group = "custom", kind = "flooded", title = "Ford A", tint = {r = 1, g = 1, b = 1}},
   {name = "py-ford-exp-1",            group = "custom", kind = "flooded", title = "Ford B", tint = {r = 1, g = 1, b = 1}},
   {name = "py-ford-exp-2",            group = "custom", kind = "flooded", title = "Ford C", tint = {r = 1, g = 1, b = 1}},
-, above_shader = true, drop_effect = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
