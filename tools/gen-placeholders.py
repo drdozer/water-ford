@@ -5,11 +5,13 @@
   pilings-exp.png  experiment posts (exp-1 and exp-2): 2/3 size, wood rings on the
                    cut faces, softer shading (anti-"barcode"), north-facing posts
                    shifted half a tile south so the tops sit closer to the planks
-  pilings-mask.png water-effect strength mask for exp-2: 0 over the post crowns
-                   (dry - sprite shows crisp), 170 everywhere else (full water
-                   effect; the shader's waterline wraps each post at the crown/foot
-                   boundary = lapping). Polarity measured from vanilla's
-                   water-dirt-mask: land side ~34 (weak), lap zone ~107, max 170.
+  pilings-mask.png water-effect strength mask for exp-2: 170 over the post crowns
+                   (fully dry - sprite shows crisp), a 170->0 gradient at the
+                   crown/foot line (the shader draws its waterline wrap there =
+                   lapping), 0 everywhere else (water renders normally).
+                   POLARITY (measured + in-game confirmed): value = DRYNESS /
+                   water suppression. v1 had this inverted (170 = water) which
+                   blacked out the tile and filled the posts with water.
 
 Sheet structure (decoded from base): 64px columns = one slot per tile edge;
 bands at y 0/576/1152/1728 hold 8 columns x 4 rotation rows of 64x128 pieces;
@@ -42,18 +44,22 @@ EXP = dict(w=16, hmin=40, hmax=50, jpos=3, foot=115.0, seed=41000,
            wf=0.18, wfac=0.72, rings=True)
 
 FOAM = np.array([205, 226, 232], np.float32)
-WATER_VALUE = 170.0   # "full water effect" per vanilla's own mask scale
+DRY = 170.0       # mask value = fully dry (vanilla's own maximum)
+FOAM_RINGS = ((22, 9, 70), (14, 6, 110))  # (rx, ry, alpha); clipped to piece cells
 
 van = np.asarray(Image.open(BASE + "landfill.png").convert("RGBA")).astype(np.float32)
 alpha2 = van[..., 3]
 
 def npv(c): return np.array(c, np.float32)
 
-def draw_foam(cv, cx, cy, rx, ry, a):
+def draw_foam(cv, cx, cy, rx, ry, a, clip):
+    """Foam ring, strictly clipped to its piece cell - spilled ring fragments
+    render again wherever the neighbouring piece is used (the 'echo pole')."""
+    y_lo, y_hi, x_lo, x_hi = clip
     for t in np.linspace(0, 2 * math.pi, 90):
         for th in (0, 1):
             x, y = int(cx + rx * math.cos(t)) + th, int(cy + ry * math.sin(t)) + th
-            if 0 <= y < cv.shape[0] and 0 <= x < cv.shape[1] and cv[y, x, 3] < a:
+            if y_lo <= y < y_hi and x_lo <= x < x_hi and cv[y, x, 3] < a:
                 cv[y, x, :3], cv[y, x, 3] = FOAM, a
 
 def draw_post(cv, px, base_y, y_min, h, w, p):
@@ -83,7 +89,7 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
 
 def gen(p, out, mask_out=None):
     art = np.zeros((2368, 3200, 4), np.float32)
-    mask = np.full((2368, 512), WATER_VALUE, np.float32) if mask_out else None
+    mask = np.zeros((2368, 512), np.float32) if mask_out else None
     n = 0
     for y0, cols, ch, rows in BANDS:
         for r in range(rows):
@@ -104,16 +110,23 @@ def gen(p, out, mask_out=None):
                 bx, by = cx0 + px_rel, ry0 + base_rel
                 top = max(int(by - h), ry0)
                 for dx in PANELS:
-                    draw_foam(art, bx + dx, by, 22, 9, 70); draw_foam(art, bx + dx, by, 14, 6, 110)
+                    clip = (ry0, ry0 + ch, cx0 + dx, cx0 + 64 + dx)
+                    for rx, ry, fa in FOAM_RINGS:
+                        draw_foam(art, bx + dx, by, rx, ry, fa, clip)
                     draw_post(art, bx + dx, by, ry0, h, w, p)
-                if mask is not None:  # crown = dry, foot = water (single-panel sheet)
-                    mid = int(by - h * 0.5)
+                if mask is not None:
+                    # crown = fully dry; short DRY->0 gradient at the crown/foot line
+                    # so the shader draws its waterline wrap around each post
                     rx = w / 2.0; ry = max(int(rx * 0.55), 3)
                     cy_cap = top + ry
+                    xa, xb = max(bx - int(rx), 0), min(bx + int(rx) + 1, 512)
                     for dy in range(-ry, ry + 1):
                         hw = int(rx * math.sqrt(max(1.0 - (dy / ry) ** 2, 0.0)))
-                        mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512)] = 0.0
-                    mask[mid:int(by), max(bx - int(rx), 0):min(bx + int(rx) + 1, 512)] = 0.0
+                        mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512)] = DRY
+                    mid = int(by - h * 0.5)
+                    mask[top + ry:mid, xa:xb] = DRY
+                    for i, y in enumerate(range(mid, min(mid + 6, int(by)))):
+                        mask[y, xa:xb] = DRY * (1 - (i + 1) / 6.0)
                 n += 1
     Image.fromarray(art.clip(0, 255).astype(np.uint8), "RGBA").save(out)
     if mask is not None:
