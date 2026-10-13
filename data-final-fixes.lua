@@ -139,12 +139,13 @@ for _, v in ipairs(V.list) do
         },
       }
       if v.masked then
-        -- Crown water-effect mask (exp-2), vanilla's CHANNEL-PACKED format:
-        -- R = dryness (255 over the crowns, feathering below the waterline),
-        -- B = a narrow lap band at each post's waterline (the shader wraps water
-        -- there), G = always 0. v1/v2 wrote gray into all channels - B over whole
-        -- crowns rendered the shader's large lap geometry as a very-large ghost
-        -- post, and G=170 never occurs in vanilla.
+        -- Crown water-effect mask in Wube's own format (factorio-data repo + measured
+        -- from their effect-maps): R = dryness (255 over the art, feathering below),
+        -- B = a narrow lap band at the art's water-side fringe, G = 0. Per posila
+        -- (factorio forums), tile effect maps are interpreted per-shader with per-
+        -- channel semantics - no official channel doc exists; this matches every
+        -- water-*.png mask Wube ships. tile_height = 2 declarations are REQUIRED:
+        -- without them the mask samples at half vertical size (v3 bug: crowns wet).
         piling_rule.effect_map_layout = {
           spritesheet = G .. "pilings-mask.png",
           scale = 0.5,
@@ -152,6 +153,8 @@ for _, v in ipairs(V.list) do
           u_transition_count = 2, o_transition_count = 4,
           inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
           u_transition_y = 1728, o_transition_y = 2304,
+          inner_corner_tile_height = 2, outer_corner_tile_height = 2,
+          side_tile_height = 2, u_transition_tile_height = 2,
         }
       end
       t.transitions = t.transitions or {}

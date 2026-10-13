@@ -5,14 +5,16 @@
   pilings-exp.png  experiment posts (exp-1 and exp-2): 2/3 size, wood rings on the
                    cut faces, softer shading (anti-"barcode"), north-facing posts
                    shifted half a tile south so the tops sit closer to the planks
-  pilings-mask.png exp-2's water-effect mask in vanilla's CHANNEL-PACKED format
-                   (decoded from water-dirt-mask.png): R = dryness (255 = fully
-                   dry over the crowns, feathering out below the waterline),
-                   B = the waterline/lap zone (a narrow band at each post's
-                   waterline so the shader wraps water around it), G = always 0.
-                   v1/v2 wrote gray into all channels incl. G - the B=170 over
-                   whole crowns rendered the shader's large lap geometry as a
-                   very-large ghost post; G=170 never occurs in vanilla.
+  pilings-mask.png exp-2's water-effect mask in Wube's own channel format
+                   (reverse-engineered from their effect-maps + posila's forum
+                   note that effect maps are per-shader, per-channel):
+                   R = dryness, 255 = fully dry over the post crowns, feathering
+                   below the waterline (Wube uses 255 over their art)
+                   B = the lap/foam band - a narrow strip at each post's
+                   waterline (Wube's masks put a 142/76 band at the art fringe;
+                   gray masks with B over whole crowns render the shader's large
+                   foam geometry = the 'very large ghost post')
+                   G = 0 always (unused in every Wube water mask)
 
 Sheet structure (decoded from base): 64px columns = one slot per tile edge;
 bands at y 0/576/1152/1728 hold 8 columns x 4 rotation rows of 64x128 pieces;
@@ -45,9 +47,9 @@ EXP = dict(w=16, hmin=40, hmax=50, jpos=3, foot=115.0, seed=41000,
            wf=0.18, wfac=0.72, rings=True)
 
 FOAM = np.array([205, 226, 232], np.float32)
-DRY = 255.0       # R channel: fully dry (vanilla uses 255 over its own art)
-LAP = 120.0       # B channel: waterline wrap intensity (vanilla's lap band ~76-142)
-LAP_H = 16        # lap band height (px)
+DRY = 255.0       # R channel: fully dry (Wube's value over their own art)
+LAP = 120.0       # B channel: lap band intensity (Wube's fringe band runs 76-142)
+LAP_H = 16        # lap band height (px, on the 2x sheet)
 FEATHER = 24      # dryness feather below the waterline (px)
 FOAM_RINGS = ((22, 9, 70), (14, 6, 110))  # (rx, ry, alpha); clipped to piece cells
 
@@ -96,6 +98,8 @@ def gen(p, out, mask_out=None):
     mask = np.zeros((2368, 512, 3), np.float32) if mask_out else None
     n = 0
     n = 0
+    n = 0
+    n = 0
     for y0, cols, ch, rows in BANDS:
         for r in range(rows):
             ry0 = y0 + r * 128
@@ -120,9 +124,8 @@ def gen(p, out, mask_out=None):
                         draw_foam(art, bx + dx, by, rx, ry, fa, clip)
                     draw_post(art, bx + dx, by, ry0, h, w, p)
                 if mask is not None:
-                    # R = dryness: 255 over the crown, feathering below the waterline
-                    # B = narrow lap band at the waterline (shader wraps water there)
-                    # G = 0 always (vanilla never writes it)
+                    # Wube channel format: R = dryness (255 crown, feather below the
+                    # waterline), B = narrow lap band at the waterline, G = 0
                     rx = w / 2.0; ry = max(int(rx * 0.55), 3)
                     cy_cap = top + ry
                     xa, xb = max(bx - int(rx), 0), min(bx + int(rx) + 1, 512)
