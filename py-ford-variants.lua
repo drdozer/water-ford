@@ -20,10 +20,11 @@
 --   flooded     water-shallow clone with planks main, layer 9 (renders at water
 --               height with the water shader, same placement family as planks-under);
 --               NOT in water_tile_type_names, so land tiles draw no dirt bank on it;
---               ramp = true makes the adjacent artificial ground tiles (landfill/
---               stone-path/concrete/refined-concrete) draw the ramp band onto this
---               tile via explicit to_tiles - at water height our own rules render
---               below land, so the land side must draw it
+--               draws a pilings band onto adjacent water via a shared-reference
+--               to_tiles; ramp = true additionally makes the adjacent artificial
+--               ground tiles (landfill/stone-path/concrete/refined-concrete) draw
+--               the ramp band onto this tile via explicit to_tiles - at water height
+--               our own rules render below land, so the land side must draw it
 --
 -- flags:
 --   next_direction : R-rotation partner tile (in-hand rotation)

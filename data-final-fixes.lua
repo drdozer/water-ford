@@ -112,18 +112,48 @@ for _, v in ipairs(V.list) do
       -- water-shallow clone: lives in the water layer group, so it renders at water
       -- height with the water shader (like planks-under), not at landfill height.
       -- Deliberately NOT registered in water_tile_type_names: land tiles then draw
-      -- no dirt bank onto it (the bare seam is the intended "flooded" look; the ramp
-      -- variant below adds a wood edge via explicit to_tiles, not via membership).
+      -- no dirt bank onto it. These tiles draw their own edges instead:
+      --   - a pilings band onto adjacent water (which renders below layer 9),
+      --   - ramp variant only: land tiles draw the ramp band onto this tile.
       t = table.deepcopy(data.raw.tile["water-shallow"])
       t.variants.main = {{picture = G .. "planks.png", count = 8, size = 1, scale = 0.5}}
       t.layer = 9  -- match planks-under: above shallow(6)/mud(7) so edge overlays draw onto them
+
+      -- Placeholder art: pilings.png/ramp.png are timber recolors of vanilla's landfill
+      -- shore silhouette with alpha forced opaque (vanilla bakes a semi-transparent
+      -- waterline into the band's alpha, which read as a washed-out edge).
+      local piling_rule = {
+        to_tiles = water_tile_type_names  -- shared by reference, exactly as base's own
+                                          -- shore rules hold it, so modded waters join too
+                                          -- (nil-guarded below)
+          or {"water", "deepwater", "water-green", "deepwater-green", "water-shallow", "water-mud", "water-wube"},
+        transition_group = (water_transition_group_id or 1),
+        spritesheet = G .. "pilings.png",
+        background_enabled = false,
+        layout = {
+          scale = 0.5,
+          inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
+          u_transition_count = 2, o_transition_count = 4,
+          inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+          u_transition_y = 1728, o_transition_y = 2304,
+          inner_corner_tile_height = 2, outer_corner_tile_height = 2,
+          side_tile_height = 2, u_transition_tile_height = 2,
+          overlay = {x_offset = 0}, mask = {x_offset = 2176}, background = {x_offset = 1088},
+        },
+        effect_map_layout = {
+          spritesheet = "__base__/graphics/terrain/effect-maps/water-dirt-mask.png",
+          o_transition_count = 1,
+        },
+      }
+      t.transitions = t.transitions or {}
+      t.transitions[#t.transitions + 1] = piling_rule
+
       if v.ramp then
         -- At water height our own transitions render below neighbouring land, so this
         -- tile cannot draw the ramp itself. Instead, the adjacent artificial ground
-        -- tiles draw the ramp band onto this tile only (vanilla's shore mechanism via
-        -- explicit to_tiles). The band uses the SAME shore-sheet geometry as landfill's
-        -- dirt bank (transition_8_8_8_2_4) so it renders as one clean silhouette, and
-        -- the bank's water-dirt effect map so the water laps over it like vanilla art.
+        -- tiles draw the ramp band onto this tile only (explicit to_tiles, so no dirt
+        -- bank comes with it). Same shore-sheet geometry and effect map as landfill's
+        -- bank rule, so it renders as one clean band with the water lapping its edge.
         local ramp_rule = {
           to_tiles = {v.name},
           transition_group = (water_transition_group_id or 1),
