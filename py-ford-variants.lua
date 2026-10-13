@@ -42,9 +42,12 @@ M.list = {
   -- engine renders the tile effect over the transition territory its rules
   -- claim on neighbouring water tiles = the soft band. A = control,
   -- B = effect dropped, C = effect kept, colours zeroed.
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford A: control (water effect intact)", tint = {r = 1, g = 1, b = 1}, above_shader = true},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: no water effect",              tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford C: effect, colours zeroed",       tint = {r = 1, g = 1, b = 1}, above_shader = true, clear_effect_color = true},
+  -- shadow fixed: the tile effect was the vehicle (round-5 B proved it). All
+  -- three fords: no tile effect, pieces above the shader, deck washed in the
+  -- generator (static painted underwater look instead of the waving effect).
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford A", tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B", tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford C", tint = {r = 1, g = 1, b = 1}, above_shader = true, drop_effect = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.

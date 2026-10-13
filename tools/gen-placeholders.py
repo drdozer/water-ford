@@ -34,6 +34,9 @@ BASE = "/home/nmrp3/.local/share/factorio_2_dlc/data/base/graphics/terrain/water
 BANDS = [(0, 8, 4), (576, 8, 4), (1152, 8, 4), (1728, 2, 4), (2304, 4, 1)]  # (band y, columns, direction rows)
 CELL = 64          # square piece, px on the 2x sheet (= 1 water tile)
 
+DECK_WASH = (38, 70, 82)   # painted "seen through shallow water" tint for the deck
+DECK_WASH_STRENGTH = 0.5   # 0 = dry planks, 1 = fully water-tinted
+
 P = dict(w=16, hmin=38, hmax=46, jpos=3, foot=115.0, seed=41000,
          dark=(70, 48, 26), lite=(224, 186, 122), cap=(238, 204, 142), capedge=(184, 144, 90),
          wet=(36, 52, 47),
@@ -126,3 +129,13 @@ Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-mask.png"
 Image.new("RGBA", (3200, 2368), (0, 0, 0, 0)).save("pilings-blank.png")
 print(f"pilings-exp.png: {n} posts in 64x64 pieces; pilings-mask.png (gray, foot holds at "
       f"{int(DRY * (1 - FOOT_DRY))}); pilings-blank.png")
+
+# --- deck: re-wash planks.png from the pristine planks-base.png every run ---
+import os
+src = "planks-base.png"
+if os.path.exists(src):
+    dk = np.asarray(Image.open(src).convert("RGBA")).astype(np.float32)
+    wash = npv(DECK_WASH)
+    dk[..., :3] = dk[..., :3] * (1 - DECK_WASH_STRENGTH) + wash * DECK_WASH_STRENGTH
+    Image.fromarray(dk.clip(0, 255).astype(np.uint8), "RGBA").save("planks.png")
+    print(f"planks.png: deck washed toward {DECK_WASH} at {DECK_WASH_STRENGTH}")
