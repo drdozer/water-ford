@@ -2,9 +2,9 @@
 -- data-final-fixes.lua (tiles), so both stages always agree on what exists.
 --
 -- Design round: the experimental library has been culled to the planks family
--- plus two prototypes for the "flooded planks" concept (landfill clone wearing
--- the water shader). The full 0.2.0 library (stone/concrete/sand/pontoon/
--- shore-blend variants) is preserved in git history and in the parked
+-- plus two flooded-planks variants (water-shallow clones that render at water
+-- height). The full 0.2.0 library (stone/concrete/sand/pontoon/shore-blend
+-- variants) is preserved in git history and in the parked
 -- py-caravan-ford_0.2.0.zip.bak.
 --
 -- groups (each can be switched off in startup settings):
@@ -19,17 +19,18 @@
 --               effect_from = copy water colours from another water tile
 --   flooded     water-shallow clone with planks main, layer 9 (renders at water
 --               height with the water shader, same placement family as planks-under);
---               NOT in water_tile_type_names, so land tiles draw no dirt bank on it;
---               draws a pilings band onto adjacent water via a shared-reference
---               to_tiles; the land tiles draw a flat wood band onto it via explicit
---               to_tiles; ramp = true swaps the flat band for a placeholder palisade
---               (one cylinder per tile edge) - at water height our own rules render
---               below land, so the land side must be drawn by the land tiles
+--               draws post pilings onto adjacent water (synthesized cylinders with
+--               translucent feet and painted foam rings; one post per tile edge,
+--               jittered); wood_join = true: land tiles draw a solid wood edge band
+--               onto this tile via explicit to_tiles and it stays out of
+--               water_tile_type_names (hard join, no bank); otherwise it is
+--               registered in water_tile_type_names so the vanilla landfill bank
+--               dominates the land join
 --
 -- flags:
 --   next_direction : R-rotation partner tile (in-hand rotation)
 --   shore          : false = keep out of water_tile_type_names (land-style shore edges)
---   ramp           : flooded only - land neighbours draw the ramp onto this tile
+--   wood_join      : flooded only - hard wood join to land instead of the vanilla bank
 
 local M = {}
 
@@ -47,9 +48,9 @@ M.list = {
   {name = "py-ford-planks-under",     group = "custom", kind = "water", bed_texture = G .. "planks.png",              title = "Ford: planks under shallow water",          tint = {r = 0.55, g = 0.50, b = 0.45}, next_direction = "py-ford-planks-under-ns"},
   {name = "py-ford-planks-under-ns",  group = "custom", kind = "water", bed_texture = G .. "planks-ns.png",           title = "Ford: planks under shallow water (N-S)",    tint = {r = 0.55, g = 0.50, b = 0.45}, next_direction = "py-ford-planks-under"},
 
-  -- ===== flooded prototypes: landfill clone wearing the water shader =====
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded",                    title = "Ford: flooded planks (pilings, inherited land seam)", tint = {r = 0.60, g = 0.55, b = 0.35}},
-  {name = "py-ford-flooded-ramp",     group = "custom", kind = "flooded", ramp = true,       title = "Ford: flooded planks (pilings + ramp to land)",       tint = {r = 0.55, g = 0.60, b = 0.30}},
+  -- ===== flooded: bank join vs hard wood join; posts toward water =====
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded",                         title = "Ford: flooded planks (bank join)", tint = {r = 0.60, g = 0.55, b = 0.35}},
+  {name = "py-ford-flooded-ramp",     group = "custom", kind = "flooded", wood_join = true,       title = "Ford: flooded planks (wood join)", tint = {r = 0.55, g = 0.60, b = 0.30}},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
