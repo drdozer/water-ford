@@ -31,14 +31,15 @@ M.water_tile_names = {"water", "deepwater", "water-green", "deepwater-green", "w
 local G = "__py-caravan-ford__/graphics/"
 
 M.list = {
-  -- shadow bisect round 3. Round 2 proved the trigger is the piling rule's
-  -- existence (B without it: no shadow) and that layer 3 keeps it (C), so the
-  -- last coupling suspect is the WATER TRANSITION GROUP pairing. A = control,
-  -- B = posts without the effect map (re-tests the pre-restore evidence that
-  -- the mask is not required), C = posts + mask in a PRIVATE transition group.
-  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control (water group + mask)",   tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "exp",   masked = false, title = "Ford B: posts, NO mask",                 tint = {r = 1, g = 1, b = 1}},
-  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: PRIVATE transition group",       tint = {r = 1, g = 1, b = 1}, own_group = true},
+  -- shadow bisect round 4. Round 3 verdict: the shadow follows the piling
+  -- rule's existence regardless of mask (B had none) and group (C private:
+  -- still shadow). TileRenderLayer doc: pieces in the "water" family render
+  -- BELOW the water shaders - the pass pre-darkens their territory. New arms:
+  -- A = control; B = pure declaration (blank art, no mask); C = pieces raised
+  -- ABOVE the shader pass via overlay_layer_group = "ground-natural".
+  {name = "py-ford-flooded",          group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford A: control (in the water shader pass)", tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-1",            group = "custom", kind = "flooded", posts = "blank", masked = false, title = "Ford B: invisible rule (declaration only)",       tint = {r = 1, g = 1, b = 1}},
+  {name = "py-ford-exp-2",            group = "custom", kind = "flooded", posts = "exp",   masked = true,  title = "Ford C: posts above the water shader",       tint = {r = 1, g = 1, b = 1}, above_shader = true},
 }
 
 -- A variant is available if the vanilla tiles it depends on exist.
