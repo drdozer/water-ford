@@ -32,7 +32,7 @@ local function water_ford_item()
         {type = "item", name = "iron-stick",  amount = 1},
         {type = "item", name = "stone",       amount = 50},
       },
-      results = {{type = "item", name = "water-ford", amount = 100}},  -- one stack
+      results = {{type = "item", name = "water-ford", amount = 1}},   -- 1 ford per craft: scarce by design
     },
   }
 end
