@@ -49,12 +49,11 @@ local py_loaded = mods["pyalienlife"] ~= nil
 
 local recipe = water_ford_item()[2]
 if py_loaded then
-  -- treated-wood (planks) / iron-plate (edge strapping) / bolts (fasteners) /
-  -- log (pilings). NOTE: no "iron-bar" item exists in the loaded mod set;
-  -- iron-plate is the substitution.
+  -- treated-wood (planks) / iron-stick (stakes and nails) / bolts (fasteners) /
+  -- log (pilings)
   recipe.ingredients = {
     {type = "item", name = "treated-wood", amount = 2},
-    {type = "item", name = "iron-plate",   amount = 1},
+    {type = "item", name = "iron-stick",   amount = 1},
     {type = "item", name = "bolts",        amount = 8},
     {type = "item", name = "log",          amount = 1},
   }
