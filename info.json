@@ -9,5 +9,7 @@
     "base >= 2.1.0",
     "? cargo-ships >= 2.1.8",
     "? pyalienlife >= 3.1.8"
-  ]
+  ],
+  "homepage": "https://github.com/drdozer/water-ford",
+  "contact": "https://github.com/drdozer/water-ford/issues"
 }
