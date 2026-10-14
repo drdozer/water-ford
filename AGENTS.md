@@ -38,6 +38,12 @@ is what `devctl mods build water-ford` packs and what the live link points at).
   log, gravel + tech `creosote` ← **pycoalprocessing**; `bolts` ←
   **pypetroleumhandling**; both are hard deps of pyalienlife, so the closure is
   sound. If the py suite reorganizes items, re-check audit §5.
+- **Known issue (pre-existing in 1.0.0)**: with pypostprocessing installed (it is
+  effectively mandatory for the py suite), the game **crashes in data-final-fixes**
+  before the ford tile exists — `TILE("water-ford")` errors in pypostprocessing's
+  recipe-name fallback. Repro + fix sketches: audit §6. Fixing it changes game
+  content, so it is deliberately NOT in the 1.0.0-equivalence refactor; decide
+  separately.
 
 ## Testing
 

@@ -120,7 +120,43 @@ Consequences worth knowing:
 
 ---
 
-## 6. Recommendations
+## 6. Known issue discovered during the equivalence pass (pre-existing)
+
+**water-ford + the py suite = data-stage crash in pypostprocessing** (reproduced
+with a scratch closure: pyalienlife + hard deps + graphics packs +
+pypostprocessing, space-age explicitly disabled):
+
+```
+Failed to load mod "pypostprocessing": __pypostprocessing__/lib/metas/tile.lua:11:
+  Tile water-ford does not exist
+  (pypostprocessing/data-final-fixes.lua:124)
+```
+
+Mechanism: pypostprocessing's data-final-fixes composes a localised-name
+fallback for every single-product recipe whose item has `place_as_tile` — it
+calls `TILE(item.place_as_tile.result)`, which **errors** when the tile prototype
+doesn't exist yet. The ford tile is only created in water-ford's own
+*data-final-fixes*, and `p…` < `w…` alphabetically, so pypostprocessing runs
+first. pypostprocessing is effectively mandatory for the py suite (pyalienlife
+won't load without its `py` metas), and py isn't in the current live mod set —
+which is why this never surfaced before. Verified pre-existing: git `ea878ca`
+(water-ford 1.0.0) fails with the identical error.
+
+Fix sketches (NOT applied — this refactor ships 1.0.0-identical content):
+
+- **Local**: when `mods["pypostprocessing"]` is present, define a minimal stub
+  `water-ford` tile in `data.lua`; in `data-final-fixes`, *replace*
+  `data.raw.tile["water-ford"]` with the full clone instead of `data:extend`
+  (avoids duplicate-prototype). pypostprocessing then finds a tile whose name
+  falls back to `{"tile-name.water-ford"}` — the correct locale string.
+- **Upstream (cleaner)**: pypostprocessing's `TILE` metas could fall back to the
+  `{"tile-name." .. name}` locale key instead of erroring for unknown tiles.
+
+Until fixed, the py branch is unreachable on any real py install.
+
+---
+
+## 7. Recommendations
 
 1. **Keep `factorio_version = "2.1"` and `base >= 2.1.0`** for the release line.
    They are already minimal for the series the mod is developed and played in
