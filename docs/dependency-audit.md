@@ -19,9 +19,10 @@ The mod was written declaring "latest everything" (`factorio_version: "2.1"`,
 | `? cargo-ships >= 2.1.8` | Advisory only — no code references cargo-ships. Keep as a known-good pin. |
 | `? pyalienlife >= 3.1.8` | The real integration. Its recipe items come via pyalienlife's **hard** deps (see §4). Keep the known-good pin. |
 
-**If 2.0 reachability is ever wanted:** the code needs zero changes — only
-`factorio_version: "2.0"` + `base >= 2.0.0` in info.json, as a separate release
-(a branch, since one zip = one minor series).
+**Decision (2026-10-15): support 2.1 only.** With 2.1 leaving experimental the
+dual-target cost buys nothing; no 2.0 branch or release will be cut. (For the
+record: the code would run on 2.0 with only the two info.json lines changed —
+see §4 — so this remains open as a data point if the stance ever changes.)
 
 ---
 
@@ -124,10 +125,7 @@ Consequences worth knowing:
 1. **Keep `factorio_version = "2.1"` and `base >= 2.1.0`** for the release line.
    They are already minimal for the series the mod is developed and played in
    (caravans + cargo-ships + py all live on 2.1).
-2. **Optional:** cut a `2.0` release for stable-branch players — a `factorio-2.0`
-   branch carrying only the two-line info.json delta, cherry-picked from master
-   per release. Zero code divergence expected (the tile config is
-   version-agnostic by construction).
+2. ~~Optional 2.0 release~~ — **superseded by the decision above: 2.1 only.**
 3. Keep both optional deps as known-good pins; document the item-provenance map
    (§5) in the mod's AGENTS.md so a py refactor gets caught at review, not at
    runtime.
