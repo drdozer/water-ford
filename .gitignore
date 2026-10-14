@@ -1,3 +1,4 @@
 *.zip
 *.zip.bak
 script-output/
+dist/
