@@ -37,8 +37,6 @@ local function water_ford_item()
   }
 end
 
-data:extend(water_ford_item())
-
 -- Tech and item live in distinct data.raw namespaces, so the shared
 -- "water-ford" id is legal and keeps the mod's names uniform.
 --
@@ -52,11 +50,15 @@ data:extend(water_ford_item())
 -- (unlocked before creosote: the ford takes a bed of it).
 local py_loaded = mods["pyalienlife"] ~= nil
 
-local recipe = water_ford_item()[2]
+data:extend(water_ford_item())
+
 if py_loaded then
+  -- mutate the REGISTERED recipe (a fresh water_ford_item() table would be a
+  -- throwaway - that exact bug hid the py recipe for three commits until the
+  -- export caught it)
   -- treated-wood (planks) / iron-stick (stakes and nails) / bolts (fasteners) /
   -- log (pilings) / gravel (ballast for the bed)
-  recipe.ingredients = {
+  data.raw.recipe["water-ford"].ingredients = {
     {type = "item", name = "treated-wood", amount = 2},
     {type = "item", name = "iron-stick",   amount = 1},
     {type = "item", name = "bolts",        amount = 8},
@@ -82,5 +84,4 @@ if py_loaded then
   tech[1].prerequisites = {"creosote"}
 end
 
-data:extend(water_ford_item())
 data:extend(tech)
