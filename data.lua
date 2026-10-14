@@ -40,16 +40,41 @@ data:extend(water_ford_item())
 
 -- Tech and item live in distinct data.raw namespaces, so the shared
 -- "water-ford" id is legal and keeps the mod's names uniform.
-data:extend{
+--
+-- Pyanodon integration: when pyalienlife is loaded the ford steps into the
+-- wood chain - creosote is the wood-preservative stage, so requiring it gates
+-- the ford exactly when the player can first build something meant to live
+-- underwater - and the recipe switches to py materials.
+local py_loaded = mods["pyalienlife"] ~= nil
+
+local recipe = water_ford_item()[2]
+if py_loaded then
+  -- treated-wood (planks) / iron-plate (edge strapping) / bolts (fasteners) /
+  -- log (pilings). NOTE: no "iron-bar" item exists in the loaded mod set;
+  -- iron-plate is the substitution.
+  recipe.ingredients = {
+    {type = "item", name = "treated-wood", amount = 2},
+    {type = "item", name = "iron-plate",   amount = 1},
+    {type = "item", name = "bolts",        amount = 8},
+    {type = "item", name = "log",          amount = 1},
+  }
+end
+
+local tech = {
   {
     type = "technology",
     name = "water-ford",
     localised_name = {"", "Water Fords"},
     icon = "__water-ford__/graphics/water-ford-icon.png",
     icon_size = 64,
-    prerequisites = {},
     effects = {{type = "unlock-recipe", recipe = "water-ford"}},
     unit = {count = 20, ingredients = {{"automation-science-pack", 1}}, time = 10},
     order = "a2[water-ford]",
   },
 }
+if py_loaded then
+  tech[1].prerequisites = {"creosote"}
+end
+
+data:extend(water_ford_item())
+data:extend(tech)
