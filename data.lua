@@ -25,7 +25,7 @@ local function water_ford_item()
     {
       type = "recipe",
       name = "water-ford",
-      enabled = true,
+      enabled = false,  -- unlocked by the water-ford technology
       energy_required = 1,
       ingredients = {
         {type = "item", name = "wood",        amount = 4},
@@ -37,3 +37,19 @@ local function water_ford_item()
 end
 
 data:extend(water_ford_item())
+
+-- Tech and item live in distinct data.raw namespaces, so the shared
+-- "water-ford" id is legal and keeps the mod's names uniform.
+data:extend{
+  {
+    type = "technology",
+    name = "water-ford",
+    localised_name = {"", "Water Fords"},
+    icon = "__water-ford__/graphics/water-ford-icon.png",
+    icon_size = 64,
+    prerequisites = {},
+    effects = {{type = "unlock-recipe", recipe = "water-ford"}},
+    unit = {count = 20, ingredients = {{"automation-science-pack", 1}}, time = 10},
+    order = "a2[water-ford]",
+  },
+}
