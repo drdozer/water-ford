@@ -38,9 +38,9 @@ CELL = 64          # square piece, px on the 2x sheet (= 1 water tile)
 DECK_WASH = (38, 70, 82)   # painted "seen through shallow water" tint for the deck
 DECK_WASH_STRENGTH = 0.0   # 0 = pristine deck (the water effect provides the wet look)
 
-NORTH_SHIFT = 4      # px every post is shifted north within its 64px cell
+WATERLINE_CELL = CELL // 2   # the cut point: the waterline anchors at the cell middle (y=32)
 
-P = dict(w=16, hmin=38 - NORTH_SHIFT, hmax=46 - NORTH_SHIFT, jpos=3, foot=115.0, seed=41000,
+P = dict(w=16, hmin=20, hmax=30, jpos=3, foot=115.0, seed=41000,
          dark=(70, 48, 26), lite=(224, 186, 122), cap=(238, 204, 142), capedge=(184, 144, 90),
          wet=(36, 52, 47),
          wf=0.18, wfac=0.72, rings=True)
@@ -73,7 +73,7 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
             frac = (y - y_min) / max(base_y - y_min, 1)
             a = 255.0 if frac < 0.5 else 255.0 - (frac - 0.5) / 0.5 * (255.0 - p["foot"])
             col_y = col
-            if frac >= 0.5:
+            if frac >= max(0.5, 1.0 - FOOT_RAMP / max(h, 1)):
                 # painted submersion (posts now render ABOVE the water shader, so
                 # the shader no longer wets them): cool/dark the wood toward p["wet"]
                 # with depth; max blend 55% at the base. No foam, no painted shadows.
@@ -106,10 +106,16 @@ for y0, cols, rows in BANDS:
             ca = alpha2[anchor_y:anchor_y + 64, cx0:cx0 + 64]
             ys, xs = np.nonzero(ca > 128)
             if len(ys) == 0: continue
+            # anchor = the CUT POINT: in the ~45 degree projection the visual
+            # ground of a standing post is the cell's middle, so the waterline
+            # sits there (fixes north-poles-close / south-poles-far); the post
+            # rises from just above it, the foot = ramp + hold below it
+            cut_rel = WATERLINE_CELL
             px_rel = min(max(int(xs.mean()) + rng.randint(-P["jpos"], P["jpos"]), 14), 50)
-            base_rel = CELL - 8 - NORTH_SHIFT + rng.randint(-2, 2)   # base near the window bottom, nudged north
+            base_rel = cut_rel + FOOT_RAMP + rng.randint(0, 6)
             w = P["w"] + rng.randint(-2, 2)
-            h = min(rng.randint(P["hmin"], P["hmax"]), base_rel - 12)
+            ry = max(int(P["w"] / 2 * 0.55), 3)
+            h = min(rng.randint(20, 30), base_rel - 2 - ry)   # cap top >= 2px inside
             if rng.random() < P["wf"]: h = int(h * P["wfac"])
             # composite base: opaque plain-water frame under the post (round 12) -
             # covers the engine's pre-darkening beneath transition renders (round-11
@@ -117,14 +123,14 @@ for y0, cols, rows in BANDS:
             art[win_y:win_y + CELL, cx0:cx0 + CELL, :] = WATER_FRAMES[c % 8]
             bx, by = cx0 + px_rel, win_y + base_rel
             draw_post(art, bx, by, win_y, h, w, P)
-            # mask: crown fully dry; foot ramps to 50% dryness and HOLDS to the base
-            rx = w / 2.0; ry = max(int(rx * 0.55), 3)
+            # mask: crown fully dry down to the waterline; ramp + hold below it
+            rx = w / 2.0
             cy_cap = max(int(by - h), win_y) + ry
             xa, xb = max(bx - int(rx), 0), min(bx + int(rx) + 1, 512)
             for dy in range(-ry, ry + 1):
                 hw = int(rx * math.sqrt(max(1.0 - (dy / ry) ** 2, 0.0)))
                 mask[cy_cap + dy, max(bx - hw, 0):min(bx + hw + 1, 512)] = DRY
-            mid = int(by - h * 0.5)
+            mid = int(by - FOOT_RAMP)   # the ramp starts exactly at the waterline
             mask[cy_cap:mid, xa:xb] = DRY
             for i, y in enumerate(range(mid, int(by))):
                 f = min(1.0, (i + 1) / FOOT_RAMP)
@@ -136,7 +142,7 @@ m = np.zeros((2368, 512, 4), np.float32)
 m[..., 0] = m[..., 1] = m[..., 2] = mask
 m[..., 3] = 255.0
 Image.fromarray(m.clip(0, 255).astype(np.uint8), "RGBA").save("pilings-mask.png")
-print(f"pilings-exp.png: {n} posts, composite (water base + posts, north shift {NORTH_SHIFT}px); "
+print(f"pilings-exp.png: {n} posts, composite (water base + posts, waterline anchored mid-cell); "
       f"pilings-mask.png (crowns {int(DRY)}, feet hold at {int(DRY * (1 - FOOT_DRY))})")
 
 # --- deck: re-wash planks.png from the pristine planks-base.png every run ---
