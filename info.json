@@ -4,9 +4,10 @@
   "title": "Water Ford",
   "author": "sketch",
   "factorio_version": "2.1",
-  "description": "A walkable ford tile over water: wooden pilings semi-submerged in animated water, still navigable as water for Cargo Ships waterways.",
+  "description": "A walkable ford tile over water: land caravans can cross, wooden pilings stand semi-submerged in animated water, and ships still sail over it for Cargo Ships waterways.",
   "dependencies": [
     "base >= 2.1.0",
-    "? cargo-ships >= 2.1.8"
+    "? cargo-ships >= 2.1.8",
+    "? pyalienlife >= 3.1.8"
   ]
 }

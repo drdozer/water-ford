@@ -22,7 +22,7 @@ local tile = table.deepcopy(data.raw.tile["water-shallow"])
 
 tile.name = "water-ford"
 tile.localised_name = {"", "Water Ford"}
-tile.localised_description = {"", "A walkable ford over water. Wooden pilings stand in the shallows; ships still cross."}
+tile.localised_description = {"", "A walkable ford over water: land caravans cross it, wooden pilings stand in the shallows, ships still sail over it."}
 tile.subgroup = "artificial-tiles"
 tile.order = "c[landfill]-a2[water-ford]"
 tile.minable = {mining_time = 0.1, result = "water-ford"}

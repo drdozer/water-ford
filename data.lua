@@ -9,7 +9,7 @@ local function water_ford_item()
       type = "item",
       name = "water-ford",
       localised_name = {"", "Water Ford"},
-      localised_description = {"", "A walkable ford over water. Wooden pilings stand in the shallows; ships still cross."},
+      localised_description = {"", "A walkable ford over water: land caravans cross it, wooden pilings stand in the shallows, ships still sail over it."},
       icon = "__water-ford__/graphics/water-ford-icon.png",
       icon_size = 64,
       subgroup = "terrain",
