@@ -63,7 +63,7 @@ if py_loaded then
     {type = "item", name = "iron-stick",   amount = 1},
     {type = "item", name = "bolts",        amount = 8},
     {type = "item", name = "log",          amount = 1},
-    {type = "item", name = "gravel",       amount = 100},
+    {type = "item", name = "gravel",       amount = 200},  -- ballast: one full stack
   }
 end
 

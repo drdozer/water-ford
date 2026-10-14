@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: unreleased
+  Changes:
+    - Water Ford: a walkable, place-on-water tile - the deck sits under animated
+      water with wooden pilings semi-submerged at the rims; ships still cross.
+    - Without Pyanodon Alien Life: unlocked by the concrete tech, crafted from
+      4 wood, 1 iron stick, 50 stone.
+    - With Pyanodon Alien Life: unlocked after creosote, crafted from 2
+      treated-wood, 1 iron-stick, 8 bolts, 1 log, 200 gravel (bed ballast).
+    - Recipes craft 1 ford per 10s; fords are intentionally scarce.
+    - Fords can only be placed on water (enforced at runtime; illegal
+      placements are reverted and refunded).
