@@ -26,12 +26,13 @@ local function water_ford_item()
       type = "recipe",
       name = "water-ford",
       enabled = false,  -- unlocked by the water-ford technology
-      energy_required = 1,
+      energy_required = 10,
       ingredients = {
         {type = "item", name = "wood",        amount = 4},
-        {type = "item", name = "iron-stick",  amount = 2},
+        {type = "item", name = "iron-stick",  amount = 1},
+        {type = "item", name = "stone",       amount = 50},
       },
-      results = {{type = "item", name = "water-ford", amount = 1}},
+      results = {{type = "item", name = "water-ford", amount = 100}},  -- one stack
     },
   }
 end
@@ -41,21 +42,26 @@ data:extend(water_ford_item())
 -- Tech and item live in distinct data.raw namespaces, so the shared
 -- "water-ford" id is legal and keeps the mod's names uniform.
 --
+-- Both branches yield one stack of fords; ingredients stay in the cheap
+-- tile tier established by vanilla landfill (1 stone + 2 sand -> 2 landfill).
+--
 -- Pyanodon integration: when pyalienlife is loaded the ford steps into the
 -- wood chain - creosote is the wood-preservative stage, so requiring it gates
 -- the ford exactly when the player can first build something meant to live
--- underwater - and the recipe switches to py materials.
+-- underwater - and the recipe switches to py materials, ballasted with gravel
+-- (unlocked before creosote: the ford takes a bed of it).
 local py_loaded = mods["pyalienlife"] ~= nil
 
 local recipe = water_ford_item()[2]
 if py_loaded then
   -- treated-wood (planks) / iron-stick (stakes and nails) / bolts (fasteners) /
-  -- log (pilings)
+  -- log (pilings) / gravel (ballast for the bed)
   recipe.ingredients = {
     {type = "item", name = "treated-wood", amount = 2},
     {type = "item", name = "iron-stick",   amount = 1},
     {type = "item", name = "bolts",        amount = 8},
     {type = "item", name = "log",          amount = 1},
+    {type = "item", name = "gravel",       amount = 100},
   }
 end
 
@@ -71,6 +77,7 @@ local tech = {
     order = "a2[water-ford]",
   },
 }
+tech[1].prerequisites = {"concrete"}
 if py_loaded then
   tech[1].prerequisites = {"creosote"}
 end
