@@ -1,7 +1,14 @@
 # Water Ford — refactor plan
 
+> **Status: EXECUTED 2026-10-15** — see `journal.md` for the as-built record.
+> Kept as decision provenance. Deviations from the plan as written: Phase 2e
+> (graphics pipeline) landed as its own commit after the layout phase; the
+> optional 2.0 release line was dropped by decision (2.1-only); the tile stage
+> moved to `data-updates` per the stage experiment (audit §6) rather than
+> staying in final-fixes; Phase 4 (release) deliberately not run — version
+> stays 1.0.0, no changelog entry yet.
+
 Companion to `docs/dependency-audit.md` (read that first for the version facts).
-Status: **plan** — nothing below has been executed yet.
 
 ## Goals
 
