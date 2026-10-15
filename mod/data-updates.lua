@@ -1,5 +1,17 @@
 -- Water Ford -- tile definition.
 --
+-- STAGE: data-updates, chosen by experiment (docs/dependency-audit.md §6).
+-- Earliest stage that works, on both axes:
+--   * inheritance — this is a deepcopy of water-shallow taken after the stack
+--     has mutated it (space-age adds the lava-dirt rule + mech landing sounds
+--     in its own data-updates). water-ford sorts after every mutator
+--     alphabetically ('w'), so the clone here captures all of them; a data.lua
+--     clone was verified to silently drop them.
+--   * robustness — the tile exists before EVERY mod's data-final-fixes, so
+--     eager name-fallback passes (pypostprocessing TILE()) find it.
+-- Seed-pinned screenshot harness: renders pixel-identical to the former
+-- data-final-fixes placement.
+--
 -- ONE tile, straight-line construction, no variant machinery. Config is the
 -- former "Ford A" gold standard, proven across the rounds documented in
 -- docs/shadow-experiments.md:

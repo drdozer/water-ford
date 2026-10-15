@@ -17,11 +17,15 @@ is what `devctl mods build water-ford` packs and what the live link points at).
 
 ## Invariants (do not break casually)
 
-1. **`mod/data-final-fixes.lua` tile config is frozen.** The ford = water-shallow
+1. **`mod/data-updates.lua` tile config is frozen.** The ford = water-shallow
    clone + `effect = "water"` + piling transition rule whose pieces are OPAQUE
    plain-water composites + gray dryness effect map. The "shadow" mechanism took
    13 experiment rounds (`docs/shadow-experiments.md`); every "simplification"
-   there was tested and rejected. Comment-only edits are safe.
+   there was tested and rejected. Comment-only edits are safe. **Stage is also
+   load-bearing**: data-updates is the earliest stage that inherits the stack's
+   water-shallow mutations (space-age mutates it in its own data-updates) while
+   still existing before every mod's data-final-fixes (pypostprocessing TILE()
+   compat) — seed-pinned screenshot evidence in audit §6.
 2. **Control-stage behavior = the placement guard only** (`mod/control.lua`).
    Script-rendered visuals were tried and banned (round 9).
 3. **Single-extend rule** in `mod/data.lua`: prototype tables are final before

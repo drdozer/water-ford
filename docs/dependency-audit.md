@@ -151,12 +151,23 @@ water-ford — i.e. an edge from pypp to us, which we cannot declare. Adding
 `? pypostprocessing` to water-ford's dependencies would push *water-ford* even
 later — the wrong direction.
 
-**Why the stage-shift alternative was declined**: the genuine reason the tile is
-built in data-final-fixes is defensive inheritance — clone `water-shallow` after
-the whole stack has mutated it. Moving creation to data-updates would also
-expose the half-built, 13-round-tuned tile to *every* mod's final-fixes pass
-(any "patch all water tiles" logic would start seeing it). Not worth gambling
-the shadow-experiments architecture.
+**Why the tile had been in data-final-fixes at all** (and why that stopped
+mattering): the placement was defensive inheritance — clone `water-shallow`
+after the whole stack has mutated it. The stage experiment (below) showed the
+inheritance is fully preserved one stage earlier, because water-ford sorts
+after every mutator in data-updates too — while the final-fixes placement was
+exactly what made eager name-fallback passes crash.
+
+**Why not even earlier (stage experiment, 2026-10-15)**: a seed-pinned
+screenshot harness (script-placed fords, fixed-tick offscreen captures,
+`--map-gen-seed` for pixel-perfect runs) compared the tile built in data.lua vs
+data-updates vs data-final-fixes. Rendering is **pixel-identical across all
+three**, but a data.lua clone **silently drops the stack's data-updates
+mutations of water-shallow** — empirically, space-age itself adds the
+lava-dirt transition rule and mech-armor `landing_steps_sound` there. Verdict:
+**data-updates is the lowest stage that fully works** — inherits everything
+('w' sorts after every mutator) and still exists before every mod's
+final-fixes. Applied: the tile now lives in `mod/data-updates.lua`.
 
 **Applied fix (ecosystem idiom)**: pypostprocessing's fallback only runs
 `if not recipe.localised_name` — so the recipe now carries its own name:

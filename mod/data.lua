@@ -1,4 +1,7 @@
--- Water Ford -- items, recipes, technology. Tile built in data-final-fixes.lua.
+-- Water Ford -- items, recipes, technology. Tile built in data-updates.lua
+-- (stage experiment verdict, docs/dependency-audit.md §6: earliest stage that
+-- both renders identically and inherits the stack's water-shallow mutations —
+-- see the stage note in data-updates.lua).
 --
 -- Standalone mod; the Pyanodon integration is gated on pyalienlife. Names and
 -- descriptions come from locale/en/locale.cfg ([item-name], [item-description],
