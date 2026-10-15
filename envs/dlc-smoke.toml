@@ -1,0 +1,18 @@
+# Hermetic smoke env for water-ford against the full dlc install.
+# Provisions .cache/envs/dlc/dlc-smoke-<hash8>/ — format contract: docs/test-envs.md
+# (superproject). Re-provision after editing; changed specs land in a fresh env.
+spec_version = 1
+description = "water-ford load smoke: owning project live-linked, DLC mods disabled"
+
+install = "dlc"
+
+# water-ford is the implicit root (this file lives in its envs/ directory).
+# Its optional deps (cargo-ships, pyalienlife) are chased only if a linked
+# project or install zip provides them; none are stubbed — this env stays minimal.
+roots = []
+chase_deps = true
+without = []
+stub = []
+
+[data_dir_mods]
+# default policy: every data-dir DLC mod written DISABLED — hermetic by default.

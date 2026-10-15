@@ -117,3 +117,19 @@ Starting point: water-ford 1.0.0 (`b2e7589`), repo-root layout, declared
 - `.cache/stage-exp/` — stage-experiment variants + seed-pinned scenario
   harness (`docs/visual-testing.md`; promotable to `testmods/` if wanted).
 - `.cache/water-ford-2.0-probe/` — obsolete after the 2.1-only decision.
+
+## 2026-10-15 — devctl tooling: `devctl mods env` lands; first env is ours
+
+The water-ford session's most-repeated hand procedure (scratch dir +
+config.ini + mod-list assembly, ~10×) is now a verb: `devctl mods env create`
+(superproject `lib/envspec.py` + `lib/mods/env.sh`, format contract
+`docs/test-envs.md`).
+
+- Our first committed spec: `envs/dlc-smoke.toml` — hermetic smoke env
+  (water-ford live-linked, DLC data-dir mods disabled, optional deps
+  cargo-ships/pyalienlife left out).
+- First real provisioning: `.cache/envs/dlc/dlc-smoke-c84c8820/` — load smoke
+  through the env exit 0 (tee'd log: superproject `.cache/env-first-run.log`).
+  Game state landed inside the env (hermetic write-data confirmed).
+- Re-provision is a no-op (`env up-to-date`); changed specs provision a fresh
+  content-addressed env; `env prune` GCs superseded ones.
