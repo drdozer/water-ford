@@ -120,11 +120,11 @@ Consequences worth knowing:
 
 ---
 
-## 6. Known issue discovered during the equivalence pass (pre-existing)
+## 6. pypostprocessing crash — found, then FIXED (localisation opt-out)
 
-**water-ford + the py suite = data-stage crash in pypostprocessing** (reproduced
-with a scratch closure: pyalienlife + hard deps + graphics packs +
-pypostprocessing, space-age explicitly disabled):
+**The bug (pre-existing through 1.0.0)**: with the py suite installed
+(pypostprocessing is effectively mandatory — pyalienlife won't load without its
+`py` metas), the game **crashed in data-final-fixes**:
 
 ```
 Failed to load mod "pypostprocessing": __pypostprocessing__/lib/metas/tile.lua:11:
@@ -132,27 +132,53 @@ Failed to load mod "pypostprocessing": __pypostprocessing__/lib/metas/tile.lua:1
   (pypostprocessing/data-final-fixes.lua:124)
 ```
 
-Mechanism: pypostprocessing's data-final-fixes composes a localised-name
-fallback for every single-product recipe whose item has `place_as_tile` — it
-calls `TILE(item.place_as_tile.result)`, which **errors** when the tile prototype
-doesn't exist yet. The ford tile is only created in water-ford's own
-*data-final-fixes*, and `p…` < `w…` alphabetically, so pypostprocessing runs
-first. pypostprocessing is effectively mandatory for the py suite (pyalienlife
-won't load without its `py` metas), and py isn't in the current live mod set —
-which is why this never surfaced before. Verified pre-existing: git `ea878ca`
-(water-ford 1.0.0) fails with the identical error.
+Mechanism: pypostprocessing's data-final-fixes (gated on `py.has_any_py_mods()`)
+composes a display-name fallback for every single-product recipe whose item has
+`place_as_tile` — it calls `TILE(item.place_as_tile.result)`, which **errors**
+when the tile prototype doesn't exist yet. The ford tile is only created in
+water-ford's own *data-final-fixes*, and `p…` < `w…` alphabetically, so
+pypostprocessing runs first.
 
-Fix sketches (NOT applied — this refactor ships 1.0.0-identical content):
+**Why play-testing never hit it**: the mod began life as `py-caravan-ford`
+(0.2.0, commit 74e755a) — `py-…` sorts *before* `pypostprocessing`, so the tile
+existed by the time pypp looked. The rename to `water-ford` (0.3.0, ea39105)
+flipped the sort order and planted the latent crash; the live mod set has py
+disabled, so it stayed invisible until the equivalence-pass dump.
 
-- **Local**: when `mods["pypostprocessing"]` is present, define a minimal stub
-  `water-ford` tile in `data.lua`; in `data-final-fixes`, *replace*
-  `data.raw.tile["water-ford"]` with the full clone instead of `data:extend`
-  (avoids duplicate-prototype). pypostprocessing then finds a tile whose name
-  falls back to `{"tile-name.water-ford"}` — the correct locale string.
-- **Upstream (cleaner)**: pypostprocessing's `TILE` metas could fall back to the
-  `{"tile-name." .. name}` locale key instead of erroring for unknown tiles.
+**Why the usual dependency-sequencing fix cannot work here**: dependencies only
+make the *dependent* run later. We would need pypostprocessing to load *after*
+water-ford — i.e. an edge from pypp to us, which we cannot declare. Adding
+`? pypostprocessing` to water-ford's dependencies would push *water-ford* even
+later — the wrong direction.
 
-Until fixed, the py branch is unreachable on any real py install.
+**Why the stage-shift alternative was declined**: the genuine reason the tile is
+built in data-final-fixes is defensive inheritance — clone `water-shallow` after
+the whole stack has mutated it. Moving creation to data-updates would also
+expose the half-built, 13-round-tuned tile to *every* mod's final-fixes pass
+(any "patch all water tiles" logic would start seeing it). Not worth gambling
+the shadow-experiments architecture.
+
+**Applied fix (ecosystem idiom)**: pypostprocessing's fallback only runs
+`if not recipe.localised_name` — so the recipe now carries its own name:
+
+```lua
+localised_name = {"?", {"recipe-name.water-ford"}, {"item-name.water-ford"}},
+```
+
+with `[recipe-name]` in locale (mod-name/mod-description hooks added too).
+Displayed string unchanged ("Water Ford").
+
+**Verification** (scratch dirs under the superproject's `.cache/water-ford-refactor/`):
+
+- Real py closure (pyalienlife + hard deps + graphics + pypostprocessing,
+  space-age disabled) + fixed code → `--dump-data` **exit 0** (1.0.0 code:
+  exit 1). Ford recipe in the real dump: localised_name kept (pypp skipped
+  composing), py ingredients exact, pypp's global `always_show_made_in` /
+  `maximum_productivity` applied as for any recipe.
+- Stub-pyalienlife dump pair, pre-fix vs post-fix: exactly **1 diff** —
+  `recipe.localised_name` ADDED.
+- Engine locale dump: `recipe-locale.json → "Water Ford"` (identical display).
+- Live no-py set: load smoke exit 0.
 
 ---
 

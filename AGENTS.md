@@ -28,8 +28,11 @@ is what `devctl mods build water-ford` packs and what the live link points at).
    `data:extend` — never extend-then-mutate (that bug hid the py recipe for
    three commits, see 019fd2b).
 4. **Strings live in `mod/locale/en/locale.cfg` only.** Prototypes carry no
-   `localised_*` overrides. The control-stage flying text is the one hardcoded
-   English string (deliberate; identical to 1.0.0 output).
+   `localised_*` overrides — with one deliberate exception: the **recipe's
+   `localised_name` is load-bearing** (pypostprocessing compat, audit §6 — do
+   not remove). Hooks covered: item, recipe, technology, tile, mod
+   title/description (`[mod-name]`/`[mod-description]`), and the control-stage
+   placement-denied flying text (`[water-ford-messages]`).
 
 ## Dependencies (map: docs/dependency-audit.md)
 

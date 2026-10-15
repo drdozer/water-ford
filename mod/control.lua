@@ -46,7 +46,7 @@ local function on_built(event)
         }
       end
       player.create_local_flying_text{
-        text = "Water Ford can only be placed on water",
+        text = {"water-ford-messages.placement-denied"},
         position = revert[1].position,
       }
     end

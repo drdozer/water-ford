@@ -66,6 +66,14 @@ data:extend{
     name = "water-ford",
     enabled = false,  -- unlocked by the water-ford technology
     energy_required = 10,
+    -- Load-bearing for pypostprocessing compat (docs/dependency-audit.md §6):
+    -- pypp's data-final-fixes composes a display name for every single-product
+    -- recipe whose item has place_as_tile, eager-TILE()ing the tile — which
+    -- only exists in OUR data-final-fixes (we sort after py*). Setting the
+    -- name here skips that fallback entirely. Mirrors pypp's own
+    -- {"?", recipe-name, item-name} chain; display is identical to the
+    -- engine default.
+    localised_name = {"?", {"recipe-name.water-ford"}, {"item-name.water-ford"}},
     ingredients = INGREDIENTS,
     results = {{type = "item", name = "water-ford", amount = 1}},
   },
