@@ -133,3 +133,20 @@ config.ini + mod-list assembly, ~10×) is now a verb: `devctl mods env create`
   Game state landed inside the env (hermetic write-data confirmed).
 - Re-provision is a no-op (`env up-to-date`); changed specs provision a fresh
   content-addressed env; `env prune` GCs superseded ones.
+
+## 2026-10-16 — `devctl mods check` lands; water-ford is the first gated project
+
+The superproject's verification-gate runner (smoke / dump-diff / locale /
+floor probes over a provisioned env) was built with water-ford as the subject:
+
+- `check water-ford --env dlc-smoke` → smoke PASS (dump cached, repeat runs
+  launch-free); `--locale` PASS (4 attributed prototypes, 0 dead refs,
+  0 missing keys — the recipe localised_name resolves).
+- `--against` the session's stub-pre full dump: 7 expected diffs (the
+  localised_* drops) + 4 unexpected (the real ingredient/technology changes
+  from the stub round) — the triage split matches the journal exactly.
+- `--factorio vanilla` floor probe: smoke fails on 2.0.77 — empirical
+  confirmation of the declared `base >= 2.1.0` floor.
+- Bonus find: 43 dead `entity-description.<type>-asteroid` references in
+  VANILLA space-age (asteroid.lua builds keys no locale file defines) —
+  caught by the new dead-key scan as non-gating warnings.
