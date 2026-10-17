@@ -820,3 +820,16 @@ in the big render 0.28/0.35; rows abut 42.7 (seam-row meets face-top =
 intended lattice junction, same class as old art's ~70). Variants distinct
 8/8. Sheets swapped in place: boards-land-c.png / boards-ford-c.png
 (dev tiles pick them up on next load). gwenview on the atlas render.
+
+### round-8: player-facing items for the dev tiles (maintainer feedback)
+Verdict: boards-compare-1 saved under the SAME name (fine — nothing
+regenerates it; it is the painted reference ground). The 1x1 tileable set
+PASSED in-game ("looks better than the previous boards").
+Glitch closed: tiles need an item backside for player placement (landfill
+pattern). Addead six items with place_as_tile - land family = concrete
+condition (ground_tile, place on ground); ford family = water-ford's exact
+water-only rule (water_tile + invert=true) - plus dev convenience recipes
+(2 wood + 1 iron-stick -> 4, enabled) and 64px icons (variant-0 crops);
+locale item/recipe names+descriptions. Validated headless with a throwaway
+config (--create: 2.1 renamed --create-save; zero errors, checksums clean).
+Prototype changes need a game reload to appear.

@@ -172,3 +172,51 @@ end
 
 dev_land("a"); dev_land("b"); dev_land("c")
 dev_ford("a"); dev_ford("b"); dev_ford("c")
+
+---------------------------------------------------------------------------------------------------
+-- DEV COMPARE ITEMS (2026-10-17, maintainer feedback: tiles need an item
+-- backside for player placement; vanilla landfill + our water-ford as the
+-- two condition patterns). Land family = place on any ground tile (concrete
+-- condition); ford family = place on water only (water-ford's exact rule).
+-- Dev convenience recipes, enabled; revisit economics on promotion.
+
+local function dev_item(fam, letter)
+  local cond = {layers = {ground_tile = true}}
+  if fam == 'ford' then
+    cond = {layers = {water_tile = true}}
+  end
+  local pat = {
+    type = "item",
+    name = "boards-" .. fam .. "-" .. letter,
+    icon = "__water-ford__/graphics/boards-" .. fam .. "-icon.png",
+    icon_size = 64,
+    subgroup = "terrain",
+    order = "zz[boards-dev-item]-" .. fam .. "-" .. letter,
+    stack_size = 100,
+    place_as_tile = {
+      result = "boards-" .. fam .. "-" .. letter,
+      condition_size = 1,
+      condition = cond,
+      invert = (fam == "ford"),
+    },
+  }
+  if fam == "ford" then pat.place_as_tile.invert = true else pat.place_as_tile.invert = nil end
+  return pat
+end
+
+local function dev_recipe(fam, letter)
+  return {
+    type = "recipe",
+    name = "boards-" .. fam .. "-" .. letter,
+    enabled = true,
+    energy_required = 0.5,
+    ingredients = {{type = "item", name = "wood", amount = 2}, {type = "item", name = "iron-stick", amount = 1}},
+    results = {{type = "item", name = "boards-" .. fam .. "-" .. letter, amount = 4}},
+  }
+end
+
+for _fam in ("land ford"):gmatch("%a+") do
+  for _letter in ("a b c"):gmatch("%a+") do
+    data:extend{dev_item(_fam, _letter), dev_recipe(_fam, _letter)}
+  end
+end

@@ -1000,7 +1000,8 @@
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X2.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P1.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}",
-    "/editor"
+    "/editor",
+    "/cheat all"
   ],
   "last-played": 
   {
@@ -1020,116 +1021,116 @@
     
     {
       "name": "undo",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "redo",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "copy",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "cut",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "paste",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "import-string",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-blueprint",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-blueprint-book",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-deconstruction-planner",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-upgrade-planner",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "toggle-personal-roboport",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "toggle-equipment-movement-bonus",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-copper-wire",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-green-wire",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-red-wire",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-artillery-targeting-remote",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-discharge-defense-remote",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "give-spidertron-remote",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     },
     
     {
       "name": "toggle-tall-entity-visibility",
-      "docked": false,
-      "enabled": false
+      "docked": true,
+      "enabled": true
     }
   ],
   "editor-lua-snippets": 
@@ -1196,7 +1197,9 @@
     "vulcanus_lava_forge",
     "vulcanus_sulfur_drop",
     "nauvis_chase_player",
-    "nauvis_artillery"
+    "nauvis_artillery",
+    "fulgora_nightfall",
+    "nauvis_oil_refinery"
   ],
-  "ticks-since-last-tip-shown": 1294920
+  "ticks-since-last-tip-shown": 1301416
 }
