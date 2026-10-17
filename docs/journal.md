@@ -1002,3 +1002,41 @@ captured with the FULL old state first (save stage + window capture
 - VRAM (RGBA): composite 30.3MB -> 8.9MB, mask 4.9MB -> 2.2MB: 35.1MB ->
   11.1MB (-68%) at double the pixel density. Optional further lever parked:
   u/o same-row merge (~ -2.6MB).
+
+### round-20: wooden bumper edge on boards-land (SHIPPED, maintainer-approved)
+Maintainer: "look at the concrete border art, and basically copy that but with
+wood boards where the concrete is... side-on boards, looking very much like
+the stone trim"; transparent water option, no color-match heroics; 2x
+oversample (vanilla parity). THREE-WAY CORNERS DEFERRED (concrete's
+between-transitions stay); land-to-ford transition join = future increment.
+
+Audit (from tiles.lua, maintainer pushed back from pixel-forensics to the Lua):
+boards-land = deepcopy(concrete) inherited concrete's water transitions +
+between-transitions + out-of-map entries. The vanilla sheet splits into three
+x-slabs at the layout x_offsets: overlay (x0) = the lip ON the land tile
+(single course blending up), background (x1024) = the SUBMERGED curb (double
+course + alpha slide-off, drawn beneath the water layer so the water shades
+it; pixels are neutral grey - vanilla does NOT water-paint it), mask (x2048)
+= flat grey value maps (shore contour/darkening). Cells 64x128 art, counts
+16/8/16/4/4, 4 rows per band (o: 1), bands y 0/576/1152/1728/2304.
+
+- v1: overlay-only sheet + background/mask disabled -> submerged curb missing
+  (maintainer: "confusing mix", then taught the channel structure).
+- v2: all three channels copied (mask passthrough), entry flags verbatim, but
+  band y tightened to 512-strides (rows flush, gaps removed) -> maintainer saw
+  N/W/SW/SE edges broken ("water renders as mostly waves") = rows 2/3 of every
+  band. Bit-compare proved the copy faithful -> the spacing was the suspect.
+- v3 (SHIPPED): GEOMETRY-CLONE of vanilla - same 3072x2368 canvas, same band
+  y-fields and inter-band gaps; only pigment swapped (overlay+background
+  remapped stone->boards-ladder p2..p98 ramp; grey value maps bit-identical).
+  Alpha drift 0, 540 pieces, slack 0. Lua entry: vanilla flags verbatim
+  (background_enabled, layer offsets, effect_map_layout referencing vanilla's
+  concrete-mask.png value map like the out-of-map entry does), to_tiles =
+  water_tile_type_names global. check11 clean.
+- In-game A/B (viewer patch, same coords): all 8 directions show the wooden
+  curb + submerged boards; boards rows untouched (8-direction sweep warm 0.9+
+  everywhere); maintainers eye-approved: "That looks correct. So you can bake
+  that into the mod."
+- Ledger: 27.7MiB RGBA - vanilla-equal (deliberate clone). Tightening the
+  canvas waits until row semantics are provable (v2 lesson: the inter-band
+  gaps may be load-bearing).

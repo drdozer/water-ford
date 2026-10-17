@@ -146,6 +146,74 @@ land_tile.variants =
   empty_transitions = true,
   transition = nil,
 }
+
+-- WOODEN BUMPER EDGE (2026-10-17, round-20): boards-land inherits concrete's
+-- water transitions verbatim from the deepcopy - the stone curb at the
+-- waterline. Replaced with our own edge sheet: a GEOMETRY-CLONE of vanilla's
+-- concrete.png (same canvas, band y-fields, channel x-slabs and gaps; cells
+-- 64x128 art; counts 16/8/16/4/4; alpha bit-exact) with overlay+background
+-- stone colors remapped onto the boards palette by tools/paper-pipeline/
+-- bake-land-edge.py ("side-on boards, looking very much like the stone trim";
+-- the background channel is neutral grey in vanilla - no water color-matching
+-- to copy, the engine shades it). Mask channel = vanilla grey value maps,
+-- passed through bit-identical. v2's tightened band spacing broke rows 2/3
+-- of every band in-game (N/W/SW/SE edges) -> v3 is a verbatim-geometry clone;
+-- tightening returns later only with proven row semantics. Three-way corners
+-- (transitions_between_transitions) stay concrete's for now - deferred with
+-- the future land-to-ford transition join.
+land_tile.transitions =
+{
+  { -- flags mirror vanilla concrete's water entry; y-fields tightened
+    to_tiles = water_tile_type_names,
+    transition_group = water_transition_group_id,
+    spritesheet = "__water-ford__/graphics/boards-land-edge.png",
+    layout =
+    {
+      scale = 0.5,
+      inner_corner_count = 16, outer_corner_count = 8, side_count = 16,
+      u_transition_count = 4, o_transition_count = 4,
+      inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+      u_transition_y = 1728, o_transition_y = 2304,
+      inner_corner_tile_height = 2, outer_corner_tile_height = 2,
+      side_tile_height = 2, u_transition_tile_height = 2,
+      overlay    = { x_offset = 0 },
+      mask       = { x_offset = 2048 },
+      background = { x_offset = 1024 },
+    },
+    background_enabled = true,
+    background_layer_offset = 1,
+    offset_background_layer_by_tile_layer = true,
+    effect_map_layout =
+    {
+      spritesheet = "__base__/graphics/terrain/effect-maps/concrete-mask.png",
+      inner_corner_count = 1, outer_corner_count = 1, side_count = 1,
+      u_transition_count = 1, o_transition_count = 1
+    },
+  },
+  {
+    to_tiles = out_of_map_tile_type_names,  -- vanilla concrete's entry verbatim
+    transition_group = out_of_map_transition_group_id,
+    background_layer_offset = 1,
+    background_layer_group = "zero",
+    offset_background_layer_by_tile_layer = true,
+    spritesheet = "__base__/graphics/terrain/out-of-map-transition/concrete-out-of-map-transition.png",
+    -- inline expansion of vanilla tile_spritesheet_layout.concrete_layout(false,true,false)
+    -- (base-local there, nil in our stage - check11 lesson)
+    layout =
+    {
+      scale = 0.5,
+      inner_corner_count = 16, outer_corner_count = 8, side_count = 16,
+      u_transition_count = 4, o_transition_count = 4,
+      inner_corner_y = 0, outer_corner_y = 768, side_y = 1280,
+      u_transition_y = 1792, o_transition_y = 2304,
+      inner_corner_tile_height = 3, outer_corner_tile_height = 2,
+      side_tile_height = 2, u_transition_tile_height = 2,
+      overlay = { x_offset = 0 },
+      mask = { x_offset = 2048 },
+      background = { x_offset = 1024 },
+    },
+  },
+}
 data:extend{land_tile}
 
 local land_item =

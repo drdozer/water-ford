@@ -1001,12 +1001,16 @@
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P1.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}",
     "/editor",
-    "/cheat all"
+    "/cheat all",
+    "/c game.take_screenshot{position={-8.5,-10.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"bo-edge-stone-baseline.png\"}",
+    "/c game.take_screenshot{position={-8.5,-10.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"bo-edge-wood.png\"}",
+    "/c local s=game.player.surface local t={} for x=-13,-4 do for y=-14,-7 do t[#t+1]={name=\"boards-land\",position={x,y}} end end s.set_tiles(t)",
+    "/c game.take_screenshot{position={-8.5,-10.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"bo-edge-wood-v2.png\"}"
   ],
   "last-played": 
   {
     "type": "single-player",
-    "save-name": "boards-compare-3"
+    "save-name": "_autosave1"
   },
   "service-username": "",
   "service-token": "",
@@ -1191,7 +1195,15 @@
     "nauvis_t_section",
     "nauvis_train_junction",
     "nauvis_uranium_processing",
-    "fulgora_race"
+    "fulgora_race",
+    "nauvis_rocket_factory",
+    "nauvis_train_station",
+    "nauvis_nuclear_power",
+    "nauvis_biter_base_steamrolled",
+    "nauvis_spider_ponds",
+    "fulgora_city_crossing",
+    "aquilo_starter",
+    "nauvis_bus"
   ],
-  "ticks-since-last-tip-shown": 1378969
+  "ticks-since-last-tip-shown": 1480855
 }
