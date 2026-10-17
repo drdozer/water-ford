@@ -1,5 +1,5 @@
-*.zip
-*.zip.bak
+# packaged-mod builds live in dist/ (never auto-ignore zip content anywhere else;
+# testing saves are committed mod artifacts, regenerate via tools/paper-pipeline/bake.sh)
 script-output/
 dist/
 __pycache__/
