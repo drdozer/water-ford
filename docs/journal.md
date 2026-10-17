@@ -934,3 +934,19 @@ Then the surgery on the real mod:
 - Headless --create validation clean (check7); dev game relaunched on
   boards-compare-2 (old dev-tile placements in the save clear to water on
   load - repaint with boards-land / water-ford).
+
+### round-17: recipe redesign (maintainer spec), both boards under the ford tech
+Maintainer sense-checked spec applied verbatim. Vanilla: floor board = 2 wood
++ 1 iron-stick -> 1 (was ->4 dev); ford board = 1 floor board + 2 wood +
+100 stone -> 1 (was 4 wood + 1 stick + 50 stone -> 100; per-ford stone goes
+0.5 -> 100 - the deliberate premium repositioning, not a landfill rival).
+Py: floor board = the old py line minus log/gravel = 2 treated-wood +
+1 iron-stick + 8 bolts -> 1; ford board = 1 floor board + 1 log +
+200 gravel -> 1 (ballast stack preserved; treated/bolts move into the
+board). boards-land recipe gains its own py_loaded branch mirroring the
+ford one; both recipes enabled = false and added to the water-ford
+technology effects (prereqs unchanged: concrete / creosote). localised_name
+on boards-land recipe upgraded to the full pypp "?" chain matching the ford
+recipe. Locale: boards-land item-description no longer claims a stone bed
+(art shows no bed on land). Headless validation clean (check8); dev game
+relaunched on boards-compare-3 (maintainer save).

@@ -1185,7 +1185,9 @@
     "gleba_farm_attack",
     "nauvis_forest_fire",
     "nauvis_river_bridge",
-    "gleba_grotto"
+    "gleba_grotto",
+    "nauvis_power_up",
+    "vulcanus_crossing"
   ],
-  "ticks-since-last-tip-shown": 1355591
+  "ticks-since-last-tip-shown": 1365158
 }

@@ -163,14 +163,26 @@ local land_item =
     condition = {layers = {water_tile = true}},
   },
 }
+local py_loaded = mods["pyalienlife"] ~= nil
+local boards_ingredients = py_loaded
+    and {
+      {type = "item", name = "treated-wood", amount = 2},
+      {type = "item", name = "iron-stick",   amount = 1},
+      {type = "item", name = "bolts",        amount = 8},
+    }
+    or {
+      {type = "item", name = "wood",         amount = 2},
+      {type = "item", name = "iron-stick",   amount = 1},
+    }
+
 local land_recipe =
 {
   type = "recipe",
   name = "boards-land",
-  localised_name = {"tile-name.boards-land"}, -- pypp eager-tiling name guard, cf. the water-ford recipe
-  enabled = true, -- dev recipe kept enabled this pass; economics revisited next
+  localised_name = {"?", {"recipe-name.boards-land"}, {"item-name.boards-land"}}, -- pypp eager-tiling guard, same chain as the ford recipe
+  enabled = false, -- both boards unlock with the water-ford technology
   energy_required = 0.5,
-  ingredients = {{type = "item", name = "wood", amount = 2}, {type = "item", name = "iron-stick", amount = 1}},
-  results = {{type = "item", name = "boards-land", amount = 4}},
+  ingredients = boards_ingredients,
+  results = {{type = "item", name = "boards-land", amount = 1}},
 }
 data:extend{land_item, land_recipe}

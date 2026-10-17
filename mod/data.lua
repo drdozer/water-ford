@@ -19,28 +19,31 @@ local py_loaded = mods["pyalienlife"] ~= nil
 -- landfill (1 stone + 2 sand -> 2 landfill). Enabled from the start is NOT
 -- wanted: the water-ford technology gates it.
 --
--- Pyanodon recipe: the ford steps into the wood chain - creosote is the
--- wood-preservative stage, so requiring it gates the ford exactly when the
--- player can first build something meant to live underwater. treated-wood
--- (planks) / iron-stick (stakes and nails) / bolts (fasteners) / log (pilings)
--- / gravel (ballast for the bed, unlocked before creosote).
+-- Pyanodon recipe: the floor board steps into the wood chain - creosote is
+-- the wood-preservative stage, so the shared technology gates both boards
+-- exactly when the player can first build something meant to live
+-- underwater. The floor board carries treated-wood (planks) / iron-stick
+-- (stakes and nails) / bolts (fasteners); the ford board adds log (pilings)
+-- and gravel (ballast for the bed).
 --
 -- Provenance of the py items (see docs/dependency-audit.md §5): treated-wood,
 -- log, gravel and the creosote technology are defined by pycoalprocessing;
 -- bolts by pypetroleumhandling - both hard dependencies of pyalienlife, so
 -- `? pyalienlife` transitively guarantees the whole set.
+-- The ford board is composed: it consumes a wooden floor board plus the bed
+-- material. Vanilla carries the bed as stone; py carries a real ballast bed
+-- (gravel) plus a log for the pilings. One ford per craft, scarce by design
+-- (a full stack of bed material per crossing).
 local INGREDIENTS = py_loaded
     and {
-      {type = "item", name = "treated-wood", amount = 2},
-      {type = "item", name = "iron-stick",   amount = 1},
-      {type = "item", name = "bolts",        amount = 8},
-      {type = "item", name = "log",          amount = 1},
-      {type = "item", name = "gravel",       amount = 200},  -- ballast: one full stack
+      {type = "item", name = "boards-land", amount = 1},
+      {type = "item", name = "log",         amount = 1},
+      {type = "item", name = "gravel",      amount = 200},
     }
     or {
-      {type = "item", name = "wood",        amount = 4},
-      {type = "item", name = "iron-stick",  amount = 1},
-      {type = "item", name = "stone",       amount = 50},
+      {type = "item", name = "boards-land", amount = 1},
+      {type = "item", name = "wood",        amount = 2},
+      {type = "item", name = "stone",       amount = 100},
     }
 
 local PREREQUISITES = py_loaded and {"creosote"} or {"concrete"}
@@ -85,7 +88,10 @@ data:extend{
     name = "water-ford",
     icon = "__water-ford__/graphics/water-ford-icon.png",
     icon_size = 64,
-    effects = {{type = "unlock-recipe", recipe = "water-ford"}},
+    effects = {
+      {type = "unlock-recipe", recipe = "boards-land"},
+      {type = "unlock-recipe", recipe = "water-ford"},
+    },
     unit = {count = 20, ingredients = {{"automation-science-pack", 1}}, time = 10},
     order = "a2[water-ford]",
     prerequisites = PREREQUISITES,
