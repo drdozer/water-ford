@@ -96,7 +96,7 @@ for (vy, count, rows), oy in zip(BANDS, OURS_Y):
                 out[dy:dy + CELL_H, ox + c * CELL_W:ox + (c + 1) * CELL_W] = cell2
                 n += 1
                 alpha_drift = max(alpha_drift, int(np.abs(cell2[..., 3].astype(int) - cell[..., 3].astype(int)).max()))
-expect = ((16 + 8 + 16 + 4) * 4 + 4) * 3
+expect = (sum(c * r for _, c, r in BANDS)) * 3
 print(f"pieces written: {n} (expect {expect}) alpha drift: {alpha_drift} wood drift(painted): {wood_drift}")
 
 img = Image.fromarray(out, "RGBA")

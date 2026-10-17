@@ -143,8 +143,32 @@ land_tile.variants =
     {picture = "__water-ford__/graphics/boards-land-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
     {picture = "__water-ford__/graphics/boards-land-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
   },
-  empty_transitions = true,
-  transition = nil,
+  -- LAND TRIM (2026-10-18, round-21): wooden variant-transition edges - the
+  -- land-to-land system vanilla wires as concrete.variants.transition (the
+  -- "first block" of edge sprites the maintainer pointed at). Square 64x64
+  -- cells, counts 16/8/16/4/4, 4 rotation rows (o: 1); overlay art = the
+  -- wood-remapped clone of vanilla's concrete-* sheets (tools/paper-pipeline/
+  -- bake-land-trim.py), masks = vanilla value maps passed through verbatim.
+  -- empty_transitions dropped: the tile ships variant transition pieces now.
+  transition =
+  {
+    overlay_layout =
+    {
+      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o.png",            count = 4,  scale = 0.5 },
+    },
+    mask_layout =
+    {
+      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side-mask.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u-mask.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o-mask.png",            count = 4,  scale = 0.5 },
+    },
+  },
 }
 
 -- WOODEN BUMPER EDGE (2026-10-17, round-20): boards-land inherits concrete's
@@ -209,6 +233,85 @@ land_tile.transitions =
       inner_corner_tile_height = 3, outer_corner_tile_height = 2,
       side_tile_height = 2, u_transition_tile_height = 2,
       overlay = { x_offset = 0 },
+      mask = { x_offset = 2048 },
+      background = { x_offset = 1024 },
+    },
+  },
+}
+-- THREE-WAY CORNERS (2026-10-18, round-21): the between-transitions set.
+-- The deepcopy carries concrete_transitions_between_transitions (STONE) whose
+-- default-group-to-water-group entry fires at grass|water (and ford) corners
+-- next to our boards - the maintainer spotted it in-game. Entry 1 becomes our
+-- wooden clone (source concrete-transitions.png, counts 3/3/3/1/0, wood-painted
+-- overlay+background, grey masks passthrough, verbatim geometry); the out-of-
+-- map entries stay vanilla verbatim (map edges, never wooden ground).
+land_tile.transitions_between_transitions =
+{
+  {
+    transition_group1 = default_transition_group_id,
+    transition_group2 = water_transition_group_id,
+    spritesheet = "__water-ford__/graphics/boards-land-between.png",
+    layout =
+    {
+      scale = 0.5,
+      inner_corner_count = 3, outer_corner_count = 3, side_count = 3,
+      u_transition_count = 1, o_transition_count = 0,
+      inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
+      u_transition_y = 1728, o_transition_y = 2304,
+      inner_corner_tile_height = 2, outer_corner_tile_height = 2,
+      side_tile_height = 2, u_transition_tile_height = 2,
+      overlay    = { x_offset = 0 },
+      mask       = { x_offset = 2048 },
+      background = { x_offset = 1024 },
+    },
+    background_enabled = true,
+    background_layer_offset = 1,
+    offset_background_layer_by_tile_layer = true,
+    effect_map_layout =
+    {
+      spritesheet = "__base__/graphics/terrain/effect-maps/concrete-mask.png",
+      inner_corner_count = 1, outer_corner_count = 1, side_count = 1,
+      u_transition_count = 1, o_transition_count = 1
+    },
+  },
+  {
+    transition_group1 = default_transition_group_id,
+    transition_group2 = out_of_map_transition_group_id,
+    background_layer_offset = 1,
+    background_layer_group = "zero",
+    offset_background_layer_by_tile_layer = true,
+    spritesheet = "__base__/graphics/terrain/out-of-map-transition/concrete-out-of-map-transition-b.png",
+    layout =
+    {
+      scale = 0.5,
+      inner_corner_count = 3, outer_corner_count = 3, side_count = 3,
+      u_transition_count = 1, o_transition_count = 0,
+      inner_corner_y = 0, outer_corner_y = 768, side_y = 1280,
+      u_transition_y = 1792, o_transition_y = 2304,
+      inner_corner_tile_height = 3, outer_corner_tile_height = 2,
+      side_tile_height = 2, u_transition_tile_height = 2,
+      overlay    = { x_offset = 0 },
+      mask = { x_offset = 2048 },
+      background = { x_offset = 1024 },
+    },
+  },
+  {
+    transition_group1 = water_transition_group_id,
+    transition_group2 = out_of_map_transition_group_id,
+    background_layer_offset = 1,
+    background_layer_group = "zero",
+    offset_background_layer_by_tile_layer = true,
+    spritesheet = "__base__/graphics/terrain/out-of-map-transition/concrete-shore-out-of-map-transition.png",
+    layout =
+    {
+      scale = 0.5,
+      inner_corner_count = 3, outer_corner_count = 3, side_count = 3,
+      u_transition_count = 1, o_transition_count = 0,
+      inner_corner_y = 0, outer_corner_y = 768, side_y = 1280,
+      u_transition_y = 1792, o_transition_y = 2304,
+      inner_corner_tile_height = 3, outer_corner_tile_height = 2,
+      side_tile_height = 2, u_transition_tile_height = 2,
+      overlay    = { x_offset = 0 },
       mask = { x_offset = 2048 },
       background = { x_offset = 1024 },
     },
