@@ -219,6 +219,20 @@ opens `ford-posts.blend` headless, renders named scenes (`ICON` @ 64², context
 `ford-boards.blend` with per-variant named scenes + cameras; deploy copies
 sheets into `mod/graphics` (exact deploy mechanics re-checked at build).
 
+## Addenda (same session, after the register was written)
+
+- **Metal family swatches** (the deck interpretation's bolts-through-boards
+  and metal bars — recipe ingredients `iron-stick` / `bolts`): vanilla
+  `iron-stick` icon = cool grey L72–120 (#474949 L72, #565959 L88, #666869
+  L104, #787876 L120) + highlight #bab9b7 L185; py `bolts` icon = neutral
+  grey L104–167 (#686868 → #a7a7a7). Both families are neutral-to-cool against
+  the warm wood core — the natural contrast cue for metal detailing.
+- **No wooden-floor tile precedent exists** in vanilla 2.1, Space Age, or any
+  local py data zip (grep over all tile prototypes: zero wood/floor names).
+  The land boards tile has no in-game look reference — its visual language
+  must come entirely from the boards spec (R1 anchors + shared lighting),
+  which is exactly what the ticket's "same visual language" clause wants.
+
 ## Decision points for the maintainer (collected)
 
 | ID | Point | Default I would take |
