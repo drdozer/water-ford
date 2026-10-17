@@ -1000,13 +1000,13 @@
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X2.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P1.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}",
-    "/editor",
-    "/cheat all"
+    "/cheat all",
+    "/editor"
   ],
   "last-played": 
   {
     "type": "single-player",
-    "save-name": "boards-compare-1"
+    "save-name": "boards-compare-2"
   },
   "service-username": "",
   "service-token": "",
@@ -1177,7 +1177,11 @@
     "fulgora_nightfall",
     "nauvis_oil_refinery",
     "nauvis_burner_city",
-    "nauvis_solar_power_construction"
+    "nauvis_solar_power_construction",
+    "nauvis_tank_building",
+    "platform_science",
+    "nauvis_lab",
+    "nauvis_oil_pumpjacks"
   ],
-  "ticks-since-last-tip-shown": 1305336
+  "ticks-since-last-tip-shown": 1337305
 }

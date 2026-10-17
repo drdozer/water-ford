@@ -234,8 +234,11 @@ local function big_variants(fam, scale)
   local b = "__water-ford__/graphics/boards-" .. fam .. "-c"
   return {
     {picture = b .. ".png", count = 8, size = 1, scale = scale},
-    {picture = b .. "-2x2.png", count = 4, size = 2, scale = scale, probability = 0.3, line_length = 4},
-    {picture = b .. "-4x4.png", count = 2, size = 4, scale = scale, probability = 0.1, line_length = 2},
+    -- 2x2: 12 variants, 3 rows of 4 (frame2 band built 2026-10-17 to kill the
+    -- repetition the maintainer saw when stamping large floors)
+    {picture = b .. "-2x2.png", count = 12, size = 2, y = 0, scale = scale, probability = 0.3, line_length = 4},
+    -- 4x4: 4 variants, 2 rows of 2
+    {picture = b .. "-4x4.png", count = 4, size = 4, y = 0, scale = scale, probability = 0.1, line_length = 2},
   }
 end
 data.raw.tile["boards-land-c"].variants.main = big_variants("land", 0.25)

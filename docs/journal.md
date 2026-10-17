@@ -875,3 +875,16 @@ setup data-stage cannot express (water stayed hidden under landfill: the
 stack still counts as water_tile). Tiles now minable->their own items
 (land clone was unminable; ford clone would have mined back water-ford
 items). Relaunched with boards-compare-1.
+
+### round-12: big-tile variety expansion (maintainer: repetitive stamping)
+Maintainer verdict: C tilesets very clearly better in-game (hand-placed;
+saved boards-compare-2); complaint = only 4x 2x2 + 2x 4x4 variants ->
+repetition. Built LAT_BIG2 frame2 [0,12]x[-30,-18]: 8x 2x2 + 2x 4x4 new
+sites, seeds continuing the 77000+si*911 sequence (si 6..15), same
+per-band crowns/pins/bolt rules, additive object (no rebuild churn) +
+LATBIG_CAM2 (6,-24,60) ortho 12. Sliced 12+4 (2x2 sheet 1024x768 rows of
+4; 4x4 sheet 1024x1024 rows of 2, y=0 explicit), all variants distinct;
+perimeter vs 1x1 pins mean 8.1/9.3 (= the accepted wide-band flank cost).
+Variants rewired count 12/4, probabilities unchanged (0.3/0.1). Template
+y-defaults (128/320) never applied to our literal variant tables - they
+bypass tile_variations_template, engine default y=0.
