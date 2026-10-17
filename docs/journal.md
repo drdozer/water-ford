@@ -611,3 +611,33 @@ use bpy.app.timers fire-and-forget + flag polling next time.
 Bugs fixed this round: `not X if cond else Y` precedence inverted zone B/C
 row styles (B/C built as identical hybrids) — corrected with explicit
 parens; ZB/ZC rebuilt, structure verified by ray probes + histograms.
+
+## 2026-10-17 — feedback round 2: honey tones, grain arcs, poly bump, bolts 4→2
+Maintainer verdicts: wash out in the "nordic white pine" range → mix in the
+honey/amber tones of the original floor art; wants visible cross-cut
+undulating grain (the v4 wave wash was invisible); poly count on boards
+2×+ (jagged bow facets, strange catchlights); bolts per joint 4→2 (single
+width-wise pair).
+Changes:
+- M_PLANK v2 (31 nodes): grain = per-board arc (0.5 − sin²(π·u))·amp(0.02-0.075,
+  amp seeded) + noise ripple ±0.035 (scale 6.5) added into the wave vector
+  (bands Y, scale 80) → MapRange 0.70-1.08 multiply over the pool color; new
+  face attrs plank_origin/plank_len alongside plank_rgb/plank_seed (shader
+  overlay approach, per board — no custom textures).
+- Pool 8 → 12: + honey entries straight from inherited planks.png anchors
+  (150,105,59)/(151,107,66)/(153,114,69)/(140,102,58) as albedo-linear;
+  weights [3,3,2,2,2,2,2,1]+[2,2,2,2]/25 → honey 32% of picks.
+- Boards re-emitted at 4px columns (was 8px: ≥2× verts); bolts 12-gon,
+  per joint single width-wise pair (A-rows: cap side alternates by row).
+Incident + diagnosis (documented for reproducibility): a duplicated unlinked
+Principled (0.8 grey) wired to the active Material Output + stray duplicate
+world Background (0.05@0.15 — also revealed my iter-3 ambient raise had hit
+the template node = no-op) made v5 render ×1.6-3.5 hot with desaturation;
+bisected via (a) world-only probes (exonerated ambient), (b) attr-direct vs
+full-chain (exonerated shader: both "bright" in broken probe), (c) 2-plane
+rig test (revealed the in-session probe double-encoded sRGB → probe numbers
+inflated, hence false alarm on a second blowout). Ground-truth = bash PIL.
+v6 verified: zones 114.9/112.4/106.2 mean, cells 90-126 (mean 111.2,
+inherited band 107-123), blacks 0, bolts p99 145 (cap 185 family),
+67 wood bins, top share 11.1%, honey bins r/g 1.29-1.50 present.
+gwenview relaunched with comparison-planks-vs-v6 (3-row sheet) + v6 set.
