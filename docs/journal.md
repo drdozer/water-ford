@@ -754,3 +754,12 @@ metric too coarse to separate; independence to be judged by eye (rings
 breaking at plank boundaries) on the 4x sheet.
 Next: maintainer picks density/depth option; then base-floor render v9 +
 full pipeline + in-game tiles at three scales.
+
+### round-5b: B/C wash-out matrix (maintainer question)
+Q: will pore speckle / deep winter line survive pixelation? Rendered 9-row
+matrix at GAME depth (grain-menu-v5.png + mv5-sbs-4x.png crops): B and C
+x {plain, pores, deep, both} + pores-STRONG ceiling row.
+Measures: pore option adds only +2..+58 isolated dark px vs ~600 baseline
+(window incl. cap/bolt edges) — speckle nearly vanishes at 64px/BU even at
+padj -0.30 ceiling; deep line lifts dV 12.15 -> 13.13 and darkens mean by
+~1.7 — it survives as 1px ring lines. Default config restored after.
