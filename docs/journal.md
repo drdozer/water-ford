@@ -833,3 +833,26 @@ water-only rule (water_tile + invert=true) - plus dev convenience recipes
 locale item/recipe names+descriptions. Validated headless with a throwaway
 config (--create: 2.1 renamed --create-save; zero errors, checksums clean).
 Prototype changes need a game reload to appear.
+
+### round-9: 2x2 + 4x4 straddler supplement (maintainer green light)
+LAT_BIG built in band y[-18,-8]: 4x 2x2 sites + 2x 4x4 sites; per-band
+lattice-periodic crowns (z = 0.052 + amp*sin(pi*u/sw), coplanar at site
+edges AND interior butts); interiors: straddling boards crossing cell lines
+tone-continuously (0.65 of wide bands), butt joints at interior cell lines,
+0-2 splices per long board with bolt pairs, WIDER courses (0.5/0.75 BU =
+64/96px@128) from interior pattern tables; plank_course = (offset*4)%4 so
+perimeter pins read the neighbors' canonical tones.
+QA: sheets 1024x256 (4x 2x2) + 1024x512 (2x 4x4), all variants distinct;
+perimeter vs 1x1 pins mean 5.7/6.2 max 26/16 - residual = the documented
+cost of wider boards: wide-band flanks cross neighbor course boundaries
+(seam stubs 2px@128 every 64px = sub-pixel at game depth + normal board-end
+tone steps). Rendered via LATBIG_CAM (0,-12,60) ortho 12; camera swap+restore
+inside the timer.
+Wiring: boards-{land,ford}-c variants.main now = 3 entries (1x1 count 8;
+2x2 count 4 probability 0.3; 4x4 count 2 probability 0.1, line_length 4/2)
+mirroring the vanilla template keys; headless --create validation clean.
+MISSTEP kept for posterity: first slicing used (ty+18)*128 row mapping -
+y-axis flipped; sites are at rows (−6−ty−sw)*128. The "identical 2x2
+variants" and flat-L51 sheets were VOID crops (world 0.55*0.06 -> sRGB 52).
+Wait: to see sizes in-game the maintainer reloads; big-size appearance under
+player-stamped patches is engine-side behavior to verify by eye.

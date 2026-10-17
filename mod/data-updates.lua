@@ -220,3 +220,21 @@ for _fam in ("land ford"):gmatch("%a+") do
     data:extend{dev_item(_fam, _letter), dev_recipe(_fam, _letter)}
   end
 end
+
+---------------------------------------------------------------------------------------------------
+-- DEV COMPARE SIZES (2026-10-17, maintainer: "now I need the 2x2 and 4x4
+-- tiles; larger area for longer and/or wider boards"). C tilesets gain the
+-- full size ladder (R13: 1/2/4), per-size probabilities mirroring the vanilla
+-- tile template. 2x2/4x4 interiors carry straddling boards (crossing cell
+-- lines tone-continuously), wider 0.5/0.75-BU courses, butt joints and
+-- splices; perimeter courses stay lattice-locked and x-edges tone-pinned.
+local function big_variants(fam, scale)
+  local b = "__water-ford__/graphics/boards-" .. fam .. "-c"
+  return {
+    {picture = b .. ".png", count = 8, size = 1, scale = scale},
+    {picture = b .. "-2x2.png", count = 4, size = 2, scale = scale, probability = 0.3, line_length = 4},
+    {picture = b .. "-4x4.png", count = 2, size = 4, scale = scale, probability = 0.1, line_length = 2},
+  }
+end
+data.raw.tile["boards-land-c"].variants.main = big_variants("land", 0.25)
+data.raw.tile["boards-ford-c"].variants.main = big_variants("ford", 0.25)
