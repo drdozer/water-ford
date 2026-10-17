@@ -425,3 +425,65 @@ Decision-point amendments:
   tone continuation + bottom edge strip) and scheme table S1/A-B-C; plus R11:
   `bound_decoratives` discovered — the doodad fallback is prototype-native
   (D4 amended; runtime probe listed).
+### R12 — volumetric wood grain: the standard technique, researched
+
+Maintainer (2026-10-17): grain visible but too subtle (≤1 streak/board, wants
+2-3x density or more depth); the grain pattern carried across the whole floor
+(single global field) is not physical — each plank should carry an
+independent grain ("cut from a particular piece of a particular tree");
+proposed a full x,y,z volumetric wood texture oriented onto plank surfaces;
+asked for online discussion of such techniques.
+
+Sources found (summary; full texts fetched):
+
+- **arXiv 1511.04224 — "Procedural wood textures" (Liu, Marschner, Dye)**:
+  THE reference. 3D random-access wood model: cylindrical coords around a
+  pith axis (r rings / z fibers), seasonal wave -> earlywood (pale) vs
+  latewood (dark, hard winter line), pores/vessels + ray fibers via sparse
+  convolution noise, r/theta/z distortions = figure (curly/quilted/...).
+  THE BOARD FUNCTION (their §7.2): a board = hash of its indexes -> a unique
+  origin region in the tree + offset/rotation; board points map into the
+  tree volume. Independent plank grain is the documented standard.
+- **Blender.SE 306440 (Robin Betts)**: same idea in Blender terms — per-face
+  mapping attributes stored on the mesh ("essentially a 3D UV map"),
+  per-part orientation preserved while whole-furniture moves; random shift
+  up/down a virtual log for instance variation. Matches our face-attr
+  plumbing (validate: attrs plank_origin/plank_len/seed + add center).
+- **Unity "volumetric timber shader"**: grain = planar projection of a
+  cross-section texture ALONG the fiber axis, projection matrix per board,
+  fiber-direction pickers. The 2D-projection simplification exists and ships
+  commercially.
+- **shader.gallery woodgrain (GLSL, quartersawn oak)**: full parameter set
+  for the look at plank scale: rings 14-40 per unit (14 reads plank-scale),
+  latewood share ~0.26 (lateStart = 0.74+0.14·ring-jitter), winter line =
+  ink-dark hairline (35% dark, AA'd), earlywood pale (luminance 0.50) vs
+  latewood (0.10), ring-porous pore band right after the winter line, fine
+  fibre streaks at 260-560 freq (always-on, subtle), ring widths vary 0.5-1.5x
+  by "good years/lean years" noise, cathedral arches where the cut grazes
+  rings tangentially (pith depth varying along the board).
+- **Sedon tex/wood**: the 2D variant: rings = circles around an OFF-PLANE
+  centre (centre at [-0.3,0.5] off-canvas = classic plank look; centre close
+  = quarter-sawn/bullseye), ring_distortion (1 = elliptical wobble, 4 =
+  irregular), ring_width fraction, grain_strength ~0.05 subtle/0.15 sawn,
+  grain_scale ~30. Same construction family.
+
+Design adopted for ford-boards (v-to-come): per-plank virtual cut:
+- attrs per face (built once, deterministic): plank_rgb (pool color, kept),
+  plank_seed, plank_origin, plank_len + NEW plank_cx/plank_cy (per-plank
+  pith-offset, hashed from seed) and plank_ringfreq (hashed, 8-16/unit).
+- shader: r = length(X_local - cx-ish, (Y_local - cy)·1) warped by gentle
+  shared-ish noise (undulation) + ring-phase seed offset; rings -> ramp:
+  pale earlywood + dark latewood band + ink winter line (≈26% dark share,
+  2-4 lines per board at ringfreq 8-16); fine fibre streaks along the board
+  (2-octave noise, subtle); pore speckle optional (menu decides).
+- INDEPENDENCE: every plank's (cx, cy, seed, ringfreq) hashed from
+  plank_seed -> the single-global-field complaint dies; adjacent planks no
+  longer share streak phase.
+- Menu comparison (maintainer likes these): control (current best s8-d25) vs
+  volumetric variants: ringfreq 8/12/16, pores on/off, winter-line depth
+  subtle/strong; render at game depth + 1 crop at 4x.
+
+Also confirmed this round: wider bolt spacing (1/4-1/2 apart, away from
+edges) = improvement; goes into the next full re-bake. And per maintainer:
+another full sweep of the scene data model audit to catch construction
+issues like the silent-disconnect class.
