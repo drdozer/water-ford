@@ -1078,3 +1078,22 @@ boards vs grass rendered as a hard cut = the queued TRIM.
   boundary column warm 0.70 (trim off) -> 0.77 (final), matching the approved
   trim-on capture (0.80). Maintainer eye-approved: "That looks great. Bake
   this into the mod and commit."
+
+## 2026-10-18 — land->ford transition audit: ship as-is (round-22)
+Static audit of the boards-land -> water-ford seam: the land side's bumper
+entry fires toward the ford (water_tile_type_names includes water-ford;
+the ford joined the water transition group) = lip course on the land tile +
+submerged curb beneath the water layer, verbatim the approved water-edge art.
+The ford side has no entry toward land - vanilla water has no land-facing
+transition to inherit - so the ford deck runs plain piling art to the
+boundary. The between-set covers three-ways only.
+- Both orientations captured in one frame (provenance
+  20261018-005810-land-ford-seam-current.png): boards-land strip x -10..8 at
+  y -7..-3 (north variant, directly above ford row y -2 - the maintainer's
+  emphasized case) and y 7..11 (south, mirrored), capture {center 0,2.5};
+  strips 0.92/0.95 warm, ford edges render warm piling art at both seams.
+- Maintainer: "To be honest, that looks great. I can imagine improvements,
+  but it will absolutely do for this release." DECISION: no dedicated
+  transition art this release - the land-side bumper IS the land->ford seam.
+  Parked for a future release: a ford-side receiving edge or a dedicated
+  Blender ramp/deck model.
