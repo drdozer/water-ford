@@ -60,6 +60,11 @@ DEFAULT_BASE = os.environ.get(
 )
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = REPO / "mod" / "graphics"
+# 2026-10-17: the two pilings intermediates (exp post sheet + mask) are NOT
+# shipped assets - they moved out of mod/graphics into the reproducible
+# workspace. Only planks.png still lands in the mod (the maintained wash).
+OUT_PILINGS = REPO / ".cache" / "ford-factory" / "intermediates"
+OUT_PILINGS.mkdir(parents=True, exist_ok=True)
 
 ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
 ap.add_argument("--base", default=DEFAULT_BASE, help="game install data/base dir")
@@ -191,10 +196,10 @@ def save_if_changed(arr_rgba, path, force=False):
     return True
 
 
-save_if_changed(art, OUT / "pilings-exp.png", args.force)
+save_if_changed(art, OUT_PILINGS / "pilings-exp.png", args.force)
 save_if_changed(
     np.dstack([mask] * 3 + [np.full_like(mask, 255.0)]),
-    OUT / "pilings-mask.png", args.force,
+    OUT_PILINGS / "pilings-mask.png", args.force,
 )
 print(f"pilings: {n} pilings, composite (water base + pilings, waterline anchored mid-cell); "
       f"mask (crowns {int(DRY)}, feet hold at {int(DRY * (1 - FOOT_DRY))})")

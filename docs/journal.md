@@ -950,3 +950,25 @@ on boards-land recipe upgraded to the full pypp "?" chain matching the ford
 recipe. Locale: boards-land item-description no longer claims a stone bed
 (art shows no bed on land). Headless validation clean (check8); dev game
 relaunched on boards-compare-3 (maintainer save).
+
+### round-18: intermediates out of the shipped mod (maintainer flag: VRAM/clutter)
+Maintainer eyeballed the piling sheets and asked why most of the canvas is
+blank - answer: the only LIVE piling assets are pilings-composite.png (100%
+opaque water BY DESIGN - the round-12 shore-pre-darkening fix) and
+pilings-transition-mask.png (full-coverage dryness map BY DESIGN); the
+mostly-blank transition/shadow/exp/mask files were bake intermediates
+(0.9%/0.6%/5.8% content). Move executed: git rm the four from mod/graphics;
+new reproducible home .cache/ford-factory/intermediates/ (untracked,
+regenerable). Tool paths updated in the same change: gen-textures.py writes
+exp/mask to the intermediates home (planks wash still lands in the mod);
+bake-transition-sheet.py writes transition/shadow there (transition-mask
+stays live in mod/graphics); bake-save.py harness guard modernized to the
+live sheets (was still guarding on pilings-transition.png). Regen check:
+exp/mask regenerate into the new home (the git copies had gone stale vs the
+current generator - .cache now holds current-truth output; seed-pinned);
+planks.png unchanged; headless --create clean (check9); live sheets
+untouched (zero diff under mod/graphics besides the staged deletions).
+VRAM: unchanged this pass (intermediates never reached VRAM); zip -1.24MB.
+Next (standing plan, awaiting go): 128px re-render + tight canvases
+(1024x2560+512x1280 separate bands ~13.1MB, or merged u/o ~10.5MB vs 34MB
+today at half the density).

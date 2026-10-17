@@ -18,6 +18,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 BASE = os.path.join(ROOT, ".cache", "ford-factory")
 G = os.path.join(ROOT, "mods", "water-ford", "mod", "graphics")
+# the visual + shadow sheets are bake intermediates; only the transition MASK
+# is a live mod asset and keeps writing into mod/graphics.
+INTER = os.path.join(ROOT, ".cache", "ford-factory", "intermediates")
+os.makedirs(INTER, exist_ok=True)
 
 BANDS = [(0, 8, 4), (576, 8, 4), (1152, 8, 4), (1728, 2, 4), (2304, 4, 1)]
 N = 108
@@ -48,9 +52,9 @@ for y0, cols, rows in BANDS:
 if k != N:
     raise RuntimeError(f"pasted {k} pieces, expected {N}")
 
-a_out = os.path.join(G, "pilings-transition.png")
+a_out = os.path.join(INTER, "pilings-transition.png")
 m_out = os.path.join(G, "pilings-transition-mask.png")
-s_out = os.path.join(G, "pilings-transition-shadow.png")
+s_out = os.path.join(INTER, "pilings-transition-shadow.png")
 Image.fromarray(art, "RGBA").save(a_out)
 Image.fromarray(msk, "RGBA").save(m_out)
 Image.fromarray(shd, "RGBA").save(s_out)

@@ -1000,8 +1000,8 @@
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X2.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P1.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}",
-    "/cheat all",
-    "/editor"
+    "/editor",
+    "/cheat all"
   ],
   "last-played": 
   {
@@ -1187,7 +1187,9 @@
     "nauvis_river_bridge",
     "gleba_grotto",
     "nauvis_power_up",
-    "vulcanus_crossing"
+    "vulcanus_crossing",
+    "nauvis_t_section",
+    "nauvis_train_junction"
   ],
-  "ticks-since-last-tip-shown": 1365158
+  "ticks-since-last-tip-shown": 1377864
 }

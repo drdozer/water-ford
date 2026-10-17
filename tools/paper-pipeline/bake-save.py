@@ -57,7 +57,7 @@ def run(flags, log, wait, term=True):
 
 prov_ok = provision()
 # the ford transition asset lives in the mod now (viewer decorative sheets retired)
-sheet = os.path.join(ROOT, "mods", "water-ford", "mod", "graphics", "pilings-transition.png")
+sheet = os.path.join(ROOT, "mods", "water-ford", "mod", "graphics", "pilings-composite.png")
 maskf = os.path.join(ROOT, "mods", "water-ford", "mod", "graphics", "pilings-transition-mask.png")
 if not (os.path.exists(sheet) and os.path.getsize(sheet) > 50000 and os.path.exists(maskf)):
     sys.exit("transition asset missing in mod graphics - run the deploy stage first")
