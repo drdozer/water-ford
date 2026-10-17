@@ -51,6 +51,12 @@ lengths/widths/waves, bolted splices at every cell edge. Detail: R10 table.
 
 ## 3. Ballast + metal palettes (ingredients as color keys)
 
+Maintainer 2026-10-17: plank colorings now take the palette from the
+pilings family (ford-posts.blend M_PILING side/cap ColorRamp stops), pool of
+8 + seeded per-board picks — see journal + scene custom prop plank_pool in
+ford-boards.blend. The planks.png anchors below remain the VALUE-band
+reference and post-mix targets; pilings hues replace the wood-hue pool.
+
 Stone families (mid-light only; keep L≥64 authored; the deck band prefers
 L120–155): py gravel icon cool greys (#474547 L70…#9c9288 L148), py
 crush-stone warm khaki (#796b51 L108…#b89868 L155), py crush-gravel sandy

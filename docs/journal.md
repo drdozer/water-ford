@@ -585,3 +585,29 @@ Numerics v3: cells L100.7-118 (anchor family), no true blacks, falloff W:E
 1.05, hue on-anchor. Preview assets in .cache/boards-research/previews/
 (base-floor-v3, crops-zoneA/B/C, sheet-mockup, tiling-selftest,
 tiling-adjacent-runs). Awaiting maintainer gwenview verdict.
+
+## 2026-10-17 — maintainer feedback round: plank colorings from the pilings palette
+Feedback at v3: wood too uniform; wants pool-of-colorings per plank and the
+palette taken from the pilings' cap/side textures. Probed ford-posts.blend
+via in-session library-append: M_PILING is fully procedural (per-instance
+bark_off attributes -> noise+wave -> two ColorRamps; Normal-Z mix = cap vs
+side). Extracted both ramps verbatim:
+  side ramp stops (lin): (0.504,0.476,0.434) / (1.91,1.798,1.453) / (1.797,1.453,0.85)
+  cap  ramp stops (lin): (0.04,0.034,0.034)   / (1.345,1.11,0.757)  / (2.011,1.636,0.957)
+Family exposure to our calibrated rig: x0.159. Pool of 8 plank colorings
+(scene custom prop plank_pool): side_mid, side_warm, side_grey, cap_bright,
+cap_mid + 3 mixes; per-board seeded pick (random.Random(77000+z*401+c*17+si*7),
+weights 3,3,2,2,2,2,2,1, no immediate repeats) written as per-face attributes
+plank_rgb (FLOAT_COLOR/FACE) + plank_seed; M_PLANK shader = piling family
+kin (Attribute -> Wave Y-bands scale 34 + noise 2.7 distortion -> MapRange
+0.74-1.06 -> multiply pool color); caps = posts cap-ramp ring bands
+(X-bands scale 26) via M_CAP_ENDGRAIN. Flat 4-anchor wood materials retired.
+v4 render: 41 distinct wood bins, top-1 share 27.5%->13.4%, floor mean 114
+(inherited ~110), cells 92-132 (overshoot flagged for verdict), blacks 0,
+gaps 49-68. Previews rebuilt incl comparison-planks-vs-v4.png (inherited
+planks row over our 512x64 mock, same layout). gwenview launched on :0 with
+the full review set. Render-loop lesson: MCP exec timeout 60s < render time:
+use bpy.app.timers fire-and-forget + flag polling next time.
+Bugs fixed this round: `not X if cond else Y` precedence inverted zone B/C
+row styles (B/C built as identical hybrids) — corrected with explicit
+parens; ZB/ZC rebuilt, structure verified by ray probes + histograms.
