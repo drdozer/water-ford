@@ -934,7 +934,6 @@
   "console-history": 
   [
     "/edutir",
-    "/editor",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-test.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"$GAMEABS\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R0.png\"}",
@@ -1000,12 +999,13 @@
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X1.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X2.png\"}",
     "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P1.png\"}",
-    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}"
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}",
+    "/editor"
   ],
   "last-played": 
   {
     "type": "single-player",
-    "save-name": "_autosave1"
+    "save-name": "boards-compare-1"
   },
   "service-username": "",
   "service-token": "",
@@ -1194,7 +1194,9 @@
     "nauvis_biter_base_artillery",
     "nauvis_logistic_robots",
     "vulcanus_lava_forge",
-    "vulcanus_sulfur_drop"
+    "vulcanus_sulfur_drop",
+    "nauvis_chase_player",
+    "nauvis_artillery"
   ],
-  "ticks-since-last-tip-shown": 1187780
+  "ticks-since-last-tip-shown": 1294920
 }

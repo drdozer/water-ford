@@ -797,3 +797,26 @@ HEADLESS LOAD OK (validates the whole dev block incl. 6 new prototypes),
 VIEW WINDOW ALIVE on :0 — water-ford + wf-piling-viewer loaded, log clean.
 Launch recipe (RESUME): bake.sh save,view; scratch mods symlink the repo mod
 so edits flow in without redeploy.
+
+### round-7: tileable 1x1 atlas BUILT + verified; viewport wedge root-caused
+Viewport "all black" report: scene data was clean (F12 bright throughout,
+probe 0.45, cutoff 0, no overrides, no GPU); root cause = the viewport's
+rendered-shading session held DEAD data-block references after the destructive
+rebuild churn (removed-node ReferenceError in blender.log = fingerprint);
+fix = shading toggle RENDERED->MATERIAL->RENDERED re-initializes. STANDING
+RULE added: after any destructive rebuild, poke the viewport shading
+programmatically (now done at the end of every rebuild call).
+Window-capture misstep noted: import -window must use the RIGHT id
+(Konsole grabbed once); xdotool windowactivate + root grab works.
+ATLAS CONTINUITY QA (the real find): global gap lattice exact (48 gap rows,
+pitch 32.0px@128 everywhere). Tone pin verified (plateaus +-0.3 L at every
+boundary x course). REMAINING defect root-caused: per-board z-phase jumps ->
+2-3px DROP-SHADOW strips at every cell x-boundary (localized rows 44 L dark;
+slice col-abutment 17.1/40.3). FIX: lattice-PERIODIC board crowns
+z = 0.052 + amp*sin(pi*u_tile) — faces coplanar at every cell edge.
+RE-RENDER + QA: slice col-abutment mean 3.23 max 6.96 (old planks.png atlas:
+6.1 mean / 9.4 max measured) — better than the accepted old art; x-abutment
+in the big render 0.28/0.35; rows abut 42.7 (seam-row meets face-top =
+intended lattice junction, same class as old art's ~70). Variants distinct
+8/8. Sheets swapped in place: boards-land-c.png / boards-ford-c.png
+(dev tiles pick them up on next load). gwenview on the atlas render.

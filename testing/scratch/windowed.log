@@ -117,3 +117,18 @@
   22.202 Loading script.dat: 60 bytes.
   22.203 Checksum for script __level__/control.lua: 2058512579
   22.203 Checksum for script __water-ford__/control.lua: 2344166520
+ 322.303 Info AppManager.cpp:335: Saving to _autosave1 (blocking).
+ 322.472 Info AppManagerStates.cpp:2131: Saving finished
+ 356.194 Info AppManagerStates.cpp:2131: Saving finished
+ 651.295 Info AppManager.cpp:335: Saving to _autosave2 (blocking).
+ 651.463 Info AppManagerStates.cpp:2131: Saving finished
+ 951.551 Info AppManager.cpp:335: Saving to _autosave3 (blocking).
+ 951.736 Info AppManagerStates.cpp:2131: Saving finished
+1251.725 Info AppManager.cpp:335: Saving to _autosave1 (blocking).
+1251.910 Info AppManagerStates.cpp:2131: Saving finished
+1551.915 Info AppManager.cpp:335: Saving to _autosave2 (blocking).
+1552.082 Info AppManagerStates.cpp:2131: Saving finished
+1841.934 Info AppManagerStates.cpp:2131: Saving finished
+1842.989 Info AppManager.cpp:364: Deleting active scenario.
+1844.553 Quitting: user-quit.
+1844.852 Goodbye
