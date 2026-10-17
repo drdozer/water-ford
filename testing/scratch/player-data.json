@@ -1152,30 +1152,6 @@
   "saves-sorting-mode": "time",
   "main-menu-simulations-played": 
   [
-    "aquilo_starter",
-    "nauvis_train_junction",
-    "nauvis_forest_fire",
-    "fulgora_race",
-    "nauvis_spider_ponds",
-    "nauvis_power_up",
-    "nauvis_river_bridge",
-    "nauvis_solar_power_construction",
-    "nauvis_rocket_factory",
-    "nauvis_train_station",
-    "nauvis_nuclear_power",
-    "vulcanus_crossing",
-    "nauvis_t_section",
-    "nauvis_lab",
-    "nauvis_biter_base_steamrolled",
-    "fulgora_city_crossing",
-    "gleba_farm_attack",
-    "nauvis_bus",
-    "gleba_egg_escape",
-    "gleba_grotto",
-    "nauvis_uranium_processing",
-    "nauvis_tank_building",
-    "nauvis_oil_pumpjacks",
-    "platform_science",
     "platform_messy_nuclear",
     "nauvis_big_defense",
     "nauvis_biter_base_laser_defense",
@@ -1199,7 +1175,9 @@
     "nauvis_chase_player",
     "nauvis_artillery",
     "fulgora_nightfall",
-    "nauvis_oil_refinery"
+    "nauvis_oil_refinery",
+    "nauvis_burner_city",
+    "nauvis_solar_power_construction"
   ],
-  "ticks-since-last-tip-shown": 1301416
+  "ticks-since-last-tip-shown": 1305336
 }

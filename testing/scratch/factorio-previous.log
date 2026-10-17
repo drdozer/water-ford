@@ -1,134 +1,123 @@
-   0.000 2026-10-17 19:18:32; Factorio 2.1.21 (build 87673, linux64, full, space-age)
-   0.011 Operating system: Linux (Devuan 6)
-   0.011 Program arguments: "/home/nmrp3/.local/share/factorio_2_dlc/bin/x64/factorio" "-c" "/home/nmrp3/devel/factorio-mods/mods/water-ford/tools/paper-pipeline/../../testing/scratch/config/config.ini" "--mod-directory" "/home/nmrp3/devel/factorio-mods/mods/water-ford/tools/paper-pipeline/../../testing/scratch/mods" "--load-game" "/home/nmrp3/devel/factorio-mods/mods/water-ford/tools/paper-pipeline/../../testing/scratch/saves/ford-view-test.zip" 
-   0.011 Config path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini
-   0.011 Read data path: /home/nmrp3/.local/share/factorio_2_dlc/data
-   0.011 Write data path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch [469048/1876684MB]
-   0.011 Binaries path: /home/nmrp3/.local/share/factorio_2_dlc/bin
-   0.018 System info: [CPU: AMD Ryzen 7 2700X Eight-Core Processor, 16 cores, RAM: 64255 MB]
-   0.018 Environment: DISPLAY=:0 WAYLAND_DISPLAY=<unset> DESKTOP_SESSION=plasmax11 XDG_SESSION_DESKTOP=plasmax11 XDG_CURRENT_DESKTOP=KDE SDL_VIDEO_DRIVER=<unset> SDL_ENABLE_STEAM_SCREEN_KEYBOARD=<unset> SteamDeck=<unset> __GL_FSAA_MODE=<unset> __GL_LOG_MAX_ANISO=<unset> __GL_SYNC_TO_VBLANK=<unset> __GL_SORT_FBCONFIGS=<unset> __GL_YIELD=<unset>
-   0.022 Display options: [FullScreen: true] [VSync: true] [UIScale: automatic (100.0%)] [Native DPI: true] [Screen: 4294967295] [Special: lmw] [Lang: en]
-   0.082 Video driver: x11
-   0.082 Available displays: 2
-   0.082  [0]: 1 - {1, [3840,280], 2560x1600, SDL_PIXELFORMAT_XRGB8888, 59.86 Hz}
-   0.082  [1]: UHD DP 39" - {2, [0,0], 3840x2160, SDL_PIXELFORMAT_XRGB8888, 60.00 Hz}
-   0.265 Initialised OpenGL:[1] NVIDIA GeForce GTX TITAN X/PCIe/SSE2; driver: 3.3.0 NVIDIA 550.163.01
-   0.265   [Extensions] s3tc:yes; KHR_debug:yes; ARB_clear_texture:yes, ARB_copy_image:yes, ARB_pipeline_statistics_query:yes, ARB_gl_spirv:yes, ARB_ES2_compatibility:yes
-   0.265   [Version] 3.3
-   0.347 Graphics settings preset: very-high
-   0.347   Dedicated video memory size 12534 MB (detected from NVIDIA GeForce GTX TITAN X; VendorID: 0x10de; DeviceID: 0x17c2)
-   0.365 Graphics options: [Graphics quality: high] [Video memory usage: all] [DXT: high-quality]
-   0.365                   [Max threads (load/render): 32/8] [Max texture size: 0] [Tex.Stream.: false] [Rotation quality: normal] [Other: STDCWTl] [B:0,C:0,S:100]
-   0.372 [Audio] Driver:pulseaudio, Device:Default device, Depth:32, Channels:2, Frequency:44100
-   0.629 Info ModManager.cpp:450: FeatureFlag expansion = true
-   0.629 Info ModManager.cpp:450: FeatureFlag expansion-shaders = true
-   0.629 Info ModManager.cpp:450: FeatureFlag freezing = true
-   0.629 Info ModManager.cpp:450: FeatureFlag quality = true
-   0.629 Info ModManager.cpp:450: FeatureFlag rail-bridges = true
-   0.629 Info ModManager.cpp:450: FeatureFlag segmented-units = true
-   0.629 Info ModManager.cpp:450: FeatureFlag space-travel = true
-   0.629 Info ModManager.cpp:450: FeatureFlag spoiling = true
-   0.670 Loading mod core 0.0.0 (data.lua)
-   0.688 Loading mod base 2.1.21 (data.lua)
-   0.860 Loading mod elevated-rails 2.1.21 (data.lua)
-   0.876 Loading mod recycler 2.1.21 (data.lua)
-   0.885 Loading mod water-ford 1.0.0 (data.lua)
-   0.892 Loading mod quality 2.1.21 (data.lua)
-   0.900 Loading mod wf-piling-viewer 1.0.0 (data.lua)
-   0.907 Loading mod space-age 2.1.21 (data.lua)
-   1.091 Loading mod base 2.1.21 (data-updates.lua)
-   1.104 Loading mod recycler 2.1.21 (data-updates.lua)
-   1.123 Loading mod water-ford 1.0.0 (data-updates.lua)
-   1.136 Loading mod space-age 2.1.21 (data-updates.lua)
-   1.238 Checksum for core: 2791302773
-   1.238 Checksum of base: 1834856243
-   1.238 Checksum of elevated-rails: 1429039930
-   1.238 Checksum of recycler: 3293728126
-   1.238 Checksum of water-ford: 3341837077
-   1.238 Checksum of quality: 3330349790
-   1.238 Checksum of wf-piling-viewer: 2359622684
-   1.238 Checksum of space-age: 652283608
-   1.783 Prototype list checksum: 338825348
-   1.845 Loading sounds...
-   2.589 Info PlayerData.cpp:580: Local player-data.json available
-   2.590 Post-data load graphics options: [Light occlusion: YES]
-   2.842 Crop bitmaps.
-   2.845 Parallel sprite loader initialized (threads: 16, bitmaps: 21)
-   3.052 Initial atlas bitmap size is 16384
-   3.066 Created an atlas bitmap (size 16384x16380) [none]
-   3.084 Created an atlas bitmap (size 16384x16384) [none]
-   3.104 Created an atlas bitmap (size 16384x16384) [none]
-   3.105 Created an atlas bitmap (size 16384x14368) [none]
-   3.105 Created an atlas bitmap (size 16384x16032) [low-object]
-   3.107 Created an atlas bitmap (size 16384x16324) [corpse-decay]
-   3.107 Created an atlas bitmap (size 4096x2848) [corpse-decay]
-   3.107 Created an atlas bitmap (size 16384x9332) [decal]
-   3.107 Created an atlas bitmap (size 16384x5956) [none]
-   3.107 Created an atlas bitmap (size 8192x2788) [none]
-   3.107 Created an atlas bitmap (size 16384x3436) [procession-cover, linear-minification, linear-magnification]
-   3.107 Created an atlas bitmap (size 4096x1392) [none]
-   3.107 Created an atlas bitmap (size 1676x79) [not-compressed]
-   3.108 Created an atlas bitmap (size 16384x4368) [mipmap, linear-minification, linear-magnification, linear-mip-level]
-   3.108 Created an atlas bitmap (size 4096x3040) [smoke, mipmap, linear-minification, linear-magnification]
-   3.115 Created an atlas bitmap (size 16384x16368) [terrain, mipmap, linear-minification, linear-mip-level]
-   3.116 Created an atlas bitmap (size 16384x10832) [terrain, mipmap, linear-minification, linear-mip-level]
-   3.116 Created an atlas bitmap (size 8192x6176) [terrain-effect-map, mipmap, linear-minification, linear-mip-level]
-   3.116 Created an atlas bitmap (size 8192x2800) [mipmap]
-   3.116 Created an atlas bitmap (size 8192x4544) [mipmap]
-   3.116 Created an atlas bitmap (size 8192x3408) [mipmap]
-   3.116 Created an atlas bitmap (size 3504x768) [mipmap]
-   3.116 Created an atlas bitmap (size 4096x3152) [mipmap]
-   3.116 Created an atlas bitmap (size 4096x3152) [mipmap]
-   3.116 Created an atlas bitmap (size 4096x3152) [mipmap]
-   3.116 Created an atlas bitmap (size 8192x3904) [icon, not-compressed, mipmap, linear-minification, linear-magnification, linear-mip-level]
-   3.118 Created an atlas bitmap (size 16384x10276) [alpha-mask]
-   3.139 Created an atlas bitmap (size 16384x16384) [shadow, linear-magnification, alpha-mask]
-   3.142 Created an atlas bitmap (size 16384x16324) [shadow, linear-magnification, alpha-mask]
-   3.142 Created an atlas bitmap (size 16384x5216) [shadow, linear-magnification, alpha-mask]
-   3.142 Created an atlas bitmap (size 8192x5216) [shadow, mipmap, linear-magnification, alpha-mask]
-   3.142 Created an atlas bitmap (size 4096x336) [icon-background, not-compressed, mipmap, linear-minification, linear-magnification, linear-mip-level, ]
-   3.142 Loading 3D bitmaps: 20
-   3.152 Texture processor created (4096). GPU accelerated compression Supported: yes, Enabled: yes/yes. Test passed. YCoCgDXT PSNR: 35.83, BC3 PSNR: 33.82
-   3.257 Parallel sprite loader initialized (threads: 15, bitmaps: 8803)
-  21.566 Sprites loaded
-  21.636 Generated mipmaps (4) for atlas [4] of size 16384x16032   
-  21.640 Generated mipmaps (3) for atlas [13] of size 16384x4368   
-  21.647 Generated mipmaps (3) for atlas [14] of size 4096x3040   
-  21.769 Generated mipmaps (3) for atlas [15] of size 16384x16368   
-  21.866 Generated mipmaps (3) for atlas [16] of size 16384x10832   
-  21.887 Generated mipmaps (3) for atlas [17] of size 8192x6176   
-  21.942 Generated mipmaps (3) for atlas [18] of size 8192x2800   
-  21.993 Generated mipmaps (3) for atlas [19] of size 8192x4544   
-  21.998 Generated mipmaps (3) for atlas [20] of size 8192x3408   
-  22.000 Generated mipmaps (3) for atlas [21] of size 3504x768   
-  22.005 Generated mipmaps (3) for atlas [22] of size 4096x3152   
-  22.046 Generated mipmaps (3) for atlas [23] of size 4096x3152   
-  22.051 Generated mipmaps (3) for atlas [24] of size 4096x3152   
-  22.075 Generated mipmaps (5) for atlas [25] of size 8192x3904   
-  22.078 Generated mipmaps (3) for atlas [30] of size 8192x5216   
-  22.089 Custom mipmaps uploaded (3518)
-  22.112 Estimated VRAM usage for textures: 3964.89 MB (Atlases: 3757.34 MB, Textures: 207.56 MB)
-  22.125 Info GlobalContext.cpp:1336: Resetting config.
-  22.168 Factorio initialised
-  22.180 Loading map /home/nmrp3/devel/factorio-mods/mods/water-ford/tools/paper-pipeline/../../testing/scratch/saves/ford-view-test.zip: 774152 bytes.
-  22.189 Loading level.dat: 1032395 bytes.
-  22.189 Info Scenario.cpp:152: Map version 2.1.21-11
-  22.202 Blueprint storage "blueprint-storage-2.dat" was not found, trying to load previous version storage "blueprint-storage.dat"
-  22.202 Loading script.dat: 60 bytes.
-  22.203 Checksum for script __level__/control.lua: 2058512579
-  22.203 Checksum for script __water-ford__/control.lua: 2344166520
- 322.303 Info AppManager.cpp:335: Saving to _autosave1 (blocking).
- 322.472 Info AppManagerStates.cpp:2131: Saving finished
- 356.194 Info AppManagerStates.cpp:2131: Saving finished
- 651.295 Info AppManager.cpp:335: Saving to _autosave2 (blocking).
- 651.463 Info AppManagerStates.cpp:2131: Saving finished
- 951.551 Info AppManager.cpp:335: Saving to _autosave3 (blocking).
- 951.736 Info AppManagerStates.cpp:2131: Saving finished
-1251.725 Info AppManager.cpp:335: Saving to _autosave1 (blocking).
-1251.910 Info AppManagerStates.cpp:2131: Saving finished
-1551.915 Info AppManager.cpp:335: Saving to _autosave2 (blocking).
-1552.082 Info AppManagerStates.cpp:2131: Saving finished
-1841.934 Info AppManagerStates.cpp:2131: Saving finished
-1842.989 Info AppManager.cpp:364: Deleting active scenario.
-1844.553 Quitting: user-quit.
-1844.852 Goodbye
+   0.000 2026-10-17 20:05:29; Factorio 2.1.21 (build 87673, linux64, full, space-age)
+   0.021 Operating system: Linux (Devuan 6)
+   0.021 Program arguments: "/home/nmrp3/.local/share/factorio_2_dlc/bin/x64/factorio" "-c" "mods/water-ford/testing/scratch/config/config.ini" "--mod-directory" "mods/water-ford/testing/scratch/mods" "--load-game" "mods/water-ford/testing/scratch/saves/boards-compare-1.zip" 
+   0.021 Config path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini
+   0.021 Read data path: /home/nmrp3/.local/share/factorio_2_dlc/data
+   0.021 Write data path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch [469078/1876684MB]
+   0.021 Binaries path: /home/nmrp3/.local/share/factorio_2_dlc/bin
+   0.037 System info: [CPU: AMD Ryzen 7 2700X Eight-Core Processor, 16 cores, RAM: 64255 MB]
+   0.037 Environment: DISPLAY=:0 WAYLAND_DISPLAY=<unset> DESKTOP_SESSION=plasmax11 XDG_SESSION_DESKTOP=plasmax11 XDG_CURRENT_DESKTOP=KDE SDL_VIDEO_DRIVER=<unset> SDL_ENABLE_STEAM_SCREEN_KEYBOARD=<unset> SteamDeck=<unset> __GL_FSAA_MODE=<unset> __GL_LOG_MAX_ANISO=<unset> __GL_SYNC_TO_VBLANK=<unset> __GL_SORT_FBCONFIGS=<unset> __GL_YIELD=<unset>
+   0.047 Display options: [FullScreen: true] [VSync: true] [UIScale: automatic (100.0%)] [Native DPI: true] [Screen: 4294967295] [Special: lmw] [Lang: en]
+   0.127 Video driver: x11
+   0.127 Available displays: 2
+   0.127  [0]: 1 - {1, [3840,280], 2560x1600, SDL_PIXELFORMAT_XRGB8888, 59.86 Hz}
+   0.127  [1]: UHD DP 39" - {2, [0,0], 3840x2160, SDL_PIXELFORMAT_XRGB8888, 60.00 Hz}
+   0.251 Initialised OpenGL:[1] NVIDIA GeForce GTX TITAN X/PCIe/SSE2; driver: 3.3.0 NVIDIA 550.163.01
+   0.251   [Extensions] s3tc:yes; KHR_debug:yes; ARB_clear_texture:yes, ARB_copy_image:yes, ARB_pipeline_statistics_query:yes, ARB_gl_spirv:yes, ARB_ES2_compatibility:yes
+   0.251   [Version] 3.3
+   0.329 Graphics settings preset: very-high
+   0.329   Dedicated video memory size 12534 MB (detected from NVIDIA GeForce GTX TITAN X; VendorID: 0x10de; DeviceID: 0x17c2)
+   0.367 Graphics options: [Graphics quality: high] [Video memory usage: all] [DXT: high-quality]
+   0.367                   [Max threads (load/render): 32/8] [Max texture size: 0] [Tex.Stream.: false] [Rotation quality: normal] [Other: STDCWTl] [B:0,C:0,S:100]
+   0.382 [Audio] Driver:pulseaudio, Device:Default device, Depth:32, Channels:2, Frequency:44100
+   0.523 Info ModManager.cpp:450: FeatureFlag expansion = true
+   0.523 Info ModManager.cpp:450: FeatureFlag expansion-shaders = true
+   0.523 Info ModManager.cpp:450: FeatureFlag freezing = true
+   0.523 Info ModManager.cpp:450: FeatureFlag quality = true
+   0.523 Info ModManager.cpp:450: FeatureFlag rail-bridges = true
+   0.523 Info ModManager.cpp:450: FeatureFlag segmented-units = true
+   0.523 Info ModManager.cpp:450: FeatureFlag space-travel = true
+   0.523 Info ModManager.cpp:450: FeatureFlag spoiling = true
+   0.559 Loading mod core 0.0.0 (data.lua)
+   0.584 Loading mod base 2.1.21 (data.lua)
+   0.828 Loading mod elevated-rails 2.1.21 (data.lua)
+   0.851 Loading mod recycler 2.1.21 (data.lua)
+   0.868 Loading mod water-ford 1.0.0 (data.lua)
+   0.880 Loading mod quality 2.1.21 (data.lua)
+   0.892 Loading mod wf-piling-viewer 1.0.0 (data.lua)
+   0.904 Loading mod space-age 2.1.21 (data.lua)
+   1.190 Loading mod base 2.1.21 (data-updates.lua)
+   1.208 Loading mod recycler 2.1.21 (data-updates.lua)
+   1.237 Loading mod water-ford 1.0.0 (data-updates.lua)
+   1.260 Loading mod space-age 2.1.21 (data-updates.lua)
+   1.425 Checksum for core: 2791302773
+   1.425 Checksum of base: 1834856243
+   1.425 Checksum of elevated-rails: 1429039930
+   1.425 Checksum of recycler: 3293728126
+   1.425 Checksum of water-ford: 3341837077
+   1.425 Checksum of quality: 3330349790
+   1.425 Checksum of wf-piling-viewer: 2359622684
+   1.425 Checksum of space-age: 652283608
+   2.133 Prototype list checksum: 338825348
+   2.218 Loading sounds...
+   2.540 Info PlayerData.cpp:580: Local player-data.json available
+   2.542 Post-data load graphics options: [Light occlusion: YES]
+   2.996 Initial atlas bitmap size is 16384
+   3.014 Created an atlas bitmap (size 16384x16380) [none]
+   3.038 Created an atlas bitmap (size 16384x16384) [none]
+   3.063 Created an atlas bitmap (size 16384x16384) [none]
+   3.064 Created an atlas bitmap (size 16384x14368) [none]
+   3.065 Created an atlas bitmap (size 16384x16032) [low-object]
+   3.067 Created an atlas bitmap (size 16384x16324) [corpse-decay]
+   3.067 Created an atlas bitmap (size 4096x2848) [corpse-decay]
+   3.067 Created an atlas bitmap (size 16384x9332) [decal]
+   3.067 Created an atlas bitmap (size 16384x5956) [none]
+   3.067 Created an atlas bitmap (size 8192x2788) [none]
+   3.067 Created an atlas bitmap (size 16384x3436) [procession-cover, linear-minification, linear-magnification]
+   3.067 Created an atlas bitmap (size 4096x1392) [none]
+   3.067 Created an atlas bitmap (size 1676x79) [not-compressed]
+   3.068 Created an atlas bitmap (size 16384x4368) [mipmap, linear-minification, linear-magnification, linear-mip-level]
+   3.068 Created an atlas bitmap (size 4096x3040) [smoke, mipmap, linear-minification, linear-magnification]
+   3.080 Created an atlas bitmap (size 16384x16368) [terrain, mipmap, linear-minification, linear-mip-level]
+   3.081 Created an atlas bitmap (size 16384x10832) [terrain, mipmap, linear-minification, linear-mip-level]
+   3.081 Created an atlas bitmap (size 8192x6176) [terrain-effect-map, mipmap, linear-minification, linear-mip-level]
+   3.081 Created an atlas bitmap (size 8192x2800) [mipmap]
+   3.081 Created an atlas bitmap (size 8192x4544) [mipmap]
+   3.081 Created an atlas bitmap (size 8192x3408) [mipmap]
+   3.081 Created an atlas bitmap (size 3504x768) [mipmap]
+   3.081 Created an atlas bitmap (size 4096x3152) [mipmap]
+   3.081 Created an atlas bitmap (size 4096x3152) [mipmap]
+   3.081 Created an atlas bitmap (size 4096x3152) [mipmap]
+   3.081 Created an atlas bitmap (size 8192x3904) [icon, not-compressed, mipmap, linear-minification, linear-magnification, linear-mip-level]
+   3.084 Created an atlas bitmap (size 16384x10276) [alpha-mask]
+   3.113 Created an atlas bitmap (size 16384x16384) [shadow, linear-magnification, alpha-mask]
+   3.117 Created an atlas bitmap (size 16384x16324) [shadow, linear-magnification, alpha-mask]
+   3.117 Created an atlas bitmap (size 16384x5216) [shadow, linear-magnification, alpha-mask]
+   3.117 Created an atlas bitmap (size 8192x5216) [shadow, mipmap, linear-magnification, alpha-mask]
+   3.117 Created an atlas bitmap (size 4096x336) [icon-background, not-compressed, mipmap, linear-minification, linear-magnification, linear-mip-level, ]
+   3.117 Loading 3D bitmaps: 20
+   3.129 Texture processor created (4096). GPU accelerated compression Supported: yes, Enabled: yes/yes. Test passed. YCoCgDXT PSNR: 35.83, BC3 PSNR: 33.82
+   3.281 Parallel sprite loader initialized (threads: 15, bitmaps: 8803)
+  30.015 Sprites loaded
+  30.083 Generated mipmaps (4) for atlas [4] of size 16384x16032   
+  30.087 Generated mipmaps (3) for atlas [13] of size 16384x4368   
+  30.094 Generated mipmaps (3) for atlas [14] of size 4096x3040   
+  30.218 Generated mipmaps (3) for atlas [15] of size 16384x16368   
+  30.318 Generated mipmaps (3) for atlas [16] of size 16384x10832   
+  30.338 Generated mipmaps (3) for atlas [17] of size 8192x6176   
+  30.412 Generated mipmaps (3) for atlas [18] of size 8192x2800   
+  30.481 Generated mipmaps (3) for atlas [19] of size 8192x4544   
+  30.488 Generated mipmaps (3) for atlas [20] of size 8192x3408   
+  30.489 Generated mipmaps (3) for atlas [21] of size 3504x768   
+  30.495 Generated mipmaps (3) for atlas [22] of size 4096x3152   
+  30.547 Generated mipmaps (3) for atlas [23] of size 4096x3152   
+  30.553 Generated mipmaps (3) for atlas [24] of size 4096x3152   
+  30.583 Generated mipmaps (5) for atlas [25] of size 8192x3904   
+  30.586 Generated mipmaps (3) for atlas [30] of size 8192x5216   
+  30.599 Custom mipmaps uploaded (3518)
+  30.627 Estimated VRAM usage for textures: 3964.89 MB (Atlases: 3757.34 MB, Textures: 207.56 MB)
+  30.642 Info GlobalContext.cpp:1336: Resetting config.
+  30.736 Factorio initialised
+  30.759 Loading map mods/water-ford/testing/scratch/saves/boards-compare-1.zip: 3298271 bytes.
+  30.772 Loading level.dat: 5387994 bytes.
+  30.772 Info Scenario.cpp:152: Map version 2.1.21-11
+  30.881 Blueprint storage "blueprint-storage-2.dat" was not found, trying to load previous version storage "blueprint-storage.dat"
+  30.881 Loading script.dat: 60 bytes.
+  30.882 Checksum for script __level__/control.lua: 2058512579
+  30.884 Checksum for script __water-ford__/control.lua: 2344166520
+  45.338 Info AppManager.cpp:335: Saving to _autosave3 (blocking).
+  45.573 Info AppManagerStates.cpp:2131: Saving finished
+ 146.540 Info AppManagerStates.cpp:2131: Saving finished
+ 147.796 Info AppManager.cpp:364: Deleting active scenario.
+ 149.082 Quitting: user-quit.
+ 149.319 Goodbye

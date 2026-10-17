@@ -856,3 +856,8 @@ y-axis flipped; sites are at rows (−6−ty−sw)*128. The "identical 2x2
 variants" and flat-L51 sheets were VOID crops (world 0.55*0.06 -> sRGB 52).
 Wait: to see sizes in-game the maintainer reloads; big-size appearance under
 player-stamped patches is engine-side behavior to verify by eye.
+
+### round-10: dev game relaunched for the size-ladder check
+Launched boards-compare-1.zip (20:07 paint state) with the size-ladder mod
+pending the maintainer's in-game verdict on 2x2/4x4 appearance under player
+stamping; then compact per maintainer order.
