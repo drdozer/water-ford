@@ -1,0 +1,23 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1 (unreleased, dev tiles)
+Date: 17. 10. 2026
+  Changes:
+    - Six map-editor-only compare tiles: boards-land-a/b/c (wooden boards on
+      land) and boards-ford-a/b/c (the boards as ford deck under the animated
+      water veil). Three sprite depths each (A 32px @1.0, B 64px @0.5,
+      C 128px @0.25 - all render 32 world px) for picking the sprite basis.
+      Locked look: Blender boards, ring-grain rf~8 + pores + deep winter line.
+      No items, recipes, or terrain autoplace.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 13. 10. 2026
+  Changes:
+    - Water Ford: a walkable, place-on-water tile - the deck sits under animated
+      water with wooden pilings semi-submerged at the rims; ships still cross.
+    - Without Pyanodon Alien Life: unlocked by the concrete tech, crafted from
+      4 wood, 1 iron stick, 50 stone.
+    - With Pyanodon Alien Life: unlocked after creosote, crafted from 2
+      treated-wood, 1 iron-stick, 8 bolts, 1 log, 200 gravel (bed ballast).
+    - Recipes craft 1 ford per 10s; fords are intentionally scarce.
+    - Fords can only be placed on water (enforced at runtime; illegal
+      placements are reverted and refunded).

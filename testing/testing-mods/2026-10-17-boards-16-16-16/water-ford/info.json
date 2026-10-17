@@ -1,0 +1,15 @@
+{
+  "name": "water-ford",
+  "version": "1.0.0",
+  "title": "Water Ford",
+  "author": "drdozer",
+  "factorio_version": "2.1",
+  "description": "A walkable ford tile over water: land caravans can cross, wooden pilings stand semi-submerged in animated water, and ships still sail over it for Cargo Ships waterways.",
+  "dependencies": [
+    "base >= 2.1.0",
+    "? cargo-ships >= 2.1.8",
+    "? pyalienlife >= 3.1.8"
+  ],
+  "homepage": "https://github.com/drdozer/water-ford",
+  "contact": "https://github.com/drdozer/water-ford/issues"
+}

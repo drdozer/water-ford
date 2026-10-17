@@ -10,9 +10,6 @@
 
 local ford_names = {
   ["water-ford"] = true,
-  ["boards-ford-a"] = true,
-  ["boards-ford-b"] = true,
-  ["boards-ford-c"] = true,
 }
 
 local not_water_names = {["out-of-map"] = true, ["empty-space"] = true}

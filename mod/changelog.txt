@@ -2,6 +2,14 @@
 Version: 1.0.1 (unreleased, dev tiles)
 Date: 17. 10. 2026
   Changes:
+    - Promotion pass: the real water-ford tile is unfrozen onto the boards-ford
+      ladder (16/16/16 variants at 1x1/2x2/4x4; C-depth 128px sprites at 0.25
+      scale, probabilities 1 on the big sizes).
+    - Land family collapsed to one tileset: boards-land (was the
+      boards-land-a/b/c compare set), with item and recipe (2 wood +
+      1 iron-stick -> 4, enabled; recipes get a revisit next).
+    - Retired the dev compare tiles, items, recipes, locale entries and stale
+      A/B sheets; planks.png deck art demoted from the live tile.
     - Six map-editor-only compare tiles: boards-land-a/b/c (wooden boards on
       land) and boards-ford-a/b/c (the boards as ford deck under the animated
       water veil). Three sprite depths each (A 32px @1.0, B 64px @0.5,

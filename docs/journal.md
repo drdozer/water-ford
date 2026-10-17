@@ -908,3 +908,29 @@ kc2/kc3 bands + crown-continued) after two misfired strikes (strip at wrong
 x; strip base off by one quarter causing z-fight rows at L85). Final QA:
 16/16/16 distinct; big-tile perimeter max 26.5 (accepted wide-band level);
 no p10<60 anywhere; 4x4 casts spread 109-126 mean L.
+
+### round-16: promotion pass - ford unfrozen, land collapsed (snapshot first)
+Question answered plainly: every edit all along went to the REAL mod at
+mods/water-ford/mod/; testing/scratch is only a launcher whose mods dir is a
+SYMLINK to the real mod, so scratch sessions always ran the working files.
+Per maintainer order, new structure testing/testing-mods/<stamp>/water-ford/
+now holds dated self-contained copies (README.md explains the scheme and the
+side-by-side rename rule). Snapshot 2026-10-17-boards-16-16-16/ = full 14M
+pre-surgery copy (old deck art, six dev compare tilesets, 16/16/16 C ladder).
+Then the surgery on the real mod:
+- water-ford tile UNFROZEN: variants.main planks.png 512x64@0.5 ->
+  boards-ford.png / -2x2 / -4x4 ladder (16/16/16, scale 0.25, y=0,
+  probabilities 1 on the big two); piling bank, W3 veil, is_foundation,
+  minable, water registration all untouched.
+- Land family collapsed to boards-land (was boards-land-c): sheets renamed
+  boards-{land,ford}{,-2x2,-4x4}.png (git mv); tile = concrete clone with
+  autoplace nil, walking 1.1, map_color, minable->boards-land + the 16/16/16
+  ladder; item keeps the brick land pattern place_as_tile (refuses water);
+  recipe 2 wood + 1 iron-stick -> 4, enabled (economics revisited next),
+  localised_name pypp guard mirroring the water-ford recipe.
+- Retired: boards-{land,ford}-{a,b,c} tiles/items/recipes/locale,
+  boards-ford-icon.png, A/B sheets. control.lua revert guard = water-ford
+  only. planks.png stays on disk unreferenced (docs anchor it).
+- Headless --create validation clean (check7); dev game relaunched on
+  boards-compare-2 (old dev-tile placements in the save clear to water on
+  load - repaint with boards-land / water-ford).

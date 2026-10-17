@@ -1006,7 +1006,7 @@
   "last-played": 
   {
     "type": "single-player",
-    "save-name": "boards-compare-2"
+    "save-name": "boards-compare-3"
   },
   "service-username": "",
   "service-token": "",
@@ -1183,7 +1183,9 @@
     "nauvis_lab",
     "nauvis_oil_pumpjacks",
     "gleba_farm_attack",
-    "nauvis_forest_fire"
+    "nauvis_forest_fire",
+    "nauvis_river_bridge",
+    "gleba_grotto"
   ],
-  "ticks-since-last-tip-shown": 1350728
+  "ticks-since-last-tip-shown": 1355591
 }
