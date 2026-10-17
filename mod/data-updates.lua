@@ -140,13 +140,15 @@ end
 
 local dev_scale = {a = 1.0, b = 0.5, c = 0.25}
 
--- LAND: gravel clone (concrete precedent for is_foundation absent, D3).
+-- LAND: concrete clone — the is_foundation-absent precedent named in D3
+-- (gravel no longer exists in 2.1's terrain rework: first bake-save caught it).
 local function dev_land(letter)
-  local lt = table.deepcopy(data.raw.tile["gravel"])
+  local lt = table.deepcopy(data.raw.tile["concrete"])
   lt.name = "boards-land-" .. letter
   lt.order = "zz[boards-dev]-land-" .. letter
   lt.autoplace = nil        -- dev-only: never appears in generated terrain
   lt.minable = nil          -- no item backside; editor placement only
+  lt.walking_speed_modifier = 1.1  -- D3 band 1.0-1.1 (concrete's 1.4 is too fast)
   lt.map_color = {r = 140, g = 112, b = 78}
   lt.variants = dev_variants("land", letter, dev_scale[letter])
   data:extend{lt}

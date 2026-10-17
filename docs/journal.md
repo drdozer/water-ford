@@ -785,3 +785,15 @@ tiles per row at 32 world px; ford rows show a STATIC W3 veil simulation
 px'=0.75px+0.25(51,51,51) - the real veil is animated). gwenview open.
 Next: maintainer paints patches in the map editor, picks the best set;
 high-quality sprite follows; deck drop-in scale decision still maintainer's.
+
+### round-6b: in-game launch with the dev tiles
+bake.sh --stages save,view --seed 4242: FIRST RUN FAILED — data.raw.tile
+["gravel"] is nil: gravel does not exist in 2.1 (terrain rework removed it;
+D3's "gravel precedent" reasoning was written against 1.1-era tiles). Fixed:
+land dev tiles clone **concrete** (is_foundation absent, artificial-tiles
+subgroup, tile_collision_masks.ground(), layer 13) + walking_speed_modifier
+1.1 (D3 band; concrete's 1.4 overridden). Second run: save regenerated,
+HEADLESS LOAD OK (validates the whole dev block incl. 6 new prototypes),
+VIEW WINDOW ALIVE on :0 — water-ford + wf-piling-viewer loaded, log clean.
+Launch recipe (RESUME): bake.sh save,view; scratch mods symlink the repo mod
+so edits flow in without redeploy.
