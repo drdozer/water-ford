@@ -1040,3 +1040,41 @@ it; pixels are neutral grey - vanilla does NOT water-paint it), mask (x2048)
 - Ledger: 27.7MiB RGBA - vanilla-equal (deliberate clone). Tightening the
   canvas waits until row semantics are provable (v2 lesson: the inter-band
   gaps may be load-bearing).
+
+## 2026-10-18 — land trim + wooden three-way corners (round-21)
+Audit round-20 closed: vanilla splits land edges into two systems. The water
+edge = tile.transitions (round-20's bumper). The LAND-to-LAND edge =
+concrete.variants.transition, piece families inner-corner/outer-corner/side/
+u/o (square 64x64 cells, counts 16/8/16/4/4, 4 rotation rows, o: 1 row). The
+promotion pass had cleared it (empty_transitions=true, transition=nil), so
+boards vs grass rendered as a hard cut = the queued TRIM.
+- bake-land-trim.py: 10 sheets (5 families + mask twins), geometry clones of
+  vanilla concrete-{piece}.png (dimensions inner 1024x256 / outer 512x256 /
+  side 1024x256 / u 256x256 / o 256x64, perfectly packed); overlay art
+  wood-remapped stone->boards ramp (p2..p98 anchors), masks vanilla bits
+  passthrough. Wired as land variants.transition {overlay_layout, mask_layout};
+  empty_transitions DROPPED. First patch pass failed on a non-unique anchor
+  (the ford tile carries the same empty_transitions pattern) -> anchor on the
+  boards-land-4x4 line.
+- Three-way corners: maintainer saw STONE at grass|water|ford corners beside
+  boards - the inherited concrete between-set (transitions_between_transitions
+  fires where two transition-bearing tiles meet). bake-land-between.py =
+  geometry clone of vanilla water-transitions/concrete-transitions.png
+  (3072x2368, counts 3/3/3/1/0, band y-fields and gaps verbatim per the v2
+  lesson) -> boards-land-between.png; overlay+background wood-painted, mask
+  passthrough; wired as land between-set entry 1 (default<->water groups,
+  background_enabled + layer offsets + vanilla concrete-mask effect map),
+  entries 2+3 = vanilla out-of-map verbatim. check12/check13 clean.
+- Empirical: the variant trim does NOT fire at water boundaries (south lip
+  identical trim on/off, warm 0.96 both) -> no double edge at the bumper; the
+  water edge stays exactly as approved.
+- Verification went sideways first: interactive console driving degraded
+  (stray keys drove game UIs; maintainer walked the game back to player mode).
+  HARDENED console law now script-shaped in tools/paper-pipeline/
+  console-help.sh: backtick opens the console, "/c " + command, nothing else
+  ever typed; artifacts on disk are the only truth. Final cycle (fresh
+  relaunch, paint grass x -22..-14 y -18..-3 + boards x -13..-4 y -14..-7,
+  capture {center -10,-10.5}): boards 0.94 warm (all sessions), grass|boards
+  boundary column warm 0.70 (trim off) -> 0.77 (final), matching the approved
+  trim-on capture (0.80). Maintainer eye-approved: "That looks great. Bake
+  this into the mod and commit."
