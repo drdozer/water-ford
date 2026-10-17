@@ -26,6 +26,8 @@ References: `docs/blender-factory-laws.md` (binding), `docs/ford-knobs.md`,
 | R7 | W3 response check: simulate the committed water mix on candidate stone swatches (in-sprite ballast lead option) — do mid-light pebbles survive the mix with enough contrast? | DONE (model-approx; bench ABS is the final verdict) |
 | R8 | What board content, if any, lives in the pilings transition frames today (P1 composite re-derivation scope, ticket c3)? | DONE (+ decision point D2) |
 | R9 | Pipeline shape for boards: where boards stages slot into bake.sh stages (strips/sheet/deploy/save/view), what --twice covers, deploy mechanics | DONE (enough for planning; deploy mechanics re-checked at build) |
+| R10 | Visual-model / tilering lattice: how do varied board lengths+widths, end bolts and mid-span bows line up at tiling edges — vanilla precedents measured, schemes derived | DONE (scheme choice = maintainer, see S1) |
+| R11 | bound_decoratives semantics for the doodad fallback (upgrades R4/D4) | FOUND (runtime probe still open if fallback is pursued) |
 
 ## Findings
 
@@ -233,14 +235,121 @@ sheets into `mod/graphics` (exact deploy mechanics re-checked at build).
   must come entirely from the boards spec (R1 anchors + shared lighting),
   which is exactly what the ticket's "same visual language" clause wants.
 
+### R10 — the tiling lattice: what "the standard way" is, measured
+
+Motivation (maintainer, ticket chat): boards raising a little at the middle,
+bolted down at the ends (2 bolts per end), up to quarter-board-width lift at
+the middle, boards of different lengths AND widths — "what is the standard way
+to ratio this stuff out so that the pattern lines up at tiling edges?"
+
+Measured precedents:
+
+- **space-platform-1x1.png** (1024×64; 16 size-1 variants — the SA platform
+  floor, a bolted-panel look): butt joints at ARBITRARY interior x per variant
+  (patterns (16,54)/(41,)/(16,40,54,59)/()—), horizontal joints rare, and the
+  **edge columns are tone-neutral: L at x=0 vs x=63 differs by 0–3, and
+  across all 16 variants the edge columns sit within ±4 of each other**.
+  Wube's lattice rule: tiles butt INVISIBLY by tone-continuation — no joints,
+  no edge treatment at the cell boundary.
+- **space-platform-2x2.png** (2048×128; 16 count, probability 0.75): joints
+  cross the internal 64px boundary freely (seam at x=80/109 inside a 128px
+  window) — inside a rich window the layout is unconstrained because the
+  engine guarantees the window's cells render that one sprite. The window's
+  OUTER edges follow the same tone-neutral rule (Δ≤3).
+- **Our inherited planks.png**: fixed full-width horizontal seam lattice
+  (rows 15/31/47, variant-invariant), interior butt joints, near-uniform
+  per-variant tones (edge x-columns L105–113, imbalance 0.0–0.9), and a
+  **variant-independent bottom edge strip: L(y=0..1)=113 light, L(y=62..63)=
+  78 dark, while courses are uniform L111–112** — i.e., every N|S tile
+  boundary carries a consistent full-width light-over-dark step and every
+  E|W boundary relies on tone continuation. Variant-invariant edge furniture
+  + tone-neutral continuation coexist in one art.
+- `concrete.png` (4096×512) turned out to be the masked-transition band sheet,
+  not a main-sprite lattice precedent — no signal taken from it.
+
+The distilled standard (the one rule that makes all of it work):
+
+> **Pin the boundary furniture, free the interiors.** Any element crossing a
+> cell boundary must find, ON BOTH SIDES, content that is variant-invariant
+> (tone, topography) — or the element must END at the boundary identically in
+> every variant. Cuts/bolts should land on a quanta grid so that the
+> construction reads consistently across random neighbor pairs. Rich sizes
+> free internal layout entirely (engine guarantee); their outer edges obey
+> the same rule.
+
+For OUR boards — the wave changes the calculus. Three schemes, all legal:
+
+| Scheme | Edges | Lengths | Widths (courses) | Waves (bows) | Variety |
+|---|---|---|---|---|---|
+| **A — bolted bays (rec)** | every course ENDS at the cell edge (cap strip + 2 bolts), variant-invariant | quanta quanta = 16px sheet (8 game px, the inherited course height); boards k·16, k∈{2,3,4} typical, k=1 occasional; joints+bolts ONLY at quanta columns | FREE per variant (integer px, full-width seams) | per-BOARD: apex at own mid, A ≤ ¼·board width; profile h = A·sin²(π(x−x₀)/L) — zero value AND slope at ends | maximal: per-variant lengths, widths, waves, joints, bolts |
+| B — continuation illusion (inherited/platform style) | crossing rows: tone + wave at edge columns variant-INVARIANT; lattice y-rows frozen global (15/31/47) | free interior joints (quanta optional) | LATTICE FROZEN globally | per-ROW-fixed (period 64), amplitudes fixed per row | grain/joint tone only; "some boards lift" becomes "some rows lift" |
+| C — hybrid | per-row policy fixed GLOBALLY across variants (e.g. rows 1&3 crossing-pinned, rows 0&2 short-free); per-variant y-lattices do NOT mix with crossing rows (overlapping edge bands break tone matching) | mixed | pinned globally if any crossing rows | pinned rows: fixed waves; free rows: per-boards | good, at the cost of global row discipline |
+
+Key piece of load-bearing math: **h = A·sin²(π(x−x₀)/L) has zero value and
+zero slope at both ends** — that is why scheme A permits per-variant
+amplitudes (each board's wave lives entirely inside its own cell-span and
+meets every boundary at h=0, h′=0 on both sides). Under B, per-variant wave
+freedom is impossible because a crossing board's wave value at the boundary
+would have to match a random neighbor's.
+
+Consequence of bolts-at-ends (explicit): under A, EVERY tile boundary is a
+bolted splice (4 bolt heads around it) — the ford reads as 1-tile boards
+bolted edge-to-edge; a visible rhythm change vs the inherited art's invisible
+E|W joins. Under B, boundaries stay quiet and bolts appear only at interior
+joints. Scheme C gives both looks per row. The bolt heads: 2 per end spaced
+across the course width (≈⅓/⅔ points), 2–3px heads on the sheet, the R2
+addendum grey family (iron-stick L72–120 / bolts L104–167), tiny east shadow
+under the west key.
+
+The lift cap: ¼ board width ⇒ ≤4px on the sheet (2 game px) for a 16px
+course; wider courses (18–20px, scheme A width freedom) lift proportionally
+more. Wave shading under the west key: lit west flank brightens (+), east
+flank darkens toward the gap tone but never below the L43 dark floor; the
+lifted gap-side shadow widens/softens toward mid-span (rendered in-scene —
+law 3, no painted detail).
+
+In-sprite ballast interplay (D1 refined): the widened seams (2–4px) carry the
+pebble runs; quanta-pitched joints give the pebbles consistent bays. Ballast
+and bolts BOTH at boundaries could crowd the cap strip — if scheme A, put the
+bolt pair ON the cap and pebbles in the interior seam, or vice versa; gwenview
+decides.
+
+### R11 — bound_decoratives: the doodad fallback becomes engine-native
+
+Discovered while mining the SA platform tile as a rich-tile precedent:
+`space-platform-foundation` binds decoration sprites to the TILE PROTOTYPE
+itself (`bound_decoratives = {"space-platform-decorative-pipes-2x1",
+... "-4x4", "-2x2", "-1x1", "-tiny"}`; SA tiles.lua L260+). The prototype
+API confirms the field: `TilePrototype.bound_decoratives: DecorativeID |
+array<DecorativeID>` (optional). The bound decorations themselves are
+`optimized-decorative` prototypes with:
+
+- `pictures = spritesheet_variations(51, 10, {...})` — up to 510 variations
+  in ONE sheet (engine picks randomly — the organic composition);
+- `target_count = 100` (engine density target), `minimal_separation = 0.19`
+  (packing), small `collision_box`, explicit `render_layer = render_layer[7]`.
+
+⇒ The maintainer's fallback (tiles without ballast + separately-rendered
+ballast sprites, composed by the engine at random over the tile) is
+**prototype-native**: tile gets `bound_decoratives = {ballast-pebbles-...}`;
+NO control.lua scripting — the D4 "invariant-2 exemption" problem mostly
+dissolves. Open runtime questions IF the fallback is pursued: do bound
+decoratives fire on `place_as_tile` builds (platform foundation is a
+place_as_tile, so expected yes); do they render above or below the ford's
+water effect (dry-pebble-over-wet-deck risk; `render_layer` chosen so they
+read as on-tile); do they interact with the ford's transitions stamps
+(z-order vs P1). A bench probe settles all three in one scene. Status:
+fallback stays behind in-sprite ballast per maintainer lead, but it is no
+longer "needs an exemption" — it is "needs a runtime probe".
+
 ## Decision points for the maintainer (collected)
 
 | ID | Point | Default I would take |
 |---|---|---|
-| D1 | Inherited seams are 1px — too thin to read pebbles in. Re-interpret with wider visual seams (2–4px) carrying ballast stone runs at fixed rows | widen to ≈3px, same anchor rows; gwenview gate |
+| D1 | Tiling lattice scheme (R10/S1): A bolted bays / B continuation illusion / C hybrid per-row | A — quanta 16px, per-variant lengths+widths+waves, bolted splices at every cell edge; seam widening 2–4px for pebble bays; gwenview gate |
 | D2 | c3 scope: no board content exists in transition pieces; confirm P1 composite re-derivation is NOT required unless the flat-water fill/pole art changes | treat c3 as satisfied-by-evidence |
 | D3 | Land tile registration: is_foundation absent (concrete precedent), decorative_removal_probability 1.0, map_color warm plank, walking_speed_modifier 1.0–1.1 | as proposed in R5 table |
-| D4 | If in-sprite ballast fails gwenview, doodad fallback needs a scoped control.lua exemption (invariant 2) + accepts save-cost and a dry-over-wet look risk | in-sprite first (maintainer's own lead) |
+| D4 | Fallback composition for ballast: now prototype-native `bound_decoratives` (R11) — prototype-only, no control.lua; still needs the render-layer/water-effect runtime probe if pursued | in-sprite first (maintainer's own lead); fallback upgraded |
 | D5 | Rich variants for the FORD would require moving the frozen `variants.main` config — out of this round's drop-in law | rich = land tile only, stretch |
 | D6 | Land sheet filename + count (proposal: `boards-land.png`, 8 size-1 variants mirroring the deck's rhythm; rich sizes as stretch) | as proposed |
 
@@ -255,3 +364,10 @@ from this doc + the scripts.
   option, doodad composition is the fallback if in-sprite can't be made nice;
   land tile = plain single-cell flooring first, rich tiles are a stretch goal
   and may apply to the ford too).
+- 2026-10-17 — same session, after the maintainer raised the visual model:
+  boards rise at the middle, 2 bolts per end, varied lengths/widths; asked for
+  the standard tiling-ratio scheme. Answered with R10 (measured precedents:
+  SA platform floor's tone-neutral edges; inherited art's fixed seam lattice +
+  tone continuation + bottom edge strip) and scheme table S1/A-B-C; plus R11:
+  `bound_decoratives` discovered — the doodad fallback is prototype-native
+  (D4 amended; runtime probe listed).
