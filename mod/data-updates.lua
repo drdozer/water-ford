@@ -232,13 +232,17 @@ end
 -- splices; perimeter courses stay lattice-locked and x-edges tone-pinned.
 local function big_variants(fam, scale)
   local b = "__water-ford__/graphics/boards-" .. fam .. "-c"
+  -- 2026-10-17 maintainer order: 16/16/16 variants at 1:1:1 (unbiased gates,
+  -- probabilities 1 = vanilla dirt/desert style: the map-noise decides region
+  -- format, no per-size penalty). 1x1 sheet = 2048x128 (16 in a row,
+  -- line_length 16 = vanilla); 2x2 = 1024x1024 (4 rows of 4); 4x4 sheet =
+  -- 2048x2048 (4 rows of 4). 4x4/2x2 sites built for per-variant diversity:
+  -- 8 interior course patterns round-robin x per-site shuffled tone casts x
+  -- varied long-run/splice rates (frames LAT_BIG3/LAT_BIG4 + LAT_FIX).
   return {
-    {picture = b .. ".png", count = 8, size = 1, scale = scale},
-    -- 2x2: 12 variants, 3 rows of 4 (frame2 band built 2026-10-17 to kill the
-    -- repetition the maintainer saw when stamping large floors)
-    {picture = b .. "-2x2.png", count = 12, size = 2, y = 0, scale = scale, probability = 0.3, line_length = 4},
-    -- 4x4: 4 variants, 2 rows of 2
-    {picture = b .. "-4x4.png", count = 4, size = 4, y = 0, scale = scale, probability = 0.1, line_length = 2},
+    {picture = b .. ".png", count = 16, size = 1, y = 0, scale = scale, line_length = 16},
+    {picture = b .. "-2x2.png", count = 16, size = 2, y = 0, scale = scale, probability = 1, line_length = 4},
+    {picture = b .. "-4x4.png", count = 16, size = 4, y = 0, scale = scale, probability = 1, line_length = 4},
   }
 end
 data.raw.tile["boards-land-c"].variants.main = big_variants("land", 0.25)

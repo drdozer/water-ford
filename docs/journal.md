@@ -888,3 +888,23 @@ perimeter vs 1x1 pins mean 8.1/9.3 (= the accepted wide-band flank cost).
 Variants rewired count 12/4, probabilities unchanged (0.3/0.1). Template
 y-defaults (128/320) never applied to our literal variant tables - they
 bypass tile_variations_template, engine default y=0.
+
+### round-13: 16/16/16 ladder at 1:1:1 (maintainer order after vanilla audit)
+Vanilla audit: terrain tiles run 16 variants per size with probabilities
+0.75-1.0 (dirt/desert p1/p1, sand even no-1x1 and 8x8; our 0.6/0.3/0.1 with
+8/12/4 was under both counts and big-format presence). Order: 16/16/16 at
+1:1:1. Built LAT_BIG3 (9x 4x4 gap-free 3-wide, frame [0,12]x[-42,-30]) and
+LAT_BIG4 (3x 4x4 + 4x 2x2, frame [0,12]x[-54,-42]) with DIVERSITY ENGINE:
+8 interior course patterns round-robin (4 new sum-3.5 patterns), per-site
+shuffled tone weights (distinct color casts), varied long-run (0.45/0.65/
+0.85) and splice (0.25/0.4/0.55) rates, wider crown amp range. 1x1: 8 more
+cells sliced from the existing atlas (16 rows of the same render). Sheets:
+2048x128 / 1024x1024 / 2048x2048, y=0, line_lengths 16/4/4, probabilities
+1/1 (unbiased). BUGS caught by perimeter QA on the way: INTERIOR4[3] =
+[0.25]*12 sums 3.0 not 3.5 -> 0.5 BU VOID at two new 4x4 sites' north
+((0,-38) and (8,-54) via round-robin; old sites lucky, verified by
+deterministic seed replay); fixed additively (LAT_FIX, appended [3.5,4.0)
+kc2/kc3 bands + crown-continued) after two misfired strikes (strip at wrong
+x; strip base off by one quarter causing z-fight rows at L85). Final QA:
+16/16/16 distinct; big-tile perimeter max 26.5 (accepted wide-band level);
+no p10<60 anywhere; 4x4 casts spread 109-126 mean L.

@@ -1181,7 +1181,9 @@
     "nauvis_tank_building",
     "platform_science",
     "nauvis_lab",
-    "nauvis_oil_pumpjacks"
+    "nauvis_oil_pumpjacks",
+    "gleba_farm_attack",
+    "nauvis_forest_fire"
   ],
-  "ticks-since-last-tip-shown": 1337305
+  "ticks-since-last-tip-shown": 1350728
 }
