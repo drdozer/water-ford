@@ -707,3 +707,50 @@ seed -> pith offsets cx/cy + ringfreq 8-16 + seed) evaluated as rings
 pool color; Cornell "board function" precedent + Blender per-face-mapping
 attr precedent + shader.gallery ring parameters. Menu format kept.
 Then compact; carry on per maintainer order.
+
+### round-5 build (post-compact): audit + volumetric grain + bolt spacing
+
+Audit (full data-model sweep, both scenes): mesh data CLEAN — every face attr
+populated/counts exact, no NaN/zero-colors, material indices all in range,
+normals sampled fine, transforms identity, spans ±12, KEY cutoff 0.0, world
+single Background 0.55@0.06, FLOOR 96ss/Standard/no-denoise, M_PLANK fresh
+6-node chain fully linked (Wave->Ramp->Mix->BaseColor). CLEANED: 24
+GRAIN_LAB sweep objects + GRAIN_LAB collection + 10 lab materials
+(M_G_G0..G7, CLONE) + M_PLANK_OLD (corrupt tree), 42 orphans purged; DRIFT
+fix: LAND samples 24 -> 96 (builder default would have bitten the land
+round). Kept LAB_CAM (harmless). Scene now 11 objects, 4 materials.
+
+Bolt spacing (approved 1/4..3/4): moved live furniture bolts: separation
+x1.5, midpoint kept = pairs at 1/4 & 3/4 of board width; ZA 1540 pairs,
+ZB 1140, ZC 1242, 0 orphans, all units matched; 13 edge-trim pairs at y~+12
+(3px-apart strip hardware) detected and REVERTED (they are not board-course
+bolts). Flag bolts_half_done set; ZB check: 930+ pairs now in
+[w/2 for w 16..24px].
+
+Volumetric grain (R12) BUILT:
+- new FACE attrs on the 3 boards meshes: plank_cx/plank_cy (per-plank pith
+  position: x = plank mid + (-0.6..+0.6), y = row center ± (2..6), 10%
+  near-pith) and plank_ringfreq (8..16/unit), all hashed deterministically
+  from plank_seed (sin-hash, salts 1..5); grouping key (seed,origin,len) ->
+  1455/1234/1241 planks per zone.
+- M_PLANK rebuilt fresh: 40 nodes / 44 links, FULL link list printed and
+  verified before rendering (silent-disconnect class pre-empted): rings =
+  |P-pith| (+warp 0.12, noise 2.5) x ringfreq x gain + seed phase 13.77 ->
+  WRAP(0,1) -> ramp [pale 1.10 -> latewood 0.80 (0.72..0.86) -> ink line
+  0.45 @0.94 -> recovery] -> x fibre (noise (3,18) amp 0.24) -> x pores
+  (GT knob 2.0=off) -> x plank_rgb -> Base Color. Attribute float attrs read
+  via 'Fac' socket (NOT 'Value' — 4.3); CombineXYZ output index 0; beware
+  Math hidden inputs[2] when setting MULTIPLY constants.
+
+Menu v4 rendered (mv4-control + density vf08/12/16 + pores + deep, 1024x128
+window of the real floor, FLOOR_CAM ortho 16): previews grain-menu-v4.png +
+mv4-sbs-4x.png + mv4-vf12-4x.png; gwenview open on :0.
+Measures: grain vertical activity dV: control 9.17 -> vf08 11.58, vf12
+12.15, vf16 12.48, deep 13.13 (+26..43%); ring lines/board 2-4 (design,
+board widths 12-24px vs ring period 4-8px); levels stable (window mean ~117,
+p1 54); DEFAULT live config left = vf12 (gain 1.0, STD ramp, pores off).
+Column-profile inter-plank correlation ~0 in both control and volumetric —
+metric too coarse to separate; independence to be judged by eye (rings
+breaking at plank boundaries) on the 4x sheet.
+Next: maintainer picks density/depth option; then base-floor render v9 +
+full pipeline + in-game tiles at three scales.
