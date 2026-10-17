@@ -357,6 +357,60 @@ Scratch/provenance: `.cache/boards-research/` — extract-planks.py,
 extract-r1b-r2.py, planks-extract.json, swatches/*.png. All regeneration is
 from this doc + the scripts.
 
+## Blender phase plan (S2) — agreed direction, pre-session
+
+Maintainer direction (2026-10-17, ticket chat): schemes A/B/C are to be
+**explored visually, not decided now** — build the MECHANISMS for as much of
+it as possible and then judge by eye. Big-floor approach approved: model a
+large continuous floor in Blender, render it out at the per-tile pixel depth,
+and slice spritesheet windows from it.
+
+Integration law (agent, answered): slicing is legal as a **law-3 pure
+arrangement stage** (copy 64px windows 1:1 out of the big render, per-cell
+bit-equal verification), and random-neighbor tiling is solved by construction
+if the model keeps the variant-invariant boundary furniture ON the 64px grid
+lines (scheme-A splices and/or pinned edge bands). The big floor can carry
+side-by-side zones demonstrating A / B / C plus ballast-on/off and land-deco
+on/off, so one render session produces the exploration contact sheet.
+
+Factory shape (ford-boards.blend, sibling of ford-posts.blend; law 1):
+
+- Scenes: `FLOOR` (deck/water look) and `LAND` (final-look) sharing the board
+  geometry collections; per-world content via collection inclusion (committed
+  state, nothing toggled at render time).
+- Toggleable mechanism collections: `BALLAST` (water-only pebble group),
+  `TRIM` (land-only group TBD by look), plus the shared board/base furniture.
+- Staging: geometry at the origin; light rig per R6 exactly (POINT KEY
+  (−42,0,42) @ 40000 + world 0.55 @ 0.06).
+- Big floor: a continuous deck plane spanning an M×N tile grid at origin
+  (initial target 24×24 tiles ⇒ 1536² px at 64px/tile depth), boards of
+  varied lengths/widths per scheme zones, bows, bolts, end caps.
+- Render depth: **64px per tile** (2× art; engine `scale = 0.5`) — ortho
+  camera top-down over the floor.
+- Slice stage (later, in the bake chain): law-3 arrangement copying windows
+  into the 512×64 drop-in sheet (8/row) and contact sheets for review;
+  `--twice` bit-compare as in bake.sh.
+- First build (this session): the **base wooden floor model** — shared
+  boards/base furniture/bows/bolts/seams WITHOUT ballast or trim; the toggle
+  collections exist but stay disabled. Previews rendered to
+  `.cache/boards-research/previews/` for the maintainer's gwenview.
+
+Session mechanics (verified 2026-10-17): `mcp-for-blender` bridge is running;
+the `blender_mcp` addon is installed in Blender 4.3.2's scripts; DISPLAY=:0.
+Launch: start Blender on :0 in the background, then `get_addon_status` and
+drive the build via `execute_blender_code` (live visible session — law 2),
+save-as to `mods/water-ford/blender/ford-boards.blend`. Scene facts verified
+via `get_scene_info` / bpy queries (the agent cannot view images — numeric
+verification + maintainer gwenview).
+
+Decision-point amendments:
+
+- D1 → scheme choice is EXPLORATION (zones in the big floor; gwenview), not a
+  pre-decision.
+- D4 → doodad fallback = prototype-native `bound_decoratives` (R11); bench
+  probe only if pursued.
+- D2, D5, D6 unchanged.
+
 ## Session log
 
 - 2026-10-17 — opened doc during the research phase kickoff (agent session

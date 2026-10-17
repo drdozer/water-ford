@@ -549,3 +549,19 @@ contain no board content (docstring + numeric) -> c3 composite re-derivation
 moot unless fill/poles change (D2). R9: bake.sh stage/--twice shape recorded.
 Scratch: .cache/boards-research/ (extract scripts + swatches + JSON).
 Commit: beac4c4 (findings), 46b2fb7 (register).
+
+## 2026-10-17 — boards visual-model round + spec
+Maintainer discussion: bows at mid-span (≤¼ board width), 2 bolts per end,
+varied lengths/widths — asked for the standard tiling-ratio scheme. Answered
+with measured precedents (SA platform floor tone-neutral edges; inherited
+art's fixed seam lattice + tone continuation + bottom edge strip) → rule:
+"pin the boundary furniture, free the interiors" (boards-research R10).
+Scheme table A/B/C; maintainer: explore visually, don't pre-decide; approved
+big-floor render + per-tile slicing (law-3 arrangement), 64px/tile depth.
+R11: `bound_decoratives` discovered — doodad fallback is prototype-native
+(D4 amended; bench probe only if pursued).
+Deliverable (a) v1 committed: docs/boards-visual-language.md (anchors, tiling
+law, palettes, rig, engine constraints — v1 pre-exploration).
+Next: S2 Blender phase per boards-research.md §Blender phase plan — launch
+visible Blender on :0 (mcp-for-blender bridge verified running), build the
+base wooden floor model (no ballast/trim), preview renders for gwenview.
