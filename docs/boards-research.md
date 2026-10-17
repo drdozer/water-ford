@@ -487,3 +487,43 @@ Also confirmed this round: wider bolt spacing (1/4-1/2 apart, away from
 edges) = improvement; goes into the next full re-bake. And per maintainer:
 another full sweep of the scene data model audit to catch construction
 issues like the silent-disconnect class.
+
+### R13 — the tileable-atlas law (measured + maintainer conventions)
+
+Maintainer diagnosis (2026-10-17): the game stamps 1x1 atlas squares in
+arbitrary variant order; our naive big-floor slices have unpinned edges ->
+collage. Decisions: commit C depth (128px sprite @ scale 0.25); minimal 1x1
+tileset first, then 2x2 and "3x3" supplements; bigger sizes need more
+variants to avoid repetition.
+
+ENGINE FACTS (verified against installed 2.1 data):
+- Multi-size tile variants: the ladder is 1, 2, 4, 8 (tile_variations_template;
+  sand-1: size-2 probability 0.39, size-4 0.20, size-8 0.10, each with
+  per-variant weights). THERE IS NO 3x3: "3x3" proposal becomes 2x2 then 4x4.
+- Per-size probability knobs let us control how often big bays appear.
+
+OLD ARTLAWS (measured on planks.png, 8 tiles 64px):
+- y: gap rows at exactly 15/31/47/63 = 4 uniform 16px courses, seam = the
+  course's LAST row (~L45 vs face ~114), bit-identical across variants.
+  Board sides align with tile y-edges; stacking is invisible (lattice
+  continues at pitch 16 across seams).
+- x: NO furniture at tile x-boundaries: outer ~8-12px tone-pinned
+  near-neutral across variants (col drift <=8.7 at col0, interior 37.6);
+  right-vs-left abutment ~6 L mean / 9.4 max = the tone-matched butt splice
+  ("single boards assembled end-to-end from multiple tiles").
+
+DESIGN ADOPTED (1x1 minimal, at 128px/tile):
+- uniform lattice: 4 courses of 32px (0.25 BU); board face = course minus the
+  south 2px (gap); gaps land on the global lattice in EVERY variant.
+- boards run FULL tile width; NO seams/bolts/caps at cell x-boundaries;
+  in-shader pin: near integer x-lines the board tone mixes to a canonical
+  per-course tone (fixed table from the pool, 4 entries) and the grain
+  factor flattens; fades out over ~12px@128.
+- interior freedom: per-(tile,course) board tones (12-pool, seeded, no
+  immediate repeats), rich grain (rf~8 + pores + deep, the locked look),
+  seeded INTERIOR splices (never within ~12px of a cell edge) with bolt
+  pairs; bolt/cap-rich bays belong to 2x2/4x4 tiles later.
+- variable board widths: the 1x1 lattice is uniform (old-art verdict);
+  width variety enters via multi-size tiles' interiors (their inner course
+  lines are free as long as perimeter courses match the lattice).
+- everything above stays law-3: one Blender render per depth, 1:1 slices.
