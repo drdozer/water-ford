@@ -1,125 +1,74 @@
-   0.000 2026-10-17 22:35:53; Factorio 2.1.21 (build 87673, linux64, full, space-age)
-   0.009 Operating system: Linux (Devuan 6)
-   0.010 Program arguments: "/home/nmrp3/.local/share/factorio_2_dlc/bin/x64/factorio" "-c" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini" "--mod-directory" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/mods" "--load-game" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/boards-compare-2.zip" 
+   0.000 2026-10-17 23:34:26; Factorio 2.1.21 (build 87673, linux64, full, space-age)
+   0.010 Operating system: Linux (Devuan 6)
+   0.010 Program arguments: "/home/nmrp3/.local/share/factorio_2_dlc/bin/x64/factorio" "-c" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini" "--mod-directory" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/mods" "--start-server" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/ford-view-test.zip" 
    0.010 Config path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini
    0.010 Read data path: /home/nmrp3/.local/share/factorio_2_dlc/data
-   0.010 Write data path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch [468942/1876684MB]
+   0.010 Write data path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch [469018/1876684MB]
    0.010 Binaries path: /home/nmrp3/.local/share/factorio_2_dlc/bin
    0.018 System info: [CPU: AMD Ryzen 7 2700X Eight-Core Processor, 16 cores, RAM: 64255 MB]
    0.018 Environment: DISPLAY=:0 WAYLAND_DISPLAY=<unset> DESKTOP_SESSION=plasmax11 XDG_SESSION_DESKTOP=plasmax11 XDG_CURRENT_DESKTOP=KDE SDL_VIDEO_DRIVER=<unset> SDL_ENABLE_STEAM_SCREEN_KEYBOARD=<unset> SteamDeck=<unset> __GL_FSAA_MODE=<unset> __GL_LOG_MAX_ANISO=<unset> __GL_SYNC_TO_VBLANK=<unset> __GL_SORT_FBCONFIGS=<unset> __GL_YIELD=<unset>
-   0.022 Display options: [FullScreen: true] [VSync: true] [UIScale: automatic (100.0%)] [Native DPI: true] [Screen: 4294967295] [Special: lmw] [Lang: en]
-   0.060 Video driver: x11
-   0.060 Available displays: 2
-   0.060  [0]: 1 - {1, [3840,280], 2560x1600, SDL_PIXELFORMAT_XRGB8888, 59.86 Hz}
-   0.060  [1]: UHD DP 39" - {2, [0,0], 3840x2160, SDL_PIXELFORMAT_XRGB8888, 60.00 Hz}
-   0.159 Initialised OpenGL:[1] NVIDIA GeForce GTX TITAN X/PCIe/SSE2; driver: 3.3.0 NVIDIA 550.163.01
-   0.159   [Extensions] s3tc:yes; KHR_debug:yes; ARB_clear_texture:yes, ARB_copy_image:yes, ARB_pipeline_statistics_query:yes, ARB_gl_spirv:yes, ARB_ES2_compatibility:yes
-   0.159   [Version] 3.3
-   0.212 Graphics settings preset: very-high
-   0.212   Dedicated video memory size 12534 MB (detected from NVIDIA GeForce GTX TITAN X; VendorID: 0x10de; DeviceID: 0x17c2)
-   0.232 Graphics options: [Graphics quality: high] [Video memory usage: all] [DXT: high-quality]
-   0.232                   [Max threads (load/render): 32/8] [Max texture size: 0] [Tex.Stream.: false] [Rotation quality: normal] [Other: STDCWTl] [B:0,C:0,S:100]
-   0.241 [Audio] Driver:pulseaudio, Device:Default device, Depth:32, Channels:2, Frequency:44100
-   0.345 Info ModManager.cpp:450: FeatureFlag expansion = true
-   0.345 Info ModManager.cpp:450: FeatureFlag expansion-shaders = true
-   0.345 Info ModManager.cpp:450: FeatureFlag freezing = true
-   0.345 Info ModManager.cpp:450: FeatureFlag quality = true
-   0.345 Info ModManager.cpp:450: FeatureFlag rail-bridges = true
-   0.345 Info ModManager.cpp:450: FeatureFlag segmented-units = true
-   0.345 Info ModManager.cpp:450: FeatureFlag space-travel = true
-   0.345 Info ModManager.cpp:450: FeatureFlag spoiling = true
-   0.372 Loading mod core 0.0.0 (data.lua)
-   0.390 Loading mod base 2.1.21 (data.lua)
-   0.567 Loading mod elevated-rails 2.1.21 (data.lua)
-   0.587 Loading mod recycler 2.1.21 (data.lua)
-   0.596 Loading mod water-ford 1.0.0 (data.lua)
-   0.604 Loading mod quality 2.1.21 (data.lua)
-   0.612 Loading mod wf-piling-viewer 1.0.0 (data.lua)
-   0.620 Loading mod space-age 2.1.21 (data.lua)
-   0.808 Loading mod base 2.1.21 (data-updates.lua)
-   0.820 Loading mod recycler 2.1.21 (data-updates.lua)
-   0.839 Loading mod water-ford 1.0.0 (data-updates.lua)
-   0.852 Loading mod space-age 2.1.21 (data-updates.lua)
-   0.958 Checksum for core: 2791302773
-   0.958 Checksum of base: 1834856243
-   0.958 Checksum of elevated-rails: 1429039930
-   0.958 Checksum of recycler: 3293728126
-   0.958 Checksum of water-ford: 1163110668
-   0.958 Checksum of quality: 3330349790
-   0.958 Checksum of wf-piling-viewer: 2359622684
-   0.958 Checksum of space-age: 652283608
-   1.426 Prototype list checksum: 59268721
-   1.488 Loading sounds...
-   1.727 Info PlayerData.cpp:580: Local player-data.json available
-   1.729 Post-data load graphics options: [Light occlusion: YES]
-   1.984 Crop bitmaps.
-   1.988 Parallel sprite loader initialized (threads: 16, bitmaps: 20)
-   2.253 Initial atlas bitmap size is 16384
-   2.266 Created an atlas bitmap (size 16384x16380) [none]
-   2.284 Created an atlas bitmap (size 16384x16384) [none]
-   2.304 Created an atlas bitmap (size 16384x16384) [none]
-   2.304 Created an atlas bitmap (size 16384x14368) [none]
-   2.305 Created an atlas bitmap (size 16384x16032) [low-object]
-   2.307 Created an atlas bitmap (size 16384x16324) [corpse-decay]
-   2.307 Created an atlas bitmap (size 4096x2848) [corpse-decay]
-   2.307 Created an atlas bitmap (size 16384x9332) [decal]
-   2.307 Created an atlas bitmap (size 16384x5956) [none]
-   2.307 Created an atlas bitmap (size 8192x2788) [none]
-   2.307 Created an atlas bitmap (size 16384x3436) [procession-cover, linear-minification, linear-magnification]
-   2.307 Created an atlas bitmap (size 4096x1392) [none]
-   2.307 Created an atlas bitmap (size 1676x79) [not-compressed]
-   2.307 Created an atlas bitmap (size 16384x4368) [mipmap, linear-minification, linear-magnification, linear-mip-level]
-   2.307 Created an atlas bitmap (size 4096x3040) [smoke, mipmap, linear-minification, linear-magnification]
-   2.314 Created an atlas bitmap (size 16384x16384) [terrain, mipmap, linear-minification, linear-mip-level]
-   2.315 Created an atlas bitmap (size 16384x11552) [terrain, mipmap, linear-minification, linear-mip-level]
-   2.315 Created an atlas bitmap (size 8192x6176) [terrain-effect-map, mipmap, linear-minification, linear-mip-level]
-   2.315 Created an atlas bitmap (size 8192x2800) [mipmap]
-   2.315 Created an atlas bitmap (size 8192x4544) [mipmap]
-   2.315 Created an atlas bitmap (size 8192x3408) [mipmap]
-   2.315 Created an atlas bitmap (size 3504x768) [mipmap]
-   2.315 Created an atlas bitmap (size 4096x3152) [mipmap]
-   2.315 Created an atlas bitmap (size 4096x3152) [mipmap]
-   2.315 Created an atlas bitmap (size 4096x3152) [mipmap]
-   2.315 Created an atlas bitmap (size 8192x3904) [icon, not-compressed, mipmap, linear-minification, linear-magnification, linear-mip-level]
-   2.317 Created an atlas bitmap (size 16384x10276) [alpha-mask]
-   2.336 Created an atlas bitmap (size 16384x16384) [shadow, linear-magnification, alpha-mask]
-   2.339 Created an atlas bitmap (size 16384x16324) [shadow, linear-magnification, alpha-mask]
-   2.339 Created an atlas bitmap (size 16384x5216) [shadow, linear-magnification, alpha-mask]
-   2.339 Created an atlas bitmap (size 8192x5216) [shadow, mipmap, linear-magnification, alpha-mask]
-   2.339 Created an atlas bitmap (size 4096x336) [icon-background, not-compressed, mipmap, linear-minification, linear-magnification, linear-mip-level, ]
-   2.339 Loading 3D bitmaps: 20
-   2.348 Texture processor created (4096). GPU accelerated compression Supported: yes, Enabled: yes/yes. Test passed. YCoCgDXT PSNR: 35.83, BC3 PSNR: 33.82
-   2.452 Parallel sprite loader initialized (threads: 15, bitmaps: 8804)
-  20.828 Sprites loaded
-  20.933 Generated mipmaps (4) for atlas [4] of size 16384x16032   
-  20.936 Generated mipmaps (3) for atlas [13] of size 16384x4368   
-  20.953 Generated mipmaps (3) for atlas [14] of size 4096x3040   
-  21.077 Generated mipmaps (3) for atlas [15] of size 16384x16384   
-  21.180 Generated mipmaps (3) for atlas [16] of size 16384x11552   
-  21.200 Generated mipmaps (3) for atlas [17] of size 8192x6176   
-  21.262 Generated mipmaps (3) for atlas [18] of size 8192x2800   
-  21.318 Generated mipmaps (3) for atlas [19] of size 8192x4544   
-  21.322 Generated mipmaps (3) for atlas [20] of size 8192x3408   
-  21.325 Generated mipmaps (3) for atlas [21] of size 3504x768   
-  21.330 Generated mipmaps (3) for atlas [22] of size 4096x3152   
-  21.372 Generated mipmaps (3) for atlas [23] of size 4096x3152   
-  21.377 Generated mipmaps (3) for atlas [24] of size 4096x3152   
-  21.402 Generated mipmaps (5) for atlas [25] of size 8192x3904   
-  21.403 Generated mipmaps (3) for atlas [30] of size 8192x5216   
-  21.411 Custom mipmaps uploaded (3518)
-  21.434 Estimated VRAM usage for textures: 3972.44 MB (Atlases: 3764.89 MB, Textures: 207.56 MB)
-  21.448 Info GlobalContext.cpp:1336: Resetting config.
-  21.502 Factorio initialised
-  21.516 Loading map /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/boards-compare-2.zip: 3338164 bytes.
-  21.527 Loading level.dat: 5639886 bytes.
-  21.527 Info Scenario.cpp:152: Map version 2.1.21-11
-  21.640 Blueprint storage "blueprint-storage-2.dat" was not found, trying to load previous version storage "blueprint-storage.dat"
-  21.687 Loading script.dat: 60 bytes.
-  21.687 Checksum for script __level__/control.lua: 2058512579
-  21.688 Checksum for script __water-ford__/control.lua: 2866588277
-  74.317 Info AppManager.cpp:335: Saving to _autosave3 (blocking).
-  74.502 Info AppManagerStates.cpp:2131: Saving finished
- 192.415 Info AppManagerStates.cpp:2131: Saving finished
- 194.633 Info AppManager.cpp:364: Deleting active scenario.
- 195.552 Quitting: user-quit.
- 195.801 Goodbye
+   0.022 Running in headless mode
+   0.022 Audio is disabled
+   0.033 Info ModManager.cpp:450: FeatureFlag expansion = true
+   0.033 Info ModManager.cpp:450: FeatureFlag expansion-shaders = true
+   0.033 Info ModManager.cpp:450: FeatureFlag freezing = true
+   0.033 Info ModManager.cpp:450: FeatureFlag quality = true
+   0.033 Info ModManager.cpp:450: FeatureFlag rail-bridges = true
+   0.033 Info ModManager.cpp:450: FeatureFlag segmented-units = true
+   0.033 Info ModManager.cpp:450: FeatureFlag space-travel = true
+   0.033 Info ModManager.cpp:450: FeatureFlag spoiling = true
+   0.037 Loading mod core 0.0.0 (data.lua)
+   0.057 Loading mod base 2.1.21 (data.lua)
+   0.224 Loading mod elevated-rails 2.1.21 (data.lua)
+   0.242 Loading mod recycler 2.1.21 (data.lua)
+   0.251 Loading mod water-ford 1.0.0 (data.lua)
+   0.259 Loading mod quality 2.1.21 (data.lua)
+   0.267 Loading mod wf-piling-viewer 1.0.0 (data.lua)
+   0.274 Loading mod space-age 2.1.21 (data.lua)
+   0.469 Loading mod base 2.1.21 (data-updates.lua)
+   0.481 Loading mod recycler 2.1.21 (data-updates.lua)
+   0.502 Loading mod water-ford 1.0.0 (data-updates.lua)
+   0.514 Loading mod space-age 2.1.21 (data-updates.lua)
+   0.618 Checksum for core: 2791302773
+   0.618 Checksum of base: 1834856243
+   0.618 Checksum of elevated-rails: 1429039930
+   0.618 Checksum of recycler: 3293728126
+   0.618 Checksum of water-ford: 412767527
+   0.618 Checksum of quality: 3330349790
+   0.618 Checksum of wf-piling-viewer: 2359622684
+   0.618 Checksum of space-age: 652283608
+   1.065 Prototype list checksum: 59268721
+   1.130 Info PlayerData.cpp:580: Local player-data.json available
+   1.131 Info GlobalContext.cpp:1336: Resetting config.
+   1.132 Factorio initialised
+   1.132 Info ServerSynchronizer.cpp:22: nextHeartbeatSequenceNumber(0) initialized Synchronizer nextTickClosureTick(0).
+   1.132 Info ServerMultiplayerManager.cpp:809: updateTick(18446744073709551615) changing state from(Ready) to(PreparedToHostGame)
+   1.132 Info ServerMultiplayerManager.cpp:809: updateTick(18446744073709551615) changing state from(PreparedToHostGame) to(CreatingGame)
+   1.132 Loading map /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/ford-view-test.zip: 773877 bytes.
+   1.149 Loading level.dat: 1032166 bytes.
+   1.149 Info Scenario.cpp:152: Map version 2.1.21-11
+   1.172 Blueprint storage "blueprint-storage-2.dat" was not found, trying to load previous version storage "blueprint-storage.dat"
+   1.172 Loading script.dat: 60 bytes.
+   1.173 Checksum for script __level__/control.lua: 2058512579
+   1.173 Checksum for script __water-ford__/control.lua: 2866588277
+   1.174 Info UDPSocket.cpp:38: Opening socket at (IP ADDR:({0.0.0.0:34197}))
+   1.174 Hosting game at IP ADDR:({0.0.0.0:34197})
+   1.174 Info HttpSharedState.cpp:57: Downloading https://auth.factorio.com/generate-server-padlock-2?api_version=6
+   6.773 Info AuthServerConnector.cpp:112: Obtained serverPadlock for serverHash (GBTVGVGoYcDRMJj2ACKOknH6Wx3xmAa8) from the auth server.
+   6.773 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(CreatingGame) to(InGame)
+   6.773 Error InterruptibleStdioStream.cpp:72: Got EOF on stdin; closing
+  13.987 Received SIGTERM, shutting down
+  13.987 Quitting: signal.
+  13.987 Info MainLoop.cpp:433: Saving map as /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/ford-view-test.zip
+  14.013 Info MainLoop.cpp:444: Saving progress: 0.239234%
+  14.018 Info MainLoop.cpp:444: Saving progress: 100.000000%
+  14.041 Info ServerMultiplayerManager.cpp:120: Disconnecting multiplayer connection.
+  14.041 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(InGame) to(DisconnectingScheduled)
+  14.074 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(DisconnectingScheduled) to(Disconnecting)
+  14.108 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(Disconnecting) to(Disconnected)
+  14.108 Info ServerMultiplayerManager.cpp:147: Quitting multiplayer connection.
+  14.108 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(Disconnected) to(Closed)
+  14.108 Info ServerMultiplayerManager.cpp:167: Deleting active scenario (global = true).
+  14.190 Info UDPSocket.cpp:238: Closing socket
+  14.190 Info UDPSocket.cpp:268: Socket closed
+  14.253 Goodbye

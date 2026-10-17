@@ -1,16 +1,32 @@
-# bake-transition-sheet: the ford transition asset = OUR 64x64 frames, pasted.
-# Art sheet  = icons64-wood frames pasted 1:1 into the 108 transition cells
-#              (inner@0 8x4, outer@576 8x4, side@1152 8x4, u@1728 2x4, o@2304 4x1;
-#              cell k of the gen-textures loop order takes frame k). The POLE
-#              ONLY - the cast shadow is NEVER baked into the art pixels; it
-#              lives only in its own strip/sheet.
-# Mask sheet = masks64 frames pasted at the same cells (the gray dryness data -
-#              the engine consumes art and dryness map as two separate files).
-# Shadow sheet = shadows64 frames pasted at the same cells (the cast shadow as
-#              its own sprites; NOT registered in the game - awaiting a proper
-#              own-layer mechanism).
-# Pure arrangement: bit-copies, no filtering, no compositing, no value edits.
-import os, sys
+# bake-transition-sheet: the ford transition asset = OUR frames, pasted.
+#
+# 2026-10-17 density pass (maintainer order): the strip is re-rendered at
+# 128px cells (2x the 64px era) and the sheets move onto TIGHT canvases -
+# every pixel outside the engine's piece windows is dropped. The canvas
+# geometry follows from the layout numbers in data-updates.lua:
+#   art window  = 128x128 (scale 0.25 -> 32 world px, double the old density)
+#   band y (art):    inner 0, outer 512, side 1024, u 1536, o 2048  (4 rot rows)
+#   art canvas:      1024x2176 (o band = 4 cols x 1 rot row)
+#   mask window = 64x64 (scale 0.5 - wetness granularity UNCHANGED)
+#   band y (mask):   inner 0, outer 256, side 512, u 768, o 1024
+#   mask canvas:     512x1088
+# Piece order = the gen-textures loop order (frame k -> cell k). Slack inside
+# the art canvas (x past the count windows in the u/o bands) stays fully
+# transparent: the engine never samples it (proven: the 512-wide mask has
+# always anchored identically to the 3200-wide visual sheet).
+#
+# Art sheet (transparent poles)      -> .cache/ford-factory/intermediates/
+# Composite sheet (P1, LIVE)         -> mod/graphics/pilings-composite.png
+#   P1 recipe bit-verified against the live 64px composite:
+#   cell = alpha_composite(flat water (17,114,129,255), icon frame) - the
+#   flat-water cover hides the engine's shore pre-darkening (the round-12
+#   lesson, maintainer-committed as P1).
+# Mask sheet (LIVE)                  -> mod/graphics/pilings-transition-mask.png
+#   bit-copied masks64 frames (64px, spec dryness, else-region 0 = black,
+#   the state reverted to after the else-170 black-cell incident).
+# The cast-shadow sheet is retired (background_enabled=false, route (a)):
+# the last shadow artifact is the moved .cache/intermediates copy.
+import os
 import numpy as np
 from PIL import Image
 
@@ -18,78 +34,53 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 BASE = os.path.join(ROOT, ".cache", "ford-factory")
 G = os.path.join(ROOT, "mods", "water-ford", "mod", "graphics")
-# the visual + shadow sheets are bake intermediates; only the transition MASK
-# is a live mod asset and keeps writing into mod/graphics.
-INTER = os.path.join(ROOT, ".cache", "ford-factory", "intermediates")
+INTER = os.path.join(BASE, "intermediates")
 os.makedirs(INTER, exist_ok=True)
 
-BANDS = [(0, 8, 4), (576, 8, 4), (1152, 8, 4), (1728, 2, 4), (2304, 4, 1)]
 N = 108
-CELL = 64
+CELL_A = 128          # art window at the new density
+CELL_M = 64           # mask window (wetness granularity unchanged)
+WATER = (17, 114, 129, 255)
 
-art = np.zeros((2368, 3200, 4), np.uint8)
-msk = np.zeros((2368, 512, 4), np.uint8)
-shd = np.zeros((2368, 3200, 4), np.uint8)
+# (band y, cols, rot rows) in ART px and MASK px
+BANDS_A = [(0, 8, 4), (512, 8, 4), (1024, 8, 4), (1536, 2, 4), (2048, 4, 1)]
+BANDS_M = [(0, 8, 4), (256, 8, 4), (512, 8, 4), (768, 2, 4), (1024, 4, 1)]
+
+ART_W, ART_H = 1024, 2176
+MSK_W, MSK_H = 512, 1088
+
+art = np.zeros((ART_H, ART_W, 4), np.uint8)                 # transparent pieces
+comp = np.zeros((ART_H, ART_W, 4), np.uint8)                # P1 composite
+msk = np.zeros((MSK_H, MSK_W, 4), np.uint8)                 # spec mask, else black
 msk[..., 3] = 255
 
+water = Image.new("RGBA", (CELL_A, CELL_A), WATER)
+
+
+def load(path, shape):
+    a = np.asarray(Image.open(path).convert("RGBA"))
+    if a.shape != shape:
+        raise RuntimeError(f"{os.path.basename(path)}: wrong size {a.shape} (want {shape})")
+    return a
+
+
 k = 0
-for y0, cols, rows in BANDS:
+for (y0, cols, rows), (my0, _, _) in zip(BANDS_A, BANDS_M):
     for r in range(rows):
-        win_y = y0 + r * CELL
+        wy = y0 + r * CELL_A
+        mwy = my0 + r * CELL_M
         for c in range(cols):
             k += 1
-            cx0 = c * CELL
-            fa = np.asarray(Image.open(os.path.join(BASE, "icons64-wood", f"frame_{k:03d}.png")).convert("RGBA"))
-            fm = np.asarray(Image.open(os.path.join(BASE, "masks64", f"frame_{k:03d}.png")).convert("RGBA"))
-            if fa.shape != (CELL, CELL, 4) or fm.shape != (CELL, CELL, 4):
-                raise RuntimeError(f"frame {k}: wrong size {fa.shape}")
-            art[win_y:win_y + CELL, cx0:cx0 + CELL] = fa
-            msk[win_y:win_y + CELL, cx0:cx0 + CELL, :3] = fm[..., :3]
-            fs = np.asarray(Image.open(os.path.join(BASE, "shadows64", f"frame_{k:03d}.png")).convert("RGBA"))
-            if fs.shape != (CELL, CELL, 4):
-                raise RuntimeError(f"shadow frame {k}: wrong size {fs.shape}")
-            shd[win_y:win_y + CELL, cx0:cx0 + CELL] = fs
-if k != N:
-    raise RuntimeError(f"pasted {k} pieces, expected {N}")
+            fa = load(os.path.join(BASE, "icons128-wood", f"frame_{k:03d}.png"), (CELL_A, CELL_A, 4))
+            fm = load(os.path.join(BASE, "masks64", f"frame_{k:03d}.png"), (CELL_M, CELL_M, 4))
+            art[wy:wy + CELL_A, c * CELL_A:(c + 1) * CELL_A] = fa
+            msk[mwy:mwy + CELL_M, c * CELL_M:(c + 1) * CELL_M, :3] = fm[..., :3]
+            comp_img = Image.alpha_composite(water, Image.fromarray(fa, "RGBA"))
+            comp[wy:wy + CELL_A, c * CELL_A:(c + 1) * CELL_A] = np.asarray(comp_img, np.uint8)
+assert k == N, f"pasted {k} pieces, expected {N}"
 
-a_out = os.path.join(INTER, "pilings-transition.png")
-m_out = os.path.join(G, "pilings-transition-mask.png")
-s_out = os.path.join(INTER, "pilings-transition-shadow.png")
-Image.fromarray(art, "RGBA").save(a_out)
-Image.fromarray(msk, "RGBA").save(m_out)
-Image.fromarray(shd, "RGBA").save(s_out)
-
-# verification: every occupied cell region bit-equal to its source frame;
-# every empty region exactly zero (art alpha 0 / mask gray 0).
-bad = []
-for y0, cols, rows in BANDS:
-    for r in range(rows):
-        win_y = y0 + r * CELL
-        for c in range(cols):
-            cx0 = c * CELL
-            kk = sum(bc * br for (by, bc, br) in BANDS[:BANDS.index((y0, cols, rows))]) + r * cols + c + 1
-            fa = np.asarray(Image.open(os.path.join(BASE, "icons64-wood", f"frame_{kk:03d}.png")).convert("RGBA"))
-            fm = np.asarray(Image.open(os.path.join(BASE, "masks64", f"frame_{kk:03d}.png")).convert("RGBA"))
-            if not np.array_equal(art[win_y:win_y + CELL, cx0:cx0 + CELL], fa):
-                bad.append(("art", kk))
-            fs = np.asarray(Image.open(os.path.join(BASE, "shadows64", f"frame_{kk:03d}.png")).convert("RGBA"))
-            if not np.array_equal(shd[win_y:win_y + CELL, cx0:cx0 + CELL], fs):
-                bad.append(("shadow", kk))
-            mc = msk[win_y:win_y + CELL, cx0:cx0 + CELL, 0]
-            if not (np.array_equal(mc, fm[..., 0]) and np.array_equal(msk[win_y:win_y + CELL, cx0:cx0 + CELL, 1], fm[..., 0])
-                    and np.array_equal(msk[win_y:win_y + CELL, cx0:cx0 + CELL, 2], fm[..., 0])):
-                bad.append(("mask", kk))
-if bad:
-    raise RuntimeError(f"cell mismatch: {bad[:5]}")
-# the unused sheet area must be all-zero
-rest = art.copy()
-srest = shd.copy()
-for y0, cols, rows in BANDS:
-    for r in range(rows):
-        rest[y0 + r * CELL:y0 + r * CELL + CELL, 0:cols * CELL] = 0
-        srest[y0 + r * CELL:y0 + r * CELL + CELL, 0:cols * CELL] = 0
-if rest.any() or srest.any():
-    raise RuntimeError("art/shadow sheets have stray pixels outside the transition cells")
-print(f"TRANSITION SHEETS: art {art.shape[1]}x{art.shape[0]} mask {msk.shape[1]}x{msk.shape[0]} shadow {shd.shape[1]}x{shd.shape[0]}")
-print(f"{N}/{N} cells bit-equal to frames (art + mask); unused area clean")
-print("TRANSITION BAKE DONE")
+Image.fromarray(art, "RGBA").save(os.path.join(INTER, "pilings-transition.png"))
+Image.fromarray(comp, "RGBA").save(os.path.join(G, "pilings-composite.png"))
+Image.fromarray(msk, "RGBA").save(os.path.join(G, "pilings-transition-mask.png"))
+print(f"DEPLOY DONE: {N} pieces pasted; art {ART_W}x{ART_H} (slack alpha 0) -> intermediates;")
+print(f" composite -> {G}/pilings-composite.png ; mask {MSK_W}x{MSK_H} -> {G}/pilings-transition-mask.png")

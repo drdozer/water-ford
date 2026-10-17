@@ -972,3 +972,33 @@ VRAM: unchanged this pass (intermediates never reached VRAM); zip -1.24MB.
 Next (standing plan, awaiting go): 128px re-render + tight canvases
 (1024x2560+512x1280 separate bands ~13.1MB, or merged u/o ~10.5MB vs 34MB
 today at half the density).
+
+### round-19: piling density pass - 128px cells, tight canvases (P1 recipe preserved)
+Maintainer eyeballed the sheet canvases (flat-water = "blank" false-negative
+resolved: the live composite's canvas is opaque water by design; the truly
+spare sheets were bake intermediates, unshipped in round-18). Lineage
+re-verified bit-exact: live composite == alpha_composite(flat water
+17,114,129,255, icons64-wood frame), worst channel diff 0 across all 108
+cells - the P1 recipe (2026-10-17 composite-boundary round). Baseline
+captured with the FULL old state first (save stage + window capture
+20261017-232712-piling-baseline-64px.png). Then one big change:
+- bake-strips.py renders the icon + sprite strips at 128px into density-
+  labeled dirs (icons128-wood, frames128); 108/108 verified, --twice re-
+  pointed. Metrics: centroid sigma 8.0/5.1px (same relative jitter), luma
+  mean 87.
+- bake-transition-sheet.py rewritten for TIGHT canvases: art 1024x2176 /
+  mask 512x1088; band y inner 0 / outer 512 / side 1024 / u 1536 / o 2048
+  (art) and 0/256/512/768/1024 (mask, 64px windows - wetness granularity
+  unchanged); o band = 4 cols x 1 rot row (canvas height 2048+128).
+  Slack (x past count windows in u/o) stays TRANSPARENT - engine never
+  samples it (512-wide mask anchor proof). P1 blend reproduced bit-exact
+  at 128 (worst diff 0). Shadow sheet write retired (route (a), dead
+  config; last artifact = moved INTER copy).
+- data-updates.lua layout: scale 0.25 (art), effect map 0.5 (unchanged),
+  y-fields to the tight strides. pf filenames unchanged.
+- Headless clean (check10); save stage regenerated the seeded ford-view
+  save; new look captured 20261017-233355-piling-128px.png; A/B in gwenview;
+  window up for the maintainer's high-zoom eye-check.
+- VRAM (RGBA): composite 30.3MB -> 8.9MB, mask 4.9MB -> 2.2MB: 35.1MB ->
+  11.1MB (-68%) at double the pixel density. Optional further lever parked:
+  u/o same-row merge (~ -2.6MB).

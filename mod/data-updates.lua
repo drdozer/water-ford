@@ -71,22 +71,26 @@ tile.transitions[#tile.transitions + 1] = {
   background_enabled = false,
   mask_enabled = false,
   layout = {
-    scale = 0.5,
+    -- 2026-10-17 density pass: pieces re-rendered at 128px cells (2x the 64px
+    -- era), scale 0.25 -> same 32 world px; canvases TIGHT (art 1024x2176,
+    -- mask 512x1088) - every band y below matches the bake, slack unindexed.
+    scale = 0.25,
     inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
     u_transition_count = 2, o_transition_count = 4,
-    inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-    u_transition_y = 1728, o_transition_y = 2304,
+    inner_corner_y = 0, outer_corner_y = 512, side_y = 1024,
+    u_transition_y = 1536, o_transition_y = 2048,
     inner_corner_tile_height = 1, outer_corner_tile_height = 1,
     side_tile_height = 1, u_transition_tile_height = 1,
     overlay = {x_offset = 0},
   },
   effect_map_layout = {
     spritesheet = pf.mask,
+    -- mask keeps its 64px windows at scale 0.5: wetness granularity unchanged
     scale = 0.5,
     inner_corner_count = 8, outer_corner_count = 8, side_count = 8,
     u_transition_count = 2, o_transition_count = 4,
-    inner_corner_y = 0, outer_corner_y = 576, side_y = 1152,
-    u_transition_y = 1728, o_transition_y = 2304,
+    inner_corner_y = 0, outer_corner_y = 256, side_y = 512,
+    u_transition_y = 768, o_transition_y = 1024,
     inner_corner_tile_height = 1, outer_corner_tile_height = 1,
     side_tile_height = 1, u_transition_tile_height = 1,
   },

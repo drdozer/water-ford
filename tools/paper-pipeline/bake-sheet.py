@@ -14,16 +14,16 @@ for _ in range(4):                     # paper-pipeline -> tools -> water-ford -
     ROOT = os.path.dirname(ROOT)
 BASE = os.path.join(ROOT, ".cache", "ford-factory")
 out = os.path.join(BASE, "sheet"); os.makedirs(out, exist_ok=True)
-COLS, ROWS, CELL, N = 12, 9, 64, 108
+COLS, ROWS, CELL, N = 12, 9, 128, 108
 
 sheet = Image.new("RGBA", (COLS * CELL, ROWS * CELL), (0, 0, 0, 0))
 frames = []
 for i in range(N):
-    frames.append(Image.open(os.path.join(BASE, "icons64-wood", f"frame_{i+1:03d}.png")).convert("RGBA"))
+    frames.append(Image.open(os.path.join(BASE, "icons128-wood", f"frame_{i+1:03d}.png")).convert("RGBA"))
 for r in range(ROWS):
     for c in range(COLS):
         sheet.paste(frames[r * COLS + c], (c * CELL, r * CELL))
-path = os.path.join(out, "piling-sheet-64.png")
+path = os.path.join(out, "piling-sheet-128.png")
 sheet.save(path)
 
 # grey wetness mask sheet: SAME grid, SEPARATE block of data (old pilings-mask

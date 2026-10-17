@@ -1189,7 +1189,9 @@
     "nauvis_power_up",
     "vulcanus_crossing",
     "nauvis_t_section",
-    "nauvis_train_junction"
+    "nauvis_train_junction",
+    "nauvis_uranium_processing",
+    "fulgora_race"
   ],
-  "ticks-since-last-tip-shown": 1377864
+  "ticks-since-last-tip-shown": 1378969
 }

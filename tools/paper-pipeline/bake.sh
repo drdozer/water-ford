@@ -40,7 +40,7 @@ if has strips; then
 import os, sys
 import numpy as np
 from PIL import Image
-stash, fresh = sys.argv[1], os.path.join(os.path.dirname(sys.argv[1]), "icons64-wood")
+stash, fresh = sys.argv[1], os.path.join(os.path.dirname(sys.argv[1]), "icons128-wood")
 bad = [f for f in sorted(os.listdir(fresh)) if not np.array_equal(
     np.asarray(Image.open(os.path.join(fresh, f)).convert("RGBA")),
     np.asarray(Image.open(os.path.join(stash, f)).convert("RGBA")))]

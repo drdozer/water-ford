@@ -1,5 +1,5 @@
 # bake-strips: render both flipbook strips from ford-posts.blend, verified.
-#   icon strip   -> .cache/ford-factory/icons64-wood/frame_NNN.png  (ICON scene, 64px, direct write)
+#   icon strip   -> .cache/ford-factory/icons64-wood/frame_NNN.png  (ICON scene, 128px, direct write)
 #   sprite strip -> .cache/ford-factory/frames64/frame_NNN.png      (context scene, save_render)
 # Identical output every run (bit-reproducible; proven by bake.sh --twice).
 # Empty or unwritten renders are HARD FAILURES - the old stale-copy fallback is gone.
@@ -12,8 +12,8 @@ ROOT = bpy.data.filepath
 for _ in range(4):                     # .../blender -> water-ford -> mods -> superproject
     ROOT = os.path.dirname(ROOT)
 BASE = os.path.join(ROOT, ".cache", "ford-factory")
-icons_dir = os.path.join(BASE, "icons64-wood")
-sprites_dir = os.path.join(BASE, "frames64")
+icons_dir = os.path.join(BASE, "icons128-wood")
+sprites_dir = os.path.join(BASE, "frames128")
 os.makedirs(icons_dir, exist_ok=True)
 os.makedirs(sprites_dir, exist_ok=True)
 N = 108
@@ -21,8 +21,8 @@ N = 108
 ICON = bpy.data.scenes["ICON"]
 FORD = bpy.data.scenes["FORD"]
 ctx = bpy.context.scene              # write_still takes the CONTEXT scene's filepath
-ICON.render.resolution_x = 64
-ICON.render.resolution_y = 64
+ICON.render.resolution_x = 128
+ICON.render.resolution_y = 128
 
 def cap_verify(path):
     im = np.asarray(Image.open(path).convert("RGB"), dtype=float)
@@ -52,7 +52,7 @@ for f in range(1, N + 1):
 print(f"ICON STRIP: 108/108 verified frames")
 
 # 2) sprite strip: the FORD context (water level/bed) rendered THROUGH the asset
-#    camera (ICON_CAM) at 64px, so the context view aligns pixel-for-pixel with
+#    camera (ICON_CAM) at 128px, so the context view aligns pixel-for-pixel with
 #    the icon and mask cells (crank-runtime only: camera/res set + restored).
 #    NOTE: the CATCHER stays EXCLUDED (shadow = its own sprites, never baked
 #    into the art pixels - the blocks stay separate).
@@ -62,8 +62,8 @@ if ICON_CAM.name not in FORD.collection.objects:
 old_cam = FORD.camera
 old_res = (FORD.render.resolution_x, FORD.render.resolution_y)
 FORD.camera = ICON_CAM
-FORD.render.resolution_x = 64
-FORD.render.resolution_y = 64
+FORD.render.resolution_x = 128
+FORD.render.resolution_y = 128
 ctx.render.filepath = ""
 for f in range(1, N + 1):
     FORD.frame_set(f)
@@ -78,7 +78,7 @@ for f in range(1, N + 1):
 FORD.camera = old_cam
 FORD.render.resolution_x, FORD.render.resolution_y = old_res
 FORD.collection.objects.unlink(ICON_CAM)
-print("sprite strip: context through ICON_CAM at 64px (aligned framing)")
+print("sprite strip: context through ICON_CAM at 128px (aligned framing)")
 print(f"SPRITE STRIP: 108/108 verified frames")
 
 # 3) strip metrics (was a retyped bash heredoc every cycle; merged to one truth)
