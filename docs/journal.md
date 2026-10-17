@@ -672,3 +672,24 @@ Changes:
 v8 numbers: zones 114.4/115.9/108.6; cells 96-130 (mean 114); blacks 0;
 71 wood bins; top share 10.2. gwenview relaunched (comparison 3-row sheet,
 grain-closeup-4x, floor, crops, tiling tests).
+
+## 2026-10-17 — grain menu round: the real root cause
+Maintainer: grain still uniform; bolts read now, widen pair to ~1/4-1/2 apart;
+colors balanced; proposed a LIBRARY of grain options.
+Sweeps on the live M_PLANK rendered byte-identical across 8 configs → the
+grain chain never reached the render. Root cause found (via a fresh
+from-scratch material test): the wave→ramp Fac link was missing on the
+hand-built trees (the multiply was scaling by a ramp constant); the v8-era
+maprange→ramp swap also lost the input link. Fixed and rebuilt M_PLANK fresh
+(6 nodes); sweep now responds per config (windowed P2P 16.5-23.6; control
+included). Also found+removed: my abandoned GRAIN_LAB panels were sitting in
+the sweep frame (unlinked now); the key light had cutoff_distance=40 at some
+point (Custom Distance — kills light beyond 40m; reset to rig 0; likely an
+editor-side tweak). COLLAB HAZARD noted: the maintainer's editor session and
+my MCP session share the file — interleaved edits (duplicated nodes earlier,
+light cutoff, a wave->ramp link added mid-session) make debugging
+non-reproducible; protocol needed for shared-session work.
+Deliverables: grain-menu-v3.png (8 options A-H, labeled, floor on D = 4gpx
+-25% pending pick); bolt pair 1/4-1/2-apart spacing staged (rides the next
+full re-bake); honey ~37% kept. Next: maintainer picks a menu letter + scale
+preference; one re-bake applies grain+bolts; then 3-depth land tiles in-game.
