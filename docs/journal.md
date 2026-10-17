@@ -861,3 +861,17 @@ player-stamped patches is engine-side behavior to verify by eye.
 Launched boards-compare-1.zip (20:07 paint state) with the size-ladder mod
 pending the maintainer's in-game verdict on 2x2/4x4 appearance under player
 stamping; then compact per maintainer order.
+
+### round-11: hand-placement rules fixed (maintainer caught a real bug)
+First hand placement (no editor) exposed wrong place_as_tile configs:
+condition semantics = "target must NOT lie in these collision layers"
+(invert=true flips to "must") - I had named ground_tile on the LAND items
+(the LANDFILL shape, water-only) instead of water_tile like vanilla
+stone-brick/concrete. Land boards could ONLY place over water. Fixed to
+{layers={water_tile=true}} + no invert. Ford family kept water-ford's exact
+item rule (water_tile + invert=true) AND control.lua's revert guard now
+covers boards-ford-a/b/c too - the guard is the part of the original ford
+setup data-stage cannot express (water stayed hidden under landfill: the
+stack still counts as water_tile). Tiles now minable->their own items
+(land clone was unminable; ford clone would have mined back water-ford
+items). Relaunched with boards-compare-1.

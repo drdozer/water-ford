@@ -8,7 +8,12 @@
 -- enforced here: any ford placed over a non-water tile is reverted in the same
 -- tick and the items are refunded.
 
-local ford_name = "water-ford"
+local ford_names = {
+  ["water-ford"] = true,
+  ["boards-ford-a"] = true,
+  ["boards-ford-b"] = true,
+  ["boards-ford-c"] = true,
+}
 
 local not_water_names = {["out-of-map"] = true, ["empty-space"] = true}
 
@@ -19,7 +24,7 @@ local function is_waterish(tile_prototype)
 end
 
 local function on_built(event)
-  if event.tile.name ~= ford_name then return end
+  if not ford_names[event.tile.name] then return end
 
   local surface = game.surfaces[event.surface_index]
   if not surface then return end

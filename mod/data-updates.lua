@@ -147,7 +147,8 @@ local function dev_land(letter)
   lt.name = "boards-land-" .. letter
   lt.order = "zz[boards-dev]-land-" .. letter
   lt.autoplace = nil        -- dev-only: never appears in generated terrain
-  lt.minable = nil          -- no item backside; editor placement only
+  -- hand-placed boards are recoverable like the brick/stone-path tiles
+  lt.minable = {mining_time = 0.1, result = "boards-land-" .. letter}
   lt.walking_speed_modifier = 1.1  -- D3 band 1.0-1.1 (concrete's 1.4 is too fast)
   lt.map_color = {r = 140, g = 112, b = 78}
   lt.variants = dev_variants("land", letter, dev_scale[letter])
@@ -162,7 +163,8 @@ local function dev_ford(letter)
   local ft = table.deepcopy(data.raw.tile["water-ford"])
   ft.name = "boards-ford-" .. letter
   ft.order = "zz[boards-dev]-ford-" .. letter
-  ft.minable = nil
+  -- clone would inherit result = "water-ford": mine must return the boards
+  ft.minable = {mining_time = 0.1, result = "boards-ford-" .. letter}
   ft.variants.main = dev_variants("ford", letter, dev_scale[letter]).main
   data:extend{ft}
   if water_tile_type_names then
@@ -175,17 +177,19 @@ dev_ford("a"); dev_ford("b"); dev_ford("c")
 
 ---------------------------------------------------------------------------------------------------
 -- DEV COMPARE ITEMS (2026-10-17, maintainer feedback: tiles need an item
--- backside for player placement; vanilla landfill + our water-ford as the
--- two condition patterns). Land family = place on any ground tile (concrete
--- condition); ford family = place on water only (water-ford's exact rule).
+-- backside for player placement; FIX 2026-10-17 after hand-placement testing:
+-- vanilla semantics of place_as_tile.condition = "the target tile must NOT lie
+-- in these collision layers" (invert=true flips it to "must"), so:
+--   * land family takes the LAND pattern of stone-brick/concrete items —
+--     condition names water_tile: placeable on any land, never over water
+--     (naming ground_tile instead is the LANDFILL shape = the reported bug);
+--   * ford family takes water-ford's exact item rule (water_tile + invert =
+--     true) AND control.lua's revert guard now covers boards-ford-* too, the
+--     part of the original ford setup data-stage cannot express.
 -- Dev convenience recipes, enabled; revisit economics on promotion.
 
 local function dev_item(fam, letter)
-  local cond = {layers = {ground_tile = true}}
-  if fam == 'ford' then
-    cond = {layers = {water_tile = true}}
-  end
-  local pat = {
+  return {
     type = "item",
     name = "boards-" .. fam .. "-" .. letter,
     icon = "__water-ford__/graphics/boards-" .. fam .. "-icon.png",
@@ -196,12 +200,10 @@ local function dev_item(fam, letter)
     place_as_tile = {
       result = "boards-" .. fam .. "-" .. letter,
       condition_size = 1,
-      condition = cond,
-      invert = (fam == "ford"),
+      condition = {layers = {water_tile = true}},
+      invert = fam == "ford",
     },
   }
-  if fam == "ford" then pat.place_as_tile.invert = true else pat.place_as_tile.invert = nil end
-  return pat
 end
 
 local function dev_recipe(fam, letter)
