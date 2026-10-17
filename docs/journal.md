@@ -516,3 +516,36 @@ vanilla prototypes (character, steam-engine, trees, turrets) + api json:
 NO shadow/reflection mechanism. **Decision: route (a) — poles stay pure tile
 art**; knowledge preserved in docs/shadows.md (build-time cheat sheet) for
 the next graphics build.
+
+## 2026-10-17 — boards research phase (ford-boards arc)
+
+Direction from the maintainer (ticket chat): ballast-in-sprite is the lead
+option for the ford deck (pebbles between boards / boxes; wider seams are on
+the table — inherited seams are 1px); engine doodad (decorative) composition
+is the fallback; land tile = plain single-cell flooring (buildable-on, unlike
+the ford), not "anything special"; land recipe = ford minus ballast, py also
+minus log (no sleepers on the tile face — water-side logs stay represented by
+the committed pilings); palette from py gravel/stone + vanilla stone assets,
+mid-to-light half only for BOTH sets; lighting = 1 directional + 1 ambient,
+positions lifted from ford-posts.blend; factory structure is agent's call;
+rich tiles = stretch goal, single-cell first.
+
+Research executed (docs/boards-research.md — full findings + decision points
+D1-D6): R1 deck art measured (4 courses @8 game px, seams at rows 15/31/47,
+palette #96693b-family L106-123 + gap #3e2816 L43, value band 43..128, grain
+13.7-14.5, staggered butt joints = variant identity; planks.png byte-equal
+planks-base.png today). R2 stone palettes harvested from py item icons +
+vanilla stone. R3 rich-tile mechanism decoded from tile_variations_template
+(one sheet, y-banded size 1/2/4/8). R4 doodad: spawn-decoratives does NOT
+exist in the prototype API (create-particle/destroy-decoratives do);
+LuaSurface.create_decoratives is script-only -> control-stage exemption would
+be needed (invariant 2) -> fallback status confirmed. R5 concrete consult:
+no is_foundation on concrete (landfill only), ground() mask, layer 13,
+decorative_removal_probability 0.25. R6 rig: KEY = POINT light (-42,0,42)
+energy 40000 white + world bg 0.55 @ 0.06. R7 W3 mix sim: pop band = stones
+authored L120-155 (warm ochre/bright-crush/sandy), avoid khaki/grey-mid
+(post-mix dL negative vs plank L107); gap mixes to L56. R8: transition pieces
+contain no board content (docstring + numeric) -> c3 composite re-derivation
+moot unless fill/poles change (D2). R9: bake.sh stage/--twice shape recorded.
+Scratch: .cache/boards-research/ (extract scripts + swatches + JSON).
+Commit: beac4c4 (findings), 46b2fb7 (register).
