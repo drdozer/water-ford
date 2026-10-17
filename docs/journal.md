@@ -641,3 +641,34 @@ v6 verified: zones 114.9/112.4/106.2 mean, cells 90-126 (mean 111.2,
 inherited band 107-123), blacks 0, bolts p99 145 (cap 185 family),
 67 wood bins, top share 11.1%, honey bins r/g 1.29-1.50 present.
 gwenview relaunched with comparison-planks-vs-v6 (3-row sheet) + v6 set.
+
+## 2026-10-17 — feedback round 3: grain direction/visibility, honey 3/8, bolts
+Maintainer: grain runs perpendicular = actually (a) fine grain was INVISIBLE
+(subpixel: wave "scale" = waves-per-unit, so scale 80 = 0.8px bands, AA
+averaged them away — maintainer right on both counts across the rounds) and
+(b) what read as grain was the wide bow-shading band across the board.
+Also: honey to ~3/8 (visual read was 1/4); greys = spice, not flavour; keep
+2x poly density + improved bolts; bolts still don't read in pixelart.
+Changes:
+- grain redesigned art-style: wave scale 8 (period 4 game px), arc 0.02-0.05,
+  ripple +-0.008 (long coherent lines), NARROW DARK STREAKS via color ramp
+  (0.78 stop at phase 0.78 = -22% line, 1.03 bright return) replacing the
+  sine maprange; per-pixel streak depths measured 10-16L row-P2P, deeper
+  per-pixel; still to be visually confirmed by gwenview.
+- pick weights W = [2,3,1,3,3,1,2,1,2,2,3,3]/26: honey 10/26 = 38.5% (3/8),
+  grey spice ~11.5%; verified in renders: honey-hue pixel share 37.4%.
+- bolts: r 0.030 (dia ~1.9 game px) 12-gon, iron body L~72 (was grey L111),
+  rough 0.22 spec 0.7 (highlight pop); caps 4px proud 0.008. Rendered dark
+  iron pixels mean L77 vs boards L110-116 = strong contrast; reflection/
+  lighting work on bolts deferred per maintainer ("later").
+- incident (documented): after a probe session I forgot to restore render
+  res 512->1536: v7 rendered small (35KB junk) — restored, v7b true depth;
+  also the earlier "world 0.15" raise + world/template confusion cleaned:
+  world = single Background 0.55@0.06 verbatim.
+- in-session numeric probe lesson: img.pixels for saved PNGs are sRGB-encoded,
+  NOT linear — a helper encoding again inflates (the false "blowout"). bash
+  PIL is ground truth. Renders now: fire-and-forget via bpy.app.timers +
+  file/flag polling (MCP exec window is 60s, renders exceed it).
+v8 numbers: zones 114.4/115.9/108.6; cells 96-130 (mean 114); blacks 0;
+71 wood bins; top share 10.2. gwenview relaunched (comparison 3-row sheet,
+grain-closeup-4x, floor, crops, tiling tests).
