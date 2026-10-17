@@ -693,3 +693,17 @@ Deliverables: grain-menu-v3.png (8 options A-H, labeled, floor on D = 4gpx
 -25% pending pick); bolt pair 1/4-1/2-apart spacing staged (rides the next
 full re-bake); honey ~37% kept. Next: maintainer picks a menu letter + scale
 preference; one re-bake applies grain+bolts; then 3-depth land tiles in-game.
+
+## 2026-10-17 — feedback round 4 & volumetric turn
+Maintainer: bolts wider = big improvement (¼/¾ spacing stays); grain visible
+but subtle (≤1 streak/board, wants 2-3x density or more depth); "single
+streak pattern across the whole floor is not physical — each piece of wood
+has an independent grain"; proposed volumetric x,y,z wood texture oriented
+onto planks; asked for online research; likes comparison menus; asked for
+another sweep of the scene data model for construction issues.
+R12 written: the volumetric design = per-plank virtual cut (hash of plank
+seed -> pith offsets cx/cy + ringfreq 8-16 + seed) evaluated as rings
+(early/late + ink winter line + pore teeth + fine fibre) multiplied into the
+pool color; Cornell "board function" precedent + Blender per-face-mapping
+attr precedent + shader.gallery ring parameters. Menu format kept.
+Then compact; carry on per maintainer order.
