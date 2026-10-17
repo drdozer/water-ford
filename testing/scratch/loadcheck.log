@@ -1,0 +1,74 @@
+   0.000 2026-10-17 01:03:01; Factorio 2.1.21 (build 87673, linux64, full, space-age)
+   0.011 Operating system: Linux (Devuan 6)
+   0.011 Program arguments: "/home/nmrp3/.local/share/factorio_2_dlc/bin/x64/factorio" "-c" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini" "--mod-directory" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/mods" "--start-server" "/home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/ford-view-test.zip" 
+   0.011 Config path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/config/config.ini
+   0.011 Read data path: /home/nmrp3/.local/share/factorio_2_dlc/data
+   0.011 Write data path: /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch [179138/1876684MB]
+   0.011 Binaries path: /home/nmrp3/.local/share/factorio_2_dlc/bin
+   0.019 System info: [CPU: AMD Ryzen 7 2700X Eight-Core Processor, 16 cores, RAM: 64255 MB]
+   0.019 Environment: DISPLAY=:0 WAYLAND_DISPLAY=<unset> DESKTOP_SESSION=plasmax11 XDG_SESSION_DESKTOP=plasmax11 XDG_CURRENT_DESKTOP=KDE SDL_VIDEO_DRIVER=<unset> SDL_ENABLE_STEAM_SCREEN_KEYBOARD=<unset> SteamDeck=<unset> __GL_FSAA_MODE=<unset> __GL_LOG_MAX_ANISO=<unset> __GL_SYNC_TO_VBLANK=<unset> __GL_SORT_FBCONFIGS=<unset> __GL_YIELD=<unset>
+   0.024 Running in headless mode
+   0.024 Audio is disabled
+   0.034 Info ModManager.cpp:450: FeatureFlag expansion = true
+   0.034 Info ModManager.cpp:450: FeatureFlag expansion-shaders = true
+   0.034 Info ModManager.cpp:450: FeatureFlag freezing = true
+   0.034 Info ModManager.cpp:450: FeatureFlag quality = true
+   0.034 Info ModManager.cpp:450: FeatureFlag rail-bridges = true
+   0.034 Info ModManager.cpp:450: FeatureFlag segmented-units = true
+   0.034 Info ModManager.cpp:450: FeatureFlag space-travel = true
+   0.034 Info ModManager.cpp:450: FeatureFlag spoiling = true
+   0.036 Loading mod core 0.0.0 (data.lua)
+   0.051 Loading mod base 2.1.21 (data.lua)
+   0.233 Loading mod elevated-rails 2.1.21 (data.lua)
+   0.253 Loading mod recycler 2.1.21 (data.lua)
+   0.262 Loading mod water-ford 1.0.0 (data.lua)
+   0.269 Loading mod quality 2.1.21 (data.lua)
+   0.276 Loading mod wf-piling-viewer 1.0.0 (data.lua)
+   0.283 Loading mod space-age 2.1.21 (data.lua)
+   0.492 Loading mod base 2.1.21 (data-updates.lua)
+   0.504 Loading mod recycler 2.1.21 (data-updates.lua)
+   0.525 Loading mod water-ford 1.0.0 (data-updates.lua)
+   0.537 Loading mod space-age 2.1.21 (data-updates.lua)
+   0.658 Checksum for core: 2791302773
+   0.658 Checksum of base: 1834856243
+   0.658 Checksum of elevated-rails: 1429039930
+   0.658 Checksum of recycler: 3293728126
+   0.658 Checksum of water-ford: 1902479793
+   0.658 Checksum of quality: 3330349790
+   0.658 Checksum of wf-piling-viewer: 2359622684
+   0.658 Checksum of space-age: 652283608
+   1.143 Prototype list checksum: 111652545
+   1.218 Info PlayerData.cpp:580: Local player-data.json available
+   1.220 Info GlobalContext.cpp:1336: Resetting config.
+   1.220 Factorio initialised
+   1.220 Info ServerSynchronizer.cpp:22: nextHeartbeatSequenceNumber(0) initialized Synchronizer nextTickClosureTick(0).
+   1.220 Info ServerMultiplayerManager.cpp:809: updateTick(18446744073709551615) changing state from(Ready) to(PreparedToHostGame)
+   1.220 Info ServerMultiplayerManager.cpp:809: updateTick(18446744073709551615) changing state from(PreparedToHostGame) to(CreatingGame)
+   1.220 Loading map /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/ford-view-test.zip: 773689 bytes.
+   1.234 Loading level.dat: 1032269 bytes.
+   1.234 Info Scenario.cpp:152: Map version 2.1.21-11
+   1.254 Blueprint storage "blueprint-storage-2.dat" was not found, trying to load previous version storage "blueprint-storage.dat"
+   1.255 Loading script.dat: 60 bytes.
+   1.255 Checksum for script __level__/control.lua: 2058512579
+   1.256 Checksum for script __water-ford__/control.lua: 2344166520
+   1.258 Info UDPSocket.cpp:38: Opening socket at (IP ADDR:({0.0.0.0:34197}))
+   1.258 Hosting game at IP ADDR:({0.0.0.0:34197})
+   1.258 Info HttpSharedState.cpp:57: Downloading https://auth.factorio.com/generate-server-padlock-2?api_version=6
+   7.173 Info AuthServerConnector.cpp:112: Obtained serverPadlock for serverHash (siKI1v2JQtfebMg5pPUf2n3tJzUqflWJ) from the auth server.
+   7.173 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(CreatingGame) to(InGame)
+   7.173 Error InterruptibleStdioStream.cpp:72: Got EOF on stdin; closing
+  13.983 Received SIGTERM, shutting down
+  13.983 Quitting: signal.
+  13.983 Info MainLoop.cpp:433: Saving map as /home/nmrp3/devel/factorio-mods/mods/water-ford/testing/scratch/saves/ford-view-test.zip
+  14.006 Info MainLoop.cpp:444: Saving progress: 0.239234%
+  14.010 Info MainLoop.cpp:444: Saving progress: 100.000000%
+  14.026 Info ServerMultiplayerManager.cpp:120: Disconnecting multiplayer connection.
+  14.026 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(InGame) to(DisconnectingScheduled)
+  14.059 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(DisconnectingScheduled) to(Disconnecting)
+  14.093 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(Disconnecting) to(Disconnected)
+  14.093 Info ServerMultiplayerManager.cpp:147: Quitting multiplayer connection.
+  14.093 Info ServerMultiplayerManager.cpp:809: updateTick(0) changing state from(Disconnected) to(Closed)
+  14.093 Info ServerMultiplayerManager.cpp:167: Deleting active scenario (global = true).
+  14.172 Info UDPSocket.cpp:238: Closing socket
+  14.172 Info UDPSocket.cpp:268: Socket closed
+  14.233 Goodbye

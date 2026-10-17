@@ -1,0 +1,1200 @@
+
+{
+  "available-campaign-levels": 
+  {
+    "tight-spot": 
+    {
+      "level-01": "hard"
+    },
+    "transport-belt-madness": 
+    {
+      "level-01": "hard"
+    },
+    "tutorial": 
+    {
+      "level-01": "hard"
+    }
+  },
+  "tips": 
+  {
+    "show-info": 
+    {
+      "status": "locked"
+    },
+    "e-confirm": 
+    {
+      "status": "locked"
+    },
+    "clear-cursor": 
+    {
+      "status": "locked",
+      "elapsed": 0
+    },
+    "pipette": 
+    {
+      "status": "locked"
+    },
+    "stack-transfers": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "entity-transfers": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "z-dropping": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "shoot-targeting": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "elapsed": 0
+        }
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "bulk-crafting": 
+    {
+      "status": "locked"
+    },
+    "rotating-assemblers": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "entity-flip": 
+    {
+      "status": "locked"
+    },
+    "circuit-network": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "elapsed": 0
+        },
+        
+        {}
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "spidertron-control": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "elapsed": 0
+        },
+        
+        {}
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "belt-lanes": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "splitters": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ]
+    },
+    "inserters": 
+    {
+      "status": "locked"
+    },
+    "burner-inserter-refueling": 
+    {
+      "status": "locked"
+    },
+    "long-handed-inserters": 
+    {
+      "status": "locked"
+    },
+    "move-between-labs": 
+    {
+      "status": "locked"
+    },
+    "insertion-limits": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "limit-chests": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ]
+    },
+    "electric-network": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {
+          "conditions": 
+          [
+            
+            {
+              "conditions": 
+              [
+                
+                {},
+                
+                {}
+              ]
+            },
+            
+            {
+              "elapsed": 0
+            },
+            
+            {}
+          ]
+        },
+        
+        {},
+        
+        {},
+        
+        {},
+        
+        {}
+      ]
+    },
+    "steam-power": 
+    {
+      "status": "dependencies-not-met"
+    },
+    "electric-pole-connections": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {
+          "elapsed": 0
+        },
+        
+        {}
+      ]
+    },
+    "low-power": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "connect-switch": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "copy-entity-settings": 
+    {
+      "status": "locked"
+    },
+    "copy-paste-trains": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {},
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "copy-paste-filters": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {},
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "copy-paste-requester-chest": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ]
+    },
+    "copy-paste-spidertron": 
+    {
+      "status": "locked"
+    },
+    "drag-building": 
+    {
+      "status": "locked"
+    },
+    "drag-building-poles": 
+    {
+      "status": "locked"
+    },
+    "pole-dragging-coverage": 
+    {
+      "status": "dependencies-not-met",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "drag-building-underground-belts": 
+    {
+      "status": "locked"
+    },
+    "fast-belt-bending": 
+    {
+      "status": "locked"
+    },
+    "fast-obstacle-traversing": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ]
+    },
+    "trains": 
+    {
+      "status": "locked"
+    },
+    "rail-building": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ]
+    },
+    "elevated-rails": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "conditions": 
+          [
+            
+            {},
+            
+            {
+              "elapsed": 0
+            }
+          ]
+        },
+        
+        {}
+      ]
+    },
+    "train-stops": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "conditions": 
+          [
+            
+            {},
+            
+            {}
+          ]
+        }
+      ]
+    },
+    "rail-signals-basic": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "conditions": 
+          [
+            
+            {},
+            
+            {}
+          ]
+        }
+      ]
+    },
+    "rail-signals-advanced": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ]
+    },
+    "gate-over-rail": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {},
+        
+        {}
+      ]
+    },
+    "pump-connection": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "conditions": 
+          [
+            
+            {},
+            
+            {}
+          ]
+        }
+      ]
+    },
+    "train-stop-same-name": 
+    {
+      "status": "locked"
+    },
+    "logistic-network": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {}
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "conditions": 
+            [
+              
+              {},
+              
+              {},
+              
+              {}
+            ]
+          }
+        ]
+      }
+    },
+    "personal-logistics": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {},
+          
+          {
+            "conditions": 
+            [
+              
+              {},
+              
+              {}
+            ]
+          }
+        ]
+      }
+    },
+    "construction-robots": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "passive-provider-chest": 
+    {
+      "status": "dependencies-not-met"
+    },
+    "storage-chest": 
+    {
+      "status": "dependencies-not-met"
+    },
+    "requester-chest": 
+    {
+      "status": "locked"
+    },
+    "active-provider-chest": 
+    {
+      "status": "locked"
+    },
+    "buffer-chest": 
+    {
+      "status": "locked"
+    },
+    "ghost-building": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "ghost-rail-planner": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {
+          "conditions": 
+          [
+            
+            {},
+            
+            {},
+            
+            {}
+          ]
+        },
+        
+        {}
+      ]
+    },
+    "copy-paste": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "elapsed": 0
+        },
+        
+        {}
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "fast-replace": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {},
+        
+        {}
+      ]
+    },
+    "fast-replace-direction": 
+    {
+      "status": "locked"
+    },
+    "fast-replace-belt-splitter": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "fast-replace-belt-underground": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "quality": 
+    {
+      "status": "locked"
+    },
+    "quality-factoriopedia": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "quality-modules": 
+    {
+      "status": "dependencies-not-met"
+    },
+    "quality-probabilities": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "fulgora-briefing": 
+    {
+      "status": "locked"
+    },
+    "lightning-mechanics": 
+    {
+      "status": "locked"
+    },
+    "gleba-briefing": 
+    {
+      "status": "locked"
+    },
+    "agriculture": 
+    {
+      "status": "locked"
+    },
+    "vulcanus-briefing": 
+    {
+      "status": "locked"
+    },
+    "lava-processing": 
+    {
+      "status": "locked"
+    },
+    "aquilo-briefing": 
+    {
+      "status": "locked"
+    },
+    "heating-mechanics": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "space-platform": 
+    {
+      "status": "locked"
+    },
+    "orbital-logistics": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {}
+        ]
+      }
+    },
+    "removing-trash-in-space": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "elapsed": 0
+        },
+        
+        {}
+      ],
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "space-science": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {
+          "elapsed": 0
+        },
+        
+        {}
+      ]
+    },
+    "asteroid-defense": 
+    {
+      "status": "locked",
+      "conditions": 
+      [
+        
+        {},
+        
+        {},
+        
+        {}
+      ]
+    },
+    "spoilables": 
+    {
+      "status": "locked",
+      "skip_status": 
+      {
+        "conditions": 
+        [
+          
+          {},
+          
+          {
+            "elapsed": 0
+          }
+        ]
+      }
+    },
+    "spoilables-result": 
+    {
+      "status": "locked"
+    },
+    "spoilables-research": 
+    {
+      "status": "locked"
+    }
+  },
+  "console-history": 
+  [
+    "/edutir",
+    "/editor",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-test.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"$GAMEABS\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R0.png\"}",
+    "/c game.take_screenshot",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R4.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R5.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R6.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-R1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E4.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E5.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E6.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},sho",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-E7.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-G1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-G2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-G3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-G4.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-G5.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-G6.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-F0.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-F20.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-F40.png\"}",
+    "/c game.take_screenshot{pos",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-F60.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-F80.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-A00.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-A100.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-A010.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-A55.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-ab",
+    "/c game.player.print(game.surfaces[1].get_tile(20,0).name .. \" | \" .. game.surfaces[1].get_tile(20,10).name .. \" | \" .. game.surfaces[1].get_tile(15,0).name)",
+    "/c helpers.write_file(\"tilecheck.txt\", \"20,0=\" .. game.surfaces[1].get_tile(20,0).name .. \"; 20,10=\" .. game.surfaces[1].get_tile(20,10).name .. \"; 15,0=\" .. game.surfaces[1].get_tile(15,0).name .. \"; 0,2=\" .. game.surfaces[1].get_tile(0,2).name, false)",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-calm.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-C90.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-C80.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-C50.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-C20.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-A1010.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-L2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-L1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-L3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-cloudcheck2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-T1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-T2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-T3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-TB.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-TC.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-U1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-U2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-U3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-UF0.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-V1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-V2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-V3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-W1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-W2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-W3.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-X2.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P1.png\"}",
+    "/c game.take_screenshot{position={0,2.5},zoom=1,resolution={2560,1600},show_gui=false,path=\"ford-abs-P2.png\"}"
+  ],
+  "last-played": 
+  {
+    "type": "single-player",
+    "save-name": "_autosave1"
+  },
+  "service-username": "",
+  "service-token": "",
+  "shortcut-bar": 
+  [
+    
+    {
+      "name": "toggle-alt-mode",
+      "docked": true,
+      "enabled": true
+    },
+    
+    {
+      "name": "undo",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "redo",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "copy",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "cut",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "paste",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "import-string",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-blueprint",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-blueprint-book",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-deconstruction-planner",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-upgrade-planner",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "toggle-personal-roboport",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "toggle-equipment-movement-bonus",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-copper-wire",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-green-wire",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-red-wire",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-artillery-targeting-remote",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-discharge-defense-remote",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "give-spidertron-remote",
+      "docked": false,
+      "enabled": false
+    },
+    
+    {
+      "name": "toggle-tall-entity-visibility",
+      "docked": false,
+      "enabled": false
+    }
+  ],
+  "editor-lua-snippets": 
+  [
+    
+    {
+      "name": "Example (Turn trees into biters)",
+      "code": "local surface = game.player.surface\nlocal entities = surface.find_entities_filtered{area = area, type = 'tree'}\nfor k, tree in pairs(entities) do\n  local position = tree.position\n  tree.destroy()\n  surface.create_entity{name = 'small-biter', position = position}\nend"
+    }
+  ],
+  "last-played-version": 
+  {
+    "game_version": "2.1.21",
+    "build_version": 87673,
+    "build_mode": "full",
+    "platform": "linux64"
+  },
+  "blueprint-view": "list",
+  "saves-sorting-mode": "time",
+  "main-menu-simulations-played": 
+  [
+    "aquilo_starter",
+    "nauvis_train_junction",
+    "nauvis_forest_fire",
+    "fulgora_race",
+    "nauvis_spider_ponds",
+    "nauvis_power_up",
+    "nauvis_river_bridge",
+    "nauvis_solar_power_construction",
+    "nauvis_rocket_factory",
+    "nauvis_train_station",
+    "nauvis_nuclear_power",
+    "vulcanus_crossing",
+    "nauvis_t_section",
+    "nauvis_lab",
+    "nauvis_biter_base_steamrolled",
+    "fulgora_city_crossing",
+    "gleba_farm_attack",
+    "nauvis_bus",
+    "gleba_egg_escape",
+    "gleba_grotto",
+    "nauvis_uranium_processing",
+    "nauvis_tank_building",
+    "nauvis_oil_pumpjacks",
+    "platform_science",
+    "platform_messy_nuclear",
+    "nauvis_big_defense",
+    "nauvis_biter_base_laser_defense",
+    "vulcanus_punishment",
+    "aquilo_send_help",
+    "nauvis_ship_rails",
+    "nauvis_brutal_defeat",
+    "fulgora_recycling_hell",
+    "nauvis_biter_base_player_attack",
+    "platform_moving",
+    "gleba_agri_towers",
+    "gleba_pentapod_ponds",
+    "nauvis_biolab",
+    "nauvis_biter_base_spidertron",
+    "nauvis_early_smelting",
+    "nauvis_mining_defense",
+    "nauvis_biter_base_artillery",
+    "nauvis_logistic_robots",
+    "vulcanus_lava_forge",
+    "vulcanus_sulfur_drop"
+  ],
+  "ticks-since-last-tip-shown": 1187780
+}

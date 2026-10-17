@@ -10,7 +10,7 @@
   pilings-mask.png  the gray dryness mask, same 64x64 piece grid: crowns 170
                     (dry, renders above water); the foot ramps to 50% dryness
                     (85) over ~12px below the waterline and HOLDS to the base -
-                    the post grounds in the water bottom; 0 elsewhere (MUST be
+                    the piling grounds in the water bottom; 0 elsewhere (MUST be
                     0: vanilla's own water-side effect map semantics).
   planks.png        re-washed every run from the pristine planks-base.png
                     (knobs DECK_WASH / DECK_WASH_STRENGTH; strength 0 = the
@@ -21,11 +21,11 @@ tools/gen-branding.py.
 
 SQUARE PIECES (user decision after the tall-piece placement experiments):
 tile_height defaults to 1, so every piece is 64x64 = exactly one water tile.
-One post per piece, drawn base-near-the-cell-bottom, crown filling the cell
+One piling per piece, drawn base-near-the-cell-bottom, crown filling the cell
 upward - fully contained, so nothing can be clipped by neighbouring pieces and
 no two-tile extension ambiguity exists. The four rotation rows stride 64px
 within each band; each direction's POSITION ANCHOR still comes from the vanilla
-shore art row at y0 + r*128 (the 128px-stride rows), while the post is DRAWN
+shore art row at y0 + r*128 (the 128px-stride rows), while the piling is DRAWN
 into the 64px window at y0 + r*64 that the engine reads for that direction.
 
 Sheet structure: 64px columns = one slot per tile edge (8 = randomization
@@ -85,7 +85,7 @@ P = dict(w=16, hmin=20, hmax=30, jpos=3, foot=115.0, seed=41000,
          wf=0.18, wfac=0.72, rings=True)
 
 DRY = 170.0        # mask gray dryness: 170 = dry (empirically the working form)
-FOOT_DRY = 0.5     # foot holds at 50% dryness - grounds the post in the water bottom
+FOOT_DRY = 0.5     # foot holds at 50% dryness - grounds the piling in the water bottom
 FOOT_RAMP = 12     # px over which the dryness ramps 170 -> 50% below the waterline
 DECK_DRY = 0.0      # else-value MUST be 0: vanilla's own water-side effect map
                     # (water-dirt-mask.png, landfill's shore rule) is R=0 outside
@@ -100,7 +100,7 @@ alpha2 = van[..., 3]
 
 def npv(c): return np.array(c, np.float32)
 
-def draw_post(cv, px, base_y, y_min, h, w, p):
+def draw_piling(cv, px, base_y, y_min, h, w, p):
     rx = w / 2.0
     ry = max(int(rx * 0.55), 3)
     cy_cap = max(int(base_y - h), y_min) + ry
@@ -113,7 +113,7 @@ def draw_post(cv, px, base_y, y_min, h, w, p):
             a = 255.0 if frac < 0.5 else 255.0 - (frac - 0.5) / 0.5 * (255.0 - p["foot"])
             col_y = col
             if frac >= max(0.5, 1.0 - FOOT_RAMP / max(h, 1)):
-                # painted submersion (posts now render ABOVE the water shader, so
+                # painted submersion (pilings now render ABOVE the water shader, so
                 # the shader no longer wets them): cool/dark the wood toward p["wet"]
                 # with depth; max blend 55% at the base. No foam, no painted shadows.
                 wetk = ((frac - 0.5) / 0.5) * 0.55
@@ -146,8 +146,8 @@ for y0, cols, rows in BANDS:
             ys, xs = np.nonzero(ca > 128)
             if len(ys) == 0: continue
             # anchor = the CUT POINT: in the ~45 degree projection the visual
-            # ground of a standing post is the cell's middle, so the waterline
-            # sits there (fixes north-poles-close / south-poles-far); the post
+            # ground of a standing piling is the cell's middle, so the waterline
+            # sits there (fixes north-pilings-close / south-pilings-far); the piling
             # rises from just above it, the foot = ramp + hold below it
             cut_rel = WATERLINE_CELL
             px_rel = min(max(int(xs.mean()) + rng.randint(-P["jpos"], P["jpos"]), 14), 50)
@@ -156,12 +156,12 @@ for y0, cols, rows in BANDS:
             ry = max(int(P["w"] / 2 * 0.55), 3)
             h = min(rng.randint(20, 30), base_rel - 2 - ry)   # cap top >= 2px inside
             if rng.random() < P["wf"]: h = int(h * P["wfac"])
-            # composite base: opaque plain-water frame under the post (round 12) -
+            # composite base: opaque plain-water frame under the piling (round 12) -
             # covers the engine's pre-darkening beneath transition renders (round-11
             # lesson) while staying seamless with the surrounding water (no pale halo)
             art[win_y:win_y + CELL, cx0:cx0 + CELL, :] = WATER_FRAMES[c % 8]
             bx, by = cx0 + px_rel, win_y + base_rel
-            draw_post(art, bx, by, win_y, h, w, P)
+            draw_piling(art, bx, by, win_y, h, w, P)
             # mask: crown fully dry down to the waterline; ramp + hold below it
             rx = w / 2.0
             cy_cap = max(int(by - h), win_y) + ry
@@ -196,7 +196,7 @@ save_if_changed(
     np.dstack([mask] * 3 + [np.full_like(mask, 255.0)]),
     OUT / "pilings-mask.png", args.force,
 )
-print(f"pilings: {n} posts, composite (water base + posts, waterline anchored mid-cell); "
+print(f"pilings: {n} pilings, composite (water base + pilings, waterline anchored mid-cell); "
       f"mask (crowns {int(DRY)}, feet hold at {int(DRY * (1 - FOOT_DRY))})")
 
 # --- deck: re-wash planks.png from the pristine planks-base.png every run ---

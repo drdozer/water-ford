@@ -1,0 +1,9 @@
+{
+  "name": "wf-piling-viewer",
+  "version": "1.0.0",
+  "title": "WF Piling Viewer (test-only)",
+  "author": "drdozer",
+  "factorio_version": "2.1",
+  "description": "Throwaway scenario mod: displays the Blender piling spritesheet in-game via optimized decoratives. Lives in .cache, never ships.",
+  "dependencies": ["water-ford"]
+}

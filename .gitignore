@@ -2,3 +2,4 @@
 *.zip.bak
 script-output/
 dist/
+__pycache__/
