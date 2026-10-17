@@ -2,6 +2,8 @@
 Version: 1.0.1 (unreleased, dev tiles)
 Date: 17. 10. 2026
   Changes:
+    - Wooden Boards gets a wooden bumper-board edge where it meets water
+      (replaces the inherited concrete stone curb).
     - Promotion pass: the real water-ford tile is unfrozen onto the boards-ford
       ladder (16/16/16 variants at 1x1/2x2/4x4; C-depth 128px sprites at 0.25
       scale, probabilities 1 on the big sizes).
