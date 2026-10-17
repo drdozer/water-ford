@@ -59,6 +59,12 @@ Superproject standard: `mod/` is the portal-clean deployable (what
 
 ## Tools (standalone; PIL + numpy)
 
+These inherit the **superproject shared venv** via walk-up discovery
+(superproject `docs/python-env.md`): prefer `devctl python run
+tools/gen-textures.py` for the pinned interpreter + dependency set. The
+plain shebangs keep them runnable standalone (system python3 + apt
+PIL/numpy as the fallback). Do **not** vendor a venv in this repo.
+
 - `tools/gen-textures.py` — pilings/mask/planks sheets; seeded → regenerates
   the shipped files pixel-identically; writes only on pixel change.
 - `tools/gen-branding.py` — icon (exact planks.png slice, pixel-identical);
