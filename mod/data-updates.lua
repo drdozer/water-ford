@@ -117,3 +117,56 @@ if water_tile_type_names then
 end
 
 data:extend{tile}
+---------------------------------------------------------------------------------------------------
+-- DEV COMPARE TILES (2026-10-17, maintainer order): three land tilesets and the
+-- matching three ford tiles, so the locked boards look can be compared at three
+-- sprite depths on real ground and against the animated water. All six render
+-- 32 world px per tile; A = 32px sprite @ scale 1.0, B = 64px @ 0.5,
+-- C = 128px @ 0.25. Graphics are law-3 slices of the Blender locked-look band
+-- (one render per depth). No items/recipes/autoplace: map-editor-only.
+
+local function dev_variants(fam, letter, scale)
+  return {
+    main = {{
+      picture = "__water-ford__/graphics/boards-" .. fam .. "-" .. letter .. ".png",
+      count = 8,
+      size = 1,
+      scale = scale,
+    }},
+    empty_transitions = true,
+    transition = nil,
+  }
+end
+
+local dev_scale = {a = 1.0, b = 0.5, c = 0.25}
+
+-- LAND: gravel clone (concrete precedent for is_foundation absent, D3).
+local function dev_land(letter)
+  local lt = table.deepcopy(data.raw.tile["gravel"])
+  lt.name = "boards-land-" .. letter
+  lt.order = "zz[boards-dev]-land-" .. letter
+  lt.autoplace = nil        -- dev-only: never appears in generated terrain
+  lt.minable = nil          -- no item backside; editor placement only
+  lt.map_color = {r = 140, g = 112, b = 78}
+  lt.variants = dev_variants("land", letter, dev_scale[letter])
+  data:extend{lt}
+end
+
+-- FORD: clone of the committed water-ford tile: W3 veil (animated water drawn
+-- OVER the boards at 25%), layer 9, piling bank transition all inherited; only
+-- identity + variant sheet change. Registered like the ford so vanilla land
+-- tiles still draw their bank onto the join.
+local function dev_ford(letter)
+  local ft = table.deepcopy(data.raw.tile["water-ford"])
+  ft.name = "boards-ford-" .. letter
+  ft.order = "zz[boards-dev]-ford-" .. letter
+  ft.minable = nil
+  ft.variants.main = dev_variants("ford", letter, dev_scale[letter]).main
+  data:extend{ft}
+  if water_tile_type_names then
+    table.insert(water_tile_type_names, "boards-ford-" .. letter)
+  end
+end
+
+dev_land("a"); dev_land("b"); dev_land("c")
+dev_ford("a"); dev_ford("b"); dev_ford("c")

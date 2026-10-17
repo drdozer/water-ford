@@ -763,3 +763,25 @@ Measures: pore option adds only +2..+58 isolated dark px vs ~600 baseline
 (window incl. cap/bolt edges) — speckle nearly vanishes at 64px/BU even at
 padj -0.30 ceiling; deep line lifts dV 12.15 -> 13.13 and darkens mean by
 ~1.7 — it survives as 1px ring lines. Default config restored after.
+
+### round-6: locked look rendered out into the mod (dev compare tiles)
+Maintainer pick: "8 pores deep" = ringfreq~8 + PORES + DEEP winter line.
+Config locked in M_PLANK (gain 2/3, DEEP ramp, PGT 0.74) and saved into
+ford-boards.blend.
+Rendered the SAME 24x2-tile band at each art depth (Blender, one render per
+depth: 32px/tile t32, 64px t64, 128px t128) and law-3-sliced 8 variant tiles
+(A-zone x=-11,-8,-5 / B x=-1,2 / C x=6,9,11; rows r0/r1 mixed): 6 sheets in
+mod/graphics/: boards-land-a/b/c.png (256x32, 512x64, 1024x128) + identical
+boards-ford-a/b/c.png (veil is definition-side). All 8 variants distinct per
+depth (chunk-hash check).
+Mod wiring in data-updates.lua (DEV COMPARE TILES block): boards-land-a/b/c =
+gravel clones (D3 precedent: no is_foundation), autoplace nil, minable nil,
+map_color warm plank, full variants replacement (empty_transitions);
+boards-ford-a/b/c = water-ford clones (W3 veil layer-9 piling bank inherited)
+with new variants.main; all six registered in water_tile_type_names (ford).
+Locale tile-name + tile-description entries added for all six.
+Mock contact sheet: .cache/boards-research/previews/boards-mock-v1.png (3
+tiles per row at 32 world px; ford rows show a STATIC W3 veil simulation
+px'=0.75px+0.25(51,51,51) - the real veil is animated). gwenview open.
+Next: maintainer paints patches in the map editor, picks the best set;
+high-quality sprite follows; deck drop-in scale decision still maintainer's.

@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.1 (unreleased, dev tiles)
+Date: 17. 10. 2026
+  Changes:
+    - Six map-editor-only compare tiles: boards-land-a/b/c (wooden boards on
+      land) and boards-ford-a/b/c (the boards as ford deck under the animated
+      water veil). Three sprite depths each (A 32px @1.0, B 64px @0.5,
+      C 128px @0.25 - all render 32 world px) for picking the sprite basis.
+      Locked look: Blender boards, ring-grain rf~8 + pores + deep winter line.
+      No items, recipes, or terrain autoplace.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 13. 10. 2026
   Changes:
