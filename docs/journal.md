@@ -565,3 +565,23 @@ law, palettes, rig, engine constraints — v1 pre-exploration).
 Next: S2 Blender phase per boards-research.md §Blender phase plan — launch
 visible Blender on :0 (mcp-for-blender bridge verified running), build the
 base wooden floor model (no ballast/trim), preview renders for gwenview.
+
+## 2026-10-17 — S2 Blender session: base wooden floor (v1 for review)
+Visible session via blender MCP (law 2) on :0; ford-boards.blend created and
+saved (17.8 MB). Factory: scenes FLOOR+LAND sharing collections
+(BOARDS/UNDERLAY/LIGHTING/CAMERAS shared; BALLAST+TRIM created empty,
+excluded in FLOOR, absent from LAND); KEY verbatim-then-adapted
+(see scene custom prop boards_rig_note): distance x3 for falloff flatness,
+energy calibrated x4.5 (iter3) to hit planks anchors; world 0.15 (no-true-
+black); underlay raised for shallow seams; Cycles 96ss adaptive, no denoiser
+(build lacks OIDN); view Standard (posts' AgX ate the midtones vs anchors).
+Floor: 24x24 tiles at origin, 64px/tile; zones: A bolted bays (83 courses,
+1441 boards, caps+2 hex bolts per end, sin2 bows <=1/4 width, 2/4px seams),
+B through-running pinned-wave rows (94 courses, interior splices only, 1/3px
+seams), C hybrid alternating rows (82 courses, A-style furniture per-row).
+Two build bugs found+fixed via ray-cast diagnosis (accidental B+C merge into
+one mesh pair; duplicated coplanar furniture in C causing z-fight blacks).
+Numerics v3: cells L100.7-118 (anchor family), no true blacks, falloff W:E
+1.05, hue on-anchor. Preview assets in .cache/boards-research/previews/
+(base-floor-v3, crops-zoneA/B/C, sheet-mockup, tiling-selftest,
+tiling-adjacent-runs). Awaiting maintainer gwenview verdict.
