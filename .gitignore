@@ -3,3 +3,7 @@
 script-output/
 dist/
 __pycache__/
+
+# test-instance runtime state (volatile; never carries credentials — the
+# portal token lives in the install's player-data.json, outside the repo)
+testing/scratch/player-data.json
