@@ -1135,3 +1135,30 @@ spare). Stone paths now draw over boards at shared boundaries. Watch-item:
 the water edge's submerged curb rides the tile layer
 (offset_background_layer_by_tile_layer) - bench showed the approved bumper
 look unchanged. check26 clean. Maintainer: "That looks good to me. Bake that."
+
+## 2026-10-18 — stones waterline: sliced above/below + multiplicative alpha (round-25)
+Maintainer commissioned the multiplicative-alpha waterline ("slice the
+geometry at a uniform height, above and below water mesh, as we did for the
+pilings, and use that to drive the multiplicative alpha channel"):
+- Mechanism: Sprite.layers per decorative variation - layer 1 = the dry heap
+  art (normal blend), layer 2 = the below-waterline slice with blend_mode
+  "multiplicative-with-alpha" (submerged part tints with whatever is under
+  it: wet boards inside the deck, water at the edges). Auth splits every
+  stone mesh at a uniform waterline plane (true vertex ring, piling GN-cut
+  semantics; no object tilt so the cut stays horizontal); the bake renders
+  aligned ABOVE + BELOW sheets per family (4 sheets, identical grids).
+- THE ROOT-CAUSE LESSON of the whole look saga: Blender new objects default
+  to rotation_mode QUATERNION, which SILENTLY IGNORES rotation_euler - the
+  v1/v2 sun, fill and camera never rotated (top-down renders, camera-side
+  shadows, "light from behind the camera"). Fix = rotation_mode='XYZ' on
+  every rotated object; verified live via render asymmetry (W/E 1.30).
+  Background-probe matrix_world reads identity for objects outside the
+  active view layer - misleading; the render engine's depsgraph is correct.
+- Balance: key sun 4.2 (WSW-up, shadows east), south fill 25 (the fill
+  carries the visible south faces; too strong reads as backlit). Below-part
+  material = washed bright mask - a dark mask under multiplicative blend =
+  near-black feet (round-25 bug; the feet were there but crushed).
+- Bake hard-checks: scene camera assert (SC_CAM), per-frame distinctness,
+  warm-earth palette both passes, bit-equal packing, pixel --twice 72/72.
+  check25d clean. ford-stones.blend(.blend1) committed (round-23 miss).
+- Maintainer: "That's it. You got it right that time."
