@@ -1,8 +1,9 @@
 # paper-pipeline — ford piling sprites, deterministic bake chain
 
 The Blender paper pipeline: `ford-posts.blend` renders 108 keyed piling
-variants; this chain turns them into a spritesheet and a stable in-game
-viewer save. Every stage is idempotent, hard-failing, and bit-reproducible.
+variants; `ford-stones.blend` renders the deck-ballast decorative heaps
+(waterline-sliced, layered above/below sheets). This chain turns them into
+spritesheets and a stable in-game viewer save. Every stage is idempotent, hard-failing, and bit-reproducible.
 
 ## Usage
 
@@ -19,6 +20,9 @@ tools/paper-pipeline/bake.sh --stages save --seed 4242
 | deploy | (in `bake.sh`) | sheet copied into the viewer test-mod |
 | save | `bake-save.py` | seed-pinned scenario run → shutdown save renamed `ford-view-test.zip` → headless load-check; zero script exceptions |
 | view | (in `bake.sh`) | windowed `--load-game` on `:0`, alive after 26 s |
+| **stones** | `bake-stones.sh [--twice]` → `bake-stones.py` | 4 sheets (pebbles/stones × above/below), per-cell bit-equal, pixel `--twice` 72/72 |
+| **check** | `check.sh [NAME]` | headless load smoke; exit 0 = zero error/failed lines |
+| **bench** | `bench.sh SAVE X,Y TAG [--paint LUA]` | console-law in-game capture → provenance + gwenview |
 
 ## Invariants
 

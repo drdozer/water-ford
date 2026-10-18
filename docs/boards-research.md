@@ -27,7 +27,7 @@ References: `docs/blender-factory-laws.md` (binding), `docs/ford-knobs.md`,
 | R8 | What board content, if any, lives in the pilings transition frames today (P1 composite re-derivation scope, ticket c3)? | DONE (+ decision point D2) |
 | R9 | Pipeline shape for boards: where boards stages slot into bake.sh stages (strips/sheet/deploy/save/view), what --twice covers, deploy mechanics | DONE (enough for planning; deploy mechanics re-checked at build) |
 | R10 | Visual-model / tilering lattice: how do varied board lengths+widths, end bolts and mid-span bows line up at tiling edges — vanilla precedents measured, schemes derived | DONE (scheme choice = maintainer, see S1) |
-| R11 | bound_decoratives semantics for the doodad fallback (upgrades R4/D4) | FOUND (runtime probe still open if fallback is pursued) |
+| R11 | bound_decoratives semantics for the doodad fallback (upgrades R4/D4) | DONE (rounds 23/25: shipped as the deck ballast; build-path/veil/density benched; see docs/ballast.md) |
 
 ## Findings
 
