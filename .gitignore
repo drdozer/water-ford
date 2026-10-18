@@ -1,9 +1,23 @@
-# packaged-mod builds live in dist/ (never auto-ignore zip content anywhere else;
-# testing saves are committed mod artifacts, regenerate via tools/paper-pipeline/bake.sh)
+# packaged-mod builds live in dist/ (never auto-ignore zip content anywhere else)
 script-output/
 dist/
 __pycache__/
 
-# test-instance runtime state (volatile; never carries credentials — the
-# portal token lives in the install's player-data.json, outside the repo)
-testing/scratch/player-data.json
+# --- test-instance scratch (testing/scratch/) ---
+# The game rewrites nearly all of it at runtime: logs, locks, caches,
+# autosaves, config.ini (bake-save.py regenerates it), mod-list.json,
+# player-data.json, achievements. Volatile — NOT tracked.
+# The reproducibility contract is narrow: NAMED saves + scenario
+# definitions. Those are whitelisted below; a new deliberate fixture needs
+# an explicit whitelist line here.
+testing/scratch/*
+!testing/scratch/saves/
+testing/scratch/saves/*
+!testing/scratch/saves/boards-compare-1.zip
+!testing/scratch/saves/boards-compare-2.zip
+!testing/scratch/saves/boards-compare-3.zip
+!testing/scratch/saves/ford-view-test.zip
+!testing/scratch/scenarios/
+# instance mod links are absolute local paths; recreate after a fresh clone:
+#   ln -s "$(pwd)/mod" testing/scratch/mods/water-ford
+#   ln -s "$(pwd)/testing/wf-piling-viewer" testing/scratch/mods/wf-piling-viewer
