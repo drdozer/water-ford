@@ -39,10 +39,10 @@ local tile = table.deepcopy(data.raw.tile["water"])  -- EXPERIMENT 2026-10-16: c
 
 -- Name/description come from locale ([tile-name]/[tile-description]) — no
 -- localised_* override here (it would dead-string the locale file).
-tile.name = "water-ford"
+tile.name = "wooden-ford"
 tile.subgroup = "artificial-tiles"
-tile.order = "c[landfill]-a2[water-ford]"
-tile.minable = {mining_time = 0.1, result = "water-ford"}
+tile.order = "c[landfill]-a2[wooden-ford]"
+tile.minable = {mining_time = 0.1, result = "wooden-ford"}
 tile.autoplace = nil
 tile.fluid = nil
 tile.default_cover_tile = nil
@@ -117,7 +117,7 @@ tile.collision_mask = {
 -- join. The land tiles carry no tile effect, so this produces no darkening.
 -- The list is a base global; guard it exactly as the sandbox-era code did.
 if water_tile_type_names then
-  table.insert(water_tile_type_names, "water-ford")
+  table.insert(water_tile_type_names, "wooden-ford")
 end
 
 data:extend{tile}
@@ -165,7 +165,7 @@ data:extend
   {
     type = "optimized-decorative",
     name = "ford-pebbles",
-    order = "b[decorative]-z[water-ford]-a[pebbles]",
+    order = "b[decorative]-z[wooden-ford]-a[pebbles]",
     collision_box = {{-0.12, -0.12}, {0.12, 0.12}},
     minimal_separation = 0.12,
     target_count = 120,          -- DENSITY KNOB: pebble grit on the deck
@@ -177,7 +177,7 @@ data:extend
   {
     type = "optimized-decorative",
     name = "ford-stones",
-    order = "b[decorative]-z[water-ford]-b[stones]",
+    order = "b[decorative]-z[wooden-ford]-b[stones]",
     collision_box = {{-0.3, -0.3}, {0.3, 0.3}},
     minimal_separation = 0.5,
     target_count = 20,           -- DENSITY KNOB: bigger stones
@@ -190,16 +190,16 @@ data:extend
 tile.bound_decoratives = {"ford-pebbles", "ford-stones"} -- DENSITY KNOB: which families bind to the ford deck
 ---------------------------------------------------------------------------------------------------
 -- WOODEN BOARDS LAND (2026-10-17): single promoted land tileset. Was the
--- boards-land-a/b/c dev compare; the C depth won and the family collapsed
+-- wooden-flooring-a/b/c dev compare; the C depth won and the family collapsed
 -- to one tile per the maintainer order. The ford side lives in the real
--- water-ford tile above, now unfrozen onto the boards-ford ladder. Restore
+-- wooden-ford tile above, now unfrozen onto the boards-ford ladder. Restore
 -- point: testing/testing-mods/2026-10-17-boards-16-16-16/.
 
 local land_tile = table.deepcopy(data.raw.tile["concrete"])
-land_tile.name = "boards-land"
-land_tile.order = "b[terrain]-zz[boards-land]"
+land_tile.name = "wooden-flooring"
+land_tile.order = "b[terrain]-zz[wooden-flooring]"
 land_tile.autoplace = nil -- never in generated terrain
-land_tile.minable = {mining_time = 0.1, result = "boards-land"}
+land_tile.minable = {mining_time = 0.1, result = "wooden-flooring"}
 land_tile.walking_speed_modifier = 1.1 -- D3 band 1.0-1.1 (concrete 1.4 too fast)
 -- Layer: concrete's deepcopy = 13. Maintainer round-24: boards must sit BELOW
 -- stone brick (the stone-brick item places stone-path = layer 11) so stone
@@ -211,8 +211,8 @@ land_tile.variants =
   main =
   {
     {picture = "__water-ford__/graphics/boards-land.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
-    {picture = "__water-ford__/graphics/boards-land-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
-    {picture = "__water-ford__/graphics/boards-land-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/wooden-flooring-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/wooden-flooring-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
   },
   -- LAND TRIM (2026-10-18, round-21): wooden variant-transition edges - the
   -- land-to-land system vanilla wires as concrete.variants.transition (the
@@ -225,24 +225,24 @@ land_tile.variants =
   {
     overlay_layout =
     {
-      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner.png", count = 16, scale = 0.5 },
-      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner.png", count = 8,  scale = 0.5 },
-      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side.png",         count = 16, scale = 0.5 },
-      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u.png",            count = 4,  scale = 0.5 },
-      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o.png",            count = 4,  scale = 0.5 },
+      inner_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-inner-corner.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-outer-corner.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-side.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-u.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-o.png",            count = 4,  scale = 0.5 },
     },
     mask_layout =
     {
-      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
-      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
-      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side-mask.png",         count = 16, scale = 0.5 },
-      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u-mask.png",            count = 4,  scale = 0.5 },
-      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o-mask.png",            count = 4,  scale = 0.5 },
+      inner_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-side-mask.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-u-mask.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-o-mask.png",            count = 4,  scale = 0.5 },
     },
   },
 }
 
--- WOODEN BUMPER EDGE (2026-10-17, round-20): boards-land inherits concrete's
+-- WOODEN BUMPER EDGE (2026-10-17, round-20): wooden-flooring inherits concrete's
 -- water transitions verbatim from the deepcopy - the stone curb at the
 -- waterline. Replaced with our own edge sheet: a GEOMETRY-CLONE of vanilla's
 -- concrete.png (same canvas, band y-fields, channel x-slabs and gaps; cells
@@ -261,7 +261,7 @@ land_tile.transitions =
   { -- flags mirror vanilla concrete's water entry; y-fields tightened
     to_tiles = water_tile_type_names,
     transition_group = water_transition_group_id,
-    spritesheet = "__water-ford__/graphics/boards-land-edge.png",
+    spritesheet = "__water-ford__/graphics/wooden-flooring-edge.png",
     layout =
     {
       scale = 0.5,
@@ -321,7 +321,7 @@ land_tile.transitions_between_transitions =
   {
     transition_group1 = default_transition_group_id,
     transition_group2 = water_transition_group_id,
-    spritesheet = "__water-ford__/graphics/boards-land-between.png",
+    spritesheet = "__water-ford__/graphics/wooden-flooring-between.png",
     layout =
     {
       scale = 0.5,
@@ -393,18 +393,18 @@ data:extend{land_tile}
 local land_item =
 {
   type = "item",
-  name = "boards-land",
+  name = "wooden-flooring",
   icon = "__water-ford__/graphics/boards-land-icon.png",
   icon_size = 128,
   subgroup = "terrain",
-  order = "b[terrain]-zz[boards-land-item]",
+  order = "b[terrain]-zz[wooden-flooring-item]",
   stack_size = 100,
   -- land pattern (cf. stone-brick/concrete items): condition names water_tile
   -- with no invert = the target must NOT carry the water_tile layer, so this
   -- can never be placed over water. Ford items keep the inverted condition.
   place_as_tile =
   {
-    result = "boards-land",
+    result = "wooden-flooring",
     condition_size = 1,
     condition = {layers = {water_tile = true}},
   },
@@ -424,11 +424,11 @@ local boards_ingredients = py_loaded
 local land_recipe =
 {
   type = "recipe",
-  name = "boards-land",
-  localised_name = {"?", {"recipe-name.boards-land"}, {"item-name.boards-land"}}, -- pypp eager-tiling guard, same chain as the ford recipe
+  name = "wooden-flooring",
+  localised_name = {"?", {"recipe-name.wooden-flooring"}, {"item-name.wooden-flooring"}}, -- pypp eager-tiling guard, same chain as the ford recipe
   enabled = false, -- both boards unlock with the water-ford technology
   energy_required = 0.5,
   ingredients = boards_ingredients,
-  results = {{type = "item", name = "boards-land", amount = 1}},
+  results = {{type = "item", name = "wooden-flooring", amount = 1}},
 }
 data:extend{land_item, land_recipe}

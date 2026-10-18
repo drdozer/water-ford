@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+Date: 18. 10. 2026
+  Changes:
+    - Renamed in-game identifiers to match display names: the land
+      tile/item/recipe are now wooden-flooring (was boards-land), the
+      water tile/item/recipe are now wooden-ford (was water-ford). The
+      technology and the mod itself keep the water-ford id.
+    - BREAKING: saves, blueprints and scripts referencing the old
+      identifiers need updating.
+    - New mod-portal thumbnail.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1 (unreleased, dev tiles)
 Date: 17. 10. 2026
   Changes:

@@ -9,7 +9,7 @@
 -- tick and the items are refunded.
 
 local ford_names = {
-  ["water-ford"] = true,
+  ["wooden-ford"] = true,
 }
 
 local not_water_names = {["out-of-map"] = true, ["empty-space"] = true}

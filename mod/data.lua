@@ -36,12 +36,12 @@ local py_loaded = mods["pyalienlife"] ~= nil
 -- (a full stack of bed material per crossing).
 local INGREDIENTS = py_loaded
     and {
-      {type = "item", name = "boards-land", amount = 1},
+      {type = "item", name = "wooden-flooring", amount = 1},
       {type = "item", name = "log",         amount = 1},
       {type = "item", name = "gravel",      amount = 200},
     }
     or {
-      {type = "item", name = "boards-land", amount = 1},
+      {type = "item", name = "wooden-flooring", amount = 1},
       {type = "item", name = "wood",        amount = 2},
       {type = "item", name = "stone",       amount = 100},
     }
@@ -49,19 +49,19 @@ local INGREDIENTS = py_loaded
 local PREREQUISITES = py_loaded and {"creosote"} or {"concrete"}
 
 -- 1 ford per craft: scarce by design. Tech and item live in distinct
--- data.raw namespaces, so the shared "water-ford" id is legal and keeps the
+-- data.raw namespaces. The tile/item/recipe are "wooden-ford" (the technology
 -- mod's names uniform.
 data:extend{
   {
     type = "item",
-    name = "water-ford",
+    name = "wooden-ford",
     icon = "__water-ford__/graphics/water-ford-icon.png",
     icon_size = 128,
     subgroup = "terrain",
     order = "c[landfill]-a2[water-ford]",
     stack_size = 100,
     place_as_tile = {
-      result = "water-ford",
+      result = "wooden-ford",
       condition_size = 1,
       condition = {layers = {water_tile = true}},
       invert = true,
@@ -69,7 +69,7 @@ data:extend{
   },
   {
     type = "recipe",
-    name = "water-ford",
+    name = "wooden-ford",
     enabled = false,  -- unlocked by the water-ford technology
     energy_required = 10,
     -- Load-bearing for pypostprocessing compat (docs/dependency-audit.md §6):
@@ -79,9 +79,9 @@ data:extend{
     -- name here skips that fallback entirely. Mirrors pypp's own
     -- {"?", recipe-name, item-name} chain; display is identical to the
     -- engine default.
-    localised_name = {"?", {"recipe-name.water-ford"}, {"item-name.water-ford"}},
+    localised_name = {"?", {"recipe-name.wooden-ford"}, {"item-name.wooden-ford"}},
     ingredients = INGREDIENTS,
-    results = {{type = "item", name = "water-ford", amount = 1}},
+    results = {{type = "item", name = "wooden-ford", amount = 1}},
   },
   {
     type = "technology",
@@ -89,8 +89,8 @@ data:extend{
     icon = "__water-ford__/graphics/water-ford-tech-icon.png",
     icon_size = 256,
     effects = {
-      {type = "unlock-recipe", recipe = "boards-land"},
-      {type = "unlock-recipe", recipe = "water-ford"},
+      {type = "unlock-recipe", recipe = "wooden-flooring"},
+      {type = "unlock-recipe", recipe = "wooden-ford"},
     },
     unit = {count = 20, ingredients = {{"automation-science-pack", 1}}, time = 10},
     order = "a2[water-ford]",

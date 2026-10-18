@@ -1181,3 +1181,22 @@ sprites"; no blender scene needed - the first attempt was reverted):
   The boards tileset sheets themselves have no build button yet (consumed
   by the trim/between/icon builders) - flagged as a build-code gap rider.
 - Maintainer: "I like those icons."
+
+## 2026-10-18 — naming & localisation (round-27)
+Audit first, then two shipped units:
+1. Descriptions rewritten (34b291b): short tooltip slugs on item/tech
+   (maintainer copy, verbatim), expanded copy on the Factoriopedia tile
+   pages (item and tile are separate pages — tooltip stays short).
+2. Display-name/ID rename (this commit), maintainer-approved with a
+   breaking version bump:
+   - boards-land -> wooden-flooring, "Wooden Boards" -> "Wooden Flooring"
+   - water-ford -> wooden-ford, "Water Ford" -> "Wooden Ford"
+   - the TECHNOLOGY keeps id water-ford ("Water Fords"); mod id unchanged.
+   Locale keys follow the ids; asset filenames (boards-land.png,
+   water-ford-icon.png...) deliberately NOT renamed — assets keep their
+   historical names, only in-game identifiers moved. pypp "?" guards
+   updated to the new keys. placement-denied message now says Wooden Ford.
+   Historical journal/research docs keep the old ids (they were true then).
+   info.json 1.0.0 -> 2.0.0 (breaking). Another agent shipped the
+   mod-portal thumbnail (ff73498) mid-session; changelog notes it.
+   Headless check clean. In-game eye-check = restart, Factoriopedia.
