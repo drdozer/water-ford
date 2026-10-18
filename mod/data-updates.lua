@@ -183,6 +183,10 @@ land_tile.order = "b[terrain]-zz[boards-land]"
 land_tile.autoplace = nil -- never in generated terrain
 land_tile.minable = {mining_time = 0.1, result = "boards-land"}
 land_tile.walking_speed_modifier = 1.1 -- D3 band 1.0-1.1 (concrete 1.4 too fast)
+-- Layer: concrete's deepcopy = 13. Maintainer round-24: boards must sit BELOW
+-- stone brick (the stone-brick item places stone-path = layer 11) so stone
+-- paths draw over boards at their boundary. 10 = free slot just below.
+land_tile.layer = 10
 land_tile.map_color = {r = 140, g = 112, b = 78}
 land_tile.variants =
 {

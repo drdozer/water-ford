@@ -1124,3 +1124,14 @@ The parked ballast item lands as engine-native doODADS, not in-sprite art:
   heaps wanted (2-3 stones per variation), palette = vanilla umber/brown.
   v2 approved: "That is perfect. Bake that." (bench + 4x crop captures in
   provenance 012953-stones-bench2*). Stones render above the water veil.
+
+## 2026-10-18 — boards-land layer below stone brick (round-24)
+Maintainer experimented with other floor tiles vs boards on land: the tile
+inherited concrete's layer 13 (ground-artificial), and the stone-brick ITEM
+places the stone-path tile at layer 11 - boards were sitting above the brick
+floor. Changed land_tile.layer = 10 (free slot just below stone-path;
+ground-artificial occupancy 5/11/13/15/17/19/25/70, 0-255 band = room to
+spare). Stone paths now draw over boards at shared boundaries. Watch-item:
+the water edge's submerged curb rides the tile layer
+(offset_background_layer_by_tile_layer) - bench showed the approved bumper
+look unchanged. check26 clean. Maintainer: "That looks good to me. Bake that."
