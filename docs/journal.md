@@ -1200,3 +1200,29 @@ Audit first, then two shipped units:
    info.json 1.0.0 -> 2.0.0 (breaking). Another agent shipped the
    mod-portal thumbnail (ff73498) mid-session; changelog notes it.
    Headless check clean. In-game eye-check = restart, Factoriopedia.
+
+## 2026-10-18 — minimap colors (pre-2.0.0 outstanding work)
+Both boards tiles now share ONE map color: ochre #cc7722 (204,119,34).
+- Before: wooden-ford had no map_color (inherited deep-water blue from the
+  clone -> fords read as open water); wooden-flooring had (140,112,78).
+- Method: clustered the shipped sprites (boards deck dominant 145,115,84;
+  planks/icon amber ~150,105,60; gen-textures piling ramp dark (70,48,26)
+  -> lite (224,186,122), capedge (184,144,90)) and scored candidates
+  (CIE76 dE) against every vanilla terrain map color. First pick was the
+  ramp midpoint honey (147,117,74) — dE 6 vs dirt-1/sand-1, i.e. nearly
+  indistinguishable from desert terrain (vanilla's own floor: dirt-1~sand-1
+  = dE 1.2). Maintainer overrode: vicinity of ochre #cc7722, "more distinct
+  from the sands and dirts" — measured dE 34 vs dirt-1/sand-1, 38 vs
+  red-desert-1, 80 vs water; better separated from vanilla terrain than
+  vanilla terrains are from each other. Adopted as-is (any drift toward
+  brown/muted only shrinks the margin). Swatch sheets + scoring scripts in
+  .cache/water-ford-mapcolor/ (scratch).
+- Verification: dlc-smoke load smoke PASS; dump-diff vs fresh pre-change
+  baseline = exactly 4 field changes (wooden-ford.map_color added;
+  wooden-flooring.map_color r/g/b), nothing else. The stale Oct-15
+  baseline (.cache/water-ford-refactor/) predates the 2.0.0 rename and
+  diffs as add/remove noise — fresh pre-change dumps via stash-free
+  checkout round-trip instead. Sprites untouched (map_color is
+  minimap-only, no render impact; no locale check needed).
+- In-game minimap eye-check still owed before release (map view, dlc
+  install).

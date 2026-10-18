@@ -54,6 +54,19 @@ tile.transition_merges_with_tile = "water"  -- probe 2026-10-16: bank-shadow can
 -- through the animated water (the shallow's own trick)
 tile.effect_color = { 51, 51, 51, 63.75 }  -- committed 2026-10-17: W3 tint on the P1 composite boundary
 tile.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}  -- SWEEP P2
+-- Minimap: shared wood color (2026-10-18) — both boards tiles carry the SAME
+-- map color: ochre #cc7722, the amber hue-anchor of the art ramp
+-- (tools/gen-textures.py P: dark (70,48,26) -> lite (224,186,122), capedge
+-- (184,144,90); #cc7722 sits on that hue line, chosen brighter than the deck's
+-- dominant honey (145,115,84) for map legibility — map colors are stylized,
+-- not a swatch of the art). Without this the ford inherits the deep-water
+-- clone's blue and reads as open water on the map. Measured (CIE76 dE):
+-- nearest vanilla terrain dirt-1/sand-1 = 34 (vanilla's own terrain floor is
+-- dirt-1~sand-1 = 1.2), red-desert-1 = 38, water/deepwater = 80 — the boards
+-- separate from every vanilla terrain better than vanilla terrains separate
+-- from each other. A literal-art honey (147,117,74) measured dE 6 vs dirt-1
+-- and was rejected (maintainer: must not read as sands/dirts).
+tile.map_color = {r = 204, g = 119, b = 34}
 
 tile.variants.main = {{picture = "__water-ford__/graphics/boards-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16}, {picture = "__water-ford__/graphics/boards-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4}, {picture = "__water-ford__/graphics/boards-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4}}
 -- the inherited water-shallow edge overlays produced a pale halo on bordering
@@ -205,7 +218,9 @@ land_tile.walking_speed_modifier = 1.1 -- D3 band 1.0-1.1 (concrete 1.4 too fast
 -- stone brick (the stone-brick item places stone-path = layer 11) so stone
 -- paths draw over boards at their boundary. 10 = free slot just below.
 land_tile.layer = 10
-land_tile.map_color = {r = 140, g = 112, b = 78}
+-- Same ochre #cc7722 as the ford tile (see its map_color note above): one
+-- color for the whole boards family on the minimap.
+land_tile.map_color = {r = 204, g = 119, b = 34}
 land_tile.variants =
 {
   main =

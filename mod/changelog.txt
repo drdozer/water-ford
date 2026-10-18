@@ -8,6 +8,9 @@ Date: 18. 10. 2026
       technology and the mod itself keep the water-ford id.
     - BREAKING: saves, blueprints and scripts referencing the old
       identifiers need updating.
+    - Both boards tiles share one minimap color: ochre (#cc7722), chosen to
+      read distinctly from sands, dirts and red desert on the map. The ford
+      previously inherited deep-water blue and read as open water.
     - New mod-portal thumbnail.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1 (unreleased, dev tiles)
