@@ -56,7 +56,7 @@ data:extend{
     type = "item",
     name = "water-ford",
     icon = "__water-ford__/graphics/water-ford-icon.png",
-    icon_size = 64,
+    icon_size = 128,
     subgroup = "terrain",
     order = "c[landfill]-a2[water-ford]",
     stack_size = 100,
@@ -86,8 +86,8 @@ data:extend{
   {
     type = "technology",
     name = "water-ford",
-    icon = "__water-ford__/graphics/water-ford-icon.png",
-    icon_size = 64,
+    icon = "__water-ford__/graphics/water-ford-tech-icon.png",
+    icon_size = 256,
     effects = {
       {type = "unlock-recipe", recipe = "boards-land"},
       {type = "unlock-recipe", recipe = "water-ford"},

@@ -1162,3 +1162,22 @@ pilings, and use that to drive the multiplicative alpha channel"):
   warm-earth palette both passes, bit-equal packing, pixel --twice 72/72.
   check25d clean. ford-stones.blend(.blend1) committed (round-23 miss).
 - Maintainer: "That's it. You got it right that time."
+
+## 2026-10-18 — item + tech icons (round-26)
+Placeholder flat-square icons replaced with composed top-down swatches, pure
+arrangement of committed art (maintainer-sanctioned "just compose and crop
+sprites"; no blender scene needed - the first attempt was reverted):
+- boards-land-icon.png (128): one boards-land tile cell, verbatim.
+- water-ford-icon.png (128): the deck cell over the P1 flat-water base
+  (17,114,129 - the deck cells carry transparent water-gaps; the gaps now
+  read as water) + three stone-heap sprites pasted at the corners.
+- water-ford-tech-icon.png (256): a 2x2 of four deck cells + six stone
+  heaps around the edges; icon_size 256 = the game downscales.
+- Paste rule learned: Image.paste(im, pos, mask) REPLACES the destination
+  RGBA (semi-transparent sprite edges punch holes) - alpha_composite with
+  manual clipping is the correct over-composite.
+- Recipes need no icons: vanilla recipes display the product item's icon.
+- Buttons: make-icons.sh (+ the icons stage in bake.sh's default chain).
+  The boards tileset sheets themselves have no build button yet (consumed
+  by the trim/between/icon builders) - flagged as a build-code gap rider.
+- Maintainer: "I like those icons."

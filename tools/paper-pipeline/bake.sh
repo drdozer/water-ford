@@ -8,7 +8,7 @@
 # empty/unwritten frames; sheet cells bit-equal to frames; seed-pinned saves.
 set -euo pipefail
 
-STAGES="strips,sheet,deploy,save,view"
+STAGES="strips,sheet,icons,deploy,save,view"
 TWICE=0; SEED=4242
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -54,6 +54,11 @@ fi
 if has shadow; then
   run_stage shadow
   blender -b "$BLEND" --python "$HERE/bake-shadow.py" 2>&1 | grep -E "SHADOW|DONE|RuntimeError|Error"
+fi
+
+if has icons; then
+  run_stage icons
+  "$HERE/make-icons.sh"
 fi
 
 if has mask; then
