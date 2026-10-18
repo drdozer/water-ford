@@ -1,0 +1,5 @@
+{
+  "tile":   [["water-ford", "wooden-ford"], ["boards-land", "wooden-flooring"]],
+  "item":   [["water-ford", "wooden-ford"], ["boards-land", "wooden-flooring"]],
+  "recipe": [["water-ford", "wooden-ford"], ["boards-land", "wooden-flooring"]]
+}

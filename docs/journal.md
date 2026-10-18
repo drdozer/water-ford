@@ -1247,3 +1247,23 @@ Both boards tiles now share ONE map color: ochre #cc7722 (204,119,34).
 - Old scratch libraries (`shared-assets/to-maintainer/thumbnail-roundN/`,
   `.cache/thumbnail-library/`) are superseded by the committed run records;
   kept as scratch until the next session culls them.
+
+## 2026-10-18 — save migration for the 2.0.0 rename (portal 1.0.0 exists!)
+The portal API confirms water-ford 1.0.0 IS published (2026-10-14, 6
+downloads) — the rename is not just a dev-round concern. The released
+1.0.0 zip contains ONLY the ford triple (item/recipe/tile water-ford) +
+tech; boards-land never shipped publicly (1.0.1 dev builds only).
+- Mechanic (lua-api 2.1.21 auxiliary/migrations.html + IDType concept):
+  migrations/<version>.json rename pairs per prototype class; applied
+  during map load, tracked by name (no double-apply); "tile" IS a valid
+  IDType. Without a tile migration, placed water-ford cells would fall
+  back to the surface default tile on load (ford loss). Tech id unchanged
+  (water-ford), so research state carries; recipe resets are automatic.
+- Shipped mod/migrations/2.0.0.json: water-ford -> wooden-ford for
+  tile/item/recipe, plus dev-era boards-land -> wooden-flooring (no-op
+  for public saves, converts the maintainer's own boards-era test saves,
+  e.g. testing/scratch/saves/boards-compare-1.zip). JSON has no comments
+  — rationale lives here.
+- OWED in the play-test session: load an old save against the 2.0.0 zip
+  candidate; confirm in the log that the migration applied and placed
+  fords survive as wooden-ford.

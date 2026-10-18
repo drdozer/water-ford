@@ -6,8 +6,11 @@ Date: 18. 10. 2026
       tile/item/recipe are now wooden-flooring (was boards-land), the
       water tile/item/recipe are now wooden-ford (was water-ford). The
       technology and the mod itself keep the water-ford id.
-    - BREAKING: saves, blueprints and scripts referencing the old
-      identifiers need updating.
+    - BREAKING: scripts and integrations referencing the old identifiers
+      need updating. Saves and blueprints convert automatically via the
+      shipped 2.0.0 migration (placed water-ford tiles, held/stored items
+      and crafting queues rename to wooden-ford; dev-era boards-land
+      becomes wooden-flooring).
     - Both boards tiles share one minimap color: ochre (#cc7722), chosen to
       read distinctly from sands, dirts and red desert on the map. The ford
       previously inherited deep-water blue and read as open water.
