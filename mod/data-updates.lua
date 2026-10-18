@@ -129,17 +129,33 @@ data:extend{tile}
 -- (12 @ 64px cells) rendered by tools/paper-pipeline/bake-stones.py (pixel-
 -- proven --twice); sheets packed law-3 10-per-line. Density knobs below are
 -- the live-tunable surface (maintainer: ~1/4 of the SA effective density).
-local function wf_sheet_variations(count, cols, w, h, filename)
+-- Round-25: layered variations: layer 1 = the dry (above-waterline) heap art,
+-- layer 2 = the below-waterline slice composited with
+-- "multiplicative-with-alpha" so the submerged part tints with whatever is
+-- under it (wet deck boards inside the deck, water at the edges) - the
+-- piling-style waterline, driven by a uniform-height mesh slice.
+local function wf_layered_variations(count, cols, w, h, above, below)
   local out = {}
   for i = 1, count do
+    local x = ((i - 1) % cols) * w
+    local y = math.floor((i - 1) / cols) * h
     out[i] = {
-      filename = filename,
-      priority = "extra-high",
-      width = w,
-      height = h,
-      scale = 0.5,
-      x = ((i - 1) % cols) * w,
-      y = math.floor((i - 1) / cols) * h,
+      layers =
+      {
+        {
+          filename = above,
+          priority = "extra-high",
+          width = w, height = h, scale = 0.5,
+          x = x, y = y,
+        },
+        {
+          filename = below,
+          priority = "extra-high",
+          width = w, height = h, scale = 0.5,
+          x = x, y = y,
+          blend_mode = "multiplicative-with-alpha",
+        },
+      },
     }
   end
   return out
@@ -154,8 +170,9 @@ data:extend
     minimal_separation = 0.12,
     target_count = 120,          -- DENSITY KNOB: pebble grit on the deck
     render_layer = "ground-layer-1",  -- grit sits lowest, under the big stones
-    pictures = wf_sheet_variations(24, 10, 40, 40,
-      "__water-ford__/graphics/ford-decorative-pebbles.png"),
+    pictures = wf_layered_variations(24, 10, 40, 40,
+      "__water-ford__/graphics/ford-decorative-pebbles.png",
+      "__water-ford__/graphics/ford-decorative-pebbles-below.png"),
   },
   {
     type = "optimized-decorative",
@@ -165,8 +182,9 @@ data:extend
     minimal_separation = 0.5,
     target_count = 20,           -- DENSITY KNOB: bigger stones
     render_layer = "ground-layer-3",
-    pictures = wf_sheet_variations(12, 10, 64, 64,
-      "__water-ford__/graphics/ford-decorative-stones.png"),
+    pictures = wf_layered_variations(12, 10, 64, 64,
+      "__water-ford__/graphics/ford-decorative-stones.png",
+      "__water-ford__/graphics/ford-decorative-stones-below.png"),
   },
 }
 tile.bound_decoratives = {"ford-pebbles", "ford-stones"} -- DENSITY KNOB: which families bind to the ford deck
