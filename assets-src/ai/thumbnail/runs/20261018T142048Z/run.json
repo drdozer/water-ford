@@ -1,0 +1,144 @@
+{
+  "schema": "art-run/1",
+  "stamp": "20261018T142048Z",
+  "project": "water-ford",
+  "brief": "thumbnail",
+  "engine": {
+    "script": "scripts/qwen-generate.py",
+    "sha256": null,
+    "meta": {
+      "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+      "dtype": "bfloat16",
+      "offload": "model",
+      "width": 512,
+      "height": 512,
+      "steps": 8,
+      "true_cfg": null,
+      "generator_device": "cpu",
+      "vae_tiling": true,
+      "vae_slicing": false,
+      "kv_cache": true,
+      "device": "cuda"
+    }
+  },
+  "generation": {
+    "width": 512,
+    "height": 512,
+    "seed": 7,
+    "seed_mode": "shared",
+    "count": 4,
+    "reps": 1,
+    "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+    "model_revision": "5fd7a79fdfc88d5b2b4acd1f356bf6c1fa447f1c",
+    "steps": 8,
+    "offload": "model",
+    "dtype": "bfloat16",
+    "true_cfg": null,
+    "generator_device": "cpu",
+    "overrides": {}
+  },
+  "prompts": [
+    {
+      "index": 1,
+      "text": "Dynamic cartoon scene, camera low and close to the water surface: a confident, cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest strides forward across a submerged wooden plank ford, one arm pointing ahead, warm smile, splashes bursting around their tall dark rubber boots. The weathered ochre-brown planks lie just beneath the clear transparent teal water, plainly visible underfoot and tinted blue-green by the water; the waterline cuts across the planks. Dark wooden pilings rise from the water along the edges of the ford, which runs diagonally from the lower-left foreground into the middle distance. A big orange fish leaps from the water near the bottom corner with a spray of droplets. Lush green trees fill the left edge; bright open water stretches to a hazy tree line behind. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "a2316a89"
+    },
+    {
+      "index": 2,
+      "text": "Close three-quarter view over clear steel-blue water: a capable, calm cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest stands ankle-deep in water on a submerged wooden plank ford, looking down with a friendly, confident smile at a big orange fish bursting up out of the water right in front of them, splash and droplets flying. The ochre-brown planks lie just beneath the transparent teal surface, clearly visible underfoot between the engineer and the fish, tinted by the water. Dark wooden pilings rise from the water along the edges of the ford; ripple rings spread around the splash. Lush green trees blur the left foreground; open water and a distant tree line fill the background. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "b862673a"
+    },
+    {
+      "index": 3,
+      "text": "Cartoon scene seen from the side at a slight angle, camera low over clear steel-blue water: a cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest crosses a submerged wooden plank ford carrying a red toolbox in one hand, mid-stride, calm happy expression, water splashing around their tall dark rubber boots. The weathered ochre-brown planks lie just beneath the transparent teal water surface and are clearly visible through it, tinted blue-green; the waterline crosses the boards. Dark wooden pilings rise from the water along the edges of the diagonal ford. A small orange fish jumps in the foreground corner with a splash. Green leafy trees frame one side; bright open water stretches into the hazy background. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "775ac7a3"
+    },
+    {
+      "index": 4,
+      "text": "Cartoon scene from a low three-quarter angle over clear steel-blue water: a cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest stands on a submerged wooden plank ford off to one side of the frame, arm outstretched in a warm welcoming gesture toward the viewer, friendly smile, water splashing lightly around their tall dark rubber boots. The ochre-brown planks lie just beneath the transparent teal surface and are clearly visible through the water across the whole foreground, tinted by it; dark wooden pilings rise from the water along the edges of the ford, receding diagonally into the distance. An orange fish swims beneath the clear water in the foreground, its wake rippling the surface. Lush green trees fill one lower corner; bright open water stretches to a hazy far shore. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "c93852f4"
+    }
+  ],
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.14.0+cu126",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA GeForce GTX TITAN X",
+    "driver": "550.163.01",
+    "diffusers": "0.41.0.dev0"
+  },
+  "images": [
+    {
+      "variant": 1,
+      "file": "candidates/variant-1-512.png",
+      "engine_file": "01-dynamic-cartoon-scene-camera-low-and-clo-a2316a89-512x512-seed7-rep1.png",
+      "prompt_index": 1,
+      "seed": 7,
+      "rep": 1,
+      "seconds": 62.0,
+      "torch_peak_mib": 9799,
+      "sha256": "f3a45903811d0c29e40eb26c8174f0d771eec8f7662bf88229251498458aa237",
+      "bytes": 436366
+    },
+    {
+      "variant": 2,
+      "file": "candidates/variant-2-512.png",
+      "engine_file": "02-close-three-quarter-view-over-clear-stee-b862673a-512x512-seed7-rep1.png",
+      "prompt_index": 2,
+      "seed": 7,
+      "rep": 1,
+      "seconds": 61.4,
+      "torch_peak_mib": 9799,
+      "sha256": "40b951feb29bf4c57b07e7fe200b1fc0f90663811400c79f8bcfab3e42d8b01b",
+      "bytes": 408744
+    },
+    {
+      "variant": 3,
+      "file": "candidates/variant-3-512.png",
+      "engine_file": "03-cartoon-scene-seen-from-the-side-at-a-sl-775ac7a3-512x512-seed7-rep1.png",
+      "prompt_index": 3,
+      "seed": 7,
+      "rep": 1,
+      "seconds": 60.9,
+      "torch_peak_mib": 9799,
+      "sha256": "f8ae7a70464f83b3e14e26f49c5d8fa03517b54149230546494e92388912a542",
+      "bytes": 383633
+    },
+    {
+      "variant": 4,
+      "file": "candidates/variant-4-512.png",
+      "engine_file": "04-cartoon-scene-from-a-low-three-quarter-a-c93852f4-512x512-seed7-rep1.png",
+      "prompt_index": 4,
+      "seed": 7,
+      "rep": 1,
+      "seconds": 60.5,
+      "torch_peak_mib": 9803,
+      "sha256": "b7970c73643024648e0ce5261192aa09b84c67fe0a69593be8866df660bcdf59",
+      "bytes": 403501
+    }
+  ],
+  "derivatives": [
+    {
+      "size": 288,
+      "files": [
+        "variant-1-288.png",
+        "variant-2-288.png",
+        "variant-3-288.png",
+        "variant-4-288.png"
+      ]
+    },
+    {
+      "size": 144,
+      "files": [
+        "variant-1-144.png",
+        "variant-2-144.png",
+        "variant-3-144.png",
+        "variant-4-144.png"
+      ]
+    }
+  ],
+  "sheet": "contact-sheet-288.png",
+  "reconstructed": true,
+  "recorded_at": "2026-10-18T18:41:44Z",
+  "notes": "Round 3 (feedback round 2): maintainer adopted candidate 1 (library label 'variant 5') \u2014 engineer wading the submerged ford, leaping fish. Library labels variant-5..8 map to this run's variant-1..4. Migrated from pre-tooling ad-hoc run."
+}

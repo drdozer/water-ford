@@ -1,0 +1,171 @@
+{
+  "schema": "art-run/1",
+  "stamp": "20261017T172004Z",
+  "project": "water-ford",
+  "brief": "thumbnail",
+  "engine": {
+    "script": "scripts/qwen-generate.py",
+    "sha256": null,
+    "meta": {
+      "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+      "dtype": "bfloat16",
+      "offload": "model",
+      "width": 512,
+      "height": 512,
+      "steps": 8,
+      "true_cfg": null,
+      "generator_device": "cpu",
+      "vae_tiling": true,
+      "vae_slicing": false,
+      "kv_cache": true,
+      "device": "cuda"
+    }
+  },
+  "generation": {
+    "width": 512,
+    "height": 512,
+    "seed": 11,
+    "seed_mode": "shared",
+    "count": 6,
+    "reps": 1,
+    "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+    "model_revision": "5fd7a79fdfc88d5b2b4acd1f356bf6c1fa447f1c",
+    "steps": 8,
+    "offload": "model",
+    "dtype": "bfloat16",
+    "true_cfg": null,
+    "generator_device": "cpu",
+    "overrides": {}
+  },
+  "prompts": [
+    {
+      "index": 1,
+      "text": "Bold clean game-mod thumbnail, cartoon style in the visual aesthetic of the video game Factorio. A short wooden plank ford crossing a shallow steel-blue river, warm ochre-brown planks with visible grain, a small cartoon engineer in a charcoal-grey suit with a red-orange scarf and goggles walking across the ford seen from a three-quarter top-down view. Strong readable shapes, high contrast, centred composition, saturated but restrained palette. No text, no words, no letters, no numbers, no logos, no user interface elements.",
+      "sha1_8": "b751da42"
+    },
+    {
+      "index": 2,
+      "text": "Bold clean game-mod thumbnail, cartoon style in the visual aesthetic of the video game Factorio. A wooden plank ford crossing a wide river, seen from above at a slight diagonal, warm brown planks over teal-blue water with soft ripples, a small engineer character in a grey suit with red scarf standing mid-crossing. Simple factory silhouette (pipes and chimneys) far in the background at the top edge. Strong readable shapes, high contrast, centred. No text, no words, no letters, no numbers, no logos, no user interface elements.",
+      "sha1_8": "4619a6fd"
+    },
+    {
+      "index": 3,
+      "text": "Bold clean game-mod thumbnail, cartoon style in the visual aesthetic of the video game Factorio. Close-up of warm ochre-brown wooden planks forming a small ford over bright teal water, one small grey-suited engineer with a red-orange scarf stepping onto the planks, water splashing gently around the wood. Chunky simple shapes, bold outlines, high contrast, fills the whole frame. No text, no words, no letters, no numbers, no logos, no user interface elements.",
+      "sha1_8": "8e0b551d"
+    },
+    {
+      "index": 4,
+      "text": "Bold clean game-mod thumbnail, cartoon style in the visual aesthetic of the video game Factorio. A sturdy wooden plank causeway with simple log railings crossing a calm steel-blue river, no people, warm brown wood glowing against cool blue water, grassy banks with a few dark green shrubs. Extremely clean and iconic, reads clearly at tiny sizes, strong shapes, high contrast, centred. No text, no words, no letters, no numbers, no logos, no user interface elements.",
+      "sha1_8": "06338f5b"
+    },
+    {
+      "index": 5,
+      "text": "Bold clean game-mod thumbnail, cartoon style in the visual aesthetic of the video game Factorio. The small engineer in a charcoal suit and red-orange scarf standing on a wooden plank ford in the middle of a river, gesturing forward invitingly, warm ochre planks underfoot, soft teal water on both sides, bright daylight. Friendly, inviting mood, bold readable shapes, high contrast, centred. No text, no words, no letters, no numbers, no logos, no user interface elements.",
+      "sha1_8": "6ea27799"
+    },
+    {
+      "index": 6,
+      "text": "Bold clean game-mod thumbnail, cartoon style in the visual aesthetic of the video game Factorio. A diagonal wooden plank path crossing a river from bottom-left to top-right, warm brown planks, steel-blue water with white ripple highlights, one tiny grey engineer with red scarf crossing, dark forest-green banks on both sides. Dynamic diagonal composition, strong shapes, high contrast. No text, no words, no letters, no numbers, no logos, no user interface elements.",
+      "sha1_8": "38aca2af"
+    }
+  ],
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.14.0+cu126",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA GeForce GTX TITAN X",
+    "driver": "550.163.01",
+    "diffusers": "0.41.0.dev0"
+  },
+  "images": [
+    {
+      "variant": 1,
+      "file": "candidates/variant-1-512.png",
+      "engine_file": "01-bold-clean-game-mod-thumbnail-cartoon-st-b751da42-512x512-seed11-rep1.png",
+      "prompt_index": 1,
+      "seed": 11,
+      "rep": 1,
+      "seconds": 64.8,
+      "torch_peak_mib": 9728,
+      "sha256": "f480d0c1f6d98d1d16250abc293e57298683581ae739eb1a6b6b70faf11f0d62",
+      "bytes": 373131
+    },
+    {
+      "variant": 2,
+      "file": "candidates/variant-2-512.png",
+      "engine_file": "02-bold-clean-game-mod-thumbnail-cartoon-st-4619a6fd-512x512-seed11-rep1.png",
+      "prompt_index": 2,
+      "seed": 11,
+      "rep": 1,
+      "seconds": 62.0,
+      "torch_peak_mib": 9735,
+      "sha256": "3c75abf4e6a04471366a6f0aa0550262131f37f7d05e1ec23bcac933f6744322",
+      "bytes": 296398
+    },
+    {
+      "variant": 3,
+      "file": "candidates/variant-3-512.png",
+      "engine_file": "03-bold-clean-game-mod-thumbnail-cartoon-st-8e0b551d-512x512-seed11-rep1.png",
+      "prompt_index": 3,
+      "seed": 11,
+      "rep": 1,
+      "seconds": 62.2,
+      "torch_peak_mib": 9735,
+      "sha256": "e803cd78a1f457740eda3eb73206a380b15b9bb59cde4c510bc8bda69401114c",
+      "bytes": 300521
+    },
+    {
+      "variant": 4,
+      "file": "candidates/variant-4-512.png",
+      "engine_file": "04-bold-clean-game-mod-thumbnail-cartoon-st-06338f5b-512x512-seed11-rep1.png",
+      "prompt_index": 4,
+      "seed": 11,
+      "rep": 1,
+      "seconds": 61.8,
+      "torch_peak_mib": 9735,
+      "sha256": "85030b5f80ff0037e76aff19381fe0d9d7e4f260bb4b2bcee74721a303070afc",
+      "bytes": 333503
+    },
+    {
+      "variant": 5,
+      "file": "candidates/variant-5-512.png",
+      "engine_file": "05-bold-clean-game-mod-thumbnail-cartoon-st-6ea27799-512x512-seed11-rep1.png",
+      "prompt_index": 5,
+      "seed": 11,
+      "rep": 1,
+      "seconds": 61.2,
+      "torch_peak_mib": 9735,
+      "sha256": "2c1ec33d3693d89e979396905693697e09affde1555b71a1d7b7bcb6c461aa5c",
+      "bytes": 364114
+    },
+    {
+      "variant": 6,
+      "file": "candidates/variant-6-512.png",
+      "engine_file": "06-bold-clean-game-mod-thumbnail-cartoon-st-38aca2af-512x512-seed11-rep1.png",
+      "prompt_index": 6,
+      "seed": 11,
+      "rep": 1,
+      "seconds": 61.1,
+      "torch_peak_mib": 9735,
+      "sha256": "357962b8cd585afd2e1a753ae2d34e91b5fb1f5b68c5e5678593298f414d07be",
+      "bytes": 329979
+    }
+  ],
+  "derivatives": [
+    {
+      "size": 128,
+      "files": [
+        "variant-1-128.png",
+        "variant-2-128.png",
+        "variant-3-128.png",
+        "variant-4-128.png",
+        "variant-5-128.png",
+        "variant-6-128.png"
+      ]
+    }
+  ],
+  "sheet": "contact-sheet-128.png",
+  "reconstructed": true,
+  "recorded_at": "2026-10-18T18:41:44Z",
+  "notes": "Round 1 (capability proof, maintainer verdict: style rejected \u2014 planks floated on top of the water; the ford is submerged). Migrated from pre-tooling ad-hoc run; engine of the era wrote no seed/prompt/revision records \u2014 reconstructed from artifacts."
+}

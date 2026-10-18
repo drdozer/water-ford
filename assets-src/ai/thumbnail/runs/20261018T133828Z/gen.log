@@ -1,0 +1,94 @@
+loading addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit (bfloat16, offload=model) ...
+W1018 14:38:08.245000 14701 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1018 14:38:08.273000 14701 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+/home/nmrp3/devel/factorio-mods/.venv/lib/python3.13/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 9/750 [00:00<00:09, 79.57it/s][A
+Loading weights:   2%|▏         | 17/750 [00:00<00:13, 52.71it/s][A
+Loading weights:   3%|▎         | 24/750 [00:00<00:12, 55.99it/s][A
+Loading weights:   4%|▍         | 31/750 [00:00<00:12, 59.02it/s][A
+Loading weights:   5%|▌         | 38/750 [00:00<00:13, 52.49it/s][A
+Loading weights:   6%|▌         | 45/750 [00:00<00:12, 54.32it/s][A
+Loading weights:   7%|▋         | 51/750 [00:00<00:12, 54.42it/s][A
+Loading weights:   8%|▊         | 57/750 [00:01<00:12, 54.62it/s][A
+Loading weights:   9%|▊         | 64/750 [00:01<00:12, 56.89it/s][A
+Loading weights:   9%|▉         | 70/750 [00:01<00:12, 56.05it/s][A
+Loading weights:  10%|█         | 76/750 [00:01<00:12, 55.53it/s][A
+Loading weights:  11%|█         | 82/750 [00:01<00:12, 54.65it/s][A
+Loading weights:  12%|█▏        | 89/750 [00:01<00:11, 55.14it/s][A
+Loading weights:  13%|█▎        | 95/750 [00:01<00:12, 52.88it/s][A
+Loading weights:  13%|█▎        | 101/750 [00:01<00:12, 51.87it/s][A
+Loading weights:  14%|█▍        | 108/750 [00:01<00:12, 52.97it/s][A
+Loading weights:  15%|█▌        | 115/750 [00:02<00:11, 55.31it/s][A
+Loading weights:  16%|█▋        | 123/750 [00:02<00:10, 60.27it/s][A
+Loading weights:  17%|█▋        | 131/750 [00:02<00:09, 63.88it/s][A
+Loading weights:  18%|█▊        | 138/750 [00:02<00:09, 63.83it/s][A
+Loading weights:  20%|█▉        | 147/750 [00:02<00:08, 69.13it/s][A
+Loading weights:  21%|██        | 155/750 [00:02<00:08, 70.31it/s][A
+Loading weights:  22%|██▏       | 163/750 [00:02<00:08, 71.15it/s][A
+Loading weights:  23%|██▎       | 171/750 [00:02<00:08, 67.78it/s][A
+Loading weights:  24%|██▍       | 180/750 [00:02<00:07, 71.82it/s][A
+Loading weights:  25%|██▌       | 188/750 [00:03<00:07, 72.19it/s][A
+Loading weights:  26%|██▌       | 196/750 [00:03<00:07, 72.45it/s][A
+Loading weights:  27%|██▋       | 204/750 [00:03<00:07, 68.30it/s][A
+Loading weights:  28%|██▊       | 213/750 [00:03<00:07, 72.16it/s][A
+Loading weights:  29%|██▉       | 221/750 [00:03<00:07, 72.17it/s][A
+Loading weights:  31%|███       | 229/750 [00:03<00:07, 70.94it/s][A
+Loading weights:  32%|███▏      | 237/750 [00:03<00:07, 66.09it/s][A
+Loading weights:  33%|███▎      | 246/750 [00:03<00:07, 70.57it/s][A
+Loading weights:  34%|███▍      | 254/750 [00:04<00:06, 71.26it/s][A
+Loading weights:  35%|███▍      | 262/750 [00:04<00:06, 71.84it/s][A
+Loading weights:  36%|███▌      | 270/750 [00:04<00:07, 68.28it/s][A
+Loading weights:  37%|███▋      | 279/750 [00:04<00:06, 72.11it/s][A
+Loading weights:  38%|███▊      | 287/750 [00:04<00:06, 72.43it/s][A
+Loading weights:  39%|███▉      | 295/750 [00:04<00:06, 72.49it/s][A
+Loading weights:  40%|████      | 303/750 [00:04<00:06, 68.05it/s][A
+Loading weights:  42%|████▏     | 312/750 [00:04<00:06, 71.76it/s][A
+Loading weights:  43%|████▎     | 320/750 [00:04<00:05, 72.19it/s][A
+Loading weights:  44%|████▎     | 328/750 [00:05<00:06, 67.98it/s][A
+Loading weights:  45%|████▍     | 335/750 [00:05<00:06, 66.88it/s][A
+Loading weights:  46%|████▌     | 343/750 [00:05<00:05, 68.60it/s][A
+Loading weights:  47%|████▋     | 351/750 [00:05<00:05, 69.82it/s][A
+Loading weights:  48%|████▊     | 359/750 [00:05<00:05, 70.77it/s][A
+Loading weights:  49%|████▉     | 367/750 [00:05<00:05, 70.96it/s][A
+Loading weights:  50%|█████     | 375/750 [00:05<00:05, 69.37it/s][A
+Loading weights:  51%|█████     | 383/750 [00:05<00:05, 69.85it/s][A
+Loading weights:  52%|█████▏    | 391/750 [00:06<00:05, 66.90it/s][A
+Loading weights:  53%|█████▎    | 400/750 [00:06<00:05, 69.19it/s][A
+Loading weights:  55%|█████▌    | 414/750 [00:06<00:03, 85.61it/s][A
+Loading weights:  57%|█████▋    | 426/750 [00:06<00:03, 93.91it/s][A
+Loading weights:  59%|█████▊    | 440/750 [00:06<00:02, 103.77it/s][A
+Loading weights:  61%|██████    | 454/750 [00:06<00:02, 110.62it/s][A
+Loading weights:  63%|██████▎   | 472/750 [00:06<00:02, 126.37it/s][A
+Loading weights:  65%|██████▍   | 486/750 [00:06<00:02, 126.56it/s][A
+Loading weights:  67%|██████▋   | 500/750 [00:06<00:02, 121.74it/s][A
+Loading weights:  69%|██████▊   | 514/750 [00:07<00:01, 120.80it/s][A
+Loading weights:  71%|███████   | 532/750 [00:07<00:01, 132.16it/s][A
+Loading weights:  73%|███████▎  | 546/750 [00:07<00:01, 130.07it/s][A
+Loading weights:  75%|███████▍  | 560/750 [00:07<00:01, 128.97it/s][A
+Loading weights:  77%|███████▋  | 574/750 [00:07<00:01, 128.26it/s][A
+Loading weights:  79%|███████▉  | 592/750 [00:07<00:01, 137.60it/s][A
+Loading weights:  81%|████████  | 606/750 [00:07<00:01, 133.94it/s][A
+Loading weights:  83%|████████▎ | 620/750 [00:07<00:01, 129.99it/s][A
+Loading weights:  85%|████████▍ | 634/750 [00:07<00:00, 123.43it/s][A
+Loading weights:  87%|████████▋ | 652/750 [00:08<00:00, 134.11it/s][A
+Loading weights:  89%|████████▉ | 666/750 [00:08<00:00, 132.13it/s][A
+Loading weights:  91%|█████████ | 680/750 [00:08<00:00, 130.64it/s][A
+Loading weights:  93%|█████████▎| 694/750 [00:08<00:00, 129.50it/s][A
+Loading weights:  95%|█████████▍| 712/750 [00:08<00:00, 139.01it/s][A
+Loading weights:  97%|█████████▋| 726/750 [00:08<00:00, 135.47it/s][A
+Loading weights:  99%|█████████▉| 742/750 [00:08<00:00, 138.41it/s][ALoading weights: 100%|██████████| 750/750 [00:08<00:00, 85.82it/s] 
+Loading pipeline components...:  20%|██        | 1/5 [00:09<00:39,  9.91s/it]Loading pipeline components...:  40%|████      | 2/5 [00:10<00:13,  4.48s/it]Loading pipeline components...:  60%|██████    | 3/5 [00:10<00:05,  2.57s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:10<00:00,  1.15s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:10<00:00,  2.20s/it]
+pipeline loaded in 23.7s
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:19<02:19, 19.96s/it] 25%|██▌       | 2/8 [00:25<01:07, 11.23s/it] 38%|███▊      | 3/8 [00:30<00:43,  8.69s/it] 50%|█████     | 4/8 [00:36<00:30,  7.53s/it] 62%|██████▎   | 5/8 [00:42<00:20,  6.89s/it] 75%|███████▌  | 6/8 [00:48<00:13,  6.50s/it] 88%|████████▊ | 7/8 [00:53<00:06,  6.26s/it]100%|██████████| 8/8 [00:59<00:00,  6.10s/it]100%|██████████| 8/8 [00:59<00:00,  7.44s/it]
+wrote .cache/qwen-runs/20261018T133828Z/01-low-wide-perspective-from-just-above-rip-adcaf41a-512x512-seed7-rep1.png in 85.1s torch-peak(mib)=9792 vram-peak(mib,system)=11055
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:09<01:08,  9.80s/it] 25%|██▌       | 2/8 [00:15<00:44,  7.36s/it] 38%|███▊      | 3/8 [00:21<00:33,  6.62s/it] 50%|█████     | 4/8 [00:26<00:25,  6.27s/it] 62%|██████▎   | 5/8 [00:32<00:18,  6.08s/it] 75%|███████▌  | 6/8 [00:38<00:11,  5.96s/it] 88%|████████▊ | 7/8 [00:44<00:05,  5.89s/it]100%|██████████| 8/8 [00:49<00:00,  5.85s/it]100%|██████████| 8/8 [00:49<00:00,  6.24s/it]
+wrote .cache/qwen-runs/20261018T133828Z/02-close-three-quarter-view-over-clear-stee-b31f0419-512x512-seed7-rep1.png in 61.8s torch-peak(mib)=9792 vram-peak(mib,system)=11055
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:09<01:04,  9.23s/it] 25%|██▌       | 2/8 [00:14<00:42,  7.14s/it] 38%|███▊      | 3/8 [00:20<00:32,  6.51s/it] 50%|█████     | 4/8 [00:26<00:24,  6.21s/it] 62%|██████▎   | 5/8 [00:32<00:18,  6.05s/it] 75%|███████▌  | 6/8 [00:37<00:11,  5.96s/it] 88%|████████▊ | 7/8 [00:43<00:05,  5.89s/it]100%|██████████| 8/8 [00:49<00:00,  5.85s/it]100%|██████████| 8/8 [00:49<00:00,  6.18s/it]
+wrote .cache/qwen-runs/20261018T133828Z/03-slightly-elevated-three-quarter-view-of-2dd59604-512x512-seed7-rep1.png in 61.3s torch-peak(mib)=9792 vram-peak(mib,system)=11055
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:08<01:02,  8.90s/it] 25%|██▌       | 2/8 [00:14<00:41,  6.99s/it] 38%|███▊      | 3/8 [00:20<00:32,  6.41s/it] 50%|█████     | 4/8 [00:26<00:24,  6.16s/it] 62%|██████▎   | 5/8 [00:31<00:18,  6.03s/it] 75%|███████▌  | 6/8 [00:37<00:12,  6.00s/it] 88%|████████▊ | 7/8 [00:43<00:05,  5.95s/it]100%|██████████| 8/8 [00:49<00:00,  5.91s/it]100%|██████████| 8/8 [00:49<00:00,  6.18s/it]
+wrote .cache/qwen-runs/20261018T133828Z/04-dynamic-low-angle-cartoon-scene-over-ste-ca6de818-512x512-seed7-rep1.png in 60.3s torch-peak(mib)=9792 vram-peak(mib,system)=11055
+run dir: .cache/qwen-runs/20261018T133828Z

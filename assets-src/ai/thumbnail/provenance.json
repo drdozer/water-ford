@@ -1,0 +1,17 @@
+{
+  "schema": "art-provenance/1",
+  "target": "mod/thumbnail.png",
+  "target_sha256": "3643e6780cb73f50758337a42fedbb6655620c9b0252c6e0150e5c52ba8b30f0",
+  "target_bytes": 130576,
+  "size": 288,
+  "adopted_at": "2026-10-18T16:18:13+01:00",
+  "run": "20261018T142048Z",
+  "candidate": "candidates/variant-1-512.png",
+  "candidate_sha256": "f3a45903811d0c29e40eb26c8174f0d771eec8f7662bf88229251498458aa237",
+  "seed": 7,
+  "prompt_index": 1,
+  "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+  "model_revision": "5fd7a79fdfc898ec0f6c80115b31997662886b1b",
+  "note": "Adopted pre-tooling as round-3 'variant 5' (run candidate 1); mod-repo commit ff73498. Provenance reconstructed during the brief formalization (tool-devctl-mods-art); target sha256 verified byte-identical to the round-3 288 derivative. Determinism re-verified live 2026-10-18: a fresh generate of candidate 1 (run 20261018T190142Z) reproduced the target bytes exactly.",
+  "history": []
+}
