@@ -13,6 +13,8 @@ holds only what is specific to this mod. Session history:
 Superproject standard: `mod/` is the portal-clean deployable (what
 `devctl mods build water-ford` packs and what the live link points at);
 `tools/`, `docs/`, `LICENSE`, `README.md` stay at the repo root and never ship.
+Generative-art briefs (AI-art prompts + committed candidate runs) live in
+`assets-src/ai/<brief>/` — process: superproject `docs/ai-art-briefs.md`.
 
 ## Invariants (each has its reason documented — follow the pointer)
 

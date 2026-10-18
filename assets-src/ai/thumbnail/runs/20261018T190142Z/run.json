@@ -1,0 +1,117 @@
+{
+  "schema": "art-run/1",
+  "stamp": "20261018T190142Z",
+  "project": "water-ford",
+  "brief": "thumbnail",
+  "engine": {
+    "script": "/home/nmrp3/devel/factorio-mods/scripts/qwen-generate.py",
+    "sha256": "4b130baf0420faaa6c0eb67e805f8c69d42a55f21250f85ec0c7a0a1e962231d",
+    "meta": {
+      "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+      "dtype": "bfloat16",
+      "offload": "model",
+      "width": 512,
+      "height": 512,
+      "steps": 8,
+      "true_cfg": null,
+      "generator_device": "cpu",
+      "vae_tiling": true,
+      "vae_slicing": false,
+      "kv_cache": true,
+      "device": "cuda",
+      "seed": 7,
+      "prompts": [
+        "Dynamic cartoon scene, camera low and close to the water surface: a confident, cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest strides forward across a submerged wooden plank ford, one arm pointing ahead, warm smile, splashes bursting around their tall dark rubber boots. The weathered ochre-brown planks lie just beneath the clear transparent teal water, plainly visible underfoot and tinted blue-green by the water; the waterline cuts across the planks. Dark wooden pilings rise from the water along the edges of the ford, which runs diagonally from the lower-left foreground into the middle distance. A big orange fish leaps from the water near the bottom corner with a spray of droplets. Lush green trees fill the left edge; bright open water stretches to a hazy tree line behind. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface."
+      ],
+      "model_revision": "5fd7a79fdfc88d5b2b4acd1f356bf6c1fa447f1c",
+      "environment": {
+        "python": "3.13.5",
+        "torch": "2.14.0+cu126",
+        "torch_cuda": "12.6",
+        "gpu": "NVIDIA GeForce GTX TITAN X",
+        "driver": "550.163.01",
+        "diffusers": "0.41.0.dev0"
+      }
+    }
+  },
+  "generation": {
+    "width": 512,
+    "height": 512,
+    "seed": 7,
+    "seed_mode": "shared",
+    "count": 4,
+    "reps": 1,
+    "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+    "model_revision": "5fd7a79fdfc88d5b2b4acd1f356bf6c1fa447f1c",
+    "steps": 8,
+    "offload": "model",
+    "dtype": "bfloat16",
+    "true_cfg": null,
+    "generator_device": "cpu"
+  },
+  "prompts": [
+    {
+      "index": 1,
+      "text": "Dynamic cartoon scene, camera low and close to the water surface: a confident, cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest strides forward across a submerged wooden plank ford, one arm pointing ahead, warm smile, splashes bursting around their tall dark rubber boots. The weathered ochre-brown planks lie just beneath the clear transparent teal water, plainly visible underfoot and tinted blue-green by the water; the waterline cuts across the planks. Dark wooden pilings rise from the water along the edges of the ford, which runs diagonally from the lower-left foreground into the middle distance. A big orange fish leaps from the water near the bottom corner with a spray of droplets. Lush green trees fill the left edge; bright open water stretches to a hazy tree line behind. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "a2316a89"
+    },
+    {
+      "index": 2,
+      "text": "Close three-quarter view over clear steel-blue water: a capable, calm cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest stands ankle-deep in water on a submerged wooden plank ford, looking down with a friendly, confident smile at a big orange fish bursting up out of the water right in front of them, splash and droplets flying. The ochre-brown planks lie just beneath the transparent teal surface, clearly visible underfoot between the engineer and the fish, tinted by the water. Dark wooden pilings rise from the water along the edges of the ford; ripple rings spread around the splash. Lush green trees blur the left foreground; open water and a distant tree line fill the background. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "b862673a"
+    },
+    {
+      "index": 3,
+      "text": "Cartoon scene seen from the side at a slight angle, camera low over clear steel-blue water: a cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest crosses a submerged wooden plank ford carrying a red toolbox in one hand, mid-stride, calm happy expression, water splashing around their tall dark rubber boots. The weathered ochre-brown planks lie just beneath the transparent teal water surface and are clearly visible through it, tinted blue-green; the waterline crosses the boards. Dark wooden pilings rise from the water along the edges of the diagonal ford. A small orange fish jumps in the foreground corner with a splash. Green leafy trees frame one side; bright open water stretches into the hazy background. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "775ac7a3"
+    },
+    {
+      "index": 4,
+      "text": "Cartoon scene from a low three-quarter angle over clear steel-blue water: a cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest stands on a submerged wooden plank ford off to one side of the frame, arm outstretched in a warm welcoming gesture toward the viewer, friendly smile, water splashing lightly around their tall dark rubber boots. The ochre-brown planks lie just beneath the transparent teal surface and are clearly visible through the water across the whole foreground, tinted by it; dark wooden pilings rise from the water along the edges of the ford, receding diagonally into the distance. An orange fish swims beneath the clear water in the foreground, its wake rippling the surface. Lush green trees fill one lower corner; bright open water stretches to a hazy far shore. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface.",
+      "sha1_8": "c93852f4"
+    }
+  ],
+  "overrides": {
+    "count": 1
+  },
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.14.0+cu126",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA GeForce GTX TITAN X",
+    "driver": "550.163.01",
+    "diffusers": "0.41.0.dev0"
+  },
+  "images": [
+    {
+      "variant": 1,
+      "file": "candidates/variant-1-512.png",
+      "engine_file": "01-dynamic-cartoon-scene-camera-low-and-clo-a2316a89-512x512-seed7-rep1.png",
+      "prompt_index": 1,
+      "seed": 7,
+      "rep": 1,
+      "seconds": 62.09,
+      "torch_peak_mib": 9799,
+      "sha256": "f3a45903811d0c29e40eb26c8174f0d771eec8f7662bf88229251498458aa237",
+      "bytes": 436366
+    }
+  ],
+  "derivatives": [
+    {
+      "size": 288,
+      "files": [
+        "variant-1-288.png"
+      ]
+    },
+    {
+      "size": 144,
+      "files": [
+        "variant-1-144.png"
+      ]
+    }
+  ],
+  "sheet": "contact-sheet-288.png",
+  "reconstructed": false,
+  "recorded_at": "2026-10-18T19:03:09Z",
+  "notes": "generated by devctl mods art"
+}

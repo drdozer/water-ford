@@ -1,0 +1,88 @@
+loading addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit (bfloat16, offload=model) ...
+W1018 20:01:46.046000 6063 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1018 20:01:46.073000 6063 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Unable to import `torchao` Tensor objects. This may affect loading checkpoints serialized with `torchao`
+/home/nmrp3/devel/factorio-mods/.venv/lib/python3.13/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/5 [00:00<?, ?it/s]Loading pipeline components...:  20%|██        | 1/5 [00:00<00:02,  1.90it/s]
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s][A
+Loading weights:   1%|▏         | 10/750 [00:00<00:09, 81.07it/s][A
+Loading weights:   3%|▎         | 19/750 [00:00<00:09, 76.80it/s][A
+Loading weights:   4%|▎         | 27/750 [00:00<00:11, 60.27it/s][A
+Loading weights:   5%|▍         | 34/750 [00:00<00:11, 60.78it/s][A
+Loading weights:   5%|▌         | 41/750 [00:00<00:11, 61.07it/s][A
+Loading weights:   6%|▋         | 48/750 [00:00<00:11, 59.12it/s][A
+Loading weights:   7%|▋         | 54/750 [00:00<00:12, 56.99it/s][A
+Loading weights:   8%|▊         | 60/750 [00:00<00:12, 55.85it/s][A
+Loading weights:   9%|▉         | 67/750 [00:01<00:11, 57.87it/s][A
+Loading weights:  10%|▉         | 73/750 [00:01<00:12, 56.30it/s][A
+Loading weights:  11%|█         | 79/750 [00:01<00:12, 55.47it/s][A
+Loading weights:  11%|█▏        | 86/750 [00:01<00:11, 57.62it/s][A
+Loading weights:  12%|█▏        | 92/750 [00:01<00:11, 56.44it/s][A
+Loading weights:  13%|█▎        | 98/750 [00:01<00:11, 55.61it/s][A
+Loading weights:  14%|█▍        | 104/750 [00:01<00:11, 55.10it/s][A
+Loading weights:  15%|█▍        | 111/750 [00:01<00:11, 56.97it/s][A
+Loading weights:  16%|█▌        | 117/750 [00:02<00:11, 56.19it/s][A
+Loading weights:  16%|█▋        | 123/750 [00:02<00:11, 55.57it/s][A
+Loading weights:  17%|█▋        | 130/750 [00:02<00:10, 58.01it/s][A
+Loading weights:  18%|█▊        | 136/750 [00:02<00:10, 57.10it/s][A
+Loading weights:  19%|█▉        | 142/750 [00:02<00:10, 57.11it/s][A
+Loading weights:  20%|█▉        | 148/750 [00:02<00:10, 56.97it/s][A
+Loading weights:  21%|██        | 156/750 [00:02<00:09, 61.85it/s][A
+Loading weights:  22%|██▏       | 164/750 [00:02<00:09, 64.69it/s][A
+Loading weights:  23%|██▎       | 171/750 [00:02<00:08, 64.42it/s][A
+Loading weights:  24%|██▍       | 180/750 [00:02<00:08, 69.73it/s][A
+Loading weights:  25%|██▌       | 188/750 [00:03<00:07, 70.65it/s][A
+Loading weights:  26%|██▌       | 196/750 [00:03<00:07, 71.32it/s][A
+Loading weights:  27%|██▋       | 204/750 [00:03<00:08, 67.47it/s][A
+Loading weights:  28%|██▊       | 213/750 [00:03<00:07, 71.44it/s][A
+Loading weights:  29%|██▉       | 221/750 [00:03<00:07, 71.86it/s][A
+Loading weights:  31%|███       | 229/750 [00:03<00:07, 72.22it/s][A
+Loading weights:  32%|███▏      | 237/750 [00:03<00:07, 68.39it/s][A
+Loading weights:  33%|███▎      | 246/750 [00:03<00:06, 72.26it/s][A
+Loading weights:  34%|███▍      | 254/750 [00:04<00:06, 72.41it/s][A
+Loading weights:  35%|███▍      | 262/750 [00:04<00:06, 72.56it/s][A
+Loading weights:  36%|███▌      | 270/750 [00:04<00:06, 68.70it/s][A
+Loading weights:  37%|███▋      | 279/750 [00:04<00:06, 72.52it/s][A
+Loading weights:  38%|███▊      | 287/750 [00:04<00:06, 72.66it/s][A
+Loading weights:  39%|███▉      | 295/750 [00:04<00:06, 72.73it/s][A
+Loading weights:  40%|████      | 303/750 [00:04<00:06, 68.74it/s][A
+Loading weights:  42%|████▏     | 312/750 [00:04<00:06, 72.50it/s][A
+Loading weights:  43%|████▎     | 320/750 [00:04<00:05, 72.65it/s][A
+Loading weights:  44%|████▎     | 328/750 [00:05<00:05, 72.74it/s][A
+Loading weights:  45%|████▍     | 336/750 [00:05<00:06, 68.79it/s][A
+Loading weights:  46%|████▌     | 345/750 [00:05<00:05, 72.51it/s][A
+Loading weights:  47%|████▋     | 353/750 [00:05<00:05, 72.61it/s][A
+Loading weights:  48%|████▊     | 361/750 [00:05<00:05, 72.66it/s][A
+Loading weights:  49%|████▉     | 369/750 [00:05<00:05, 68.66it/s][A
+Loading weights:  50%|█████     | 378/750 [00:05<00:05, 72.42it/s][A
+Loading weights:  51%|█████▏    | 386/750 [00:05<00:05, 72.38it/s][A
+Loading weights:  53%|█████▎    | 394/750 [00:05<00:04, 72.52it/s][A
+Loading weights:  54%|█████▎    | 402/750 [00:06<00:04, 72.67it/s][A
+Loading weights:  55%|█████▌    | 416/750 [00:06<00:03, 88.83it/s][A
+Loading weights:  57%|█████▋    | 430/750 [00:06<00:03, 100.17it/s][A
+Loading weights:  60%|█████▉    | 448/750 [00:06<00:02, 118.35it/s][A
+Loading weights:  62%|██████▏   | 462/750 [00:06<00:02, 120.92it/s][A
+Loading weights:  63%|██████▎   | 476/750 [00:06<00:02, 122.63it/s][A
+Loading weights:  65%|██████▌   | 490/750 [00:06<00:02, 123.89it/s][A
+Loading weights:  68%|██████▊   | 508/750 [00:06<00:01, 135.67it/s][A
+Loading weights:  70%|██████▉   | 522/750 [00:06<00:01, 133.08it/s][A
+Loading weights:  71%|███████▏  | 536/750 [00:07<00:01, 131.24it/s][A
+Loading weights:  73%|███████▎  | 550/750 [00:07<00:01, 129.93it/s][A
+Loading weights:  76%|███████▌  | 568/750 [00:07<00:01, 139.94it/s][A
+Loading weights:  78%|███████▊  | 582/750 [00:07<00:01, 136.04it/s][A
+Loading weights:  79%|███████▉  | 596/750 [00:07<00:01, 133.41it/s][A
+Loading weights:  81%|████████▏ | 610/750 [00:07<00:01, 131.52it/s][A
+Loading weights:  84%|████████▎ | 628/750 [00:07<00:00, 141.09it/s][A
+Loading weights:  86%|████████▌ | 643/750 [00:07<00:00, 139.60it/s][A
+Loading weights:  88%|████████▊ | 657/750 [00:07<00:00, 135.93it/s][A
+Loading weights:  89%|████████▉ | 671/750 [00:08<00:00, 133.41it/s][A
+Loading weights:  92%|█████████▏| 688/750 [00:08<00:00, 139.56it/s][A
+Loading weights:  94%|█████████▎| 702/750 [00:08<00:00, 135.65it/s][A
+Loading weights:  95%|█████████▌| 716/750 [00:08<00:00, 132.89it/s][A
+Loading weights:  98%|█████████▊| 732/750 [00:08<00:00, 136.63it/s][ALoading weights: 100%|██████████| 750/750 [00:08<00:00, 87.17it/s] 
+Loading pipeline components...:  60%|██████    | 3/5 [00:10<00:07,  3.77s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:10<00:00,  1.86s/it]Loading pipeline components...: 100%|██████████| 5/5 [00:10<00:00,  2.09s/it]
+pipeline loaded in 22.8s
+  0%|          | 0/8 [00:00<?, ?it/s] 12%|█▎        | 1/8 [00:08<01:02,  8.87s/it] 25%|██▌       | 2/8 [00:14<00:40,  6.67s/it] 38%|███▊      | 3/8 [00:19<00:30,  6.20s/it] 50%|█████     | 4/8 [00:25<00:24,  6.04s/it] 62%|██████▎   | 5/8 [00:31<00:17,  5.95s/it] 75%|███████▌  | 6/8 [00:37<00:11,  5.90s/it] 88%|████████▊ | 7/8 [00:42<00:05,  5.86s/it]100%|██████████| 8/8 [00:48<00:00,  5.84s/it]100%|██████████| 8/8 [00:48<00:00,  6.07s/it]
+wrote /home/nmrp3/devel/factorio-mods/mods/water-ford/assets-src/ai/thumbnail/runs/20261018T190142Z/01-dynamic-cartoon-scene-camera-low-and-clo-a2316a89-512x512-seed7-rep1.png in 62.1s torch-peak(mib)=9799 vram-peak(mib,system)=11146
+run dir: /home/nmrp3/devel/factorio-mods/mods/water-ford/assets-src/ai/thumbnail/runs/20261018T190142Z

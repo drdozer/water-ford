@@ -1226,3 +1226,24 @@ Both boards tiles now share ONE map color: ochre #cc7722 (204,119,34).
   minimap-only, no render impact; no locale check needed).
 - In-game minimap eye-check still owed before release (map view, dlc
   install).
+
+## 2026-10-18 — thumbnail adopted + AI-art pipeline formalized (round-28)
+
+- Thumbnail: round-3 candidate 1 (old label "variant 5") adopted as
+  `mod/thumbnail.png` @288 (commit ff73498) — engineer wading the submerged
+  ford, leaping fish. Feedback trail: round 1 style rejected (planks floated);
+  round 2 picked V4's direction (1 square-on, 2 surprised, 3 wharf — all
+  rejected); round 3 delivered the keeper.
+- **Process lifted to devctl** (tooling unit B2, superproject
+  `docs/ai-art-briefs.md`): brief at `assets-src/ai/thumbnail/` — brief.toml +
+  prompts + reference copies + decisions.md + committed runs/ (all three
+  pre-tooling rounds migrated as reconstructed records, prompt→candidate
+  mapping verified by hash) + provenance.json (target sha256 verified against
+  the adopted round-3 derivative).
+- `devctl mods art generate --count 1` shakedown (run 20261018T190142Z): the
+  fresh candidate reproduced the accepted thumbnail **byte-for-byte**
+  (determinism re-proven live); idempotent re-adopt left target + provenance
+  untouched.
+- Old scratch libraries (`shared-assets/to-maintainer/thumbnail-roundN/`,
+  `.cache/thumbnail-library/`) are superseded by the committed run records;
+  kept as scratch until the next session culls them.

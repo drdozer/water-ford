@@ -1,0 +1,27 @@
+{
+  "model": "addlabsviral/Qwen-Image-2.1-Turbo-diffuser-8bit",
+  "dtype": "bfloat16",
+  "offload": "model",
+  "width": 512,
+  "height": 512,
+  "steps": 8,
+  "true_cfg": null,
+  "generator_device": "cpu",
+  "vae_tiling": true,
+  "vae_slicing": false,
+  "kv_cache": true,
+  "device": "cuda",
+  "seed": 7,
+  "prompts": [
+    "Dynamic cartoon scene, camera low and close to the water surface: a confident, cheerful cartoon engineer in a yellow hard hat with a headlamp, round goggles, orange shirt and grey armored vest strides forward across a submerged wooden plank ford, one arm pointing ahead, warm smile, splashes bursting around their tall dark rubber boots. The weathered ochre-brown planks lie just beneath the clear transparent teal water, plainly visible underfoot and tinted blue-green by the water; the waterline cuts across the planks. Dark wooden pilings rise from the water along the edges of the ford, which runs diagonally from the lower-left foreground into the middle distance. A big orange fish leaps from the water near the bottom corner with a spray of droplets. Lush green trees fill the left edge; bright open water stretches to a hazy tree line behind. Bold, clean cartoon video-game thumbnail illustration, thick outlines, flat vivid colors, strong contrast, simple readable shapes that stay clear at very small sizes. No text, no letters, no words, no logos, no user interface."
+  ],
+  "model_revision": "5fd7a79fdfc88d5b2b4acd1f356bf6c1fa447f1c",
+  "environment": {
+    "python": "3.13.5",
+    "torch": "2.14.0+cu126",
+    "torch_cuda": "12.6",
+    "gpu": "NVIDIA GeForce GTX TITAN X",
+    "driver": "550.163.01",
+    "diffusers": "0.41.0.dev0"
+  }
+}

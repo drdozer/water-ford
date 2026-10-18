@@ -1,0 +1,11 @@
+[
+  {
+    "file": "01-dynamic-cartoon-scene-camera-low-and-clo-a2316a89-512x512-seed7-rep1.png",
+    "prompt_index": 1,
+    "prompt_sha1_8": "a2316a89",
+    "seed": 7,
+    "rep": 1,
+    "seconds": 62.09,
+    "torch_peak_mib": 9799
+  }
+]
