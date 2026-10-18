@@ -121,6 +121,55 @@ if water_tile_type_names then
 end
 
 data:extend{tile}
+
+---------------------------------------------------------------------------------------------------
+-- PEBBLE+STONE BALLAST DOODADS (round-23): engine-native bound decoratives
+-- (TilePrototype.bound_decoratives, SA space-platform precedent). Art =
+-- blender/ford-stones.blend scenes PEBBLES (24 @ 40px cells) and STONES
+-- (12 @ 64px cells) rendered by tools/paper-pipeline/bake-stones.py (pixel-
+-- proven --twice); sheets packed law-3 10-per-line. Density knobs below are
+-- the live-tunable surface (maintainer: ~1/4 of the SA effective density).
+local function wf_sheet_variations(count, cols, w, h, filename)
+  local out = {}
+  for i = 1, count do
+    out[i] = {
+      filename = filename,
+      priority = "extra-high",
+      width = w,
+      height = h,
+      scale = 0.5,
+      x = ((i - 1) % cols) * w,
+      y = math.floor((i - 1) / cols) * h,
+    }
+  end
+  return out
+end
+data:extend
+{
+  {
+    type = "optimized-decorative",
+    name = "ford-pebbles",
+    order = "b[decorative]-z[water-ford]-a[pebbles]",
+    collision_box = {{-0.12, -0.12}, {0.12, 0.12}},
+    minimal_separation = 0.12,
+    target_count = 120,          -- DENSITY KNOB: pebble grit on the deck
+    render_layer = "ground-layer-1",  -- grit sits lowest, under the big stones
+    pictures = wf_sheet_variations(24, 10, 40, 40,
+      "__water-ford__/graphics/ford-decorative-pebbles.png"),
+  },
+  {
+    type = "optimized-decorative",
+    name = "ford-stones",
+    order = "b[decorative]-z[water-ford]-b[stones]",
+    collision_box = {{-0.3, -0.3}, {0.3, 0.3}},
+    minimal_separation = 0.5,
+    target_count = 20,           -- DENSITY KNOB: bigger stones
+    render_layer = "ground-layer-3",
+    pictures = wf_sheet_variations(12, 10, 64, 64,
+      "__water-ford__/graphics/ford-decorative-stones.png"),
+  },
+}
+tile.bound_decoratives = {"ford-pebbles", "ford-stones"} -- DENSITY KNOB: which families bind to the ford deck
 ---------------------------------------------------------------------------------------------------
 -- WOODEN BOARDS LAND (2026-10-17): single promoted land tileset. Was the
 -- boards-land-a/b/c dev compare; the C depth won and the family collapsed
