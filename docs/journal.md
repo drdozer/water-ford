@@ -1097,3 +1097,30 @@ boundary. The between-set covers three-ways only.
   transition art this release - the land-side bumper IS the land->ford seam.
   Parked for a future release: a ford-side receiving edge or a dedicated
   Blender ramp/deck model.
+
+## 2026-10-18 — ford deck pebble+stone ballast doodads (round-23)
+The parked ballast item lands as engine-native doODADS, not in-sprite art:
+- Audit: TilePrototype.bound_decoratives (SA space-platform-foundation
+  precedent, SA tiles.lua L278) binds optimized-decorative prototypes to the
+  tile; no control.lua. R11 runtime questions answered by a bench probe with
+  the SA platform decoratives bound to water-ford: (1) sprinkles fire on tile
+  BUILDS (set_tiles fresh-built patches sprinkle; existing tiles do not
+  retro-sprinkle), (2) pieces sit OVER the water veil (maintainer confirmed
+  live), (3) SA-Default density too high for the deck (maintainer: overwhelming).
+- Factory: blender/ford-stones.blend (new family sibling: PEBBLES 24 frames
+  @ 40px + STONES 12 @ 64px, heap-of-stones variations, west key sun -
+  shadows east - palette anchored to measured vanilla rock decoratives mean
+  [79,56,33]). tools/paper-pipeline/auth-stones.py + bake-stones.py both
+  in-repo per maintainer law; sheets packed law-3 (400x120 / 640x128).
+- Determinism lesson: Blender 4.3.2 PNGs vary CONTAINER bytes per process
+  but pixels are bit-reproducible (proven 36/36 across processes); the prover
+  must compare pixel arrays (bake.sh's np.array_equal standard), not file md5.
+  Boolean-fcurve flipbooks are unreliable (all keys collapse to the last
+  state) - the bake stages hide_render per frame directly.
+- Wiring: ford-pebbles (target 120) + ford-stones (target 20) prototypes +
+  water-ford tile.bound_decoratives; density knobs commented at the wiring.
+- Maintainer feedback v1: density good ("a good density of rocks"), shadows
+  cast wrong side (sun tilt sign flipped: light from WEST, shadows EAST),
+  heaps wanted (2-3 stones per variation), palette = vanilla umber/brown.
+  v2 approved: "That is perfect. Bake that." (bench + 4x crop captures in
+  provenance 012953-stones-bench2*). Stones render above the water veil.

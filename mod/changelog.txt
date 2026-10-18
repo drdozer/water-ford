@@ -8,6 +8,8 @@ Date: 17. 10. 2026
       inherited stone corner and side pieces.
     - Grass-water-ford corners beside Wooden Boards render as wooden
       three-way transitions (were stone).
+    - Wooden Ford deck: pebbles and small stones sprinkle the boards
+      as ballast.
     - Promotion pass: the real water-ford tile is unfrozen onto the boards-ford
       ladder (16/16/16 variants at 1x1/2x2/4x4; C-depth 128px sprites at 0.25
       scale, probabilities 1 on the big sizes).
