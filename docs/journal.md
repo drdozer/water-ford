@@ -1297,3 +1297,16 @@ equivalent — treat this repo copy as source of truth from now on),
 publish tool (inbox/tool-devctl-mods-publish.md, M3). Also noted: repo
 README crafting lines (0.1.x recipe) have drifted from the published 1.0.x
 recipes; README refresh is owed on the next README touch.
+
+2026-10-19 — `devctl mods publish` landed (commit 19f5852) and was probed
+against this mod, publish-safe by construction (maintainer: do not publish
+anything yet). Dry-run plan: release mode auto-selected (portal has 1.0.0;
+none of the gates blocked), zip sha1 c4c6d0e9… computed, changelog section
+for 1.0.1 present. The `--yes` path was exercised ONLY with an invalid Bearer
+key, so the portal rejected at init_upload (HTTP 400 InvalidApiKey) and no
+byte could reach the uploader — water-ford remains un-re-released (portal
+releases: 1.0.0 only, re-verified after the probes). Evidence:
+.cache/publish-probe-{1-dryrun,2-yes-invalid-key,3-mode-404}.log. The real
+1.0.1 release upload waits for the human API-key step (blocked ticket
+blocked/tool-devctl-mods-publish.md; trigger = key slot non-empty in
+devctl.conf). Nothing to do on the portal side until then.
