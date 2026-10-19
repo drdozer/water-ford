@@ -1310,3 +1310,13 @@ releases: 1.0.0 only, re-verified after the probes). Evidence:
 1.0.1 release upload waits for the human API-key step (blocked ticket
 blocked/tool-devctl-mods-publish.md; trigger = key slot non-empty in
 devctl.conf). Nothing to do on the portal side until then.
+
+2026-10-19 — publish tooling live-verified via a dedicated deprecated scratch
+mod (maintainer-authorized; see inbox/tool-devctl-mods-publish.md): first
+publish 0.1.0 and release upload 0.2.0 both sha1-verified against /full, then
+deprecated. Water-ford itself remains untouched on the portal (releases:
+1.0.0 only) — its 1.0.1 upload and any page polish wait for an explicit
+maintainer go per case; the tool will plan them (read-only) on request.
+Also caught today: devctl.conf was erroneously TRACKED since the
+.env→devctl.conf rename — untracked now with ignore entries (commit
+500f0dd); no secrets were ever in its history.
