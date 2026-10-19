@@ -1,0 +1,1 @@
+A walkable ford tile over water: land caravans can cross, wooden pilings stand semi-submerged in animated water, and ships still sail over it for Cargo Ships waterways.

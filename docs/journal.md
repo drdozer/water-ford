@@ -1287,3 +1287,13 @@ flooring. LESSON for future dev-versioned builds: name migration files
 above the highest version any save has ever recorded, not the release
 version — the 1.0.1-equality trap we dodged by never bumping info.json
 in dev.
+
+2026-10-19 — portal page source seeded (`portal/`, new superproject layout
+convention): `description.md` reconstructed from the portal-rendered page
+(the markdown source lived only on the portal; table/link rendering is
+equivalent — treat this repo copy as source of truth from now on),
+`summary.txt` byte-exact from the portal API, `portal/images/` stubbed
+(gallery currently empty on the portal). Next parity push happens via the
+publish tool (inbox/tool-devctl-mods-publish.md, M3). Also noted: repo
+README crafting lines (0.1.x recipe) have drifted from the published 1.0.x
+recipes; README refresh is owed on the next README touch.
