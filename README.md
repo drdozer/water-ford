@@ -6,12 +6,21 @@ still sail over it — fords keep the `water_tile` collision layer, so Cargo
 Ships waterways stay navigable.
 
 - Without [Pyanodon Alien Life](https://mods.factorio.com/mod/pyalienlife):
-  unlocked by the concrete tech; 4 wood + 1 iron stick + 50 stone per ford.
-- With Pyanodon Alien Life: unlocked after creosote; crafted from treated-wood,
-  iron sticks, bolts, a log and 200 gravel (bed ballast).
+  unlocked by the concrete tech; a Wooden Flooring is 2 wood + 1 iron stick,
+  and a ford is 1 flooring + 2 wood + 100 stone.
+- With Pyanodon Alien Life: unlocked after creosote; a Wooden Flooring is 2
+  treated-wood + 1 iron-stick + 8 bolts, and a ford is 1 flooring + 1 log +
+  200 gravel (bed ballast).
+
+## Wooden Flooring
+
+The matching land tile: honey-toned plank boards with a wooden bumper edge
+at the waterline and a wooden trim against other terrain. Fords carry
+land caravans across water; flooring is for camps, yards and walkways.
+Not placeable over water — use the Wooden Ford for a crossing.
 
 Fords can only be placed on water — illegal placements are reverted in the same
-tick and refunded. Fords are intentionally scarce: one per craft, 10 s craft
+tick and refunded. Boards are intentionally scarce: one per craft, 10 s craft
 time.
 
 ## For players

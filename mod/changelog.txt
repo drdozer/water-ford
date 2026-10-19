@@ -1,53 +1,45 @@
 ---------------------------------------------------------------------------------------------------
-Version: 2.0.0
+Version: 1.0.1
 Date: 18. 10. 2026
+  Features:
+    - New tile: Wooden Flooring. Honey-toned plank boards for dry land,
+      edged with a raised wooden bumper where they meet water and a
+      wooden trim where they meet other terrain. Not placeable over
+      water; pleasant to walk on (1.1x speed).
+    - The Wooden Ford deck gains ballast: pebbles and small stones
+      sprinkle the boards, sliced at the waterline so the submerged
+      parts tint with the water like the pilings do.
+    - The Wooden Ford deck lays far richer: 16 deck variants in each of
+      1x1/2x2/4x4 (was 8 single tiles).
   Changes:
-    - Renamed in-game identifiers to match display names: the land
-      tile/item/recipe are now wooden-flooring (was boards-land), the
-      water tile/item/recipe are now wooden-ford (was water-ford). The
-      technology and the mod itself keep the water-ford id.
-    - BREAKING: scripts and integrations referencing the old identifiers
-      need updating. Saves and blueprints convert automatically via the
-      shipped 2.0.0 migration (placed water-ford tiles, held/stored items
-      and crafting queues rename to wooden-ford; dev-era boards-land
-      becomes wooden-flooring).
-    - Both boards tiles share one minimap color: ochre (#cc7722), chosen to
-      read distinctly from sands, dirts and red desert on the map. The ford
-      previously inherited deep-water blue and read as open water.
-    - New mod-portal thumbnail.
----------------------------------------------------------------------------------------------------
-Version: 1.0.1 (unreleased, dev tiles)
-Date: 17. 10. 2026
-  Changes:
-    - Wooden Boards gets a wooden bumper-board edge where it meets water
-      (replaces the inherited concrete stone curb).
-    - Wooden Boards meets other terrain with a wooden trim instead of the
-      inherited stone corner and side pieces.
-    - Grass-water-ford corners beside Wooden Boards render as wooden
-      three-way transitions (were stone).
-    - Wooden Ford deck: pebbles and small stones sprinkle the boards
-      as ballast.
-    - Proper item and technology icons.
+    - In-game identifiers now match the display names: the land
+      tile/item/recipe are wooden-flooring (was boards-land), the water
+      tile/item/recipe are wooden-ford (was water-ford). The technology
+      and the mod itself keep the water-ford id. Saves and blueprints
+      convert automatically via the shipped migration (placed tiles,
+      held or stored items and crafting queues all rename); only
+      external scripts referencing the old identifiers need updating.
+    - Stone paths draw over Wooden Flooring at shared boundaries (the
+      flooring sits just below stone brick in the terrain layer order).
+  Balancing:
+    - Recipes reworked, one board per craft, scarce by design. Wooden
+      Flooring: 2 wood + 1 iron stick. Wooden Ford is composed: 1
+      flooring + 2 wood + 100 stone (was 4 wood + 1 iron stick + 50
+      stone). Pyanodon: flooring 2 treated-wood + 1 iron-stick + 8
+      bolts; ford 1 flooring + 1 log + 200 gravel — net ford cost
+      unchanged, now composed via the flooring.
+  Locale:
     - Rewritten item, tile and technology descriptions: short tooltips,
-      expanded text on the Factoriopedia tile pages.
-    - Promotion pass: the real water-ford tile is unfrozen onto the boards-ford
-      ladder (16/16/16 variants at 1x1/2x2/4x4; C-depth 128px sprites at 0.25
-      scale, probabilities 1 on the big sizes).
-    - Land family collapsed to one tileset: boards-land (was the
-      boards-land-a/b/c compare set), with item and recipe.
-    - Boards recipe redesign, both tiles under the water-ford technology:
-      floor boards 2 wood + 1 iron-stick -> 1 (py: 2 treated-wood +
-      1 iron-stick + 8 bolts -> 1). Ford boards are composed: vanilla
-      1 floor board + 2 wood + 100 stone -> 1 ford; py 1 floor board +
-      1 log + 200 gravel -> 1 ford. One board per craft, scarce by design.
-    - Retired the dev compare tiles, items, recipes, locale entries and stale
-      A/B sheets; planks.png deck art demoted from the live tile.
-    - Six map-editor-only compare tiles: boards-land-a/b/c (wooden boards on
-      land) and boards-ford-a/b/c (the boards as ford deck under the animated
-      water veil). Three sprite depths each (A 32px @1.0, B 64px @0.5,
-      C 128px @0.25 - all render 32 world px) for picking the sprite basis.
-      Locked look: Blender boards, ring-grain rf~8 + pores + deep winter line.
-      No items, recipes, or terrain autoplace.
+      expanded copy on the Factoriopedia tile pages.
+  Bugfixes:
+    - Wooden Ford no longer reads as open water on the minimap: both
+      boards tiles share one map color, ochre (#cc7722), measured to
+      separate from every vanilla terrain color better than vanilla
+      terrains separate from each other.
+  Graphics:
+    - Dedicated technology icon; refined item icon (an exact slice of
+      the deck art).
+    - New mod-portal thumbnail.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 13. 10. 2026

@@ -1267,3 +1267,23 @@ tech; boards-land never shipped publicly (1.0.1 dev builds only).
 - OWED in the play-test session: load an old save against the 2.0.0 zip
   candidate; confirm in the log that the migration applied and placed
   fords survive as wooden-ford.
+
+## 2026-10-18 — release renumber: ships as 1.0.1 (was 2.0.0)
+Maintainer decision after the migration route landed: only 1.0.0 is
+public (6 downloads), and the engine's only version consumers are portal
+ordering and migration filenames. Facts that made the renumber safe:
+info.json stayed 1.0.0 through ALL dev rounds (verified at 30a64cd and
+1df92dd — the "1.0.1 (unreleased, dev tiles)" changelog entry was
+aspirational; no build ever carried it), so every save in existence
+records 1.0.0 and a migration named 1.0.1.json covers all lineages — no
+version-equality trap, and no tags existed to move. Applied:
+info.json 2.0.0 -> 1.0.1; git mv migrations/2.0.0.json -> 1.0.1.json;
+changelog merged into one stanzaed 1.0.1 entry (Features/Changes/
+Balancing/Locale/Bugfixes/Graphics) with the dev-internal arc detail
+(compare tiles, promotion passes) dropped — never user-visible; BREAKING
+softened to scripts-only (saves/blueprints auto-convert); README,
+info.json description and locale mod-description now mention the
+flooring. LESSON for future dev-versioned builds: name migration files
+above the highest version any save has ever recorded, not the release
+version — the 1.0.1-equality trap we dodged by never bumping info.json
+in dev.
