@@ -1320,3 +1320,16 @@ maintainer go per case; the tool will plan them (read-only) on request.
 Also caught today: devctl.conf was erroneously TRACKED since the
 .env→devctl.conf rename — untracked now with ignore entries (commit
 500f0dd); no secrets were ever in its history.
+
+## 2026-10-18 — portal page content for the 1.0.1 publish
+description.md + summary.txt rewritten to the maintainer's editorial line:
+sell the why only (new decorative tiles; players + biters + py caravans
+cross, fish and Cargo Ships unaffected), no in-game-available detail —
+recipes, unlock tech, speeds, layering and migration logistics all cut
+(migration lives in the changelog; portal shows compatibility itself).
+summary.txt 277/500 chars. Verified the publish tool's contract
+(lib/portal-publish.py): RELEASE mode ships the zip only — description/
+summary/gallery are first-publish-seed or edit_details/images calls the
+tool does not implement yet (M3); until then the page updates via the
+web UI from these files. Gallery convention documented in
+portal/images/README.md (numeric prefix = display order).

@@ -1,1 +1,1 @@
-A walkable ford tile over water: land caravans can cross, wooden pilings stand semi-submerged in animated water, and ships still sail over it for Cargo Ships waterways.
+A walkable ford over water — players, biters and Pyanodon's land caravans cross, while fish swim under the deck and Cargo Ships still sail over it. Plus a matching Wooden Flooring for dry land: honey-toned boards with a built bumper edge. New decorative tiles for Factorio 2.1.
