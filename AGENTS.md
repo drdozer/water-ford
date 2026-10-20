@@ -96,4 +96,11 @@ PIL/numpy as the fallback). Do **not** vendor a venv in this repo.
 - `docs/shadow-experiments.md` — the 13-round water-shadow investigation
   (pre-1.0.0; the reason the tile config is frozen)
 - `docs/refactor-plan.md` — executed refactor plan (provenance)
+- `docs/ford-knobs.md` — the ford's measured parameter space (knobs and
+  pulleys): tint/alpha response surface, halo law, boundary stamp systems,
+  frozen settings
+- `docs/shadows.md` — shadows & reflections reference: draw_as_shadow
+  (sprite-level, shadow pass) vs water_reflection (entity-level,
+  EntityWithHealth/Corpse only); tiles have NO shadow/reflection mechanism;
+  DECISION: ford poles stay pure tile art (route a); build-time cheat sheet
 - `docs/journal.md` — session work log
