@@ -40,6 +40,11 @@ Date: 18. 10. 2026
     - Dedicated technology icon; refined item icon (an exact slice of
       the deck art).
     - New mod-portal thumbnail.
+    - Footstep sounds on both boards tiles: 13 recorded board-step
+      variations (incl. creaky steps and a quieter squeak) on Wooden
+      Flooring, and 10 board-over-water composites on Wooden Ford (splash
+      leads the thunk, as when wading). Recorded by the maintainer;
+      governed by the Footsteps mixer slider.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.0
 Date: 13. 10. 2026
