@@ -72,15 +72,15 @@ LABELS = {
 # grid: shipped slot -> (take, label index, treatment); treatment 'lp' = tail
 # suppression (clothing swish), 'raw' = as-is
 LAND_GRID = [
-    ('flooring-01', 'take-20261018-220810', 2, 'lp'),   # D01
-    ('flooring-02', 'take-20261018-220810', 4, 'raw'),  # D03
-    ('flooring-03', 'take-20261018-220810', 5, 'raw'),  # D04
-    ('flooring-04', 'take-20261018-220810', 6, 'lp'),   # D05
-    ('flooring-05', 'take-20261018-220810', 7, 'lp'),   # D06
-    ('flooring-06', 'take-20261018-220810', 12, 'raw'),  # D11 (squeak-mixed)
-    ('flooring-07', 'take-20261018-220858', 3, 'raw'),  # C1 (combo)
-    ('flooring-08', 'take-20261018-220858', 4, 'raw'),  # C2 (combo)
-    ('flooring-09', 'take-20261018-220810', 15, 'raw'),  # D14
+    ('flooring-1', 'take-20261018-220810', 2, 'lp'),   # D01
+    ('flooring-2', 'take-20261018-220810', 4, 'raw'),  # D03
+    ('flooring-3', 'take-20261018-220810', 5, 'raw'),  # D04
+    ('flooring-4', 'take-20261018-220810', 6, 'lp'),   # D05
+    ('flooring-5', 'take-20261018-220810', 7, 'lp'),   # D06
+    ('flooring-6', 'take-20261018-220810', 12, 'raw'),  # D11 (squeak-mixed)
+    ('flooring-7', 'take-20261018-220858', 3, 'raw'),  # C1 (combo)
+    ('flooring-8', 'take-20261018-220858', 4, 'raw'),  # C2 (combo)
+    ('flooring-9', 'take-20261018-220810', 15, 'raw'),  # D14
     ('flooring-10', 'take-20261018-220810', 16, 'raw'),  # D15
     ('flooring-11', 'take-20261018-220810', 1, 'raw'),  # X02 (rescue)
     ('flooring-12', 'take-20261018-220858', 2, 'lp'),   # X05 (rescue)
@@ -94,15 +94,15 @@ LAND_SPARES = [  # curated alternates; masters built, not shipped
 ]
 # wet composites: slot -> (board take/idx, vanilla splash 1..7)
 FORD_GRID = [
-    ('ford-deck-01', 'take-20261018-220810', 2, 1),    # W1
-    ('ford-deck-02', 'take-20261018-220810', 8, 2),    # W2a
-    ('ford-deck-03', 'take-20261018-220810', 12, 2),   # W2b
-    ('ford-deck-04', 'take-20261018-220810', 4, 3),    # W3
-    ('ford-deck-05', 'take-20261018-220810', 11, 4),   # W4a
-    ('ford-deck-06', 'take-20261018-220810', 14, 4),   # W4b
-    ('ford-deck-07', 'take-20261018-220810', 17, 5),   # W5b
-    ('ford-deck-08', 'take-20261018-220810', 7, 6),    # W6
-    ('ford-deck-09', 'take-20261018-220810', 6, 7),    # W7
+    ('ford-deck-1', 'take-20261018-220810', 2, 1),    # W1
+    ('ford-deck-2', 'take-20261018-220810', 8, 2),    # W2a
+    ('ford-deck-3', 'take-20261018-220810', 12, 2),   # W2b
+    ('ford-deck-4', 'take-20261018-220810', 4, 3),    # W3
+    ('ford-deck-5', 'take-20261018-220810', 11, 4),   # W4a
+    ('ford-deck-6', 'take-20261018-220810', 14, 4),   # W4b
+    ('ford-deck-7', 'take-20261018-220810', 17, 5),   # W5b
+    ('ford-deck-8', 'take-20261018-220810', 7, 6),    # W6
+    ('ford-deck-9', 'take-20261018-220810', 6, 7),    # W7
     ('ford-deck-10', 'take-20261018-220858', 6, 1),    # W8 (wet creak)
 ]
 

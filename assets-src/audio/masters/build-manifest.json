@@ -1,63 +1,63 @@
 {
  "land": [
   {
-   "slot": "flooring-01",
+   "slot": "flooring-1",
    "take": "take-20261018-220810",
    "label": 2.05,
    "treatment": "lp",
    "len_ms": 297
   },
   {
-   "slot": "flooring-02",
+   "slot": "flooring-2",
    "take": "take-20261018-220810",
    "label": 3.35,
    "treatment": "raw",
    "len_ms": 175
   },
   {
-   "slot": "flooring-03",
+   "slot": "flooring-3",
    "take": "take-20261018-220810",
    "label": 3.83,
    "treatment": "raw",
    "len_ms": 596
   },
   {
-   "slot": "flooring-04",
+   "slot": "flooring-4",
    "take": "take-20261018-220810",
    "label": 4.68,
    "treatment": "lp",
    "len_ms": 283
   },
   {
-   "slot": "flooring-05",
+   "slot": "flooring-5",
    "take": "take-20261018-220810",
    "label": 5.39,
    "treatment": "lp",
    "len_ms": 422
   },
   {
-   "slot": "flooring-06",
+   "slot": "flooring-6",
    "take": "take-20261018-220810",
    "label": 8.61,
    "treatment": "raw",
    "len_ms": 312
   },
   {
-   "slot": "flooring-07",
+   "slot": "flooring-7",
    "take": "take-20261018-220858",
    "label": 2.78,
    "treatment": "raw",
    "len_ms": 588
   },
   {
-   "slot": "flooring-08",
+   "slot": "flooring-8",
    "take": "take-20261018-220858",
    "label": 3.43,
    "treatment": "raw",
    "len_ms": 567
   },
   {
-   "slot": "flooring-09",
+   "slot": "flooring-9",
    "take": "take-20261018-220810",
    "label": 10.6,
    "treatment": "raw",
@@ -124,55 +124,55 @@
  ],
  "ford": [
   {
-   "slot": "ford-deck-01",
+   "slot": "ford-deck-1",
    "board": "take-20261018-220810#2",
    "splash": "shallow-water-1",
    "len_ms": 503
   },
   {
-   "slot": "ford-deck-02",
+   "slot": "ford-deck-2",
    "board": "take-20261018-220810#8",
    "splash": "shallow-water-2",
    "len_ms": 663
   },
   {
-   "slot": "ford-deck-03",
+   "slot": "ford-deck-3",
    "board": "take-20261018-220810#12",
    "splash": "shallow-water-2",
    "len_ms": 663
   },
   {
-   "slot": "ford-deck-04",
+   "slot": "ford-deck-4",
    "board": "take-20261018-220810#4",
    "splash": "shallow-water-3",
    "len_ms": 587
   },
   {
-   "slot": "ford-deck-05",
+   "slot": "ford-deck-5",
    "board": "take-20261018-220810#11",
    "splash": "shallow-water-4",
    "len_ms": 536
   },
   {
-   "slot": "ford-deck-06",
+   "slot": "ford-deck-6",
    "board": "take-20261018-220810#14",
    "splash": "shallow-water-4",
    "len_ms": 536
   },
   {
-   "slot": "ford-deck-07",
+   "slot": "ford-deck-7",
    "board": "take-20261018-220810#17",
    "splash": "shallow-water-5",
    "len_ms": 547
   },
   {
-   "slot": "ford-deck-08",
+   "slot": "ford-deck-8",
    "board": "take-20261018-220810#7",
    "splash": "shallow-water-6",
    "len_ms": 631
   },
   {
-   "slot": "ford-deck-09",
+   "slot": "ford-deck-9",
    "board": "take-20261018-220810#6",
    "splash": "shallow-water-7",
    "len_ms": 627
