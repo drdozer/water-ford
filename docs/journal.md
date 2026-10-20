@@ -1365,3 +1365,38 @@ both sides. The maintainer had not play-tested since the rename.
   the audio agent). smoke + locale PASS.
 LESSON: "assets keep historical names" + identifier renames = drift by
 construction. Asset filenames now track in-game ids.
+
+## 2026-10-20 — footstep audio shipped (six curation rounds, 23 assets)
+
+Ticket `inbox/produce-water-ford-footstep-audio.md` actioned (prerequisite
+`docs/how-to-do-audio.md` was complete). Sources: 3 maintainer phone captures
+(`assets-src/audio/source/`, 44.1 kHz mono mp3). Curation: Audacity driven via
+mod-script-pipe (`/tmp/audacity_script_pipe.{to,from}.$UID`; transport NOT
+scriptable; invalid params open a modal that wedges the pipe — restart to
+recover), `LabelSounds` auto-segmentation (−25 dB / 0.3 s / 0.1 s) → 25 hits;
+maintainer ear-verdicts over six rounds against a local HTTP listen page
+(verdict manifests in `.cache/ford-audio-import/`, scratch).
+
+- **Assets**: 13 `flooring-N.ogg` (12 board steps + P1 squeak at 0.3) + 10
+  `ford-deck-N.ogg` composites (splash leads the thunk ~120 ms, board 0.85 /
+  splash 1.0, splash runs its natural 0.44–0.66 s). Built by
+  `tools/build-audio.py` — deterministic, all knobs embedded, idempotent ogg
+  writes via decoded-PCM compare (container serials differ per encode).
+- **Wiring**: `walking_sound` on both tiles in `data-updates.lua`, clone-source
+  volumes (concrete 0.5 / shallow-water 1.0), vanilla cosine fade-in. core
+  sound-util defines GLOBALS — `require` returns true, indexing it dies.
+- **Root-cause chain** (all in superproject `docs/how-to-do-audio.md` §11):
+  the rounds-2–4 "pops" were ONE istft edge-normalization bug (fix = one-frame
+  padding); the peak-picker must be pinned to label±0.25 s (it wandered 840 ms
+  into house noise); musical-noise taming (median gain filter) ended the
+  residual tail ticks; `--dump-data` smoke does NOT load the sound library —
+  9 missing oggs passed smoke and failed only at game boot (non-padded
+  `-N.ogg` naming was the miss).
+- **Verification**: dlc-smoke smoke PASS; dump-diff vs pre-audio baseline =
+  exactly the 2 intended `walking_sound` fields, no collateral. Stray tracked
+  leak `mod/mods/...` removed (invariant 1).
+- **Licensing note**: composites embed vanilla splash audio — permitted as a
+  derived work per the Factorio ToS (Wube retains rights/removal right);
+  recorded in `tools/build-audio.py` header.
+- **Pending**: in-game listening pass (game launched; volume verdicts),
+  changelog under 2.0.0, push, ticket removal.

@@ -73,6 +73,7 @@ def report_pixel_match(new_arr, path):
 # here would clobber the shipped 128px icon with a 64px 1.0.0 slice.
 
 # --- thumbnail: plank row over a water border --------------------------------
+planks = decoded(OUT / "planks.png")            # sheet still feeds the thumbnail row
 water = Image.open(Path(args.base) / "graphics" / "terrain" / "water" / "water1.png").convert("RGBA")
 frame = np.asarray(water.crop((0, 0, 64, 64)))
 

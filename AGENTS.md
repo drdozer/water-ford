@@ -74,14 +74,20 @@ PIL/numpy as the fallback). Do **not** vendor a venv in this repo.
   the shipped files pixel-identically; writes only on pixel change.
 - `tools/gen-branding.py` — thumbnail reconstruction → `dist/` scratch (shipped
   `mod/thumbnail.png` is canonical — its border water matches no base crop).
+- `tools/build-audio.py` — footstep audio: rebuilds `mod/sound/walking/` +
+  `assets-src/audio/masters/` deterministically from the recorded sources in
+  `assets-src/audio/source/` (every curation knob embedded; ffmpeg on PATH).
+  Story + lessons: `docs/journal.md` 2026-10-20 and superproject
+  `docs/how-to-do-audio.md` §11.
   Its 1.0.0 icon writer is retired: the item icon belongs to
   `tools/paper-pipeline/make-icons.py` (128px deck-cell + stones).
 - `tools/check-assets.py` — the launch-time asset gate: every graphics/sound
   reference in `mod/*.lua` must resolve to a shipped file (incl.
   `sound_variations` prefix expansion). The data-stage checks never validate
   file existence — run this in every verification pass.
-- `assets-src/` does not exist yet: all art is generated. Real external art
-  belongs there, never in `mod/`.
+- `assets-src/ai/` (generative art briefs) and `assets-src/audio/`
+  (recorded sources + curated masters) hold real external assets — never in
+  `mod/`.
 
 ## Docs index
 
