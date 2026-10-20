@@ -1457,3 +1457,25 @@ itself (all py-sourced items resolve); dependency floors stand
 reported "all up to date" while the portal held pyfusionenergy 3.1.6 —
 the superseded check missed it (py-alphabetical neighbours flagged
 fine); investigate when next touching lib/mods/sync.
+
+## 2026-10-20 — vehicle-crossing testmod: the ford does NOT block vehicles
+Headless scenario harness `testmods/water-ford/` (four lanes: wooden-ford /
+water-shallow / landfill control / deepwater; scripted orientation +
+per-tick car.speed push — no unit groups, no autopilot mod). Runner exits
+0/1/2 (pass/fail/harness-error); results JSON in the scratch
+script-output/. **Finding: FAIL — a speed-pushed car drives straight across
+the shipped wooden ford** (min_x 4.07 = onto the west island), and across
+vanilla water-shallow equally. Deepwater STOPS the car at the shore; the
+landfill control crossed. So the engine blocks cars on `player`-layer
+water (deepwater mask carries `player`; shallow-family tiles don't) —
+`water_tile` in the car's collision mask does NOT gate movement (it gates
+placement-type checks). The 1.0 tile comment "water_tile stays [so
+vehicles are excluded]" is therefore wrong for movement: the wooden
+ford's vehicle exclusion was never engine-enforced. Consequences for the
+cobblestone ticket: "IS vehicle-pathable" is free (shallow-like mask);
+"NOT player-pathable" is the hard half (needs the player layer or a
+custom layer — and the deepwater lane narrows the car-blocker to `item`
+or `player`, disambiguation pending); the wooden-ford clause "vehicles
+EXCLUDED" is currently false in game and this ticket must own a fix or a
+rescission. Harness caveat: scripted speed-push, not a human driver —
+worth one manual drive-at-the-ford confirmation on the live install.

@@ -1,0 +1,9 @@
+{
+  "name": "water-ford-testmod",
+  "version": "0.1.0",
+  "title": "water-ford testmod - vehicle crossing",
+  "author": "drdozer",
+  "factorio_version": "2.1",
+  "description": "Headless scenario harness for the water-ford pathing contract. Not for release.",
+  "dependencies": ["water-ford"]
+}
