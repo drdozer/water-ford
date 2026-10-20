@@ -1530,3 +1530,20 @@ fluid-offset semantics; creative/scripted placement bypasses it) — the
 in-game hand test decides whether pumps still place on the ford; if they
 do, the fix path is the control-stage placement guard (invariant 2), not
 the mask.
+
+## 2026-10-21 — wooden-ford collision layer: the contract is real
+Pond-row hand test (maintainer): pumps place on vanilla water/shallow/
+deep AND on a water_tile-masked tile with no fluid and no name-list
+membership (mask-only) — pumpability keys on the water_tile MASK layer;
+tile.fluid and water_tile_type_names are irrelevant. The ford (same mask
+plus the new wooden-ford layer) rejected the pump. One layer, two
+consumers implemented in mod/data-final-fixes.lua (oreguard pattern):
+collision-layer "wooden-ford" stamped onto the ford tile, all
+data.raw["car"] (cars, tanks, modded cars) and all data.raw["offshore-
+pump"]. Players/units/ships untouched; spidertron deliberately unstamped
+(it walks open water). Diff gate: exactly the four expected deltas plus
+the layer prototype. Harness verdict flipped FAIL to PASS: the ford-lane
+car stops at the shore (min_x 65.00, the deepwater signature); landfill
+control crosses; shallow crosses. Loose ends for 1.1.0: changelog lines;
+migration decision for pumps already standing on fords in old saves;
+the cobble ford must NOT carry the layer.
