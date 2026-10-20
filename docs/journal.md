@@ -1440,3 +1440,20 @@ the retry free: the first attempt's partial upload (01) was recognized
 and skipped. Portal state verified via /full: 1.0.1 live, sha1 match,
 page populated. py-closure caveat stands (data-stage proven; py's own
 gasturbinemk01 blocks entity validation on 2.1.22 — py suite issue).
+
+## 2026-10-20 — py-closure CLOSED (updated suite, engine 2.1.23)
+Maintainer updated the py suite (pyfusionenergy 3.1.6 — the FluidBox fix
+— plus pycoalprocessing 3.1.8; engine now 2.1.23) and confirmed the ford
+works with py in-game. Automated closure re-run on the refreshed set:
+dump-data exit 0, full dump (69.7MB), ALL invariants verified in py
+context — piling rule (2 entries, composite wired), ochre map_color,
+0.9 crossing speed, 10 ford footstep variations, py recipe composed
+through the RENAMED wooden-flooring item (1 flooring + 1 log + 200
+gravel), pypp "?" guard intact, wooden-flooring item+tile present for
+pypp's eager lookups, creosote prereq, py flooring recipe (treated-wood
++ iron-stick + bolts). Provenance re-check satisfied by the closure
+itself (all py-sourced items resolve); dependency floors stand
+(pyalienlife 3.1.8 = newest). Tooling debt noted: devctl mods sync
+reported "all up to date" while the portal held pyfusionenergy 3.1.6 —
+the superseded check missed it (py-alphabetical neighbours flagged
+fine); investigate when next touching lib/mods/sync.
