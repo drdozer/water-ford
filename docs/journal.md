@@ -1547,3 +1547,11 @@ car stops at the shore (min_x 65.00, the deepwater signature); landfill
 control crosses; shallow crosses. Loose ends for 1.1.0: changelog lines;
 migration decision for pumps already standing on fords in old saves;
 the cobble ford must NOT carry the layer.
+
+## 2026-10-21 — MAINTAINER HAND CONFIRMATION: ford blocks vehicles
+Live session, real mod (data-final-fixes stamping), maintainer-driven:
+tank drove east into the ford lane's west shore and was stopped by the
+deck; the shallow lane let the same vehicle cross in the same session.
+Combined with the pond-row pump rejection, both halves of the
+wooden-ford contract are maintainer-verified in game. Harness remains
+the automated gate (exit 0).
