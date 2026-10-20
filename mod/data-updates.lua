@@ -241,8 +241,8 @@ land_tile.variants =
   main =
   {
     {picture = "__water-ford__/graphics/boards-land.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
-    {picture = "__water-ford__/graphics/wooden-flooring-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
-    {picture = "__water-ford__/graphics/wooden-flooring-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/boards-land-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/boards-land-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
   },
   -- LAND TRIM (2026-10-18, round-21): wooden variant-transition edges - the
   -- land-to-land system vanilla wires as concrete.variants.transition (the
@@ -255,19 +255,19 @@ land_tile.variants =
   {
     overlay_layout =
     {
-      inner_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-inner-corner.png", count = 16, scale = 0.5 },
-      outer_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-outer-corner.png", count = 8,  scale = 0.5 },
-      side         = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-side.png",         count = 16, scale = 0.5 },
-      u_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-u.png",            count = 4,  scale = 0.5 },
-      o_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-o.png",            count = 4,  scale = 0.5 },
+      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o.png",            count = 4,  scale = 0.5 },
     },
     mask_layout =
     {
-      inner_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
-      outer_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
-      side         = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-side-mask.png",         count = 16, scale = 0.5 },
-      u_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-u-mask.png",            count = 4,  scale = 0.5 },
-      o_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-o-mask.png",            count = 4,  scale = 0.5 },
+      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side-mask.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u-mask.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o-mask.png",            count = 4,  scale = 0.5 },
     },
   },
 }
@@ -291,7 +291,7 @@ land_tile.transitions =
   { -- flags mirror vanilla concrete's water entry; y-fields tightened
     to_tiles = water_tile_type_names,
     transition_group = water_transition_group_id,
-    spritesheet = "__water-ford__/graphics/wooden-flooring-edge.png",
+    spritesheet = "__water-ford__/graphics/boards-land-edge.png",
     layout =
     {
       scale = 0.5,
@@ -351,7 +351,7 @@ land_tile.transitions_between_transitions =
   {
     transition_group1 = default_transition_group_id,
     transition_group2 = water_transition_group_id,
-    spritesheet = "__water-ford__/graphics/wooden-flooring-between.png",
+    spritesheet = "__water-ford__/graphics/boards-land-between.png",
     layout =
     {
       scale = 0.5,
