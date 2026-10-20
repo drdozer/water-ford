@@ -1409,3 +1409,20 @@ Previously absent (= 1.0, inherited from the impassable deep-water clone
 that never needed a modifier). wooden-flooring stays 1.1 (D3 band).
 Balancing changelog bullet added. Gates: assets OK (27+23), smoke/locale
 PASS, dump-diff = exactly tile.wooden-ford.walking_speed_modifier.
+
+## 2026-10-20 — py-closure vs engine 2.1.22: blocked by py, data-stage proven
+Fresh env spec envs/py-closure.toml (the v0 env system cannot chase
+OPTIONAL deps to install zips — roots are projects only — so the closure
+reused the documented hand-assembled .cache/water-ford-refactor/pymods
+set: 17 py zips + water-ford link + explicit mod-list, space-age off).
+Result on dlc 2.1.22: data stage COMPLETES (checksums for every mod incl.
+water-ford; zero water-ford errors; pypp final-fixes ran through the
+renamed ids) then the engine dies at entity validation of pyfusionenergy
+3.1.5's own gasturbinemk01 (FluidBox min/max_temperature removed in
+2.1.22). The Oct-15 closure passed the same set on 2.1.21 — the install
+auto-updated since. CONCLUSION: stale py zips vs the new engine, not a
+water-ford regression; py users on 2.1.22 are broken regardless. The
+1.0.1 py-facing surface (recipe ids, pypp guards) is proven at data
+stage, which is everything 1.0.1 touched. Full-closure re-run owed when
+the py suite ships 2.1.22-compatible zips (or on a pinned 2.1.21
+install).

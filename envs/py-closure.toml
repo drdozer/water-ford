@@ -1,0 +1,22 @@
+# Hermetic py real-closure for water-ford: the pyalienlife chain enabled
+# (chased from the dlc install's portal zips), every data-dir DLC mod
+# disabled (pypostprocessing errors when space-age is active without
+# pyspaceage — docs/py-suite.md). Provisions .cache/envs/dlc/py-closure-<hash8>/.
+# Verifies: load smoke exit 0, the piling transition rule intact, the py
+# recipe composed through the renamed wooden-flooring item, pypp guards live.
+spec_version = 1
+description = "water-ford py real-closure: pyalienlife chain, space-age disabled"
+
+install = "dlc"
+
+roots = ["pyalienlife"]    # optional dep, declared explicitly so the chase
+                           # pulls its hard-dep closure (pycoalprocessing,
+                           # pypetroleumhandling, pyrawores, pypostprocessing,
+                           # graphics packs) from the install's zips
+chase_deps = true
+without = []
+stub = []
+
+[data_dir_mods]
+# default policy: data-dir DLC mods disabled (space-age, quality,
+# elevated-rails) — required by the py suite.
