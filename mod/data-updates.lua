@@ -136,12 +136,13 @@ tile.layer = 9
 -- shallows (water-shallow 0.8) but still slower than dry land (1.0); a wet
 -- deck, not a boardwalk
 tile.walking_speed_modifier = 0.9
--- `resource` dropped (maintainer order 2026-10-20): nothing in this mod or
--- its dependencies keys on it, and its only observable effect on a
--- player-built deck is barring resource-entity placement on the ford.
+-- `resource`: dropped then reinstated same day (maintainer order 2026-10-21:
+-- "just in case it is needed for something else"). Hand test showed pumps
+-- place on the ford with AND without it — not the pump lever.
 tile.collision_mask = {
   layers = {
     water_tile = true,
+    resource = true,
     floor = true,
   }
 }
