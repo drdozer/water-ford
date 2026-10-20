@@ -1518,3 +1518,15 @@ impossible with vanilla layers. Both the cobble ford (vehicle-open,
 player+unit-blocked) and the wooden-ford vehicle exclusion fix (walkable,
 vehicle-blocked) require a custom collision layer via collision-mask-util,
 patched into the relevant entity masks at data stage.
+
+## 2026-10-20 — resource layer dropped from the ford tile (maintainer order)
+tile.collision_mask is now {water_tile, floor} (was +resource, inherited
+from the water clone). Maintainer order during the cobblestone ticket
+discussion; nothing in the mod or its deps keys on the layer. Diff gate:
+exactly one delta (tile.wooden-ford.collision_mask.layers.resource), smoke
+PASS. Note for the pump question: a can_place_entity probe mid-bridge
+proved invalid for the player placement pathway (edge + orientation +
+fluid-offset semantics; creative/scripted placement bypasses it) — the
+in-game hand test decides whether pumps still place on the ford; if they
+do, the fix path is the control-stage placement guard (invariant 2), not
+the mask.
