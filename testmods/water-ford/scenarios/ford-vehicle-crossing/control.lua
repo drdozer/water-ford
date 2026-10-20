@@ -47,7 +47,18 @@ for i, layer in ipairs(PROBE_LAYERS) do
   local name = "wf-probe-" .. layer:gsub("_", "-")
   LANES[#LANES + 1] = { key = name, bridge = name, cy = 10 + (#VANILLA_LANES + i - 1) * LANE_SPACING, probe = layer }
 end
+-- custom-layer movement probe lane: the testmod stamps wf-test-block into
+-- every car's mask, so this lane answers "do custom layers block movement"
+LANES[#LANES + 1] = { key = "wf-probe-custom", bridge = "wf-probe-custom",
+  cy = 10 + #LANES * LANE_SPACING, probe = "wf-test-block (custom)" }
+-- pump-lever ablation lanes (see data.lua: 2x2 mask-layer x name-list)
+LANES[#LANES + 1] = { key = "wf-ablate-mask-only", bridge = "wf-ablate-mask-only", cy = 10 + #LANES * LANE_SPACING }
+LANES[#LANES + 1] = { key = "wf-ablate-list-only", bridge = "wf-ablate-list-only", cy = 10 + #LANES * LANE_SPACING }
+LANES[#LANES + 1] = { key = "wf-ablate-neither",   bridge = "wf-ablate-neither",   cy = 10 + #LANES * LANE_SPACING }
 local Y_MAX = 10 + (#LANES - 1) * LANE_SPACING + 8
+
+local lane_by_key = {}
+for _, lane in ipairs(LANES) do lane_by_key[lane.key] = lane end
 
 local WEST_X0, WEST_X1 = 4, 15     -- west island tiles (world x span [4,16))
 local BRIDGE_X0, BRIDGE_X1 = 16, 64
@@ -59,6 +70,7 @@ local DRIVE_SPEED = 0.1            -- tiles/tick, re-asserted every tick
 local EVAL_TICK = 1200
 
 local cars, min_x = {}, {}
+local probe_placements = {}
 local finished = false
 
 -- In-game evidence captures (absolute positions, §12 console-law protocol).
@@ -91,14 +103,17 @@ script.on_init(function()
   pcall(function() surface.peaceful_mode = true end)
   game.map_settings.enemy_expansion.enabled = false
 
-  -- clear the lab area, then carve: water moat, islands, bridges
-  for _, e in pairs(surface.find_entities_filtered{area = {{0, 0}, {90, Y_MAX}}}) do
+  -- clear the lab area, then carve: water moat, islands, bridges, pond row
+  for _, e in pairs(surface.find_entities_filtered{area = {{0, 0}, {140, Y_MAX}}}) do
     if e.type ~= "character" then e.destroy() end -- keep the (windowed-session) player alive
   end
   local tiles = {}
   for y = 0, Y_MAX do
     for x = 0, 89 do
       tiles[#tiles + 1] = { name = "water", position = { x, y } }
+    end
+    for x = 90, 139 do
+      tiles[#tiles + 1] = { name = "grass-1", position = { x, y } }
     end
   end
   for _, lane in ipairs(LANES) do
@@ -112,7 +127,41 @@ script.on_init(function()
       tiles[#tiles+1] = { name = lane.bridge, position = { x, cy } }
     end
   end
+  -- ponds: 12x12 patches of each probed tile in the grass apron (x>=90) —
+  -- vanilla shore geometry (land behind, pond in front) for the pump probes
+  local ponds = {
+    { key = "water",               x0 = 95 }, -- vanilla positive control
+    { key = "wooden-ford",         x0 = 95 }, -- carries the wooden-ford layer (data-updates stamp)
+    { key = "wf-ablate-mask-only", x0 = 95 },
+    { key = "wf-ablate-list-only", x0 = 95 },
+    { key = "wf-ablate-neither",   x0 = 95 },
+    { key = "water-shallow",       x0 = 95 },
+    { key = "deepwater",           x0 = 95 },
+  }
+  for i, pd in ipairs(ponds) do pd.cy = 10 + (i - 1) * LANE_SPACING end
+  for _, pd in ipairs(ponds) do
+    for y = pd.cy - 6, pd.cy + 5 do
+      for x = pd.x0, pd.x0 + 11 do
+        tiles[#tiles + 1] = { name = pd.key, position = { x, y } }
+      end
+    end
+  end
   surface.set_tiles(tiles, true)
+
+  -- pump-lever ablation oracle = the maintainer's hands: can_place_entity
+  -- does not model the player pathway (true on grass, false on water), and
+  -- game.create_player no longer exists in 2.1, so the pond row is painted
+  -- for a windowed hand test. Kit the (windowed) player if one exists.
+  game.forces.player.chart(surface, {{0, 0}, {140, Y_MAX}})
+  local placements = {}
+  pcall(function()
+    local p = game.players[1]
+    p.insert{ name = "offshore-pump", count = 20 }
+    p.insert{ name = "landfill", count = 100 }
+    p.cheat_mode = true
+    placements["player kit"] = "20 offshore-pump + 100 landfill given to player 1"
+  end)
+  probe_placements = placements
 
   for _, lane in ipairs(LANES) do
     local car = surface.create_entity{ name = "car", position = { CAR_START_X, lane.cy }, force = "player" }
@@ -140,7 +189,8 @@ script.on_nth_tick(1, function(e)
     finished = true
     script.on_nth_tick(1, nil)
 
-    local results = { eval_tick = e.tick, lanes = {}, overall = "pass" }
+    local results = { eval_tick = e.tick, lanes = {}, overall = "pass",
+      placement = probe_placements }
     for _, lane in ipairs(LANES) do record(results, lane) end
 
     -- THE TEST: wooden ford must stop the car
