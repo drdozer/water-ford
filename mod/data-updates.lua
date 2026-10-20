@@ -132,6 +132,10 @@ tile.layer = 9
 -- walkable: the caravan/dingrido collision layers from water-shallow are not
 -- wanted (land caravans must cross); water_tile stays so Cargo Ships and
 -- offshore pumps treat the ford as water
+-- crossing speed (2026-10-20, maintainer): 0.9 — faster than wading the
+-- shallows (water-shallow 0.8) but still slower than dry land (1.0); a wet
+-- deck, not a boardwalk
+tile.walking_speed_modifier = 0.9
 tile.collision_mask = {
   layers = {
     water_tile = true,

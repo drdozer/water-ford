@@ -1400,3 +1400,12 @@ maintainer ear-verdicts over six rounds against a local HTTP listen page
   recorded in `tools/build-audio.py` header.
 - **Pending**: in-game listening pass (game launched; volume verdicts),
   changelog under 2.0.0, push, ticket removal.
+
+## 2026-10-20 — ford crossing speed 0.9
+Audio play-test passed; maintainer's final gameplay tuning: the ford gets
+walking_speed_modifier 0.9 — faster than wading shallows (water-shallow
+0.8) but slower than dry land (1.0); "a wet deck, not a boardwalk".
+Previously absent (= 1.0, inherited from the impassable deep-water clone
+that never needed a modifier). wooden-flooring stays 1.1 (D3 band).
+Balancing changelog bullet added. Gates: assets OK (27+23), smoke/locale
+PASS, dump-diff = exactly tile.wooden-ford.walking_speed_modifier.

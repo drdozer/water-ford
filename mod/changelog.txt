@@ -28,6 +28,8 @@ Date: 18. 10. 2026
       stone). Pyanodon: flooring 2 treated-wood + 1 iron-stick + 8
       bolts; ford 1 flooring + 1 log + 200 gravel — net ford cost
       unchanged, now composed via the flooring.
+    - Wooden Ford crossing speed tuned to 0.9× — faster than wading
+      through shallow water (0.8×), slightly slower than dry land (1.0×).
   Locale:
     - Rewritten item, tile and technology descriptions: short tooltips,
       expanded copy on the Factoriopedia tile pages.
