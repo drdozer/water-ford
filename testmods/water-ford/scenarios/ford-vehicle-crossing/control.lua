@@ -1,39 +1,59 @@
--- Scenario: ford-vehicle-crossing — wooden-ford vehicle-exclusion contract.
+-- Scenario: ford-vehicle-crossing — layer-by-layer vehicle crossing grid.
 --
--- Carves a water moat with three east-west lanes, each two islands linked by
--- a 2-wide bridge (bridge tiles span y = cy-1, cy; car centre y = cy so the
--- car's 1.4-wide box stays inside the bridge):
+-- Carves a water moat with one east-west lane per probed tile (16-tile
+-- spacing): two grass islands linked by a 2-wide bridge of the tile under
+-- test (bridge tiles span y = cy-1, cy; car centre y = cy so the car's
+-- 1.4-wide box stays inside the bridge). One car per lane, pushed west by
+-- scripted orientation + per-tick car.speed — zero intelligence between
+-- command and physics, so "stopped at the shore" is attributable to engine
+-- vehicle-vs-tile collision alone.
 --
---   wooden-ford   (y=20)  THE TEST: a vehicle must be stopped at the shore.
---   water-shallow (y=40)  vanilla reference (informational).
---   landfill      (y=60)  control: the car MUST cross, else the harness itself
---                         is broken (verdict harness-error, runner exit 2).
---   deepwater     (y=70)  vanilla reference (informational): does ANY water
---                         tile stop a car in 2.1?
---
--- Driving mechanism: no unit-group (cars are not units) and no third-party
--- autopilot (its pathfinder would refuse narrow bridges for its own reasons).
--- The harness sets car.orientation west once and pushes car.speed every tick —
--- zero intelligence between command and physics, so "stopped at the shore" is
--- attributable to engine vehicle-vs-tile collision alone.
+-- Lane groups:
+--   * vanilla tiles — wooden-ford (THE TEST: car must stop), water-shallow,
+--     water-mud, water, deepwater, lava, oil-ocean-shallow, stone-path,
+--     concrete, grass-1, landfill (control: MUST cross, else harness-error).
+--   * wf-probe-<layer> — synthetic single-layer tiles from data.lua; each
+--     answers "does this collision layer stop a car".
 --
 -- Results: script-output/ford-vehicle-crossing-results.json
 --   overall = "pass"           runner exit 0
 --             "fail"           runner exit 1  (ford car crossed)
---             "harness-error"  runner exit 2  (control car failed / never moved)
+--             "harness-error"  runner exit 2  (control failed / never moved)
 
-local LANES = {
-  { key = "wooden-ford",   cy = 20, bridge = "wooden-ford" },
-  { key = "water-shallow", cy = 40, bridge = "water-shallow" },
-  { key = "landfill",      cy = 60, bridge = "landfill" },
-  { key = "deepwater",     cy = 70, bridge = "deepwater" },
+local VANILLA_LANES = {
+  { key = "wooden-ford",       bridge = "wooden-ford" },
+  { key = "water-shallow",     bridge = "water-shallow" },
+  { key = "water-mud",         bridge = "water-mud" },
+  { key = "water",             bridge = "water" },
+  { key = "deepwater",         bridge = "deepwater" },
+  { key = "lava",              bridge = "lava" },
+  { key = "oil-ocean-shallow", bridge = "oil-ocean-shallow" },
+  { key = "stone-path",        bridge = "stone-path" },
+  { key = "concrete",          bridge = "concrete" },
+  { key = "grass-1",           bridge = "grass-1" },
+  { key = "landfill",          bridge = "landfill" },
 }
+local PROBE_LAYERS = {
+  "player", "item", "object", "water_tile", "resource", "floor", "doodad",
+  "train", "ground_tile", "lava_tile", "is_object", "is_lower_object", "meltable",
+}
+
+local LANE_SPACING = 16
+local LANES = {}
+for i, lane in ipairs(VANILLA_LANES) do
+  LANES[#LANES + 1] = { key = lane.key, bridge = lane.bridge, cy = 10 + (i - 1) * LANE_SPACING }
+end
+for i, layer in ipairs(PROBE_LAYERS) do
+  local name = "wf-probe-" .. layer:gsub("_", "-")
+  LANES[#LANES + 1] = { key = name, bridge = name, cy = 10 + (#VANILLA_LANES + i - 1) * LANE_SPACING, probe = layer }
+end
+local Y_MAX = 10 + (#LANES - 1) * LANE_SPACING + 8
 
 local WEST_X0, WEST_X1 = 4, 15     -- west island tiles (world x span [4,16))
 local BRIDGE_X0, BRIDGE_X1 = 16, 64
 local EAST_X0, EAST_X1 = 65, 76
 local CAR_START_X = 73.5
-local CROSS_X = 16                 -- car centre west of this = crossed the ford
+local CROSS_X = 16                 -- car centre west of this = crossed the bridge
 local SHORE_X = 67                 -- car reached the east shore if min_x < this
 local DRIVE_SPEED = 0.1            -- tiles/tick, re-asserted every tick
 local EVAL_TICK = 1200
@@ -41,15 +61,26 @@ local EVAL_TICK = 1200
 local cars, min_x = {}, {}
 local finished = false
 
-local function record(results, lane, verdict)
+-- In-game evidence captures (absolute positions, §12 console-law protocol).
+-- pcall: take_screenshot is client-side; headless runs skip it silently.
+local function snap(tag, center, zoom)
+  pcall(function()
+    game.take_screenshot{ position = center, zoom = zoom,
+      resolution = {2560, 1600}, show_gui = false,
+      path = "ford-crossing-" .. tag .. ".png" }
+  end)
+end
+
+local function record(results, lane)
   local car = cars[lane.key]
   local r = {
     bridge = lane.bridge,
+    probe_layer = lane.probe,
     min_x = min_x[lane.key],
     final_x = (car and car.valid) and car.position.x or nil,
+    car_valid = (car and car.valid) or false,
     crossed = min_x[lane.key] < CROSS_X,
     reached_shore = min_x[lane.key] < SHORE_X,
-    verdict = verdict,
   }
   results.lanes[lane.key] = r
   return r
@@ -61,11 +92,11 @@ script.on_init(function()
   game.map_settings.enemy_expansion.enabled = false
 
   -- clear the lab area, then carve: water moat, islands, bridges
-  for _, e in pairs(surface.find_entities_filtered{area = {{0, 0}, {90, 80}}}) do
-    e.destroy()
+  for _, e in pairs(surface.find_entities_filtered{area = {{0, 0}, {90, Y_MAX}}}) do
+    if e.type ~= "character" then e.destroy() end -- keep the (windowed-session) player alive
   end
   local tiles = {}
-  for y = 0, 79 do
+  for y = 0, Y_MAX do
     for x = 0, 89 do
       tiles[#tiles + 1] = { name = "water", position = { x, y } }
     end
@@ -90,7 +121,7 @@ script.on_init(function()
     cars[lane.key] = car
     min_x[lane.key] = CAR_START_X
   end
-  log("FORD-VEHICLE-TEST initialised: " .. #LANES .. " lanes")
+  log("FORD-VEHICLE-TEST initialised: " .. #LANES .. " lanes, Y_MAX=" .. Y_MAX)
 end)
 
 script.on_nth_tick(1, function(e)
@@ -101,13 +132,19 @@ script.on_nth_tick(1, function(e)
       if car.position.x < min_x[key] then min_x[key] = car.position.x end
     end
   end
+  if e.tick == 330 then
+    snap("mid-crossing-ford", { x = 40, y = 10 }, 2)
+    snap("mid-grid-wide", { x = 40, y = 95 }, 0.75)
+  end
   if e.tick >= EVAL_TICK then
     finished = true
     script.on_nth_tick(1, nil)
 
     local results = { eval_tick = e.tick, lanes = {}, overall = "pass" }
+    for _, lane in ipairs(LANES) do record(results, lane) end
 
-    local ford = record(results, LANES[1], nil)
+    -- THE TEST: wooden ford must stop the car
+    local ford = results.lanes["wooden-ford"]
     if ford.crossed then
       ford.verdict = "FAIL - car crossed the wooden ford"
       results.overall = "fail"
@@ -118,15 +155,8 @@ script.on_nth_tick(1, function(e)
       ford.verdict = "PASS - car stopped at the shore"
     end
 
-    for _, ref_lane in ipairs({ LANES[2], LANES[4] }) do
-      local ref = record(results, ref_lane, nil)
-      ref.informational = true
-      ref.verdict = ref.crossed
-        and ("informational - vanilla " .. ref_lane.key .. " is car-crossable")
-        or  ("informational - vanilla " .. ref_lane.key .. " stops the car")
-    end
-
-    local control = record(results, LANES[3], nil)
+    -- control: landfill must let the car through
+    local control = results.lanes["landfill"]
     if not control.crossed then
       control.verdict = "HARNESS-ERROR - control car failed to cross the landfill bridge"
       if results.overall == "pass" then results.overall = "harness-error" end
@@ -134,8 +164,24 @@ script.on_nth_tick(1, function(e)
       control.verdict = "control ok - car crossed the landfill bridge"
     end
 
+    -- everything else: informational
+    for _, lane in ipairs(LANES) do
+      if lane.key ~= "wooden-ford" and lane.key ~= "landfill" then
+        local r = results.lanes[lane.key]
+        r.informational = true
+        if r.crossed then
+          r.verdict = "car crossed"
+        elseif r.car_valid then
+          r.verdict = "car stopped at shore (min_x " .. string.format("%.2f", r.min_x) .. ")"
+        else
+          r.verdict = "car destroyed en route (min_x " .. string.format("%.2f", r.min_x) .. ")"
+        end
+      end
+    end
+
     helpers.write_file("ford-vehicle-crossing-results.json",
       helpers.table_to_json(results) .. "\n", false, 0)
+    snap("final-grid-wide", { x = 40, y = 95 }, 0.75)
     log("FORD-VEHICLE-TEST DONE overall=" .. results.overall)
   end
 end)

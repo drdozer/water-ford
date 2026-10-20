@@ -1494,3 +1494,27 @@ water-animation review of the rebuilt pipeline's outputs — is **waived by
 the maintainer at retirement** (the P1 composite has been the live baseline
 since 1.0.1). Order 2 (refined randomized pole) stays open and now points
 at this journal instead of the deleted ticket.
+
+## 2026-10-20 — layer grid resolves the crossing mechanic
+Harness extended to a 24-lane grid (11 vanilla tiles + 13 synthetic
+single-layer `wf-probe-*` tiles from testmod data.lua). Result: a car is
+stopped by exactly three tile layers — `player`, `train`, `is_object` —
+and crosses tiles carrying only any other layer (item, object,
+water_tile, resource, floor, doodad, ground_tile, lava_tile,
+is_lower_object, meltable all crossed). So entity-vs-tile movement is NOT
+mask intersection (the car mask carries water_tile, yet water_tile tiles
+don't stop it): tile masks are mostly PLACEMENT semantics ("water-tile
+prevents placing paths"), while ground-movement blocking is governed by a
+small engine-side layer set — matching Wube's own comment that the
+character collides only with player/train layers. All three vanilla
+vanilla crossings now explained: water/deepwater/lava block via `player`;
+water-shallow/water-mud/oil-ocean-shallow cross (confirming the 1.1
+changelog line, the shallow driving sound, and the oil-ocean comment).
+Consequence, now proven rather than inferred: every car-blocking vanilla
+layer (player/train/is_object) also blocks the walking character
+(character mask = object/train/is_object/is_lower_object; units carry
+player/train/is_object) — "car-crossable but player-blocked" is
+impossible with vanilla layers. Both the cobble ford (vehicle-open,
+player+unit-blocked) and the wooden-ford vehicle exclusion fix (walkable,
+vehicle-blocked) require a custom collision layer via collision-mask-util,
+patched into the relevant entity masks at data stage.
