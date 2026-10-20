@@ -1,4 +1,4 @@
-# bake-land-trim: the boards-land LAND TRIM = vanilla concrete's variant
+# bake-land-trim: the wooden-flooring LAND TRIM = vanilla concrete's variant
 # transition sheets (the land-to-land edge system, tiles.lua
 # concrete.variants.transition) with OUR wood paint on the overlay art and
 # the grey/alpha masks passed through bit-identical.
@@ -13,7 +13,7 @@
 #
 # Per piece type: __base__/graphics/terrain/concrete/<piece>.png (overlay,
 # wood-remapped) + <piece>-mask.png (value map, verbatim). Output 10 files:
-# mod/graphics/boards-land-trim-<piece>.png and -mask.png.
+# mod/graphics/wooden-flooring-trim-<piece>.png and -mask.png.
 import os
 import numpy as np
 from PIL import Image
@@ -27,7 +27,7 @@ VAN = "/home/nmrp3/.local/share/factorio_2_dlc/data/base/graphics/terrain/concre
 # (piece name, count) - vanilla overlay/mask dims are exactly rows x count*64
 PIECES = [("inner-corner", 16), ("outer-corner", 8), ("side", 16), ("u", 4), ("o", 4)]
 
-src = np.asarray(Image.open(os.path.join(G, "boards-land.png")).convert("RGB"))
+src = np.asarray(Image.open(os.path.join(G, "wooden-flooring.png")).convert("RGB"))
 SH = src.reshape(-1, 3)
 lp = SH[SH.sum(1) > 30]
 Wt = np.array([0.299, 0.587, 0.114], np.float32)
@@ -57,10 +57,10 @@ for piece, count in PIECES:
     wood = lo[None, None, :] + t * (hi[None, None, :] - lo[None, None, :])
     ov2 = ov.copy()
     ov2[..., :3] = np.clip(wood + 0.5, 0, 255).astype(np.uint8)
-    Image.fromarray(ov2, "RGBA").save(f"{G}/boards-land-trim-{piece}.png")
-    Image.fromarray(ov2, "RGBA").save(f"{PROV}/boards-land-trim-{piece}.png")
+    Image.fromarray(ov2, "RGBA").save(f"{G}/wooden-flooring-trim-{piece}.png")
+    Image.fromarray(ov2, "RGBA").save(f"{PROV}/wooden-flooring-trim-{piece}.png")
     # mask: pass through bit-identical (functional value map)
-    Image.fromarray(mk, "RGBA").save(f"{G}/boards-land-trim-{piece}-mask.png")
+    Image.fromarray(mk, "RGBA").save(f"{G}/wooden-flooring-trim-{piece}-mask.png")
     n += 1
     print(f"{piece}: overlay {ov.shape[1]}x{ov.shape[0]} wood-remapped, mask verbatim")
 assert n == 5

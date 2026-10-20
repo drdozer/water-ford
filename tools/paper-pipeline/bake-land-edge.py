@@ -1,4 +1,4 @@
-# bake-land-edge: the boards-land WATER EDGE = vanilla concrete's shore-piece
+# bake-land-edge: the wooden-flooring WATER EDGE = vanilla concrete's shore-piece
 # LAYOUT (read straight off tiles.lua's concrete_transitions + concrete_layout)
 # with OUR wood paint in the two picture channels (maintainer direction:
 # "basically copy that but with wood boards where the concrete is", "side-on
@@ -19,10 +19,10 @@
 #   cells 64 wide x 128 tall (1 tile wide x 2 tiles tall at scale 0.5);
 #   bands (count, vanilla y): inner 16@0, outer 8@576, side 16@1152,
 #   u 4@1728, o 4@2304; each band = count cols x 4 rows (o: 1 row).
-# Output: mod/graphics/boards-land-edge.png 3072x2176 (tight band y
+# Output: mod/graphics/wooden-flooring-edge.png 3072x2176 (tight band y
 #   0/512/1024/1536/2048, slack alpha exactly 0; o band cells 64 tall).
 # Alpha is preserved BIT-EXACT in every channel; only overlay+background RGB
-# is remapped stone->wood through the boards-land palette.
+# is remapped stone->wood through the wooden-flooring palette.
 import os
 import numpy as np
 from PIL import Image
@@ -46,7 +46,7 @@ CHANNELS = [(0, 0, True), (1024, 1024, True), (2048, 2048, False)]
 CANV_W, CANV_H = 3072, 2368
 
 src = np.asarray(Image.open(VAN).convert("RGBA"))
-land = np.asarray(Image.open(os.path.join(G, "boards-land.png")).convert("RGB"))
+land = np.asarray(Image.open(os.path.join(G, "wooden-flooring.png")).convert("RGB"))
 
 # --- wood ramp: stone range -> our INTERIOR plank range (percentile means,
 # not the extremes: p100 highlight / p0 shadow pixels would crush the tone) ---
@@ -100,8 +100,8 @@ expect = (sum(c * r for _, c, r in BANDS)) * 3
 print(f"pieces written: {n} (expect {expect}) alpha drift: {alpha_drift} wood drift(painted): {wood_drift}")
 
 img = Image.fromarray(out, "RGBA")
-img.save(os.path.join(G, "boards-land-edge.png"))
-img.save(os.path.join(PROV, "boards-land-edge-sheet.png"))
+img.save(os.path.join(G, "wooden-flooring-edge.png"))
+img.save(os.path.join(PROV, "wooden-flooring-edge-sheet.png"))
 # slack = everything outside the count x rot-row windows must be alpha 0
 # (keep = UNION over all bands - a per-band keep would count the other bands'
 # content as slack and false-report 255)

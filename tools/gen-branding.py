@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generates the ford's branding art — item icon and portal thumbnail.
 
-  water-ford-icon.png  the item/tech icon: an exact 64x64 slice of the planks
+  wooden-ford-icon.png  the item/tech icon: an exact 64x64 slice of the planks
                        boarding sheet (planks.png, offset 0,0) — the lineage of
                        commit a020dad ("slice the boarding-sheet icon").
                        Regenerates PIXEL-IDENTICAL to the shipped file.
@@ -22,7 +22,7 @@ replaces it (deliberately discouraged).
 Usage (standalone; needs PIL + numpy):
   tools/gen-branding.py [--out DIR] [--scratch DIR] [--base DIR]
                         [--check] [--write-thumbnail]
-    --out      graphics dir holding planks.png / water-ford-icon.png
+    --out      graphics dir holding planks.png / wooden-ford-icon.png
                (default: <repo>/mod/graphics)
     --scratch  where the reconstructed thumbnail is written
                (default: <repo>/dist/thumbnail.reconstructed.png)
@@ -74,10 +74,10 @@ def report_pixel_match(new_arr, path):
 planks = decoded(OUT / "planks.png")
 icon = planks[0:64, 0:64]
 if args.check:
-    report_pixel_match(icon, OUT / "water-ford-icon.png")
+    report_pixel_match(icon, OUT / "wooden-ford-icon.png")
 else:
-    Image.fromarray(icon, "RGBA").save(OUT / "water-ford-icon.png")
-    print(f"water-ford-icon.png written ({OUT / 'water-ford-icon.png'})")
+    Image.fromarray(icon, "RGBA").save(OUT / "wooden-ford-icon.png")
+    print(f"wooden-ford-icon.png written ({OUT / 'wooden-ford-icon.png'})")
 
 # --- thumbnail: plank row over a water border --------------------------------
 water = Image.open(Path(args.base) / "graphics" / "terrain" / "water" / "water1.png").convert("RGBA")

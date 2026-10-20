@@ -83,7 +83,7 @@ tile.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}  -- S
 -- and was rejected (maintainer: must not read as sands/dirts).
 tile.map_color = {r = 204, g = 119, b = 34}
 
-tile.variants.main = {{picture = "__water-ford__/graphics/boards-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16}, {picture = "__water-ford__/graphics/boards-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4}, {picture = "__water-ford__/graphics/boards-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4}}
+tile.variants.main = {{picture = "__water-ford__/graphics/wooden-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16}, {picture = "__water-ford__/graphics/wooden-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4}, {picture = "__water-ford__/graphics/wooden-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4}}
 -- the inherited water-shallow edge overlays produced a pale halo on bordering
 -- water and have no mask channel; the piling rule covers these cells instead
 tile.variants.empty_transitions = true
@@ -240,9 +240,9 @@ land_tile.variants =
 {
   main =
   {
-    {picture = "__water-ford__/graphics/boards-land.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
-    {picture = "__water-ford__/graphics/boards-land-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
-    {picture = "__water-ford__/graphics/boards-land-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/wooden-flooring.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
+    {picture = "__water-ford__/graphics/wooden-flooring-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/wooden-flooring-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
   },
   -- LAND TRIM (2026-10-18, round-21): wooden variant-transition edges - the
   -- land-to-land system vanilla wires as concrete.variants.transition (the
@@ -255,19 +255,19 @@ land_tile.variants =
   {
     overlay_layout =
     {
-      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner.png", count = 16, scale = 0.5 },
-      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner.png", count = 8,  scale = 0.5 },
-      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side.png",         count = 16, scale = 0.5 },
-      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u.png",            count = 4,  scale = 0.5 },
-      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o.png",            count = 4,  scale = 0.5 },
+      inner_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-inner-corner.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-outer-corner.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-side.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-u.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-o.png",            count = 4,  scale = 0.5 },
     },
     mask_layout =
     {
-      inner_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
-      outer_corner = { spritesheet = "__water-ford__/graphics/boards-land-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
-      side         = { spritesheet = "__water-ford__/graphics/boards-land-trim-side-mask.png",         count = 16, scale = 0.5 },
-      u_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-u-mask.png",            count = 4,  scale = 0.5 },
-      o_transition = { spritesheet = "__water-ford__/graphics/boards-land-trim-o-mask.png",            count = 4,  scale = 0.5 },
+      inner_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-inner-corner-mask.png", count = 16, scale = 0.5 },
+      outer_corner = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-outer-corner-mask.png", count = 8,  scale = 0.5 },
+      side         = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-side-mask.png",         count = 16, scale = 0.5 },
+      u_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-u-mask.png",            count = 4,  scale = 0.5 },
+      o_transition = { spritesheet = "__water-ford__/graphics/wooden-flooring-trim-o-mask.png",            count = 4,  scale = 0.5 },
     },
   },
 }
@@ -291,7 +291,7 @@ land_tile.transitions =
   { -- flags mirror vanilla concrete's water entry; y-fields tightened
     to_tiles = water_tile_type_names,
     transition_group = water_transition_group_id,
-    spritesheet = "__water-ford__/graphics/boards-land-edge.png",
+    spritesheet = "__water-ford__/graphics/wooden-flooring-edge.png",
     layout =
     {
       scale = 0.5,
@@ -351,7 +351,7 @@ land_tile.transitions_between_transitions =
   {
     transition_group1 = default_transition_group_id,
     transition_group2 = water_transition_group_id,
-    spritesheet = "__water-ford__/graphics/boards-land-between.png",
+    spritesheet = "__water-ford__/graphics/wooden-flooring-between.png",
     layout =
     {
       scale = 0.5,
@@ -433,7 +433,7 @@ local land_item =
 {
   type = "item",
   name = "wooden-flooring",
-  icon = "__water-ford__/graphics/boards-land-icon.png",
+  icon = "__water-ford__/graphics/wooden-flooring-icon.png",
   icon_size = 128,
   subgroup = "terrain",
   order = "b[terrain]-zz[wooden-flooring-item]",

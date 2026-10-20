@@ -55,7 +55,7 @@ data:extend{
   {
     type = "item",
     name = "wooden-ford",
-    icon = "__water-ford__/graphics/water-ford-icon.png",
+    icon = "__water-ford__/graphics/wooden-ford-icon.png",
     icon_size = 128,
     subgroup = "terrain",
     order = "c[landfill]-a2[water-ford]",
