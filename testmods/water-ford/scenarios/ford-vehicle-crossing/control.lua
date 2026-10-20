@@ -158,8 +158,11 @@ script.on_init(function()
     local p = game.players[1]
     p.insert{ name = "offshore-pump", count = 20 }
     p.insert{ name = "landfill", count = 100 }
+    p.insert{ name = "car", count = 1 }
+    p.insert{ name = "tank", count = 1 }
+    p.insert{ name = "wood", count = 200 }
     p.cheat_mode = true
-    placements["player kit"] = "20 offshore-pump + 100 landfill given to player 1"
+    placements["player kit"] = "pumps + landfill + car + tank + wood given to player 1"
   end)
   probe_placements = placements
 
@@ -181,9 +184,9 @@ script.on_nth_tick(1, function(e)
       if car.position.x < min_x[key] then min_x[key] = car.position.x end
     end
   end
-  if e.tick == 330 then
-    snap("mid-crossing-ford", { x = 40, y = 10 }, 2)
-    snap("mid-grid-wide", { x = 40, y = 95 }, 0.75)
+  if e.tick == 340 then
+    snap("ford-shore-blocked", { x = 55, y = 10 }, 2)  -- ford car parked at the shore
+    snap("landfill-crossing", { x = 40, y = 170 }, 1)  -- control car mid-bridge
   end
   if e.tick >= EVAL_TICK then
     finished = true
@@ -231,7 +234,8 @@ script.on_nth_tick(1, function(e)
 
     helpers.write_file("ford-vehicle-crossing-results.json",
       helpers.table_to_json(results) .. "\n", false, 0)
-    snap("final-grid-wide", { x = 40, y = 95 }, 0.75)
+    snap("final-upper", { x = 40, y = 42 }, 0.5)   -- ford/shallow/mud/water/deep end states in one frame
+    snap("final-landfill", { x = 40, y = 170 }, 0.5) -- control car on the far island
     log("FORD-VEHICLE-TEST DONE overall=" .. results.overall)
   end
 end)
