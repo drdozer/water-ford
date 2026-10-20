@@ -1333,3 +1333,35 @@ summary/gallery are first-publish-seed or edit_details/images calls the
 tool does not implement yet (M3); until then the page updates via the
 web UI from these files. Gallery convention documented in
 portal/images/README.md (numeric prefix = display order).
+
+## 2026-10-20 — launch failure, asset rename, the load-gate
+The audio agent's launch failed: "File __water-ford__/graphics/
+wooden-flooring-between.png not found". Root cause: rename commit 349b513
+rewired 14 asset references to wooden-flooring-* while the committed files
+kept their historical boards-land-* names — violating its own "assets keep
+historical names" decision. WHY THE GATES MISSED IT: --dump-data and
+dump-diff never validate file existence (data stage carries only path
+strings), and the post-rename baselines contain the same broken strings on
+both sides. The maintainer had not play-tested since the rename.
+- a4963fa: references restored to committed names (staged fix-only via
+  hash-object/update-index — the audio session was mid-edit in the same
+  file; their diff stayed clean).
+- 4775141: MAINTAINER DECISION — assets renamed to in-game identifiers
+  (supersedes round-27): boards-land-* -> wooden-flooring-* (17),
+  boards-ford* -> wooden-ford-* (3), water-ford-icon -> wooden-ford-icon
+  (tech icon keeps water-ford-tech-icon — the tech id IS water-ford).
+  Descriptive names stay (pilings-*, ford-decorative-*, planks* sources).
+  Tools rewired (gen-branding, bake-land-edge/trim/between, make-icons);
+  gen-branding verified pixel-identical regeneration under the new name.
+  The audio agent committed their footstep work mid-sequence (c1e00da,
+  4a994f2, 58dda88) — 4775141's data-updates delta is provably path-only.
+- tools/check-assets.py: the load-gate the data-stage checks lack —
+  every graphics/sound reference (incl. sound_variations prefix
+  expansion, non-padded) must resolve to a shipped file; flags stray
+  shipped assets too. 27 graphics + 23 sound refs, all present. Caught
+  the author's own double-dash rename bug on its first run.
+- check suite vs pre-rename baseline: 7 field changes, all intentional
+  (4 asset-path fields + recycling-icon fallout + 2 walking_sound from
+  the audio agent). smoke + locale PASS.
+LESSON: "assets keep historical names" + identifier renames = drift by
+construction. Asset filenames now track in-game ids.

@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-"""Generates the ford's branding art — item icon and portal thumbnail.
+"""Generates the ford's branding art — portal thumbnail reconstruction.
 
-  wooden-ford-icon.png  the item/tech icon: an exact 64x64 slice of the planks
-                       boarding sheet (planks.png, offset 0,0) — the lineage of
-                       commit a020dad ("slice the boarding-sheet icon").
-                       Regenerates PIXEL-IDENTICAL to the shipped file.
   thumbnail.png        the mod-portal thumbnail (358x114): a 64px row of plank
                        tiles (planks.png column 0) across the middle band
                        (y=25..89, tiled every 64px, last tile cropped), over a
@@ -70,14 +66,11 @@ def report_pixel_match(new_arr, path):
     return same
 
 
-# --- icon: exact 64x64 slice of the boarding sheet ---------------------------
-planks = decoded(OUT / "planks.png")
-icon = planks[0:64, 0:64]
-if args.check:
-    report_pixel_match(icon, OUT / "wooden-ford-icon.png")
-else:
-    Image.fromarray(icon, "RGBA").save(OUT / "wooden-ford-icon.png")
-    print(f"wooden-ford-icon.png written ({OUT / 'wooden-ford-icon.png'})")
+# --- icon: RETIRED -----------------------------------------------------------
+# The 1.0.0 icon (64x64 planks slice, commit a020dad) was superseded in the
+# boards rounds by tools/paper-pipeline/make-icons.py (128px deck-cell +
+# stones). This script no longer writes the icon — running the old writer
+# here would clobber the shipped 128px icon with a 64px 1.0.0 slice.
 
 # --- thumbnail: plank row over a water border --------------------------------
 water = Image.open(Path(args.base) / "graphics" / "terrain" / "water" / "water1.png").convert("RGBA")

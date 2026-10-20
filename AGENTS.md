@@ -46,6 +46,9 @@ Generative-art briefs (AI-art prompts + committed candidate runs) live in
 
 ## Verification quick recipe (details in superproject docs)
 
+- Asset gate: `python3 tools/check-assets.py` — every graphics/sound
+  reference must resolve to a shipped file. Run after ANY asset or
+  reference change; the data-stage checks cannot catch a missing file.
 - Load smoke + dump-diff: hermetic `--dump-data` in a pinned set; compare the
   `water-ford` item/recipe/technology/tile subtrees against the baseline
   (superproject `docs/data-lifecycle.md`). Baselines live in
@@ -69,9 +72,14 @@ PIL/numpy as the fallback). Do **not** vendor a venv in this repo.
 
 - `tools/gen-textures.py` — pilings/mask/planks sheets; seeded → regenerates
   the shipped files pixel-identically; writes only on pixel change.
-- `tools/gen-branding.py` — icon (exact planks.png slice, pixel-identical);
-  thumbnail reconstruction → `dist/` scratch (shipped `mod/thumbnail.png` is
-  canonical — its border water matches no base crop).
+- `tools/gen-branding.py` — thumbnail reconstruction → `dist/` scratch (shipped
+  `mod/thumbnail.png` is canonical — its border water matches no base crop).
+  Its 1.0.0 icon writer is retired: the item icon belongs to
+  `tools/paper-pipeline/make-icons.py` (128px deck-cell + stones).
+- `tools/check-assets.py` — the launch-time asset gate: every graphics/sound
+  reference in `mod/*.lua` must resolve to a shipped file (incl.
+  `sound_variations` prefix expansion). The data-stage checks never validate
+  file existence — run this in every verification pass.
 - `assets-src/` does not exist yet: all art is generated. Real external art
   belongs there, never in `mod/`.
 
