@@ -2,10 +2,11 @@
 
 ## Wooden Ford
 
-- Cross water on foot — ford strips across rivers, lakes and your Cargo Ships waterways.
-- **Everyone crosses**: you, biters, and Pyanodon's land caravans — while fish swim under the deck and **Cargo Ships vessels still sail over it**.
+- Cross water on foot — ford across rivers, lakes and your Cargo Ships waterways.
+- **Everyone crosses**: you, biters, and Pyanodon's land caravans — while fish swim across the deck and **Cargo Ships vessels still sail over it**.
 - The deck lies **under animated water**, with wooden pilings standing semi-submerged at the rims and ballast stones tinting at the waterline: a real shallow crossing, not a floating walkway.
-- Water stays water: the ford is placeable on water only, and fish, offshore pumps and other water-dwellers treat it as part of the river.
+- Water stays water: the ford is placeable on water only, and fish, offshore pumps and other water-dwellers treat it as water.
+- Unbuildable: you can't construct buildings on fords as they are not intended as a substitute for landfill.
 
 ## Wooden Flooring
 
