@@ -1,0 +1,187 @@
+{
+ "land": [
+  {
+   "slot": "flooring-01",
+   "take": "take-20261018-220810",
+   "label": 2.05,
+   "treatment": "lp",
+   "len_ms": 297
+  },
+  {
+   "slot": "flooring-02",
+   "take": "take-20261018-220810",
+   "label": 3.35,
+   "treatment": "raw",
+   "len_ms": 175
+  },
+  {
+   "slot": "flooring-03",
+   "take": "take-20261018-220810",
+   "label": 3.83,
+   "treatment": "raw",
+   "len_ms": 596
+  },
+  {
+   "slot": "flooring-04",
+   "take": "take-20261018-220810",
+   "label": 4.68,
+   "treatment": "lp",
+   "len_ms": 283
+  },
+  {
+   "slot": "flooring-05",
+   "take": "take-20261018-220810",
+   "label": 5.39,
+   "treatment": "lp",
+   "len_ms": 422
+  },
+  {
+   "slot": "flooring-06",
+   "take": "take-20261018-220810",
+   "label": 8.61,
+   "treatment": "raw",
+   "len_ms": 312
+  },
+  {
+   "slot": "flooring-07",
+   "take": "take-20261018-220858",
+   "label": 2.78,
+   "treatment": "raw",
+   "len_ms": 588
+  },
+  {
+   "slot": "flooring-08",
+   "take": "take-20261018-220858",
+   "label": 3.43,
+   "treatment": "raw",
+   "len_ms": 567
+  },
+  {
+   "slot": "flooring-09",
+   "take": "take-20261018-220810",
+   "label": 10.6,
+   "treatment": "raw",
+   "len_ms": 327
+  },
+  {
+   "slot": "flooring-10",
+   "take": "take-20261018-220810",
+   "label": 11.19,
+   "treatment": "raw",
+   "len_ms": 197
+  },
+  {
+   "slot": "flooring-11",
+   "take": "take-20261018-220810",
+   "label": 1.45,
+   "treatment": "raw",
+   "len_ms": 181
+  },
+  {
+   "slot": "flooring-12",
+   "take": "take-20261018-220858",
+   "label": 2.02,
+   "treatment": "lp",
+   "len_ms": 631
+  },
+  {
+   "slot": "flooring-13",
+   "take": "take-20261018-220858",
+   "label": 4.84,
+   "treatment": "raw",
+   "len_ms": 631
+  }
+ ],
+ "land_spares": [
+  {
+   "slot": "spare-C3",
+   "take": "take-20261018-220858",
+   "label": 4.13,
+   "treatment": "raw",
+   "len_ms": 407
+  },
+  {
+   "slot": "spare-D13",
+   "take": "take-20261018-220810",
+   "label": 9.89,
+   "treatment": "lp",
+   "len_ms": 312
+  },
+  {
+   "slot": "spare-X01",
+   "take": "take-20261018-220810",
+   "label": 0.92,
+   "treatment": "lp",
+   "len_ms": 395
+  },
+  {
+   "slot": "spare-X03",
+   "take": "take-20261018-220858",
+   "label": 0.94,
+   "treatment": "lp",
+   "len_ms": 397
+  }
+ ],
+ "ford": [
+  {
+   "slot": "ford-deck-01",
+   "board": "take-20261018-220810#2",
+   "splash": "shallow-water-1",
+   "len_ms": 503
+  },
+  {
+   "slot": "ford-deck-02",
+   "board": "take-20261018-220810#8",
+   "splash": "shallow-water-2",
+   "len_ms": 663
+  },
+  {
+   "slot": "ford-deck-03",
+   "board": "take-20261018-220810#12",
+   "splash": "shallow-water-2",
+   "len_ms": 663
+  },
+  {
+   "slot": "ford-deck-04",
+   "board": "take-20261018-220810#4",
+   "splash": "shallow-water-3",
+   "len_ms": 587
+  },
+  {
+   "slot": "ford-deck-05",
+   "board": "take-20261018-220810#11",
+   "splash": "shallow-water-4",
+   "len_ms": 536
+  },
+  {
+   "slot": "ford-deck-06",
+   "board": "take-20261018-220810#14",
+   "splash": "shallow-water-4",
+   "len_ms": 536
+  },
+  {
+   "slot": "ford-deck-07",
+   "board": "take-20261018-220810#17",
+   "splash": "shallow-water-5",
+   "len_ms": 547
+  },
+  {
+   "slot": "ford-deck-08",
+   "board": "take-20261018-220810#7",
+   "splash": "shallow-water-6",
+   "len_ms": 631
+  },
+  {
+   "slot": "ford-deck-09",
+   "board": "take-20261018-220810#6",
+   "splash": "shallow-water-7",
+   "len_ms": 627
+  },
+  {
+   "slot": "ford-deck-10",
+   "board": "take-20261018-220858#6",
+   "splash": "shallow-water-1",
+   "len_ms": 721
+  }
+ ]
+}
