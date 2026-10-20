@@ -1426,3 +1426,17 @@ water-ford regression; py users on 2.1.22 are broken regardless. The
 stage, which is everything 1.0.1 touched. Full-closure re-run owed when
 the py suite ships 2.1.22-compatible zips (or on a pinned 2.1.21
 install).
+
+## 2026-10-20 — 1.0.1 PUBLISHED
+devctl mods publish water-ford --yes: release upload verified (portal
+sha1 == local 6040fcb5…), page polish completed on retry (--page-only):
+edit_details (description 1333 + summary 278) + 3 gallery images in
+numeric order (01 criss-cross, 02 biters, 03 cargoship). Two engine bugs
+found and fixed by the live run: (1) the splice that added the page
+section swallowed wait_and_verify — restored verbatim; (2) images/add's
+response carries {"id",…} with no success wrapper — _upload_payload now
+accepts an id-bearing dict (allow_id). The sha1-idempotent gallery made
+the retry free: the first attempt's partial upload (01) was recognized
+and skipped. Portal state verified via /full: 1.0.1 live, sha1 match,
+page populated. py-closure caveat stands (data-stage proven; py's own
+gasturbinemk01 blocks entity validation on 2.1.22 — py suite issue).
