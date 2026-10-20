@@ -1479,3 +1479,18 @@ or `player`, disambiguation pending); the wooden-ford clause "vehicles
 EXCLUDED" is currently false in game and this ticket must own a fix or a
 rescission. Harness caveat: scripted speed-push, not a human driver —
 worth one manual drive-at-the-ford confirmation on the live install.
+
+## 2026-10-20 — ford-posts cylinder probe ticket retired (maintainer: done)
+
+The Order-1 ticket (superproject `inbox/produce-ford-posts-cylinder.md`) was
+retired as complete. The record: the effect-stack arc was executed and
+verified in-game 2026-10-16→17 (piling viewer, paper-pipeline consolidation,
+shadow layer, Stage B transition swap, shore-rim ladder — "Version D
+verified ring-free"), P1 committed as the shipped boundary baseline,
+knowledge extracted (`docs/ford-knobs.md`, `docs/shore-rim.md`,
+`docs/shadows.md` — route (a): poles stay pure tile art), and the art
+shipped in 1.0.1. The ticket's one unrecorded check — the looping-GIF
+water-animation review of the rebuilt pipeline's outputs — is **waived by
+the maintainer at retirement** (the P1 composite has been the live baseline
+since 1.0.1). Order 2 (refined randomized pole) stays open and now points
+at this journal instead of the deleted ticket.
