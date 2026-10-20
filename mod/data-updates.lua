@@ -35,6 +35,13 @@ local pf = {  -- post parameters shared with tools/bake-transition-sheet.py
   mask     = "__water-ford__/graphics/pilings-transition-mask.png",
 }
 
+-- FOOTSTEP AUDIO (2026-10-18): maintainer-recorded board steps, six curation
+-- rounds (docs/journal.md); assets rebuilt by tools/build-audio.py from
+-- assets-src/audio/source/. Volumes start at the clone sources' values
+-- (concrete 0.5 / shallow-water 1.0) — tune by ear in-game, never re-master.
+require("__core__.lualib.sound-util")  -- defines global sound_variations()/default_tile_sounds_advanced_volume_control() (no module return — base calls them as globals)
+local ford_steps = sound_variations("__water-ford__/sound/walking/ford-deck", 10, 1.0)
+
 local tile = table.deepcopy(data.raw.tile["water"])  -- EXPERIMENT 2026-10-16: clone source = deep water (was water-shallow)
 
 -- Name/description come from locale ([tile-name]/[tile-description]) — no
@@ -47,6 +54,14 @@ tile.autoplace = nil
 tile.fluid = nil
 tile.default_cover_tile = nil
 tile.ambient_sounds = nil
+-- walk-on-ford audio: pre-mixed board+splash composites (splash leads the thunk
+-- by ~120 ms -- foot breaks water, then loads the deck; maintainer-approved
+-- character, six curation rounds). Vanilla shallow-water's volume (1.0).
+tile.walking_sound =
+{
+  variations = ford_steps,
+  advanced_volume_control = default_tile_sounds_advanced_volume_control(),
+}
 tile.is_foundation = true
 tile.transition_merges_with_tile = "water"  -- probe 2026-10-16: bank-shadow candidate (maintainer-found)
 -- translucent wash (copied from water-shallow): the plain water effect draws
@@ -402,6 +417,15 @@ land_tile.transitions_between_transitions =
       background = { x_offset = 1024 },
     },
   },
+}
+-- 12 uniform board steps + 1 pure squeak at reduced volume (variations carry
+-- their own volume; the helper builds the uniform 12, the squeak is appended)
+local land_steps = sound_variations("__water-ford__/sound/walking/flooring", 12, 0.5)
+land_steps[13] = { filename = "__water-ford__/sound/walking/flooring-13.ogg", volume = 0.3 }
+land_tile.walking_sound =
+{
+  variations = land_steps,
+  advanced_volume_control = default_tile_sounds_advanced_volume_control(),
 }
 data:extend{land_tile}
 
