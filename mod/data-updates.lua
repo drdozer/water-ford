@@ -83,7 +83,7 @@ tile.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}  -- S
 -- and was rejected (maintainer: must not read as sands/dirts).
 tile.map_color = {r = 204, g = 119, b = 34}
 
-tile.variants.main = {{picture = "__water-ford__/graphics/wooden-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16}, {picture = "__water-ford__/graphics/wooden-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4}, {picture = "__water-ford__/graphics/wooden-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4}}
+tile.variants.main = {{picture = "__water-ford__/graphics/wooden-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 4}, {picture = "__water-ford__/graphics/wooden-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4}, {picture = "__water-ford__/graphics/wooden-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4}}
 -- the inherited water-shallow edge overlays produced a pale halo on bordering
 -- water and have no mask channel; the piling rule covers these cells instead
 tile.variants.empty_transitions = true
@@ -247,7 +247,7 @@ land_tile.variants =
 {
   main =
   {
-    {picture = "__water-ford__/graphics/wooden-flooring.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
+    {picture = "__water-ford__/graphics/wooden-flooring.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 4},
     {picture = "__water-ford__/graphics/wooden-flooring-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
     {picture = "__water-ford__/graphics/wooden-flooring-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
   },

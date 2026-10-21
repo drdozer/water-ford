@@ -11,17 +11,24 @@
 #   python3 bake-ladder.py --selftest      # machinery proof, no blender
 #
 # Stages:
-#   render: per design area x scene: master renders -> assets-src staging.
-#           --wetpass adds the wetness-mask render per area (Mask view layer
-#           + M_COBBLE_MASK override; toggles all-or-nothing, try/finally).
-#   cut:    law-3 pure arrangement, master windows -> contract sheet shapes.
-#   deploy: byte-verified copy staged -> mod/graphics.
-#   gate:   contract conformance (16 sprites, (128*size)^2, strips/grids) +
-#           staged == deployed byte-equal; failures abort loudly.
+#   render (blender side, --blend): per design area x FLOOR scene: the
+#           in-file lattice cams at the contract depth (128 px/tile) ->
+#           masters to assets-src/boards/; --twice renders each master a
+#           second time to /tmp and demands PIXEL equality (loud abort).
+#   cut (python3, offline): law-3 identity arrangement — the Stage-A
+#           lattice makes each area's render == the contract sheet shape,
+#           so the cut copies windows 1:1 (still goes through the same
+#           machinery the synthetic selftest proves); staged per sheet
+#           name for BOTH tiles that share the art (wooden-ford,
+#           wooden-flooring — the pairs measured byte-identical).
+#   deploy: byte-verified copy staged -> mod/graphics (both names).
+#   gate:   contract conformance (16 sprites, (128*size)^2, 4x4 grids for
+#           ALL sizes incl 1x1 — the 2026-10-21 recipe revision) + staged
+#           == deployed byte-equal + the two families byte-equal.
 #
 # The AREA REGISTRY (camera + window table per file) is the LAYOUT's
-# committed state: it lives in areas_tables.py next to this driver and is
-# re-based per file by the LAYOUT rounds (recipe Stage A).
+# committed state; the boards live in the rebuilt ford-boards.blend
+# (BLOCKS + CAMS, builder output). --wetpass (cobble) is not wired yet.
 import os
 import sys
 import json
@@ -34,20 +41,21 @@ from PIL import Image
 
 SIZES = (1, 2, 4)
 SPRITES_PER_SIZE = {1: 16, 2: 16, 4: 16}
-# contract: sheet shape per size: (width_px, height_px) given 128 px/tile
-# (maintainer-confirmed: 1x1 = 16 sprites in a row; sizes 2/4 = 4x4 grids)
+# contract: sheet shape per size — ALL sizes render as 4x4 sprite grids
+# (the 2026-10-21 revision: size 1 = 512x512, 4x4 grid of 128^2 sprites;
+# the 2048x128 strip retires WITH the lua line_length 16->4 flip, same commit)
 def sheet_shape(size):
     side = 128 * size
-    if size == 1:
-        return 128 * SPRITES_PER_SIZE[1], 128
     return 4 * side, 4 * side
 
 
 def parse_args(argv):
-    ai = argv.index("--") + 1 if "--" in argv else len(argv)
-    rest = argv[ai:]
+    # blender splits its own flags and mine with "--"; a plain python3 run
+    # has no separator, so everything after argv[0] is mine
+    ai = argv.index("--") + 1 if "--" in argv else 1
+    rest = argv[ai:] if ai is not None else []
     out = {"mode": "run"}
-    if rest and rest[0] == "--selftest":
+    if "--selftest" in argv:
         out["mode"] = "selftest"
         return out, rest
     for i, a in enumerate(rest):
@@ -57,21 +65,25 @@ def parse_args(argv):
             out["base"] = rest[i + 1]
         elif a == "--wetpass":
             out["wetpass"] = True
-    if "base" not in out:
-        raise SystemExit("--base is required (sprite name, e.g. wooden-flooring)")
+        elif a == "--twice":
+            out["twice"] = True
+        elif a == "--stages":
+            out["stages"] = rest[i + 1]
+    if out["mode"] == "run" and "blend" in out:
+        out["mode"] = "blend"                      # Stage B runs inside blender
+    if out["mode"] == "run" and "base" not in out:
+        raise SystemExit("--base is required (sprite name, e.g. wooden-ford)")
     return out, rest
 
 
 def contract_check(sheet_path, base, size):
-    """The lua contract: shapes + counts; returns list of faults."""
+    """The lua contract: shapes + counts; returns list of faults.
+    ALL sizes = 4x4 sprite grids; size 1 must be 512x512 (the strip retired)."""
     faults = []
     im = Image.open(sheet_path)
     w, h = im.size
     sprite_side = 128 * size
-    if size == 1:
-        expected = (sprite_side * 16, 128)
-    else:
-        expected = (4 * sprite_side, 4 * sprite_side)
+    expected = (4 * sprite_side, 4 * sprite_side)
     if (w, h) != expected:
         faults.append(f"{os.path.basename(sheet_path)}: {w}x{h} != contract {expected[0]}x{expected[1]}")
     if im.mode != "RGBA":
@@ -80,16 +92,20 @@ def contract_check(sheet_path, base, size):
 
 
 def sheet_sprites(im, size):
-    """Yield (k, box) sprite windows of the contract sheet, row-major."""
+    """Yield (k, box) sprite windows of the contract sheet, row-major;
+    ALL sizes = 4x4 grids (16 sprites)."""
     side = 128 * size
     for k in range(16):
-        row, col = divmod(k, 4 if size != 1 else 16)
+        row, col = divmod(k, 4)
         box = (col * side, row * side, (col + 1) * side, (row + 1) * side)
         yield k, box
 
 
 def cut_sheet(master, size, out_path):
-    """Law-3: build the contract sheet from the master's sprite windows."""
+    """Law-3: build the contract sheet from the master's sprite windows.
+    The Stage-A lattice + in-file cams make this the IDENTITY arrangement
+    (the windows paste back to their own places); the machinery is the
+    same gate-proven one the synthetic selftest exercises."""
     im = Image.open(master).convert("RGBA")
     sheet = Image.new("RGBA", im.size, (0, 0, 0, 0))
     for k, box in sheet_sprites(im, size):
@@ -112,13 +128,57 @@ def deploy(staged, deployed):
     return deployed
 
 
-def main_blend():
-    """Stage B (render) implementation for a live blend session."""
-    import bpy  # only the render stage needs bpy
-    raise SystemExit("STAGE B (render) lands in the LAYOUT round: the area "
-                     "registry does not exist yet; nothing renders until the "
-                     "Stage-A lattice is committed into the file + "
-                     "areas table.")
+# render stage: the lattice areas + their in-file cams (builder's CAMS:
+# ortho = the area's width, 128 px/tile = the contract depth)
+AREAS = {"AREA_1X1": ("BLK1_CAM", 512), "AREA_2X2": ("BLK2_CAM", 1024),
+         "AREA_4X4": ("BLK4_CAM", 2048)}
+SIZE_TAG = {1: "1x1", 2: "2x2", 4: "4x4"}
+# both tiles that share the boards art (measured byte-identical pairs,
+# journal 2026-10-21): one staged sheet deploys under both names
+SHARED_ART = ("wooden-ford", "wooden-flooring")
+
+
+def root_dir(level=4):
+    r = os.path.dirname(os.path.abspath(__file__))
+    for _ in range(level):
+        r = os.path.dirname(r)
+    return r
+
+
+STAGING = os.path.join(root_dir(), "assets-src", "boards")
+MODGRAPHICS = os.path.join(root_dir(), "mods", "water-ford", "mod", "graphics")
+
+
+def render_area(args):
+    import bpy
+    sc = bpy.data.scenes["FLOOR"]
+    saved_cam, saved_res = sc.camera.name, (sc.render.resolution_x, sc.render.resolution_y)
+    masters = {}
+    for area, (cam_name, res) in AREAS.items():
+        sc.camera = bpy.data.objects[cam_name]
+        sc.render.resolution_x = sc.render.resolution_y = res
+        out = os.path.join(STAGING, f"{args['base']}-master-{SIZE_TAG[AREAS.index(area) if False else list(AREAS).index(area)]}.png") if False else \
+              os.path.join(STAGING, f"{args['base']}-master-{SIZE_TAG[list(AREAS).index(area)]}.png")
+        sc.render.filepath = out
+        bpy.ops.render.render(write_still=True, scene=sc.name)
+        masters[list(AREAS).index(area)] = out
+    sc.camera = bpy.data.objects[saved_cam]
+    sc.render.resolution_x, sc.render.resolution_y = saved_res
+    if args.get("twice"):
+        import numpy as np
+        for size_i, master in masters.items():
+            alt = f"/tmp/{args['base']}-master-alt-{SIZE_TAG[size_i]}.png"
+            sc.camera = bpy.data.objects[AREAS[f"AREA_{SIZE_TAG[size_i].upper()}"[0:4] + SIZE_TAG[size_i].upper()[4:]][0]]
+            sc.render.resolution_x = sc.render.resolution_y = AREAS[f"AREA_{SIZE_TAG[size_i].upper()}"[0:4] + SIZE_TAG[size_i].upper()[4:]][1]
+            sc.render.filepath = alt
+            bpy.ops.render.render(write_still=True, scene=sc.name)
+            a = np.asarray(Image.open(master).convert("RGBA"), dtype=np.int16)
+            b = np.asarray(Image.open(alt).convert("RGBA"), dtype=np.int16)
+            if not np.array_equal(a, b):
+                ndiff = int((a != b).any(axis=-1).sum())
+                raise SystemExit(f"--twice FAILED: {master} vs re-render differs on {ndiff} px")
+        print("TWICE: all masters pixel-identical across two renders")
+    return masters
 
 
 def selftest():
@@ -175,17 +235,120 @@ def selftest():
     print("BAKELADDER SELFTEST:", "FAIL" if faults else "GREEN "
           f"(synthetic cut/arrange/contract/deploy all verified in {tmp})")
     return 1 if faults else 0
+STAGING = os.path.join(root_dir(2), "assets-src", "boards")
+MODGRAPHICS = os.path.join(root_dir(2), "mod", "graphics")
+
+
+def render_area(args):
+    """Stage B inside blender: each lattice area through its in-file cam at
+    the contract depth (128 px/tile)."""
+    import bpy
+    sc = bpy.data.scenes["FLOOR"]
+    saved_cam, saved_res = sc.camera.name, (sc.render.resolution_x, sc.render.resolution_y)
+    masters = []   # (size, path) row-major by the AREAS roster
+    for size, (area, (cam_name, res)) in zip(SIZES, AREAS.items()):
+        sc.camera = bpy.data.objects[cam_name]
+        sc.render.resolution_x = sc.render.resolution_y = res
+        out = os.path.join(STAGING, f"{args['base']}-master-{SIZE_TAG[size]}.png")
+        sc.render.filepath = out
+        bpy.ops.render.render(write_still=True, scene=sc.name)
+        masters.append((size, out))
+    sc.camera = bpy.data.objects[saved_cam]
+    sc.render.resolution_x, sc.render.resolution_y = saved_res
+    if args.get("twice"):
+        import numpy as np
+        for size, master in masters:
+            cam_name, res = AREAS["AREA_" + SIZE_TAG[size].upper()]
+            sc.camera = bpy.data.objects[cam_name]
+            sc.render.resolution_x = sc.render.resolution_y = res
+            alt = f"/tmp/{args['base']}-master-alt-{SIZE_TAG[size]}.png"
+            sc.render.filepath = alt
+            bpy.ops.render.render(write_still=True, scene=sc.name)
+            a = np.asarray(Image.open(master).convert("RGBA"), dtype=np.int16)
+            b = np.asarray(Image.open(alt).convert("RGBA"), dtype=np.int16)
+            if not np.array_equal(a, b):
+                ndiff = int((a != b).any(axis=-1).sum())
+                raise SystemExit(f"--twice FAILED: {master} differs from its "
+                                 f"re-render on {ndiff} px")
+        sc.camera = bpy.data.objects[saved_cam]
+        sc.render.resolution_x, sc.render.resolution_y = saved_res
+        print("TWICE: all masters pixel-identical across two renders")
+    return masters
+
+
+def sheet_suffix(size):
+    return "" if size == 1 else f"-{SIZE_TAG[size]}"
+
+
+def main_offline(args):
+    """Stage C + deploy + gate, offline from committed masters (no bpy):"""
+    base = args["base"]
+    stages = [s.strip() for s in (args.get("stages") or "cut,deploy,gate").split(",")]
+    masters = []
+    for size in SIZES:
+        mp = os.path.join(STAGING, f"{base}-master-{SIZE_TAG[size]}.png")
+        if not os.path.exists(mp):
+            raise SystemExit(f"MASTER MISSING: {mp} - run the render stage first")
+        fa = contract_check(mp, base, size)
+        if fa:
+            raise SystemExit("MASTER VIOLATES THE CONTRACT: " + "; ".join(fa))
+        masters.append((size, mp))
+
+    if "cut" in stages:
+        import numpy as np
+        for size, mp in masters:
+            sp = os.path.join(STAGING, f"{base}{sheet_suffix(size)}.png")
+            cut_sheet(mp, size, sp)
+            sp2 = sp + ".twice.png"
+            cut_sheet(mp, size, sp2)              # the twice-gate: cut runs twice
+            a = np.asarray(Image.open(sp).convert("RGBA"), dtype=np.int16)
+            b = np.asarray(Image.open(sp2).convert("RGBA"), dtype=np.int16)
+            if not np.array_equal(a, b):
+                raise SystemExit(f"--twice FAILED (cut): {sp} != its second run")
+            os.remove(sp2)
+            print(f"CUT: {base}{sheet_suffix(size)}.png ({sp} == master identity)")
+        for size in SIZES:
+            for name in SHARED_ART:
+                if name == base:
+                    continue
+                dst = os.path.join(STAGING, f"{name}{sheet_suffix(size)}.png")
+                shutil.copyfile(os.path.join(STAGING, f"{base}{sheet_suffix(size)}.png"), dst)
+                verify_bytes(os.path.join(STAGING, f"{base}{sheet_suffix(size)}.png"), dst)
+            print(f"STAGED: {name}{sheet_suffix(size)}.png == {base}{sheet_suffix(size)}.png (shared art)")
+
+    if "deploy" in stages:
+        for size in SIZES:
+            for name in SHARED_ART:
+                staged = os.path.join(STAGING, f"{name}{sheet_suffix(size)}.png")
+                if not os.path.exists(staged):
+                    raise SystemExit(f"STAGED SHEET MISSING: {staged} - run the cut stage first")
+                deployed = os.path.join(MODGRAPHICS, f"{name}{sheet_suffix(size)}.png")
+                deploy(staged, deployed)
+                print(f"DEPLOYED: {deployed} (byte-verified vs staging)")
+
+    if "gate" in stages:
+        faults = []
+        for size in SIZES:
+            for name in SHARED_ART:
+                deployed = os.path.join(MODGRAPHICS, f"{name}{sheet_suffix(size)}.png")
+                faults += contract_check(deployed, name, size)
+                verify_bytes(os.path.join(STAGING, f"{name}{sheet_suffix(size)}.png"), deployed)
+            a = os.path.join(MODGRAPHICS, f"{SHARED_ART[0]}{sheet_suffix(size)}.png")
+            b = os.path.join(MODGRAPHICS, f"{SHARED_ART[1]}{sheet_suffix(size)}.png")
+            verify_bytes(a, b)
+        if faults:
+            raise SystemExit("GATE FAILURES:\n  " + "\n  ".join(faults))
+        print(f"GATE: contract + staging/deploy byte-equality + shared-art pairs PASS "
+              f"({6} sheets, {len(SIZES)} sizes, 16 sprites each)")
 
 
 if __name__ == "__main__":
-    argv = sys.argv
-    invoked_carefully = len(argv) == 1 or "--selftest" in argv
-    if invoked_carefully:
+    args, rest = parse_args(sys.argv)
+    if args["mode"] == "selftest":
         raise SystemExit(selftest())
-    args, rest = parse_args(argv)
-    if "blend" in args:
-        import bpy  # blender-side invocations come via --python
+    if args["mode"] == "blend":
+        import bpy
         bpy.ops.wm.open_mainfile(filepath=args["blend"])
-        main_blend()
+        render_area(args)
     else:
-        raise SystemExit(selftest())
+        main_offline(args)

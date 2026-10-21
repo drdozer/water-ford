@@ -10,6 +10,9 @@ local function sculpt(surface)
   end
   surface.destroy_decoratives{area = {{-R, -R}, {R, R}}}
 
+  -- 2026-10-21 rewrite: the retired shore-rim probe tiles are gone; the
+  -- view = the boards ladder's approved B look (wooden-ford under the
+  -- tile's veil + wooden-flooring pads so the edge/trim art forms).
   local tiles = {}
   for x = -16, 16 do
     for y = -16, 16 do
@@ -21,62 +24,28 @@ local function sculpt(surface)
   tiles = {}
   for x = -14, 14 do  -- the ford: causeway + the strip the bank used to be
     for y = -2, 6 do
-      tiles[#tiles + 1] = {name = "water-ford", position = {x, y}}
+      tiles[#tiles + 1] = {name = "wooden-ford", position = {x, y}}
     end
   end
-  surface.set_tiles(tiles, true)
-  -- comparator block: raw planks on land, near the ford, three water columns
-  -- of gap from the ford edge so nothing touches (maintainer request)
-  tiles = {}
-  for x = 18, 26 do
-    for y = -2, 5 do
-      tiles[#tiles + 1] = {name = "wf-plank-land", position = {x, y}}
+  -- wooden-flooring pads flanking north (land/edge/trim boundaries form
+  -- where they meet the ford and the water edge)
+  for x = -14, -7 do
+    for y = 8, 13 do
+      tiles[#tiles + 1] = {name = "wooden-flooring", position = {x, y}}
     end
   end
-  surface.set_tiles(tiles, true)
-  -- art-dependence probe block: darkened sheet through the water effect,
-  -- water-exact tint at alpha 0; placed clear of every measurement band
-  -- (its own shore rims fall on y -9 and y -5, outside N deep(-11..-10),
-  -- N row2(-4..-3), N touch(-3..-2), S touch/row2/deep)
-  tiles = {}
-  for x = -12, -4 do
-    for y = -8, -6 do
-      tiles[#tiles + 1] = {name = "wf-plank-dark", position = {x, y}}
+  for x = 6, 13 do
+    for y = 8, 13 do
+      tiles[#tiles + 1] = {name = "wooden-flooring", position = {x, y}}
     end
   end
-  for x = 2, 10 do
-    for y = -8, -6 do
-      tiles[#tiles + 1] = {name = "wf-plank-d2", position = {x, y}}
-    end
-  end
-  for x = -12, -4 do
-    for y = -14, -12 do
-      tiles[#tiles + 1] = {name = "wf-plank-d3", position = {x, y}}
-    end
-  end
-  for x = 2, 10 do
-    for y = -14, -12 do
-      tiles[#tiles + 1] = {name = "wf-plank-d4", position = {x, y}}
-    end
-  end
-  tiles = {}
-  for x = -10, -2 do
+  -- a small mid-lake flooring pad, clear of both banks
+  for x = -3, 2 do
     for y = 12, 15 do
-      tiles[#tiles + 1] = {name = "wf-checker-f", position = {x, y}}
-    end
-  end
-  for x = 2, 10 do
-    for y = 12, 15 do
-      tiles[#tiles + 1] = {name = "wf-checker-n", position = {x, y}}
-    end
-  end
-  for x = 2, 10 do
-    for y = 18, 20 do
-      tiles[#tiles + 1] = {name = "wf-plank-plain", position = {x, y}}
+      tiles[#tiles + 1] = {name = "wooden-flooring", position = {x, y}}
     end
   end
   surface.set_tiles(tiles, true)
-  -- no showcase decoratives: the ford's own transition pieces are the show
 end
 
 script.on_init(function()

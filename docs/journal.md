@@ -2198,3 +2198,33 @@ variant materials in-file; gates 0). Material law documented in
 export-recipe.md (pin window terminology + the A/B decision record).
 The ford/flooring deployed ladder pairs measured byte-identical
 (1x1/2x2/4x4) — one staged sheet serves both names.
+
+## 2026-10-21 — pipeline wired end-to-end; B sprites deployed; in-game
+bake-ladder.py Stage B (render) is real now: the lattice cams at the
+contract depth (128 px/tile) -> committed masters in assets-src/boards/;
+--twice = the masters re-rendered + PIXEL-equal (green: deterministic).
+Stage C offline (python3, no bpy): identity cut (the Stage-A lattice =
+the master window == the sheet), the cut's own twice gate; staged per
+name for BOTH shared-art tiles (wooden-ford + wooden-flooring, the
+deployed pairs measured byte-identical); deploy = byte-verified copies;
+gate = contract (ALL sizes 4x4 grids incl the 1x1 = 512^2 — the strip
+retired) + staging==deploy + pair equality: PASS.
+The lua contract flip: BOTH tiles' 1x1 line_length 16->4 (the recipe's
+same-commit law); staged as MY hunks only (the cobble session's
+uncommitted hunks left in the worktree untouched).
+In-game: the viewer scenario rewritten to the current names (the old
+sculpt still laid pre-2.0.0 water-ford + the retired shore-rim probe
+tiles = the load crash; minimal fix = the lake + wooden-ford causeway +
+WOODEN-FLOORING pads north + a mid-lake pad, noon-locked, zero Lua on
+load). The scratch save flow remained flaky (a stale-window/lock
+incident: the view stage reported alive off the OLD process while the
+fresh save failed — the standing lesson), so the maintainer asked for
+the direct setup: factorio launched on :0 with the DEFAULT install
+(live-linked devctl symlink -> the repo deployable, B sheets deployed).
+The repro recipe (whole round):
+  cd mods/water-ford
+  devctl build? no — graphics: blender -b --python tools/paper-pipeline/boards-builder.py -- --cells all
+  (cd tools/paper-pipeline && blender -b --python bake-ladder.py -- --blend ../../blender/ford-boards.blend --base wooden-ford --twice)
+  python3 tools/paper-pipeline/bake-ladder.py --base wooden-ford --stages cut,deploy,gate
+  (the live-factorio run = the maintainer's default install; the scratch
+  scenario = baking/qa only)
