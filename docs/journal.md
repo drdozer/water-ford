@@ -1702,6 +1702,75 @@ call. Mask-byte fidelity (dry byte lands 165 not 170: double sRGB-encode of
 the pre-inverted ramp) is moot while no mask sheets ship, but is recorded
 here for when the wet/dry data map is needed (transitions, Phase B item 2).
 
+## 2026-10-21 (later) — cobble feedback round: icons, decoratives, color rig; crank hardening; the visual-review lesson
+
+Maintainer feedback on the wired cobbles: (1) icons needed (same arrangement
+recipes as the wooden set: bare cell for the land path, water+deck+stone-heaps
+for the ford); (2) the rock decoratives (`ford-pebbles`/`ford-stones`) bound to
+`cobblestone-ford` like the wooden ford has; (3) cobble reads too white
+in-game — asked for interactive color testing in Blender. (1)+(2) implemented
+this session (make-icons.py cobble section + icon wiring + the
+`bound_decoratives` line; icons untracked, wiring uncommitted at entry).
+
+(3) got a COLOR RIG, built by the auth (so it regenerates): `COB_TONE` /
+`COB_BED_TONE` value-node multipliers on M_COBBLE / M_COBBLEBED between the
+palette mix and the Principled Base Color; a compositor `GAME_VEIL` sim
+(px' = 0.75·px + 0.25·(51,51,51) — the ford wash law) so F12 previews the
+in-game look; scenes saved preview-fast (512², ZOOM/BEAUTY cams; compositing
+on). The committed palette state = `TONE_COBBLE` / `TONE_BED` / `VEIL_FAC`
+constants in auth-cobble.py; GUI knob edits are scratch until folded back +
+re-crank. Blend's saved WL = −1 (dry product state, post-geometry so the
+cut keeps its 0.15 build value).
+
+**CRANK HARDENING** (motivated by maintainer's reproducibility complaint —
+"each time an agent does it, they get into a mess"; two concrete incidents
+this session: an auth crash at the CompositorNodeMixRGB socket rename —
+4.3 inputs are Fac/Image/Image_001, not Color1/Color2 — that blender SWALLOWED
+(exit 0 by default), so the crank blessed a STALE blend ALL-GREEN; and my own
+edit-call failing wholesale, which I then forgot to reapply):
+- `bake-cobble.sh` = ONE blender process: `--python auth --python bake`,
+  `--python-exit-code 1` (script errors kill the crank), the bake refuses any
+  blend whose provenance stamp (auth sha256, mesh-hash oracle a710525c6ee05b1d,
+  rig values, generated time) is missing or stale — `bake-cobble.sh --selftest`
+  proves the refusal (passing);
+- sheets render to .cache staging and get PROMOTED only on pixel change (the
+  PNG writer is not byte-stable; a rerun must leave git clean);
+- the VERDICT line is grepped from the log as the green authority.
+
+**THE VISUAL-REVIEW LESSON (maintainer, verbatim intent):** the gate said the
+new art was "pixel-identical to committed"; it was NOT — the old committed
+sheets carry the wet band (pre-revision wet-in-art ruling) and a WHITE DRY BED
+was hiding under it. I "diagnosed" the diff from signed pixel statistics alone
+(mixture-fit, wet-band story) and was wrong in the way that matters: the
+maintainer looked and saw the actual thing in one glance: **the old background
+is black, the new one white.** Rule from now on, for this mod and this
+pipeline: ANY visual problem or art-affecting change gets pointed at the
+maintainer for eyes (gwenview side-by-sides), never resolved by pixel stats
+alone; "looks identical" is not a claim an agent gets to make unaided.
+
+Diagnosis after the maintainer's correction: the fresh dry cells and the old
+dry cells are byte-equal ⇒ the white dry bed is the AS-EXTRACTED palette
+(the old sheets read dark only because their wet band covered most of the
+frame) — i.e. the white background predates all of today's tooling changes.
+Remedy = the bed tone (and the cobble tone for the in-game wash), which is
+the maintainer's interactive call: bed-tone ladder rendered at 1.0/0.55/0.35/
+0.22 (gwenview: /tmp/bed-tone-ladder.png), Blender GUI on ford-cobble.blend
+for live COB_BED_TONE / COB_TONE turning with F12 preview. NEXT: fold chosen
+values into TONE_* constants, re-crank (staged sheets will promote for real:
+bed pixels will differ), redeploy mod/graphics, gates, commit — INCLUDING the
+uncommitted icons/decoratives and the rig; masks stay unshipped until the
+engine wiring (named change).
+
+- Blender 4.3 ships NO node-tree arrange (nice_layout was removed ages ago);
+  the mechanical extraction piles every node at (0,0), so the GUI shows one
+  heap. Added a deterministic longest-path layout pass (layout_node_tree in
+  auth-cobble.py, name-sorted rows, 280/240 steps, frames untouched) + framed/
+  parked the TONE knobs left of the palette mix. Ran it live in the shared
+  GUI session and saved; the next crank produces the same layout from the
+  auth. Maintainer feedback live-lesson recorded earlier stands: every visual
+  judgement = their eyes (gwenview/in-GUI), mine = numeric state only; I
+  cannot see images (the look tool returns them; my provider omits them).
+
 ## 2026-10-21 — sun-key direction transplant (GUI session, live) + tooling ruling
 
 Maintainer ruling: **ALL cobble tooling (auth-cobble.py, bake-cobble.py,
@@ -2006,6 +2075,7 @@ render per area; bed keyed wet; piling gray language 170/85/0).
 
 NOT committed (other sessions'): mod/data*.lua/info.json/make-icons.py,
 assets-src/cobble M-files + untracked masks/icons, palette-ladder-cobble.py.
+
 ## 2026-10-21 — PARKED (handoff to next agent) — 2×2 round in flight
 Committed here: boards-builder.py extended (blocks 1+2, per-block zoom
 cams, census diagnostics in the final print; --cells all = 16+16 cells,
@@ -2035,3 +2105,59 @@ OPEN (next agent):
 RULES: numeric self-checks only (never interpret renders); renders go to
 the maintainer's gwenview for the verdict; commit own-work only (the tree
 is shared — other sessions' cobble/lua edits are not ours).
+
+## 2026-10-21 (late) — old-deck mechanisms decoded; vertical law fixed; pattern engine live (next agent round 1)
+
+Handoff's first action done: blend rebuilt --cells all (log
+.cache/boards-rebuild-cells-all-2346.log). Then the PARKED items 1a/1b:
+
+- **"Every-tile shade block" identified** (old file = git 248d8f3 blend):
+  the old file has NO modifiers/drivers/text blocks; LAT_FIX = a 256-face
+  missing-strip geometry patcher (atlas_note), NOT the shade block. The
+  mechanism lives IN M_PLANK (extracted verbatim in boards-mplank-spec.json):
+  (1) per-course tone ramp: plank_course face attr ×0.25 indexes a 4-stop
+  ramp T0(dark brown)..T3(pale tan); (2) pin window: fac = 1.0 within ±9px
+  of each 1x1 tile's x-edge lines, 0.0 at the tile x-center, linear ramp;
+  (3) TWO mixes MULTIPLIED: TPIN = mix(plank_cast → course tone, fac) ×
+  GPIN = mix(grain → white, fac) — tile EDGES = flat per-course pinned
+  tone (grain fades), interior = free cast + grain. That IS the R10
+  "pin the boundary furniture" law, shader-side, keyed by face attrs.
+- **Old deck per-tile numbers** (probe-old-deck.py over the geo attrs):
+  per-tile cast-mean σ 0.021-0.039 linear (tile means reach 0.11-0.285);
+  the new builder's per-tile bias (POOL_W weighted + uniform(-1,1) tilt,
+  GAIN 2.4, sim-tuned) realized σ ≈ 0.037 — inside the old band.
+- **Vertical law found + fixed** (maintenance catch 2026-10-21: my h=2
+  planks extended UPWARD — they flooded the course above):
+  OLD DECK law, from 3 measured sources: every plank = [lower line +
+  0.016, upper line flush]; the 2px seam hangs just ABOVE each pitch line
+  (deployed wooden-flooring.png seam slots at PNG rows 30-32/62-64/94-96
+  + the bottom slot 126-128); course attr = the plank's BOTTOM band
+  indexed from ITS TILE'S bottom (0..3 bottom-up — LAT_BIG3 contingency
+  attr↔band exact 1:1); multi-course planks anchor at pitch lines and
+  extend DOWNWARD (doubles measured at internal bottom-up starts 0/1/2/3,
+  not only the top pair). Builder now: this phase law on ALL planks,
+  tile-anchored multis, course attr = 3-((bc+bh-1)%4), lattice-periodic
+  crowns in the pattern path (old z_profile law: A*sin²(π·fract(x)),
+  coplanar at every cell edge so crossing planks stay flush), census +
+  flush/phase/attr HARD gates: 0 failures on 520 planks.
+- **1x1 block vs HEAD**: bit-identical (99 planks, 0 object diffs) BEFORE
+  the phase fix; after the fix only Δy=+0.016 (2px) + the course attr
+  remap 3-(c%4) — the seam phase = the old art's now; the 16 approved
+  cells moved 2px = awaiting maintainer's eyes with the new proofs.
+- **Bolt-vanish-save bug (PARKED item 2)**: NOT reproduced across 3
+  rebuilds (200/200, then 148/148, 294/294 bolts persist on reopen).
+  Isolate recipe preserved in probe-old-deck.py dump-planks mode
+  (compare same-name objects across builds).
+- **OPEN (next cycles, in order)**: (i) plank-length + butt-density
+  calibration to the old macros — measured old: ~1.7 planks/band (2x2-era
+  sites), L-mix = ~59% exactly-full-tile + ~31% long runs (1.2-2.4u) +
+  few shorts; doubles = 20-24% of planks / 35-59% multi area by site
+  pattern, triples 2-11% mostly internal-1 starts — my current build:
+  12.6% (2x2)/16.3% (4x4) doubles; "long" mode wrongly emits FULL-design
+  planks (old max = 2.4u at 2x2s, the 4.0u only in 4x4s). (ii) the 4x4 +
+  Stage B/C wiring in bake-ladder.py + the lua line_length 16→4 flip;
+  (iii) cobble pass --base cobblestone-ford --wetpass (other session).
+- **Rules kept**: numeric/geometry self-checks only; proofs to gwenview
+  for verdicts (/tmp/boards-proof-{1x1,2x2,4x4,zoom,zoom2,zoom4}.png);
+  other sessions' files untouched; nothing ephemeral (probe + builder
+  committed).
