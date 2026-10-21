@@ -1555,3 +1555,102 @@ deck; the shallow lane let the same vehicle cross in the same session.
 Combined with the pond-row pump rejection, both halves of the
 wooden-ford contract are maintainer-verified in game. Harness remains
 the automated gate (exit 0).
+
+## 2026-10-21 — cobblestone ford Phase A: behaviour green (three-layer split + path oracle)
+
+Ticket `inbox/feature-cobblestone-road-ford.md` (superproject), maintainer
+directives same day: spidertron ignored (unstamped everywhere, like the wooden
+ford — it walks open water anyway); layer names mod-prefixed.
+
+**The split.** The 1.0.x single `wooden-ford` layer retired for three mod-custom
+collision layers (oreguard pattern, `mod/data-final-fixes.lua`): `water-ford`
+(BOTH ford tiles + every offshore-pump mask — pump exclusion stamped once for
+all fords), `water-ford-vehicle` (wooden tile + every car mask), and
+`water-ford-pedestrian` (cobble tile + every character/unit mask). Walker
+exclusion cannot use the vanilla `player`/`train`/`is_object` tile layers (they
+block cars too — journal 2026-10-20). The cobble tile keeps `water_tile`
+(ships/pumps key on it; it keeps paths unplaceable over the deck — paving would
+silently reopen the walker contract). Dump-diff vs the pinned pre-change
+baseline (`.cache/water-ford-refactor/cobble-phaseA-baseline.json`): 137
+expected / 0 unexpected (expect map alongside: layer rename across tile/cars/
+pumps, character+unit stamps, land-tile `to_tiles` registration gains,
+space-age recycling for the new item).
+
+**The cobble tile** (`mod/data-updates.lua`, new construction — the frozen
+wooden config copied by pattern, never mutated): deep-water clone, water
+effect + the shallow wash trick (12.5% alpha), layer 9, mask
+{water_tile, resource, floor}, `water_tile_type_names` registration, no
+piling transition and no bound decoratives. Phase A item exists (place-on-
+water-only, stand-in icon; no recipe/technology — the ticket's open questions
+are Phase B); `mod/control.lua` revert guard covers it with its own denial
+message.
+
+**Stand-in graphics.** refined-hazard-concrete's `variants` do NOT render on a
+water clone (`material_background` is the land-floor path — the deck drew as
+plain water in-game, the maintainer could not see the bridge), and size-8-only
+main records are rejected at load ("missing 1x1 version or material
+background"; base ships no 64px hazard cells). Borrow: base **lab-white**
+variants (`variants.main`, the shape the water-family renderer honours) with a
+stone-path fallback for bases without the lab tiles. Unmistakable bright-white
+deck under the wash; Phase B authors real cobble art.
+
+**Harness (testmods/water-ford, all green, exit 0).** Cobble car lane added
+(must CROSS). Unit lanes switched from live-walker to a **path-request
+oracle**: the engine pathfinder is asked (async `surface.request_path` —
+base wave-defense/AII idiom; `on_script_path_request_finished`) for a path
+across each bridge with the small-biter's real `collision_box` +
+`collision_mask` read from the live prototype; gates = cobble/deepwater yield
+no reaching path, wooden/shallow/landfill reach. Two harness lessons, both
+expensive:
+
+1. *The harness ate its own subjects.* Biters commanded via script
+   (`entity.commandable.set_command`, the py caravan idiom) all vanished at
+   tick 241 — one tick after the tick-240 periodic command re-issue — all four
+   lanes, both enemy and player force, no death/damage events. Removing the
+   re-issue: all survived a full run. (Same symptom class as oreguard's matrix
+   whose periodic sweep ate its own construction bots.) Live-walk unit lanes
+   are therefore banned; the oracle runs with NO entity walked.
+2. *set_tiles vs chunk generation.* A fresh scenario world generates only a
+   band around spawn; `set_tiles` silently drops tile changes in
+   not-yet-generated chunks (= the maintainer's in-game report: water rect
+   ending mid-world, bottom rows on wild terrain, "offset" impression — the
+   pond band is deliberately its own row strip). Fix: request +
+   `force_generate_chunk_requests()` BEFORE the paint, with a TILE-coord
+   position + chunk radius (the first attempt passed an area and a pcall ate
+   the error; the second passed a chunk coord as a tile position and stopped
+   at y≈456, short of the unit rows).
+
+**The big one: mod-list placement (devctl).** First py-closure smoke on the
+dlc env failed in pypostprocessing (space-age gate). The maintainer challenged
+the 2026-10-16 gotcha ("data-dir DLC mods always load"): probe runs proved
+the provisioner had been writing `mod-list.json` at the env root while the
+engine reads `mods/mod-list.json` — the engine found no list, auto-enabled
+everything, and wrote an all-true list back (the same artifact that likely
+founded the old gotcha). With the list placed correctly the engine honours
+`enabled: false` and **no data-dir DLC mod loads** (zero DLC loads, zero
+space-age prototypes in the dump). Fixed `lib/envspec.py` (write to
+`mods/mod-list.json`) + selftest battery 7c; `devctl repo selftest` green;
+superproject docs corrected (data-lifecycle.md, testing.md, py-suite.md) and
+`lib/check.py`'s locale scope no longer scans data-dir locales as resolution
+sources. The py-closure env spec (`envs/py-closure.toml`) was also repaired to
+the documented portal-dep pattern (roots=[] + fetch + pins; the old
+`roots=["pyalienlife"]` never resolved) and now runs the chain on the dlc
+install at 2.1.23 — the py chain's own floor — with space-age off.
+
+**Verification (2026-10-21, this session).** dlc-smoke smoke/diff/locale PASS;
+asset gate OK; harness exit 0 (wooden stops, cobble crosses, controls cross;
+oracle: cobble+deepwater no path, wooden/shallow/landfill cross); py-closure
+smoke PASS with: py recipe branch composed (treated-wood + boards + bolts),
+ford recipe `localised_name` guard present, piling rule intact, all 28 units
+incl. both caravan units stamped, cobble item's place_as_tile present with no
+pypp crash. MAINTAINER HAND TESTS (in-game, windowed session): offshore pump
+refused on the cobble pond; player character blocked from walking onto the
+cobble deck; vehicle crosses the cobble ford with and without a player — the
+movement contract hand-proven. The dump-diff baseline + expect map live in
+`.cache/water-ford-refactor/` (scratch — recreate per this entry).
+
+**Still open (Phase B).** Authored cobble art (the lab-white stand-in must
+never ship); transition sprites + border blending; the cobblestone-path
+partner tile; item/recipe/technology + locale for the released surface;
+changelog lines; seed-pinned visual gates; Cargo Ships sail-over hand check;
+1.1.0 release flow.

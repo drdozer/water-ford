@@ -478,3 +478,74 @@ local land_recipe =
   results = {{type = "item", name = "wooden-flooring", amount = 1}},
 }
 data:extend{land_item, land_recipe}
+
+---------------------------------------------------------------------------------------------------
+-- COBBLESTONE FORD (1.1.0 Phase A — behaviour first,
+-- inbox/feature-cobblestone-road-ford.md): the road ford — the feet/wheels
+-- divide. Contract (2026-10-21, binding): water-family (ships sail over it,
+-- fish untouched, paths unplaceable over it), vehicles cross, players/units/
+-- pumps are stopped. The stopping is done by the water-ford /
+-- water-ford-pedestrian collision layers stamped onto this tile in
+-- data-final-fixes.lua — NOT by vanilla tile layers (player/train/is_object
+-- would stop cars too, journal 2026-10-20) and NOT by dropping water_tile
+-- (it would allow paving the ford over with paths, silently reopening the
+-- walker contract).
+--
+-- STAND-IN GRAPHICS (Phase A only — never ship): variants borrow base
+-- refined-hazard-concrete-left's sheet via __base__ sprite references — no
+-- base asset files are copied or shipped; Phase B replaces this table with
+-- authored cobble art (the pending produce-ford-* art queue).
+--
+-- Construction mirrors the wooden ford's proven gold standard above
+-- (deep-water clone, water effect + translucent shallow wash, layer 9,
+-- water_tile + resource + floor mask, water_tile_type_names registration)
+-- MINUS the piling transition and the bound decoratives (no pilings on the
+-- cobble — 2026-10-20 decision). This copies the PATTERN of the frozen
+-- wooden config; it never mutates it. Phase B knobs: map color, walking
+-- speed, sounds, real art, border blending.
+local cobble = table.deepcopy(data.raw.tile["water"])
+cobble.name = "cobblestone-ford"
+cobble.subgroup = "artificial-tiles"
+cobble.order = "c[landfill]-a3[cobblestone-ford]"
+cobble.minable = {mining_time = 0.1, result = "cobblestone-ford"}
+cobble.autoplace = nil
+cobble.fluid = nil
+cobble.default_cover_tile = nil
+cobble.ambient_sounds = nil
+cobble.is_foundation = true
+cobble.transition_merges_with_tile = "water"  -- probe 2026-10-16 (wooden): bank-shadow candidate
+-- the shallow wash trick (cf. wooden ford): the plain water effect draws at
+-- full opacity and would bury the deck; 12.5% alpha lets it show through
+cobble.effect_color = { 51, 51, 51, 63.75 }
+cobble.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}
+-- Phase B knob: a distinct minimap grey (wooden carries the ochre family)
+cobble.map_color = {r = 120, g = 120, b = 120}
+-- STAND-IN: borrow a base tile's variants.MAIN-shaped table — the record
+-- shape the WATER-family renderer actually honors (the wooden deck renders
+-- via water-clone + variants.main; refined-hazard-concrete's
+-- material_background shape does NOT render on a water clone: the deck drew
+-- as plain water in the 2026-10-21 in-game session, and a size-8-only main
+-- is rejected outright — "missing 1x1 version or material background").
+-- lab-white: one bright white 32px cell — unmistakable against every other
+-- lane and pond during behaviour hand tests; stone-path (present since 1.1)
+-- is the fallback for base versions that don't ship the lab tiles.
+-- __base__ sprite reference — no base asset files are copied or shipped;
+-- Phase B replaces this table with authored cobble art.
+local standin_source = data.raw.tile["lab-white"] and "lab-white" or "stone-path"
+cobble.variants = table.deepcopy(data.raw.tile[standin_source].variants)
+-- Phase B knob: a road may go faster than the wooden deck's 0.9
+cobble.walking_speed_modifier = 0.9
+-- above shallow(6)/mud(7) like the wooden deck (planks-under convention)
+cobble.layer = 9
+cobble.collision_mask =
+{
+  layers = {
+    water_tile = true,
+    resource = true,
+    floor = true,
+  }
+}
+if water_tile_type_names then
+  table.insert(water_tile_type_names, "cobblestone-ford")
+end
+data:extend{cobble}

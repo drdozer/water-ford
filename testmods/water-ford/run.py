@@ -6,8 +6,12 @@ Assembles a hermetic Factorio instance under <superproject>/.cache/water-ford-ve
 as a dedicated server, waits for the results JSON, quits via RCON, and maps the
 verdict onto the exit code:
 
-    0  pass        - ford car stopped at the shore; control car crossed
-    1  fail        - ford car CROSSED the wooden ford (contract broken)
+    0  pass        - wooden ford car stopped; cobblestone ford car crossed;
+                     biters have no crossing path onto the cobble ford (and
+                     not onto deep water), wooden/shallow/landfill controls
+                     do yield paths
+    1  fail        - a contract gate violated (wooden car crossed, cobble car
+                     stopped, or a unit path crosses the cobble ford)
     2  harness-error - control lane failed / results missing / server died
 
 Run from anywhere:  devctl python run mods/water-ford/testmods/water-ford/run.py
@@ -154,7 +158,9 @@ def main():
 
     overall = results.get("overall", "harness-error")
     print(f"verdict: {overall}   (eval tick {results.get('eval_tick')})")
-    for key in ("wooden-ford", "water-shallow", "landfill", "deepwater"):
+    for key in ("wooden-ford", "cobblestone-ford", "water-shallow", "landfill",
+                "unit-cobblestone-ford", "unit-wooden-ford", "unit-water-shallow",
+                "unit-landfill", "unit-deepwater", "deepwater"):
         lane = results.get("lanes", {}).get(key, {})
         print(f"  {key:14} min_x={lane.get('min_x')} final_x={lane.get('final_x')}"
               f" crossed={lane.get('crossed')} -> {lane.get('verdict')}")

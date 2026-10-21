@@ -1,22 +1,64 @@
 # Hermetic py real-closure for water-ford: the pyalienlife chain enabled
-# (chased from the dlc install's portal zips), every data-dir DLC mod
-# disabled (pypostprocessing errors when space-age is active without
-# pyspaceage — docs/py-suite.md). Provisions .cache/envs/dlc/py-closure-<hash8>/.
+# (pinned portal zips, fetched into the shared cache), on the dlc install
+# (2.1.23 — the py chain's own floor is base >= 2.1.22) with every data-dir
+# DLC mod listed DISABLED. Provisions .cache/envs/dlc/py-closure-<hash8>/.
 # Verifies: load smoke exit 0, the piling transition rule intact, the py
 # recipe composed through the renamed wooden-flooring item, pypp guards live.
 spec_version = 1
 description = "water-ford py real-closure: pyalienlife chain, space-age disabled"
 
+# PY SUITE CONTRACT: the py chain does not run with the Space Age DLC —
+# pypostprocessing hard-errors when `mods["space-age"]` is set without a
+# pyspaceage shim. CORRECTION (2026-10-21, maintainer + ddm-probe): the dlc
+# install does NOT force-load its data-dir DLC mods — the mod-list merely
+# has to sit where the engine reads it (mods/mod-list.json); the 2026-10-16
+# "always load even when listed disabled" claim (docs/data-lifecycle.md) was
+# an artifact of the provisioner writing the list at the env root, where the
+# engine never sees it — envspec fixed the same day.
 install = "dlc"
 
-roots = ["pyalienlife"]    # optional dep, declared explicitly so the chase
-                           # pulls its hard-dep closure (pycoalprocessing,
-                           # pypetroleumhandling, pyrawores, pypostprocessing,
-                           # graphics packs) from the install's zips
+roots = []                 # owning project implicit; pyalienlife is a
+                           # PORTAL dep — root resolution only sees projects
+                           # and live links (docs/test-envs.md), so the
+                           # availability+inclusion pair below is the
+                           # documented pattern (civtorio bundle precedent)
 chase_deps = true
 without = []
 stub = []
 
+# Availability first: pull the pyalienlife chain's zips into the shared
+# portal-zip cache, then pin for exact-version inclusion; chase_deps
+# resolves each pin's hard-dep closure from the cache (pycoalprocessing,
+# pypetroleumhandling, pyrawores, their graphics packs, pypostprocessing).
+# Versions mirror the 2026-10-21 install's downloads.
+fetch = [
+  "pyalienlife@3.1.8",
+  "pyalienlifegraphics@3.1.1",
+  "pyalienlifegraphics2@3.1.0",
+  "pyalienlifegraphics3@3.1.0",
+  "pycoalprocessing@3.1.8",
+  "pycoalprocessinggraphics@3.1.1",
+  "pypetroleumhandling@3.1.3",
+  "pypetroleumhandlinggraphics@3.1.1",
+  "pyrawores@3.1.4",
+  "pyraworesgraphics@3.1.1",
+  "pypostprocessing@3.1.6",
+]
+
+[pins]
+pyalienlife = "3.1.8"
+pyalienlifegraphics = "3.1.1"
+pyalienlifegraphics2 = "3.1.0"
+pyalienlifegraphics3 = "3.1.0"
+pycoalprocessing = "3.1.8"
+pycoalprocessinggraphics = "3.1.1"
+pypetroleumhandling = "3.1.3"
+pypetroleumhandlinggraphics = "3.1.1"
+pyrawores = "3.1.4"
+pyraworesgraphics = "3.1.1"
+pypostprocessing = "3.1.6"
+
 [data_dir_mods]
-# default policy: data-dir DLC mods disabled (space-age, quality,
-# elevated-rails) — required by the py suite.
+# Default policy: every data-dir DLC mod written DISABLED — the py gate's
+# space-age exclusion, now honored by the engine (and written to the engine's
+# read location) since the 2026-10-21 envspec fix.

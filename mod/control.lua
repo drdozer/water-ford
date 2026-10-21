@@ -10,6 +10,13 @@
 
 local ford_names = {
   ["wooden-ford"] = true,
+  ["cobblestone-ford"] = true,
+}
+
+-- per-ford denial message (the cobble joins the same on-water-only rule)
+local denied_message = {
+  ["wooden-ford"] = {"water-ford-messages.placement-denied"},
+  ["cobblestone-ford"] = {"water-ford-messages.placement-denied-cobble"},
 }
 
 local not_water_names = {["out-of-map"] = true, ["empty-space"] = true}
@@ -48,7 +55,7 @@ local function on_built(event)
         }
       end
       player.create_local_flying_text{
-        text = {"water-ford-messages.placement-denied"},
+        text = denied_message[event.tile.name] or {"water-ford-messages.placement-denied"},
         position = revert[1].position,
       }
     end

@@ -97,3 +97,28 @@ data:extend{
     prerequisites = PREREQUISITES,
   },
 }
+
+-- Cobblestone ford item (1.1.0 Phase A): exists so the Phase A tile is
+-- minable/placeable for the harness kit and the windowed hand tests. No
+-- recipe/technology yet — the ticket's tech/recipe open questions are
+-- Phase B. Stand-in icon references base art (__base__ path — nothing
+-- copied); Phase B replaces it. Same place-on-water-only rule as the
+-- wooden ford (inverted water_tile condition) and the same control-stage
+-- revert guard (control.lua ford_names).
+data:extend{
+  {
+    type = "item",
+    name = "cobblestone-ford",
+    icon = "__base__/graphics/icons/refined-hazard-concrete.png",
+    icon_size = 64,
+    subgroup = "terrain",
+    order = "c[landfill]-a3[cobblestone-ford]",
+    stack_size = 100,
+    place_as_tile = {
+      result = "cobblestone-ford",
+      condition_size = 1,
+      condition = {layers = {water_tile = true}},
+      invert = true,
+    },
+  },
+}
