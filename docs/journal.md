@@ -2161,3 +2161,14 @@ Handoff's first action done: blend rebuilt --cells all (log
   for verdicts (/tmp/boards-proof-{1x1,2x2,4x4,zoom,zoom2,zoom4}.png);
   other sessions' files untouched; nothing ephemeral (probe + builder
   committed).
+
+## 2026-10-21 — A/B: per-tile vs per-plank crowns (look-test, uncommitted either way)
+Builder gained --crown per-tile|per-plank (default per-tile = the old deck's
+l lattice-periodic law) + --proof-tag so A/B renders don't clobber. Same
+seeds both sides; B built to /tmp/ford-boards-B.blend (throwaway).
+Numeric A/B: 520/520 planks x/y-identical, z-only (max dz 0.014 = amp cap);
+393 planks cross an internal 1x1 tile line — surface z AT those lines:
+A flush 0.0530..0.0590 (zbase ± jitter = the lattice law), B the plank
+arch continuing (up to 0.0729). Gwenview: A/B pairs (2x2+4x4 blocks +
+the two zooms; 1x1 unchanged and left out of the A/B).
+Verdict = maintainer's eyes; neither committed as the look.

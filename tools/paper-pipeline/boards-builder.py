@@ -6,6 +6,15 @@
 #   blender -b --python boards-builder.py -- [--cells 0|all] [--outfile PATH]
 #     --cells all  = fill every cell of every block
 #     --cells 0    = the proof: only AREA_1X1's cell (0,0) (default)
+#   A/B flag (maintainer look-test 2026-10-21):
+#     --crown per-tile|per-plank   default per-tile = the old deck's
+#       lattice-periodic crown in the pattern path (coplanar at every
+#       1u cell edge — a wave in EVERY tile);
+#       per-plank = one long arch per plank (h=0 at plank ends, arch
+#       continues across internal tile lines). Same seeds otherwise.
+#     --proof-tag TAG  renders /tmp/boards-proof<TAG>-*.png (A/B runs)
+#     (the committed blend stays the default run's output; A/B outfiles
+#     go elsewhere via --outfile)
 # Design constants below = the measured construction facts (2026-10-21):
 #   1 unit = 1 game tile = 128 px (maintainer-confirmed);
 #   course pitch 0.25 u (4 courses per tile), plank width 0.234 u,
@@ -277,7 +286,7 @@ def emit_underlay(coll, block, mats):
     coll.objects.link(ob)
 
 
-def build_cell(coll, block, size, k, seed, mats):
+def build_cell(coll, block, size, k, seed, mats, crown="per-tile"):
     """Build design sprite k (row-major) of `size` inside its block.
 
     Coordination law (maintainer 2026-10-21, after the uncoordinated proof):
@@ -385,7 +394,7 @@ def build_cell(coll, block, size, k, seed, mats):
                 sseed = seed * 101 + bc * 31 + pi
                 emit_plank(coll, sx0 + lo, y0_span, L, course_attr, sseed, mats,
                            f"P_{block}_{k}_{bc}_{pi}", h=bh, pick=weights,
-                           periodic=True)
+                           periodic=(crown == "per-tile"))
             for cut in butts:
                 jrng = random.Random(seed * 101 + bc * 31 + int(cut * 997))
                 zjoin = PLANK_BOTTOM_Z + jrng.uniform(-0.003, 0.003)
@@ -502,12 +511,18 @@ def census():
 def main():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     cells = "0"
+    crown = "per-tile"
+    ptag = ""
     outfile = os.path.join(HERE, "..", "..", "blender", "ford-boards.blend")
     for i, a in enumerate(argv):
         if a == "--cells":
             cells = argv[i + 1]
         if a == "--outfile":
             outfile = os.path.abspath(argv[i + 1])
+        if a == "--crown":
+            crown = argv[i + 1]
+        if a == "--proof-tag":
+            ptag = argv[i + 1]
     bpy.ops.wm.read_factory_settings(use_empty=True)
     mats = {n: build_material(n) for n in ("M_PLANK", "BOLT_METAL", "GAP_TONE")}
     # world
@@ -537,7 +552,8 @@ def main():
     # 2000; the 4x4's own base mirrors the cam roster 1/2/4)
     for size, seedbase in ((1, 1000), (2, 2000), (4, 4000)):
         for k in fill:
-            build_cell(content, f"AREA_{size}X{size}", size, k, seed=seedbase + k, mats=mats)
+            build_cell(content, f"AREA_{size}X{size}", size, k, seed=seedbase + k,
+                       mats=mats, crown=crown)
     sc = build_scene("FLOOR", 1536, 96)
     sc.camera = bpy.data.objects["BLK1_CAM"]
     # proof renders (transient: the zoom camera is created ONCE and reused —
@@ -552,12 +568,12 @@ def main():
     pz.location = (0.0, 0.0, 60.0)
     bpy.data.collections["CAMERAS"].objects.link(pz)
     renders = [
-        ("BLK1_CAM", 512, "/tmp/boards-proof-1x1.png", (-1.5, 1.5)),
-        ("BLK2_CAM", 1024, "/tmp/boards-proof-2x2.png", None),
-        ("BLK4_CAM", 2048, "/tmp/boards-proof-4x4.png", None),
-        (None, 512, "/tmp/boards-proof-zoom.png", (-1.5, 1.5)),
-        (None, 512, "/tmp/boards-proof-zoom2.png", (-3.0, -11.0)),
-        (None, 512, "/tmp/boards-proof-zoom4.png", (-7.0, -15.0)),
+        ("BLK1_CAM", 512, f"/tmp/boards-proof{ptag}-1x1.png", (-1.5, 1.5)),
+        ("BLK2_CAM", 1024, f"/tmp/boards-proof{ptag}-2x2.png", None),
+        ("BLK4_CAM", 2048, f"/tmp/boards-proof{ptag}-4x4.png", None),
+        (None, 512, f"/tmp/boards-proof{ptag}-zoom.png", (-1.5, 1.5)),
+        (None, 512, f"/tmp/boards-proof{ptag}-zoom2.png", (-3.0, -11.0)),
+        (None, 512, f"/tmp/boards-proof{ptag}-zoom4.png", (-7.0, -15.0)),
     ]
     saved_res = (sc.render.resolution_x, sc.render.resolution_y)
     for cam_name, res, out, zpos in renders:
@@ -575,8 +591,8 @@ def main():
     nb = len([o for o in bpy.data.objects if o.name.startswith("BOLT")])
     nu = len([o for o in bpy.data.objects if o.name.endswith("_UNDERLAY")])
     census()
-    print(f"BOARDS BUILT mats={len(mats)} cells={len(fill)}/block blocks=3 "
-          f"planks={np_} bolts={nb} underlays={nu} "
+    print(f"BOARDS BUILT crown={crown} mats={len(mats)} cells={len(fill)}/block "
+          f"blocks=3 planks={np_} bolts={nb} underlays={nu} "
           f"scene={sc.camera.name} out={outfile}")
 
 
