@@ -2172,3 +2172,19 @@ A flush 0.0530..0.0590 (zbase ± jitter = the lattice law), B the plank
 arch continuing (up to 0.0729). Gwenview: A/B pairs (2x2+4x4 blocks +
 the two zooms; 1x1 unchanged and left out of the A/B).
 Verdict = maintainer's eyes; neither committed as the look.
+
+## 2026-10-21 — A/B round 2: pin-window scope (maintainer-corrected)
+Terminology settled with the maintainer: the "shade block"/"crowns to move"
+= the PIN WINDOW (TPIN tone pin + GPIN grain pin in M_PLANK; the per-course
+CRSRAMP tones replace the grain within ±9px of every integer tile edge).
+The prior --crown A/B = the geometric arch (kept as a flag + renders, not
+the test here). B = --pins per-sprite: per-size M_PLANK variants
+(M_PLANK_2/M_PLANK_4 = the SAME spec + an x/side multiply before the pin
+FRACT, constants verbatim): internal tile-line windows GONE (grain
+continuous inside each design), sprite-edge windows remain. Geometry
+verified identical A vs B (0 diffs over all 817 objects; same seeds);
+B built to /tmp/ford-boards-B.blend (throwaway until the eyes pick).
+NOTE: B's sprite-edge band width = the window shape stretched to the
+sprite period (±9px × side: ±18px on 2x2 / ±36px on 4x4); keeping ±9px
+= one multiply constant, on request. Gwenview: pairs A/B per block +
+zooms. Verdict = maintainer's eyes.

@@ -91,8 +91,14 @@ CAMS = {"BLK1_CAM": (0.0, 0.0, 4.0, 512), "BLK2_CAM": (0.0, -8.0, 8.0, 1024),
 
 
 # ---------------------------------------------------------------- materials
-def build_material(name):
-    spec = SPEC[name]
+def build_material(name, spec_name=None, pfx_scale=1.0):
+    """Replay a spec material verbatim; name = the data-block's name,
+    spec_name = the SPEC entry (for renamed variants). pfx_scale != 1:
+    insert a multiply between Position.X and the pin chain's FRACT
+    (ND_PFX.Value) so the pin window's period = the design sprite
+    (per-sprite pins: the B look — internal tile-line windows gone,
+    grain continuous inside the design; sprite-edge windows remain)."""
+    spec = SPEC[spec_name or name]
     m = bpy.data.materials.new(name)
     m.use_nodes = True
     nt = m.node_tree
@@ -144,6 +150,20 @@ def build_material(name):
         if fn in made and tn in made:
             nt.links.new(made[fn].outputs.get(fs, made[fn].outputs[0]),
                          made[tn].inputs.get(ts, made[tn].inputs[0]))
+    if pfx_scale != 1.0:
+        pfx = nt.nodes["ND_PFX"]
+        mn = nt.nodes.new("ShaderNodeMath")
+        mn.operation = "MULTIPLY"
+        mn.name = "ND_PFXSCALE"
+        mn.location = (pfx.location[0] - 120, pfx.location[1])
+        mn.inputs[1].default_value = pfx_scale
+        # rewire: SEP.X -> PFXSCALE -> PFX (drop the direct link)
+        for lk in list(nt.links):
+            if lk.to_node == pfx and lk.to_socket.name == "Value":
+                src = lk.from_node
+                nt.links.remove(lk)
+                nt.links.new(src.outputs["X"], mn.inputs["Value"])
+        nt.links.new(mn.outputs["Value"], pfx.inputs["Value"])
     return m
 
 
@@ -177,7 +197,7 @@ def tile_weights(tilt, lumas, mid, half):
 
 
 def emit_plank(coll, x0, y0, L, course, seed, mats, name, h=1, pick=None,
-               periodic=False):
+               periodic=False, plank_mat=None):
     """One plank: strip fan along X. y0 = the plank's BOTTOM (the call site
     passes span_bottom + SEAM; the plank is flush with its span's UPPER
     pitch line — the old deck's downward phase, maintainer 2026-10-21).
@@ -237,7 +257,7 @@ def emit_plank(coll, x0, y0, L, course, seed, mats, name, h=1, pick=None,
     for f in range(n_faces):
         a.data[f].value = True
     ob = bpy.data.objects.new(name, me)
-    for slot, mat in enumerate((mats["M_PLANK"], mats["BOLT_METAL"])):
+    for slot, mat in enumerate((plank_mat or mats["M_PLANK"], mats["BOLT_METAL"])):
         ob.data.materials.append(mat)
     coll.objects.link(ob)
     return ob
@@ -286,7 +306,7 @@ def emit_underlay(coll, block, mats):
     coll.objects.link(ob)
 
 
-def build_cell(coll, block, size, k, seed, mats, crown="per-tile"):
+def build_cell(coll, block, size, k, seed, mats, crown="per-tile", pins="per-tile"):
     """Build design sprite k (row-major) of `size` inside its block.
 
     Coordination law (maintainer 2026-10-21, after the uncoordinated proof):
@@ -394,7 +414,9 @@ def build_cell(coll, block, size, k, seed, mats, crown="per-tile"):
                 sseed = seed * 101 + bc * 31 + pi
                 emit_plank(coll, sx0 + lo, y0_span, L, course_attr, sseed, mats,
                            f"P_{block}_{k}_{bc}_{pi}", h=bh, pick=weights,
-                           periodic=(crown == "per-tile"))
+                           periodic=(crown == "per-tile"),
+                           plank_mat=(mats[f"M_PLANK_{side}"] if pins == "per-sprite"
+                                      else None))
             for cut in butts:
                 jrng = random.Random(seed * 101 + bc * 31 + int(cut * 997))
                 zjoin = PLANK_BOTTOM_Z + jrng.uniform(-0.003, 0.003)
@@ -512,6 +534,7 @@ def main():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     cells = "0"
     crown = "per-tile"
+    pins = "per-tile"
     ptag = ""
     outfile = os.path.join(HERE, "..", "..", "blender", "ford-boards.blend")
     for i, a in enumerate(argv):
@@ -521,10 +544,20 @@ def main():
             outfile = os.path.abspath(argv[i + 1])
         if a == "--crown":
             crown = argv[i + 1]
+        if a == "--pins":
+            pins = argv[i + 1]
         if a == "--proof-tag":
             ptag = argv[i + 1]
     bpy.ops.wm.read_factory_settings(use_empty=True)
     mats = {n: build_material(n) for n in ("M_PLANK", "BOLT_METAL", "GAP_TONE")}
+    if pins == "per-sprite":
+        # B: the pin window rides the design sprite's period instead of the
+        # 1u tile: per-size M_PLANK variants with a x/side multiply before
+        # the pin FRACT (geometry + everything else verbatim)
+        for side_ in (2, 4):
+            mats[f"M_PLANK_{side_}"] = build_material(f"M_PLANK_{side_}",
+                                                      spec_name="M_PLANK",
+                                                      pfx_scale=1.0 / side_)
     # world
     w = bpy.data.worlds.new("BOARDS_WORLD")
     w.use_nodes = True
@@ -553,7 +586,7 @@ def main():
     for size, seedbase in ((1, 1000), (2, 2000), (4, 4000)):
         for k in fill:
             build_cell(content, f"AREA_{size}X{size}", size, k, seed=seedbase + k,
-                       mats=mats, crown=crown)
+                       mats=mats, crown=crown, pins=pins)
     sc = build_scene("FLOOR", 1536, 96)
     sc.camera = bpy.data.objects["BLK1_CAM"]
     # proof renders (transient: the zoom camera is created ONCE and reused —
@@ -591,8 +624,8 @@ def main():
     nb = len([o for o in bpy.data.objects if o.name.startswith("BOLT")])
     nu = len([o for o in bpy.data.objects if o.name.endswith("_UNDERLAY")])
     census()
-    print(f"BOARDS BUILT crown={crown} mats={len(mats)} cells={len(fill)}/block "
-          f"blocks=3 planks={np_} bolts={nb} underlays={nu} "
+    print(f"BOARDS BUILT crown={crown} pins={pins} mats={len(mats)} "
+          f"cells={len(fill)}/block blocks=3 planks={np_} bolts={nb} underlays={nu} "
           f"scene={sc.camera.name} out={outfile}")
 
 
