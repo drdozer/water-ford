@@ -2188,3 +2188,13 @@ NOTE: B's sprite-edge band width = the window shape stretched to the
 sprite period (±9px × side: ±18px on 2x2 / ±36px on 4x4); keeping ±9px
 = one multiply constant, on request. Gwenview: pairs A/B per block +
 zooms. Verdict = maintainer's eyes.
+
+## 2026-10-21 — B pins approved; made the default + recorded
+Maintainer: "I like B" (per-sprite pins: internal windows gone, grain
+continuous inside each design; sprite-edge bands remain). The builder's
+default flipped to --pins per-sprite; the committed blend rebuilt to the
+B state and reopen-verified (520 planks / 294 bolts / M_PLANK_2|4
+variant materials in-file; gates 0). Material law documented in
+export-recipe.md (pin window terminology + the A/B decision record).
+The ford/flooring deployed ladder pairs measured byte-identical
+(1x1/2x2/4x4) — one staged sheet serves both names.

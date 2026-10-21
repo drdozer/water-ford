@@ -128,3 +128,20 @@ Per design area x world scene:
    on old-vs-new.
 4. Re-base the cobble deck onto the SAME lattice, add the wetness pass to
    the driver (`--base cobblestone-ford --wetpass`), same gates.
+## Material state law (2026-10-21, maintainer-approved during the pins A/B)
+
+- **Pin window** = M_PLANK's shader mechanism: within ±9px of the pin
+  period's edge lines, the plank's colour is replaced by the flat
+  per-COURSE tone (ND_CRSRAMP via the plank_course face attr) and the
+  grain fades neutral (ND_TPIN tone pin × ND_GPIN grain pin). The old
+  file named it TPIN/GPIN; the R10 law's implementation.
+- **The approved B look: per-sprite pins.** The window's period = the
+  design sprite, not the 1u tile: shaded bands at each design's outer
+  left/right edges only; grain continuous across internal tile lines.
+  Builder: `--pins per-sprite` (default) — per-size material variants
+  M_PLANK_2 / M_PLANK_4 (same spec, x/side before the FRACT; the window
+  shape's constants verbatim, so the edge band = ±9px × size).
+- `--pins per-tile` = the rejected A (bands at every integer tile edge);
+  kept request-able. The geometric crown stays per-tile lattice-periodic
+  in both (its own `--crown` flag; the planks-arch-per-plank variant was
+  tested and not asked for twice).

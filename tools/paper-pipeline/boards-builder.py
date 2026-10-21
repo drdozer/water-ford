@@ -7,11 +7,14 @@
 #     --cells all  = fill every cell of every block
 #     --cells 0    = the proof: only AREA_1X1's cell (0,0) (default)
 #   A/B flag (maintainer look-test 2026-10-21):
-#     --crown per-tile|per-plank   default per-tile = the old deck's
-#       lattice-periodic crown in the pattern path (coplanar at every
-#       1u cell edge — a wave in EVERY tile);
-#       per-plank = one long arch per plank (h=0 at plank ends, arch
-#       continues across internal tile lines). Same seeds otherwise.
+#     --pins per-tile|per-sprite  default per-sprite (MAINTAINER-APPROVED
+#       B 2026-10-21): the pin window's period = the design sprite —
+#       shaded bands only at each design's outer left/right edges, grain
+#       continuous across internal tile lines; per-tile = the old deck's
+#       every-integer-edge bands (the rejected A; kept request-able).
+#     --crown per-tile|per-plank  default per-tile = the old deck's
+#       lattice-periodic crown (a wave in EVERY tile, coplanar at cell
+#       edges) — the geometric bump; UNCHANGED by the pins decision.
 #     --proof-tag TAG  renders /tmp/boards-proof<TAG>-*.png (A/B runs)
 #     (the committed blend stays the default run's output; A/B outfiles
 #     go elsewhere via --outfile)
@@ -534,7 +537,7 @@ def main():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     cells = "0"
     crown = "per-tile"
-    pins = "per-tile"
+    pins = "per-sprite"   # maintainer-approved B look 2026-10-21 (per-tile = the rejected A, request-able)
     ptag = ""
     outfile = os.path.join(HERE, "..", "..", "blender", "ford-boards.blend")
     for i, a in enumerate(argv):
