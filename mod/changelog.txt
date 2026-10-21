@@ -13,6 +13,10 @@ Date: unreleased
       data-final-fixes) is stamped into the ford tile and every car and
       offshore-pump prototype; it is what enforces both exclusions.
       Automated contract harness: testmods/water-ford (headless, exit 0).
+  Locale:
+    - Item, tile and mod descriptions now state the crossing rules:
+      walkable and water-navigable, vehicles stopped at the shore, no
+      offshore pumps.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 18. 10. 2026
