@@ -2,6 +2,12 @@
 script-output/
 dist/
 __pycache__/
+.cache/
+
+# --- rebuilt-blend build output (auth-cobble.py regenerates it; GitHub rejects
+# >100MB files, so the 126MB cobble scene ships as script, not as artifact) ---
+blender/ford-cobble.blend
+blender/ford-cobble.blend1
 
 # --- test-instance scratch (testing/scratch/) ---
 # The game rewrites nearly all of it at runtime: logs, locks, caches,

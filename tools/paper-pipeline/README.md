@@ -21,8 +21,25 @@ tools/paper-pipeline/bake.sh --stages save --seed 4242
 | save | `bake-save.py` | seed-pinned scenario run → shutdown save renamed `ford-view-test.zip` → headless load-check; zero script exceptions |
 | view | (in `bake.sh`) | windowed `--load-game` on `:0`, alive after 26 s |
 | **stones** | `bake-stones.sh [--twice]` → `bake-stones.py` | 4 sheets (pebbles/stones × above/below), per-cell bit-equal, pixel `--twice` 72/72 |
+| **cobble** | `bake-cobble.sh` → `auth-cobble.py` + `bake-cobble.py` | 3 sheets (1x1 ladder 16 / 2x2 field 16 / 4x4 field 16) into `assets-src/cobble/`; alpha + pack-bit-equal gates; art `--twice` gate |
 | **check** | `check.sh [NAME]` | headless load smoke; exit 0 = zero error/failed lines |
 | **bench** | `bench.sh SAVE X,Y TAG [--paint LUA]` | console-law in-game capture → provenance + gwenview |
+
+## Cobblestone sub-chain (`bake-cobble.sh`)
+
+`auth-cobble.py` mechanically rebuilds `blender/ford-cobble.blend` from
+script (geometry verbatim from the recovered factory; material graphs
+mechanically extracted from the built blend; the blend itself is a gitignored
+build output — it exceeds GitHub's 100 MB block). `bake-cobble.py` renders the
+ladder art (128px/world-unit in every region), packs law-3 into
+`assets-src/cobble/`, and gates per cell. Maintainer ruling 2026-10-21: NO
+wetness-mask sheets — the wet look is baked into the art pixels via the
+M_COBBLE WL ramp (WL=0.15 at bake), as with the wooden ford; M_COBBLEMASK
+stays in-scene as wet/dry semantics (use_fake_user so it survives save/load).
+OPEN (2026-10-21, out of scope by maintainer order): the art `--twice`
+determinism gate fails on all three passes — prime suspect the retained
+dither_intensity=1.0 on art renders (the mask path's 0-dither recipe was
+deterministic); a fix would change art pixels, so it is a maintainer call.
 
 ## Invariants
 

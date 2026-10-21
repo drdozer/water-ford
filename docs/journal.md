@@ -1654,3 +1654,50 @@ never ship); transition sprites + border blending; the cobblestone-path
 partner tile; item/recipe/technology + locale for the released surface;
 changelog lines; seed-pinned visual gates; Cargo Ships sail-over hand check;
 1.1.0 release flow.
+
+## 2026-10-21 — cobble Phase B: the mechanical rebuild (prospecting the confused session)
+
+**What was recovered, how.** The previous session's cobble work survived mostly
+on disk (`.cache/blender-cobble/auth-cobble-probe.py` + `bake-cobble.py`),
+with the session transcript as a backup source. A deterministic extractor
+(`.cache/cobble-prospecting/prospect.py`) swept the two session JSONLs without
+any transcript entering an agent context: 152 unique payloads → 57 version
+chains → manifest. From there, targeted reads only. (Lesson, written down this
+time: file-based factory scripts + a manifest beat session archaeology.)
+
+**Where it now lives (committed).** `tools/paper-pipeline/auth-cobble.py`
+(full mechanical scene rebuild: superellipse loaf cobbles `dome_bmesh`,
+variant fields `layout_field` — 24×24 1×1 base + 2×2 field grid @ (−22,−22) +
+4×4 field grid @ (−46,−40), waterbed trim at z=0, WL waterline wet/dry cut
+with `in_wet`/`wet_depth` vertex attrs, materials mechanically extracted from
+the built blend's node trees, rig as saved) and `tools/paper-pipeline/
+bake-cobble.sh` → `bake-cobble.py` (art ladder, alpha + pack gates, --twice).
+`blender/ford-cobble.blend` is now a gitignored BUILD OUTPUT (126 MB exceeds
+GitHub's 100 MB block; reproducible from script — verified by oracle-dump
+fingerprint: mesh hash `a710525c` + 44/44 links + all graphs equal; deltas =
+deliberate: M_WATER junk-clone dedupe, COB2/COB4 cams rebuilt ORTHO (the
+session had left them PERSP while the bake's REGIONS + 128px/unit math assume
+ortho — sq2 mean-L spread was 51-138 through the persp cams, now 126-132)).
+
+**Maintainer rulings applied.** (1) The whole chain regenerates mechanically
+from git-tracked scripts; nothing needed for the build lives in .cache.
+(2) Artifacts live in the mod tree: sheets at `assets-src/cobble/`.
+(3) NO wetness-mask sheets (the wooden ford has none): the wet look lives in
+the art pixels — M_COBBLE's WL ramp (WL 0.15 at bake). M_COBBLEMASK remains
+in-scene only, now with use_fake_user (a rebuilt blend's zero-user materials
+are stripped at load, which would break any future Mask-view-layer bake).
+
+**Baked & shown.** `cobblestone-ford.png` 2048×128 (16 variants),
+`cobblestone-ford-2x2.png` 1024² (16 fields), `cobblestone-ford-4x4.png`
+2048² (16 fields); mean-L spreads 107-141 / 126-132 / 135-146; alpha 255
+everywhere; pack bit-equal. Maintainer viewed in gwenview.
+
+**Open (unfixed by order), for next session.** The `--twice` determinism gate
+fails on all three art passes even at 1 fixed thread: prime suspect =
+`dither_intensity` 1.0 on art renders (dither noise is unseeded), but note the
+recovered crank's mask passes (0-dither, analytic emission) ALSO failed — so
+dither explains the art passes at most; the mask non-determinism is still
+unexplained. Fixing either changes pixels or the gate semantics ⇒ maintainer
+call. Mask-byte fidelity (dry byte lands 165 not 170: double sRGB-encode of
+the pre-inverted ramp) is moot while no mask sheets ship, but is recorded
+here for when the wet/dry data map is needed (transitions, Phase B item 2).
