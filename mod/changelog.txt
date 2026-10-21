@@ -1,4 +1,19 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: unreleased
+  Changes:
+    - Vehicles can no longer drive across the Wooden Ford: cars, tanks and
+      modded cars are stopped at the shore. The ford is a footpath, not a
+      road — a drivable road ford is coming with the cobblestone crossing.
+    - Offshore pumps can no longer be placed on the Wooden Ford.
+    - Walking, Pyanodon land caravans, fish and Cargo Ships vessels are
+      unaffected: the ford stays walkable and sailable, and Cargo Ships
+      waterways stay navigable across it.
+    - Under the hood: a new "wooden-ford" collision layer (applied in
+      data-final-fixes) is stamped into the ford tile and every car and
+      offshore-pump prototype; it is what enforces both exclusions.
+      Automated contract harness: testmods/water-ford (headless, exit 0).
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 18. 10. 2026
   Features:

@@ -1,8 +1,10 @@
 # water-ford — agent notes
 
 A walkable ford tile over water: land caravans cross, wooden pilings stand
-semi-submerged, ships still sail over it (Cargo Ships waterways). **Target:
-Factorio 2.1 only** (decision 2026-10-15 — `docs/dependency-audit.md`).
+semi-submerged, ships still sail over it (Cargo Ships waterways). Vehicles
+are stopped at the shore and offshore pumps cannot be placed on it
+(`wooden-ford` collision layer, data-final-fixes). **Target: Factorio 2.1
+only** (decision 2026-10-15 — `docs/dependency-audit.md`).
 
 All-mods procedures live in the superproject `AGENTS.md` + `docs/`; this file
 holds only what is specific to this mod. Session history:
@@ -33,6 +35,13 @@ Generative-art briefs (AI-art prompts + committed candidate runs) live in
    technology, tile, mod title/description, and the placement-denied flying
    text. The **recipe's `localised_name` is load-bearing** (pypostprocessing
    compat — do not remove; `docs/dependency-audit.md` §6).
+5. **The `wooden-ford` collision layer is stamped in `mod/data-final-fixes.lua`**
+   — onto the ford tile, every `car` prototype and every `offshore-pump`
+   prototype. It IS the vehicle-exclusion and pump-exclusion contract;
+   removing a stamp silently reopens it. The cobblestone ford (1.1.0) must
+   never carry this layer. Empirical mechanics: superproject
+   `docs/collision-layers.md`. Gate: the harness below + maintainer hand
+   test (2026-10-21).
 
 ## Dependencies
 
@@ -55,6 +64,9 @@ Generative-art briefs (AI-art prompts + committed candidate runs) live in
   `.cache/water-ford-refactor/` (scratch — recreate from the docs).
 - py branch: real-closure run (symlink the py zips, disable
   space-age/quality/elevated-rails) — must exit 0 with the piling rule intact.
+- Vehicle/pump contract: `devctl python run testmods/water-ford/run.py` —
+  headless lane grid; the wooden-ford lane must STOP the car and the
+  landfill control must cross (runner exit 0 = contract green).
 - Visual: seed-pinned scenario harness (superproject `docs/visual-testing.md`;
   harness in `.cache/stage-exp/`, one-off). The critical arrangements are
   open-water rims, ford/shallow border, ford/land border — and the absence of

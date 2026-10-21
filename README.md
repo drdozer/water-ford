@@ -3,7 +3,9 @@
 A walkable ford tile over water for Factorio 2.1: land caravans cross it,
 wooden pilings stand semi-submerged in animated water at the rims, and ships
 still sail over it — fords keep the `water_tile` collision layer, so Cargo
-Ships waterways stay navigable.
+Ships waterways stay navigable. Vehicles keep out: cars and tanks are
+stopped at the shore (the ford is a footpath, not a road), and offshore
+pumps can no longer be placed on it.
 
 - Without [Pyanodon Alien Life](https://mods.factorio.com/mod/pyalienlife):
   unlocked by the concrete tech; a Wooden Flooring is 2 wood + 1 iron stick,
@@ -36,6 +38,7 @@ deployable, everything else is scaffolding:
 ```sh
 devctl mods build water-ford     # zip from committed mod/ content -> dist/
 devctl mods link water-ford      # live-link for in-game testing
+devctl python run testmods/water-ford/run.py   # pathing-contract harness (exit 0)
 python3 tools/gen-textures.py    # regenerate pilings/mask/planks (seeded)
 python3 tools/gen-branding.py    # regenerate icon; thumbnail -> dist/ scratch
 ```
