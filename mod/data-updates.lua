@@ -520,19 +520,22 @@ cobble.effect_color = { 51, 51, 51, 63.75 }
 cobble.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}
 -- Phase B knob: a distinct minimap grey (wooden carries the ochre family)
 cobble.map_color = {r = 120, g = 120, b = 120}
--- STAND-IN: borrow a base tile's variants.MAIN-shaped table — the record
--- shape the WATER-family renderer actually honors (the wooden deck renders
--- via water-clone + variants.main; refined-hazard-concrete's
--- material_background shape does NOT render on a water clone: the deck drew
--- as plain water in the 2026-10-21 in-game session, and a size-8-only main
--- is rejected outright — "missing 1x1 version or material background").
--- lab-white: one bright white 32px cell — unmistakable against every other
--- lane and pond during behaviour hand tests; stone-path (present since 1.1)
--- is the fallback for base versions that don't ship the lab tiles.
--- __base__ sprite reference — no base asset files are copied or shipped;
--- Phase B replaces this table with authored cobble art.
-local standin_source = data.raw.tile["lab-white"] and "lab-white" or "stone-path"
-cobble.variants = table.deepcopy(data.raw.tile[standin_source].variants)
+-- 2026-10-21 Phase B: authored cobble ladder (tools/paper-pipeline/
+-- bake-cobble.sh → assets-src/cobble, sheets deployed here). ART RENDERS
+-- DRY: the wet look ships as the companion cobblestone-ford{-2x2,-4x4}-mask
+-- wetness sheets (in assets-src/cobble, engine wiring = the pending named
+-- change) — until then the shallow wash + water effect carry the wetness.
+-- Same 16/16/16 ladder shape as the wooden ford (scale 0.25 / probabilities
+-- 1 / y 0, line_lengths 16/4/4).
+cobble.variants = table.deepcopy(data.raw.tile["water"].variants)
+cobble.variants.main =
+{
+  {picture = "__water-ford__/graphics/cobblestone-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
+  {picture = "__water-ford__/graphics/cobblestone-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
+  {picture = "__water-ford__/graphics/cobblestone-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
+}
+cobble.variants.empty_transitions = true
+cobble.variants.transition = nil
 -- Phase B knob: a road may go faster than the wooden deck's 0.9
 cobble.walking_speed_modifier = 0.9
 -- above shallow(6)/mud(7) like the wooden deck (planks-under convention)
@@ -549,3 +552,56 @@ if water_tile_type_names then
   table.insert(water_tile_type_names, "cobblestone-ford")
 end
 data:extend{cobble}
+
+---------------------------------------------------------------------------------------------------
+-- COBBLESTONE PATH (1.1.0 Phase B item 3 — DECIDED in scope, maintainer
+-- 2026-10-21): the LAND partner of the ford, sharing the cobblestone ladder.
+-- Tile wiring mirrors the wooden-flooring gold standard (concrete clone,
+-- autoplace nil, land-side) with cobble-specific stand-in knobs: grey
+-- minimap (ticket item 5), walking 1.1 = the boards-land band (item 5 open).
+-- NO water effect on the land tile (concrete's is absent) and NO
+-- water_tile registration. Water-edge transitions keep concrete's inherited
+-- stone curb for now — Phase B item 2 (border behaviour) replaces it.
+local cobble_path = table.deepcopy(data.raw.tile["concrete"])
+cobble_path.name = "cobblestone-path"
+cobble_path.subgroup = "artificial-tiles"
+cobble_path.order = "b[terrain]-zz[cobblestone-path]"
+cobble_path.autoplace = nil
+cobble_path.minable = {mining_time = 0.1, result = "cobblestone-path"}
+cobble_path.walking_speed_modifier = 1.1 -- boards-land band (ticket item 5 open)
+cobble_path.layer = 10  -- below stone brick's 11, same slot as wooden-flooring
+cobble_path.map_color = {r = 120, g = 120, b = 120}
+cobble_path.variants =
+{
+  main =
+  {
+    {picture = "__water-ford__/graphics/cobblestone-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
+    {picture = "__water-ford__/graphics/cobblestone-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
+    {picture = "__water-ford__/graphics/cobblestone-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
+  },
+  empty_transitions = true,
+}
+data:extend{cobble_path}
+
+-- cobblestone-path item: land placement pattern (cf. wooden-flooring /
+-- stone-brick items): condition names water_tile WITHOUT invert = the target
+-- must NOT carry the water_tile layer. NO recipe yet — the bed/cost numbers
+-- are the maintainer's Q2 pick (ticket item 4); place/take via editor or
+-- creative until it lands.
+data:extend{
+  {
+    type = "item",
+    name = "cobblestone-path",
+    icon = "__base__/graphics/icons/stone-brick.png",
+    icon_size = 64,
+    subgroup = "terrain",
+    order = "b[terrain]-zz[cobblestone-path-item]",
+    stack_size = 100,
+    place_as_tile =
+    {
+      result = "cobblestone-path",
+      condition_size = 1,
+      condition = {layers = {water_tile = true}},
+    },
+  },
+}
