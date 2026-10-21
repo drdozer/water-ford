@@ -2006,3 +2006,32 @@ render per area; bed keyed wet; piling gray language 170/85/0).
 
 NOT committed (other sessions'): mod/data*.lua/info.json/make-icons.py,
 assets-src/cobble M-files + untracked masks/icons, palette-ladder-cobble.py.
+## 2026-10-21 — PARKED (handoff to next agent) — 2×2 round in flight
+Committed here: boards-builder.py extended (blocks 1+2, per-block zoom
+cams, census diagnostics in the final print; --cells all = 16+16 cells,
+maintainer's visual verdict on 2×2 = "looks OK" + little-things list
+pending). Blender file on disk = --cells 0 state — REBUILD FIRST:
+cd blender && blender -b --python ../tools/paper-pipeline/boards-builder.py -- --cells all
+OPEN (next agent):
+1. Maintainer's 2×2 corrections: (a) PER-TILE SHADE must break per
+   1×1 tile even under continuing planks (old deployed wooden-flooring.png:
+   per-tile mean L 107..131, measured). Mechanism UNIDENTIFIED — M_PLANK
+   spec has NO tile branch (attrs consumed = cx/cy/rf/seed/course/rgb
+   only); candidates = the LAT_FIX object in the old file (unexamined),
+   a per-tile slicing post-process (journal.md:560 "big-floor render +
+   per-tile slicing (law-3)"). Maintainer calls it "the every-tile shade
+   block" but forgot the name — find the name/mechanism in the old file
+   before inventing anything. (b) DOUBLE-HEIGHT planks: old 2×2 tiles had
+   SOME 2-course-wide planks (~0.468u); ratio unmeasured — my LAT_BOARDS
+   strip-width-histogram attempt failed, rerun empirically.
+2. BOLT-VANISH-SAVE BUG: --cells 0 run = 16 bolts in-memory at save;
+   reopened file = 0; P-planks survive the same save. strings-probe
+   useless (compressed blend). Next = --outfile /tmp isolate +
+   collection-membership diff. The on-disk blend = bolt-less regardless.
+3. Then: the 4×4 block; Stage B/C wiring in bake-ladder.py (real
+   renders → identity cut → contract gate → deploy) + the lua
+   line_length 16→4 flip in the same commit; cobble = --base
+   cobblestone-ford --wetpass.
+RULES: numeric self-checks only (never interpret renders); renders go to
+the maintainer's gwenview for the verdict; commit own-work only (the tree
+is shared — other sessions' cobble/lua edits are not ours).

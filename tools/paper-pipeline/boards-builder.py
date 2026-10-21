@@ -287,7 +287,8 @@ def main():
         bpy.data.collections.new(cn)
     build_rig()
     content = bpy.data.collections["CONTENT"]
-    emit_underlay(bpy.data.collections["UNDERLAY"], "AREA_1X1", mats)
+    for block in ("AREA_1X1", "AREA_2X2"):
+        emit_underlay(bpy.data.collections["UNDERLAY"], block, mats)
     # CAMERAS
     sc_list = []
     for cam_name, (cx, cy, ortho, res) in CAMS.items():
@@ -301,23 +302,27 @@ def main():
     fill = (0,) if cells == "0" else tuple(range(16))
     for k in fill:
         build_cell(content, "AREA_1X1", 1, k, seed=1000 + k, mats=mats)
+    for k in fill:
+        build_cell(content, "AREA_2X2", 2, k, seed=2000 + k, mats=mats)
     sc = build_scene("FLOOR", 1536, 96)
     sc.camera = bpy.data.objects["BLK1_CAM"]
     # proof renders (transient: restored below, files to /tmp)
     sc.render.engine = "CYCLES"
     sc.cycles.samples = 48
     renders = [
-        ("BLK1_CAM", 512, "/tmp/boards-proof-1x1.png"),
-        (None, 512, "/tmp/boards-proof-zoom.png"),
+        ("BLK1_CAM", 512, "/tmp/boards-proof-1x1.png", (-1.5, 1.5)),
+        ("BLK2_CAM", 1024, "/tmp/boards-proof-2x2.png", (-3.0, -5.0)),
+        (None, 512, "/tmp/boards-proof-zoom.png", (-1.5, 1.5)),
+        (None, 512, "/tmp/boards-proof-zoom2.png", (-3.0, -5.0)),
     ]
     saved_res = (sc.render.resolution_x, sc.render.resolution_y)
-    for cam_name, res, out in renders:
-        if cam_name is None:  # a close-up cam over cell (0,0): tile = x -2..-1, y 1..2
+    for cam_name, res, out, zpos in renders:
+        if cam_name is None:  # close-up over a block's cell (0,0), 1.3u wide
             cd = bpy.data.cameras.new("PROOF_ZOOM")
             cd.type = "ORTHO"
             cd.ortho_scale = 1.3
             ob = bpy.data.objects.new("PROOF_ZOOM", cd)
-            ob.location = (-1.5, 1.5, 60.0)
+            ob.location = (zpos[0], zpos[1], 60.0)
             bpy.data.collections["CAMERAS"].objects.link(ob)
             sc.camera = ob
         else:
@@ -329,7 +334,12 @@ def main():
     sc.camera = bpy.data.objects["BLK1_CAM"]
     bpy.data.objects.remove(bpy.data.objects["PROOF_ZOOM"], do_unlink=True)
     bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(outfile), compress=True)
-    print(f"BOARDS BUILT mats=3 cells={len(fill)} scene={sc.camera.name} out={outfile}")
+    np_ = len([o for o in bpy.data.objects if o.name.startswith("P_")])
+    nb = len([o for o in bpy.data.objects if o.name.startswith("BOLT")])
+    nu = len([o for o in bpy.data.objects if o.name.endswith("_UNDERLAY")])
+    print(f"BOARDS BUILT mats={len(mats)} cells={len(fill)}/block blocks=2 "
+          f"planks={np_} bolts={nb} underlays={nu} "
+          f"scene={sc.camera.name} out={outfile}")
 
 
 main()
