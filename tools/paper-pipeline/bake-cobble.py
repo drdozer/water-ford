@@ -42,6 +42,36 @@ TMPA = os.path.join(MODROOT, '.cache', 'blender-cobble', 'bake')
 for d in (OUT, TMPA):
     os.makedirs(d, exist_ok=True)
 
+# ---- provenance verifier (reproducibility 2026-10-21): the bake must never
+# render a blend it cannot vouch for. The crash-then-stale-blend incident
+# (auth died at the MixRGB rename; blender swallows script exits by default;
+# the crank proceeded and the gate blessed the OLD blend) is closed by: the
+# crank keeping both stages in ONE process (see bake-cobble.sh),
+# --python-exit-code 1, and this verifier for any standalone bake run.
+import hashlib, json, shutil
+PPDIR = os.path.dirname(os.path.abspath(__file__))
+AUTH_SHA = hashlib.sha256(open(os.path.join(PPDIR, 'auth-cobble.py'), 'rb').read()).hexdigest()
+EXPECTED_MESH_HASH = 'a710525c6ee05b1d'  # the pinned mechanical-build oracle
+
+def refuse(reason):
+    raise RuntimeError('COBBLE STALE-BLEND REFUSAL: %s Rerun bake-cobble.sh '
+                       '(the single-process crank) — never mix an old blend '
+                       'with a new bake.' % reason)
+
+stamp_raw = bpy.data.scenes['FLOOR'].get('cobble_auth')
+if not stamp_raw:
+    refuse('the blend carries no auth stamp — it predates stamping.')
+stamp = json.loads(stamp_raw)
+if stamp.get('auth_sha256') != AUTH_SHA:
+    refuse('the blend was stamped by a different auth-cobble.py revision '
+           '(%s… != current %s…).' % (stamp.get('auth_sha256', '?')[:12], AUTH_SHA[:12]))
+if stamp.get('mesh_hash') != EXPECTED_MESH_HASH:
+    refuse('mesh hash %s != the pinned oracle %s — geometry is not the '
+           'mechanical build; re-oracle consciously if it must change.'
+           % (stamp.get('mesh_hash'), EXPECTED_MESH_HASH))
+print('STAMP VERIFIED: auth %s… mesh %s generated %s'
+      % (AUTH_SHA[:12], EXPECTED_MESH_HASH, stamp.get('generated', '?')))
+
 sc = bpy.data.scenes['FLOOR']
 sc.camera = bpy.data.objects['FLOOR_CAM']
 sc.cycles.samples = 96
@@ -52,6 +82,9 @@ sc.cycles.seed = 0
 sc.cycles.threads_mode = 'FIXED'
 sc.cycles.threads = 1
 sc.view_settings.view_transform = 'Standard'
+sc.render.use_compositing = False  # belt for the abolished GAME_VEIL
+                                   # (2026-10-21: no veil anywhere; the bake
+                                   # ships unwashed art, as it always meant to)
 assert not [o for o in sc.collection.all_objects if 'WATER' in o.name], 'water must not exist in FLOOR'
 cob = bpy.data.objects['COBBLE_FLOOR']; bed = bpy.data.objects['JOINTBED']
 
@@ -156,6 +189,7 @@ def variants_for(tag):
     return out
 
 report = []
+touch = [False, False]   # [art, mask] — did any committed sheet change?
 for cam_name, ortho, res, frame, tag, cell, pad in REGIONS:
     art = Image.open(os.path.join(TMPA, f'art_{tag}_run1.png')).convert('RGBA')
     msk = Image.open(os.path.join(TMPA, f'mask_{tag}_run1.png')).convert('RGBA')
@@ -190,15 +224,39 @@ for cam_name, ortho, res, frame, tag, cell, pad in REGIONS:
         else:
             lows, highs = lows, highs  # informational byte range already tracked
     name = 'cobblestone-ford' if tag == 'sq1' else ('cobblestone-ford-2x2' if tag == 'sq2' else 'cobblestone-ford-4x4')
-    ap = os.path.join(OUT, f'{name}.png'); mp = os.path.join(OUT, f'{name}-mask.png')
+    STAGE = os.path.join(TMPA, 'stage')
+    ap = os.path.join(STAGE, f'{name}.png'); mp = os.path.join(STAGE, f'{name}-mask.png')
+    os.makedirs(STAGE, exist_ok=True)
     art_sheet.save(ap); mask_sheet.save(mp)
     for src_im, path in ((art_sheet, ap), (mask_sheet, mp)):
         back = np.asarray(Image.open(path).convert('RGBA'))
         if not np.array_equal(back, np.asarray(src_im)):
             raise RuntimeError(f'PACK not bit-equal: {path}')
     gates['alpha'] &= ok_al; gates['mask'] &= ok_mk
-    report.append(f'{tag}: art {os.path.relpath(ap, MODROOT)} + mask {os.path.relpath(mp, MODROOT)} {art_sheet.size} | art mean-L {min(means):.0f}-{max(means):.0f} | mask bytes [{lows}..{highs}] crowns/hold-px {crowns}/{holds}')
+    # promote: the PNG writer is NOT byte-stable run-to-run, so rerunning the
+    # crank must not churn the committed PNGs when the pixels are identical.
+    dst_a = os.path.join(OUT, name + '.png'); dst_m = os.path.join(OUT, name + '-mask.png')
+    def promote(stage_path, kind):
+        dst = os.path.join(OUT, os.path.basename(stage_path))
+        existed = os.path.exists(dst)
+        same = existed and np.array_equal(
+            np.asarray(Image.open(dst).convert('RGBA')),
+            np.asarray(Image.open(stage_path).convert('RGBA')))
+        if same:
+            print(f'PROMOTE {kind} {os.path.basename(dst)}: pixel-identical to '
+                  f'committed — left untouched (png byte-noise suppressed)')
+            return 'unchanged'
+        shutil.copyfile(stage_path, dst)
+        print(f'PROMOTE {kind} {os.path.basename(dst)}: ' +
+              ('new' if not existed else 'UPDATED (pixel diff vs committed)'))
+        return 'changed'
+    touch[0] |= promote(ap, 'art') == 'changed'
+    touch[1] |= promote(mp, 'mask') == 'changed'
+    report.append(f'{tag}: art {os.path.relpath(dst_a, MODROOT)} + mask {os.path.relpath(dst_m, MODROOT)} {art_sheet.size} | art mean-L {min(means):.0f}-{max(means):.0f} | mask bytes [{lows}..{highs}] crowns/hold-px {crowns}/{holds}')
 print('\n'.join(report))
+print('CRANK SHEETS: art %s mask %s' % ('CHANGED' if touch[0] else 'unchanged',
+                                        'CHANGED' if touch[1] else 'unchanged'))
 verdict = all(gates.values())
 print('GATES', gates, 'VERDICT', 'ALL-GREEN' if verdict else 'RED — see FAIL lines; sheets are current-truth regardless')
-sys.exit(0 if verdict else 3)
+if not verdict:
+    raise RuntimeError('COBBLE GATES RED: %s' % gates)

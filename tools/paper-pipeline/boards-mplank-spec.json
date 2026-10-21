@@ -1,0 +1,1880 @@
+{
+ "M_PLANK": {
+  "nodes": [
+   {
+    "name": "ND_AT_RGB",
+    "type": "ATTRIBUTE",
+    "location": [
+     -1700.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "attribute_name": "plank_rgb"
+    }
+   },
+   {
+    "name": "ND_AT_CX",
+    "type": "ATTRIBUTE",
+    "location": [
+     -1700.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "attribute_name": "plank_cx"
+    }
+   },
+   {
+    "name": "ND_AT_CY",
+    "type": "ATTRIBUTE",
+    "location": [
+     -1700.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "attribute_name": "plank_cy"
+    }
+   },
+   {
+    "name": "ND_AT_RF",
+    "type": "ATTRIBUTE",
+    "location": [
+     -1700.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "attribute_name": "plank_ringfreq"
+    }
+   },
+   {
+    "name": "ND_AT_SEED",
+    "type": "ATTRIBUTE",
+    "location": [
+     -1700.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "attribute_name": "plank_seed"
+    }
+   },
+   {
+    "name": "ND_GEO",
+    "type": "NEW_GEOMETRY",
+    "location": [
+     -1700.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {}
+   },
+   {
+    "name": "ND_SEP",
+    "type": "SEPXYZ",
+    "location": [
+     -1540.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {}
+   },
+   {
+    "name": "ND_DX",
+    "type": "MATH",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_DY",
+    "type": "MATH",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_COMB",
+    "type": "COMBXYZ",
+    "location": [
+     -1220.0,
+     0.0
+    ],
+    "inputs": {
+     "Z": 0.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_LEN",
+    "type": "VECT_MATH",
+    "location": [
+     -1060.0,
+     0.0
+    ],
+    "inputs": {
+     "Vector_001": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Vector_002": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Scale": 1.0
+    },
+    "props": {
+     "operation": "LENGTH"
+    }
+   },
+   {
+    "name": "ND_WARPNOISE",
+    "type": "TEX_NOISE",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Scale": 2.5,
+     "Detail": 1.0,
+     "Roughness": 0.5,
+     "Distortion": 0.0,
+     "W": 0.0,
+     "Lacunarity": 2.0,
+     "Offset": 0.0,
+     "Gain": 1.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_WARPBIAS",
+    "type": "MATH",
+    "location": [
+     -1220.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_WARPMUL",
+    "type": "MATH",
+    "location": [
+     -1060.0,
+     0.0
+    ],
+    "inputs": {
+     "Value": 0.5,
+     "Value_001": 0.12,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_RADD",
+    "type": "MATH",
+    "location": [
+     -900.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "ADD"
+    }
+   },
+   {
+    "name": "ND_RFMUL",
+    "type": "MATH",
+    "location": [
+     -740.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_RFGAIN",
+    "type": "MATH",
+    "location": [
+     -580.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.66667,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PHASE",
+    "type": "MATH",
+    "location": [
+     -740.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 13.77,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_TADD",
+    "type": "MATH",
+    "location": [
+     -420.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "ADD"
+    }
+   },
+   {
+    "name": "ND_WRAP",
+    "type": "MATH",
+    "location": [
+     -260.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.0,
+     "Value_002": 1.0
+    },
+    "props": {
+     "operation": "WRAP"
+    }
+   },
+   {
+    "name": "ND_RAMP",
+    "type": "VALTORGB",
+    "location": [
+     -100.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "ramp": {
+      "interpolation": "LINEAR",
+      "stops": [
+       [
+        0.0,
+        [
+         1.1,
+         1.1,
+         1.1,
+         1.0
+        ]
+       ],
+       [
+        0.55,
+        [
+         1.06,
+         1.06,
+         1.06,
+         1.0
+        ]
+       ],
+       [
+        0.62,
+        [
+         0.94,
+         0.94,
+         0.94,
+         1.0
+        ]
+       ],
+       [
+        0.7,
+        [
+         0.74,
+         0.74,
+         0.74,
+         1.0
+        ]
+       ],
+       [
+        0.88,
+        [
+         0.82,
+         0.82,
+         0.82,
+         1.0
+        ]
+       ],
+       [
+        0.955,
+        [
+         0.3,
+         0.3,
+         0.3,
+         1.0
+        ]
+       ],
+       [
+        0.99,
+        [
+         0.86,
+         0.86,
+         0.86,
+         1.0
+        ]
+       ],
+       [
+        1.0,
+        [
+         1.06,
+         1.06,
+         1.06,
+         1.0
+        ]
+       ]
+      ]
+     }
+    }
+   },
+   {
+    "name": "ND_FX",
+    "type": "MATH",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 3.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_FY",
+    "type": "MATH",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 18.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_FCOMB",
+    "type": "COMBXYZ",
+    "location": [
+     -1220.0,
+     0.0
+    ],
+    "inputs": {
+     "Z": 0.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_FIB",
+    "type": "TEX_NOISE",
+    "location": [
+     -1060.0,
+     0.0
+    ],
+    "inputs": {
+     "Scale": 1.0,
+     "Detail": 2.0,
+     "Roughness": 0.5,
+     "Distortion": 0.0,
+     "W": 0.0,
+     "Lacunarity": 2.0,
+     "Offset": 0.0,
+     "Gain": 1.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_FBIAS",
+    "type": "MATH",
+    "location": [
+     -900.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_FAMP",
+    "type": "MATH",
+    "location": [
+     -740.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.24,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_FADD",
+    "type": "MATH",
+    "location": [
+     -580.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 1.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "ADD"
+    }
+   },
+   {
+    "name": "ND_RGMIX",
+    "type": "MIX_RGB",
+    "location": [
+     -420.0,
+     0.0
+    ],
+    "inputs": {
+     "Fac": 1.0
+    },
+    "props": {
+     "blend_type": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PX",
+    "type": "MATH",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 6.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PY",
+    "type": "MATH",
+    "location": [
+     -1380.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 80.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PCOMB",
+    "type": "COMBXYZ",
+    "location": [
+     -1220.0,
+     0.0
+    ],
+    "inputs": {
+     "Z": 0.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_PORE",
+    "type": "TEX_NOISE",
+    "location": [
+     -1060.0,
+     0.0
+    ],
+    "inputs": {
+     "Scale": 1.0,
+     "Detail": 0.0,
+     "Roughness": 0.5,
+     "Distortion": 0.0,
+     "W": 0.0,
+     "Lacunarity": 2.0,
+     "Offset": 0.0,
+     "Gain": 1.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_PGT",
+    "type": "MATH",
+    "location": [
+     -580.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.74,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "GREATER_THAN"
+    }
+   },
+   {
+    "name": "ND_PADJ",
+    "type": "MATH",
+    "location": [
+     -420.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": -0.15,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PADD",
+    "type": "MATH",
+    "location": [
+     -260.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 1.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "ADD"
+    }
+   },
+   {
+    "name": "ND_PRM",
+    "type": "MIX_RGB",
+    "location": [
+     -100.0,
+     0.0
+    ],
+    "inputs": {
+     "Fac": 1.0
+    },
+    "props": {
+     "blend_type": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_FINAL",
+    "type": "MIX_RGB",
+    "location": [
+     100.0,
+     0.0
+    ],
+    "inputs": {
+     "Fac": 1.0
+    },
+    "props": {
+     "blend_type": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PRINC",
+    "type": "BSDF_PRINCIPLED",
+    "location": [
+     260.0,
+     0.0
+    ],
+    "inputs": {
+     "Metallic": 0.0,
+     "Roughness": 0.5,
+     "IOR": 1.5,
+     "Alpha": 1.0,
+     "Normal": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Weight": 0.0,
+     "Diffuse Roughness": 0.0,
+     "Subsurface Weight": 0.0,
+     "Subsurface Radius": [
+      1.0,
+      0.2,
+      0.1
+     ],
+     "Subsurface Scale": 0.05,
+     "Subsurface IOR": 1.4,
+     "Subsurface Anisotropy": 0.0,
+     "Specular IOR Level": 0.5,
+     "Specular Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Anisotropic": 0.0,
+     "Anisotropic Rotation": 0.0,
+     "Tangent": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Transmission Weight": 0.0,
+     "Coat Weight": 0.0,
+     "Coat Roughness": 0.03,
+     "Coat IOR": 1.5,
+     "Coat Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Coat Normal": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Sheen Weight": 0.0,
+     "Sheen Roughness": 0.5,
+     "Sheen Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Emission Color": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Emission Strength": 0.0,
+     "Thin Film Thickness": 0.0,
+     "Thin Film IOR": 1.33
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_OUT",
+    "type": "OUTPUT_MATERIAL",
+    "location": [
+     420.0,
+     0.0
+    ],
+    "inputs": {
+     "Displacement": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Thickness": 0.0
+    },
+    "props": {}
+   },
+   {
+    "name": "ND_AT_CRS.001",
+    "type": "ATTRIBUTE",
+    "location": [
+     -500.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "attribute_name": "plank_course"
+    }
+   },
+   {
+    "name": "ND_CRSQ.001",
+    "type": "MATH",
+    "location": [
+     -340.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.25,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_CRSRAMP.001",
+    "type": "VALTORGB",
+    "location": [
+     -180.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "ramp": {
+      "interpolation": "LINEAR",
+      "stops": [
+       [
+        0.0,
+        [
+         0.1604,
+         0.1362,
+         0.0998,
+         1.0
+        ]
+       ],
+       [
+        0.24,
+        [
+         0.1604,
+         0.1362,
+         0.0998,
+         1.0
+        ]
+       ],
+       [
+        0.26,
+        [
+         0.3095,
+         0.147,
+         0.0545,
+         1.0
+        ]
+       ],
+       [
+        0.49,
+        [
+         0.3095,
+         0.147,
+         0.0545,
+         1.0
+        ]
+       ],
+       [
+        0.51,
+        [
+         0.3185,
+         0.1683,
+         0.0595,
+         1.0
+        ]
+       ],
+       [
+        0.74,
+        [
+         0.3185,
+         0.1683,
+         0.0595,
+         1.0
+        ]
+       ],
+       [
+        0.76,
+        [
+         0.3197,
+         0.2601,
+         0.1522,
+         1.0
+        ]
+       ],
+       [
+        1.0,
+        [
+         0.3197,
+         0.2601,
+         0.1522,
+         1.0
+        ]
+       ]
+      ]
+     }
+    }
+   },
+   {
+    "name": "ND_PFX",
+    "type": "MATH",
+    "location": [
+     -1200.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "FRACT"
+    }
+   },
+   {
+    "name": "ND_PFX2",
+    "type": "MATH",
+    "location": [
+     -1040.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_PFX3",
+    "type": "MATH",
+    "location": [
+     -880.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "ABSOLUTE"
+    }
+   },
+   {
+    "name": "ND_PFX4",
+    "type": "MATH",
+    "location": [
+     -720.0,
+     0.0
+    ],
+    "inputs": {
+     "Value": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_PINN",
+    "type": "MATH",
+    "location": [
+     -560.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 7.111,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_PINC",
+    "type": "MATH",
+    "location": [
+     -400.0,
+     0.0
+    ],
+    "inputs": {
+     "Value": 1.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "SUBTRACT"
+    }
+   },
+   {
+    "name": "ND_PINM",
+    "type": "MATH",
+    "location": [
+     -240.0,
+     0.0
+    ],
+    "inputs": {
+     "Value_001": 2.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MULTIPLY"
+    }
+   },
+   {
+    "name": "ND_GPIN",
+    "type": "MIX_RGB",
+    "location": [
+     240.0,
+     0.0
+    ],
+    "inputs": {
+     "Color2": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "props": {
+     "blend_type": "MIX"
+    }
+   },
+   {
+    "name": "ND_TPIN",
+    "type": "MIX_RGB",
+    "location": [
+     240.0,
+     0.0
+    ],
+    "inputs": {},
+    "props": {
+     "blend_type": "MIX"
+    }
+   },
+   {
+    "name": "ND_PINCLAMP",
+    "type": "MATH",
+    "location": [
+     0.0,
+     0.0
+    ],
+    "inputs": {
+     "Value": 0.5,
+     "Value_001": 0.5,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "ADD"
+    }
+   },
+   {
+    "name": "ND_PINCLMP1",
+    "type": "MATH",
+    "location": [
+     -200.0,
+     -140.0
+    ],
+    "inputs": {
+     "Value_001": 1.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MINIMUM"
+    }
+   },
+   {
+    "name": "ND_PINCLMP2",
+    "type": "MATH",
+    "location": [
+     -200.0,
+     -260.0
+    ],
+    "inputs": {
+     "Value_001": 0.0,
+     "Value_002": 0.5
+    },
+    "props": {
+     "operation": "MAXIMUM"
+    }
+   }
+  ],
+  "links": [
+   [
+    "ND_GEO",
+    "Position",
+    "ND_SEP",
+    "Vector"
+   ],
+   [
+    "ND_GEO",
+    "Position",
+    "ND_WARPNOISE",
+    "Vector"
+   ],
+   [
+    "ND_SEP",
+    "X",
+    "ND_DX",
+    "Value"
+   ],
+   [
+    "ND_AT_CX",
+    "Fac",
+    "ND_DX",
+    "Value_001"
+   ],
+   [
+    "ND_SEP",
+    "Y",
+    "ND_DY",
+    "Value"
+   ],
+   [
+    "ND_AT_CY",
+    "Fac",
+    "ND_DY",
+    "Value_001"
+   ],
+   [
+    "ND_DX",
+    "Value",
+    "ND_COMB",
+    "X"
+   ],
+   [
+    "ND_DY",
+    "Value",
+    "ND_COMB",
+    "Y"
+   ],
+   [
+    "ND_COMB",
+    "Vector",
+    "ND_LEN",
+    "Vector"
+   ],
+   [
+    "ND_WARPNOISE",
+    "Fac",
+    "ND_WARPBIAS",
+    "Value"
+   ],
+   [
+    "ND_LEN",
+    "Value",
+    "ND_RADD",
+    "Value"
+   ],
+   [
+    "ND_WARPMUL",
+    "Value",
+    "ND_RADD",
+    "Value_001"
+   ],
+   [
+    "ND_RADD",
+    "Value",
+    "ND_RFMUL",
+    "Value"
+   ],
+   [
+    "ND_AT_RF",
+    "Fac",
+    "ND_RFMUL",
+    "Value_001"
+   ],
+   [
+    "ND_RFMUL",
+    "Value",
+    "ND_RFGAIN",
+    "Value"
+   ],
+   [
+    "ND_AT_SEED",
+    "Fac",
+    "ND_PHASE",
+    "Value"
+   ],
+   [
+    "ND_RFGAIN",
+    "Value",
+    "ND_TADD",
+    "Value"
+   ],
+   [
+    "ND_PHASE",
+    "Value",
+    "ND_TADD",
+    "Value_001"
+   ],
+   [
+    "ND_TADD",
+    "Value",
+    "ND_WRAP",
+    "Value"
+   ],
+   [
+    "ND_WRAP",
+    "Value",
+    "ND_RAMP",
+    "Fac"
+   ],
+   [
+    "ND_SEP",
+    "X",
+    "ND_FX",
+    "Value"
+   ],
+   [
+    "ND_SEP",
+    "Y",
+    "ND_FY",
+    "Value"
+   ],
+   [
+    "ND_FX",
+    "Value",
+    "ND_FCOMB",
+    "X"
+   ],
+   [
+    "ND_FY",
+    "Value",
+    "ND_FCOMB",
+    "Y"
+   ],
+   [
+    "ND_FCOMB",
+    "Vector",
+    "ND_FIB",
+    "Vector"
+   ],
+   [
+    "ND_FIB",
+    "Fac",
+    "ND_FBIAS",
+    "Value"
+   ],
+   [
+    "ND_FBIAS",
+    "Value",
+    "ND_FAMP",
+    "Value"
+   ],
+   [
+    "ND_FAMP",
+    "Value",
+    "ND_FADD",
+    "Value"
+   ],
+   [
+    "ND_RAMP",
+    "Color",
+    "ND_RGMIX",
+    "Color1"
+   ],
+   [
+    "ND_FADD",
+    "Value",
+    "ND_RGMIX",
+    "Color2"
+   ],
+   [
+    "ND_SEP",
+    "X",
+    "ND_PX",
+    "Value"
+   ],
+   [
+    "ND_SEP",
+    "Y",
+    "ND_PY",
+    "Value"
+   ],
+   [
+    "ND_PX",
+    "Value",
+    "ND_PCOMB",
+    "X"
+   ],
+   [
+    "ND_PY",
+    "Value",
+    "ND_PCOMB",
+    "Y"
+   ],
+   [
+    "ND_PCOMB",
+    "Vector",
+    "ND_PORE",
+    "Vector"
+   ],
+   [
+    "ND_PORE",
+    "Fac",
+    "ND_PGT",
+    "Value"
+   ],
+   [
+    "ND_PGT",
+    "Value",
+    "ND_PADJ",
+    "Value"
+   ],
+   [
+    "ND_PADJ",
+    "Value",
+    "ND_PADD",
+    "Value"
+   ],
+   [
+    "ND_RGMIX",
+    "Color",
+    "ND_PRM",
+    "Color1"
+   ],
+   [
+    "ND_PADD",
+    "Value",
+    "ND_PRM",
+    "Color2"
+   ],
+   [
+    "ND_PRINC",
+    "BSDF",
+    "ND_OUT",
+    "Surface"
+   ],
+   [
+    "ND_AT_CRS.001",
+    "Fac",
+    "ND_CRSQ.001",
+    "Value"
+   ],
+   [
+    "ND_CRSQ.001",
+    "Value",
+    "ND_CRSRAMP.001",
+    "Fac"
+   ],
+   [
+    "ND_SEP",
+    "X",
+    "ND_PFX",
+    "Value"
+   ],
+   [
+    "ND_PFX",
+    "Value",
+    "ND_PFX2",
+    "Value"
+   ],
+   [
+    "ND_PFX2",
+    "Value",
+    "ND_PFX3",
+    "Value"
+   ],
+   [
+    "ND_PFX3",
+    "Value",
+    "ND_PFX4",
+    "Value_001"
+   ],
+   [
+    "ND_PFX4",
+    "Value",
+    "ND_PINN",
+    "Value"
+   ],
+   [
+    "ND_PINN",
+    "Value",
+    "ND_PINC",
+    "Value_001"
+   ],
+   [
+    "ND_PINC",
+    "Value",
+    "ND_PINM",
+    "Value"
+   ],
+   [
+    "ND_PRM",
+    "Color",
+    "ND_GPIN",
+    "Color1"
+   ],
+   [
+    "ND_AT_RGB",
+    "Color",
+    "ND_TPIN",
+    "Color1"
+   ],
+   [
+    "ND_CRSRAMP.001",
+    "Color",
+    "ND_TPIN",
+    "Color2"
+   ],
+   [
+    "ND_TPIN",
+    "Color",
+    "ND_FINAL",
+    "Color1"
+   ],
+   [
+    "ND_GPIN",
+    "Color",
+    "ND_FINAL",
+    "Color2"
+   ],
+   [
+    "ND_FINAL",
+    "Color",
+    "ND_PRINC",
+    "Base Color"
+   ],
+   [
+    "ND_PINM",
+    "Value",
+    "ND_PINCLMP1",
+    "Value"
+   ],
+   [
+    "ND_PINCLMP1",
+    "Value",
+    "ND_PINCLMP2",
+    "Value"
+   ],
+   [
+    "ND_PINCLMP2",
+    "Value",
+    "ND_GPIN",
+    "Fac"
+   ],
+   [
+    "ND_PINCLMP2",
+    "Value",
+    "ND_TPIN",
+    "Fac"
+   ]
+  ]
+ },
+ "BOLT_METAL": {
+  "nodes": [
+   {
+    "name": "Principled BSDF",
+    "type": "BSDF_PRINCIPLED",
+    "location": [
+     10.0,
+     300.0
+    ],
+    "inputs": {
+     "Base Color": [
+      0.0645,
+      0.0645,
+      0.068,
+      1.0
+     ],
+     "Metallic": 0.0,
+     "Roughness": 0.22,
+     "IOR": 1.5,
+     "Alpha": 1.0,
+     "Normal": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Weight": 0.0,
+     "Diffuse Roughness": 0.0,
+     "Subsurface Weight": 0.0,
+     "Subsurface Radius": [
+      1.0,
+      0.2,
+      0.1
+     ],
+     "Subsurface Scale": 0.05,
+     "Subsurface IOR": 1.4,
+     "Subsurface Anisotropy": 0.0,
+     "Specular IOR Level": 0.7,
+     "Specular Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Anisotropic": 0.0,
+     "Anisotropic Rotation": 0.0,
+     "Tangent": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Transmission Weight": 0.0,
+     "Coat Weight": 0.0,
+     "Coat Roughness": 0.03,
+     "Coat IOR": 1.5,
+     "Coat Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Coat Normal": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Sheen Weight": 0.0,
+     "Sheen Roughness": 0.5,
+     "Sheen Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Emission Color": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Emission Strength": 0.0,
+     "Thin Film Thickness": 0.0,
+     "Thin Film IOR": 1.33
+    },
+    "props": {}
+   },
+   {
+    "name": "Material Output",
+    "type": "OUTPUT_MATERIAL",
+    "location": [
+     300.0,
+     300.0
+    ],
+    "inputs": {
+     "Displacement": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Thickness": 0.0
+    },
+    "props": {}
+   }
+  ],
+  "links": [
+   [
+    "Principled BSDF",
+    "BSDF",
+    "Material Output",
+    "Surface"
+   ]
+  ]
+ },
+ "GAP_TONE": {
+  "nodes": [
+   {
+    "name": "Principled BSDF",
+    "type": "BSDF_PRINCIPLED",
+    "location": [
+     10.0,
+     300.0
+    ],
+    "inputs": {
+     "Base Color": [
+      0.04817,
+      0.02122,
+      0.00802,
+      1.0
+     ],
+     "Metallic": 0.0,
+     "Roughness": 0.9,
+     "IOR": 1.5,
+     "Alpha": 1.0,
+     "Normal": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Weight": 0.0,
+     "Diffuse Roughness": 0.0,
+     "Subsurface Weight": 0.0,
+     "Subsurface Radius": [
+      1.0,
+      0.2,
+      0.1
+     ],
+     "Subsurface Scale": 0.05,
+     "Subsurface IOR": 1.4,
+     "Subsurface Anisotropy": 0.0,
+     "Specular IOR Level": 0.2,
+     "Specular Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Anisotropic": 0.0,
+     "Anisotropic Rotation": 0.0,
+     "Tangent": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Transmission Weight": 0.0,
+     "Coat Weight": 0.0,
+     "Coat Roughness": 0.03,
+     "Coat IOR": 1.5,
+     "Coat Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Coat Normal": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Sheen Weight": 0.0,
+     "Sheen Roughness": 0.5,
+     "Sheen Tint": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Emission Color": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "Emission Strength": 0.0,
+     "Thin Film Thickness": 0.0,
+     "Thin Film IOR": 1.33
+    },
+    "props": {}
+   },
+   {
+    "name": "Material Output",
+    "type": "OUTPUT_MATERIAL",
+    "location": [
+     300.0,
+     300.0
+    ],
+    "inputs": {
+     "Displacement": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "Thickness": 0.0
+    },
+    "props": {}
+   }
+  ],
+  "links": [
+   [
+    "Principled BSDF",
+    "BSDF",
+    "Material Output",
+    "Surface"
+   ]
+  ]
+ },
+ "plank_pool": [
+  [
+   0.3037,
+   0.2859,
+   0.231
+  ],
+  [
+   0.2857,
+   0.231,
+   0.1351
+  ],
+  [
+   0.0801,
+   0.0757,
+   0.069
+  ],
+  [
+   0.3197,
+   0.2601,
+   0.1522
+  ],
+  [
+   0.2139,
+   0.1765,
+   0.1204
+  ],
+  [
+   0.1919,
+   0.1808,
+   0.15
+  ],
+  [
+   0.2498,
+   0.2038,
+   0.1278
+  ],
+  [
+   0.1604,
+   0.1362,
+   0.0998
+  ],
+  [
+   0.305,
+   0.1413,
+   0.0437
+  ],
+  [
+   0.3095,
+   0.147,
+   0.0545
+  ],
+  [
+   0.3185,
+   0.1683,
+   0.0595
+  ],
+  [
+   0.2623,
+   0.1329,
+   0.0423
+  ]
+ ],
+ "bolt_template": {
+  "verts": [
+   [
+    0.04,
+    0.0,
+    0.01
+   ],
+   [
+    0.03464,
+    0.02,
+    0.01
+   ],
+   [
+    0.02,
+    0.03464,
+    0.01
+   ],
+   [
+    0.0,
+    0.04,
+    0.01
+   ],
+   [
+    -0.02,
+    0.03464,
+    0.01
+   ],
+   [
+    -0.03464,
+    0.02,
+    0.01
+   ],
+   [
+    -0.04,
+    0.0,
+    0.01
+   ],
+   [
+    -0.03464,
+    -0.02,
+    0.01
+   ],
+   [
+    -0.02,
+    -0.03464,
+    0.01
+   ],
+   [
+    -0.0,
+    -0.04,
+    0.01
+   ],
+   [
+    0.02,
+    -0.03464,
+    0.01
+   ],
+   [
+    0.03464,
+    -0.02,
+    0.01
+   ],
+   [
+    0.04,
+    0.0,
+    0.0
+   ],
+   [
+    0.03464,
+    0.02,
+    0.0
+   ],
+   [
+    0.02,
+    0.03464,
+    0.0
+   ],
+   [
+    0.0,
+    0.04,
+    0.0
+   ],
+   [
+    -0.02,
+    0.03464,
+    0.0
+   ],
+   [
+    -0.03464,
+    0.02,
+    0.0
+   ],
+   [
+    -0.04,
+    0.0,
+    0.0
+   ],
+   [
+    -0.03464,
+    -0.02,
+    0.0
+   ],
+   [
+    -0.02,
+    -0.03464,
+    0.0
+   ],
+   [
+    -0.0,
+    -0.04,
+    0.0
+   ],
+   [
+    0.02,
+    -0.03464,
+    0.0
+   ],
+   [
+    0.03464,
+    -0.02,
+    0.0
+   ]
+  ],
+  "faces": [
+   [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   [
+    0,
+    1,
+    13,
+    12
+   ],
+   [
+    1,
+    2,
+    14,
+    13
+   ],
+   [
+    2,
+    3,
+    15,
+    14
+   ],
+   [
+    3,
+    4,
+    16,
+    15
+   ],
+   [
+    4,
+    5,
+    17,
+    16
+   ],
+   [
+    5,
+    6,
+    18,
+    17
+   ],
+   [
+    6,
+    7,
+    19,
+    18
+   ],
+   [
+    7,
+    8,
+    20,
+    19
+   ],
+   [
+    8,
+    9,
+    21,
+    20
+   ],
+   [
+    9,
+    10,
+    22,
+    21
+   ],
+   [
+    10,
+    11,
+    23,
+    22
+   ],
+   [
+    11,
+    0,
+    12,
+    23
+   ]
+  ]
+ }
+}

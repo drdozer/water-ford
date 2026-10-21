@@ -1701,3 +1701,308 @@ unexplained. Fixing either changes pixels or the gate semantics ⇒ maintainer
 call. Mask-byte fidelity (dry byte lands 165 not 170: double sRGB-encode of
 the pre-inverted ramp) is moot while no mask sheets ship, but is recorded
 here for when the wet/dry data map is needed (transitions, Phase B item 2).
+
+## 2026-10-21 — sun-key direction transplant (GUI session, live) + tooling ruling
+
+Maintainer ruling: **ALL cobble tooling (auth-cobble.py, bake-cobble.py,
+bake-cobble.sh, mesh-hash oracle, provenance stamps) is suspect — nothing
+carries into the remake.** Do not fold anything back into auth-cobble.py;
+its `build_scenes_and_rig` still authors ONLY the boards point-`KEY`
+(1800000 W at (−126,0,126), r=0.1). The GUI-session `FILL`/`SUN_DAY` are
+scratch that the remake must re-decide from the reference files, not from
+the stale auth.
+
+Lighting review of the four files (dumps: superproject
+`.cache/water-ford/dump-ford-{boards,posts,stones}.txt`):
+- boards/posts rig (docs/boards-visual-language.md §4): POINT KEY from west,
+  45° up (−42,0,42) @40 kW / floor-scaled (−126,0,126) @1.8 MW; world
+  (0.55,0.55,0.55)@0.06. Shadows due east.
+- stones rig: SUN 4.2 W, angle 0.1745 (10°), rot (0.829,0,−1.1345) — source
+  ~42.5° up SSW, shadows ENE; AREA strip 2.0×0.25 @25 W at (0.15,−1.15,0.9)
+  rot (0.9425,0,0.1222); NO world (transparent film).
+- cobble had the stones skeleton with drift: sun rot (0.9599,0,−2.1817)
+  (azimuth MIRRORED across north, shadows ESE) + angle 0.0698 (4°).
+
+FIX applied in the live GUI session, saved to blender/ford-cobble.blend:
+- SUN_DAY rot (0.9599,0,−2.1817) → (0.829,0,−1.1345), angle 0.0698 → 0.1745
+  (stones KEY_SUN verbatim; SUN direction is scale-free, energy already 4.2).
+- BEFORE/AFTER previews (no other change): /tmp/cobble_sun_{ZOOM,FLOOR}_CAM_
+  {…_BEFORE,AFTER}.png, side-by-sides /tmp/cobble_sun_{ZOOM,FLOOR}_CAM_SBS.png
+  shown to maintainer via gwenview (eyes-on law). Verdict pending eyes.
+- Same FILL/SUN_DAY objects link into both cobble scenes → one fix covers
+  FLOOR + FORD.
+
+Open knobs for the remake round (deliberately untouched): FILL strip aspect
+(56×0.25 = 224:1 vs stones' 8:1) and its relative distance/height
+(47/58-stage vs stones' 1.46/0.9-unit ≈ hand-port inconsistency); the
+orphaned `KEY` point-light datablock in the blend (unlinked residue).
+
+## 2026-10-21 — GAME_VEIL ABOLISHED (maintainer ruling: "there is no game veil")
+
+The maintainer's repeated removal requests never STUCK because the veil had a
+resurrection path: auth-cobble.py build_veil_sim() rebuilt the compositor
+sim on every scene build, and bake-cobble.py line 85 then worked AROUND it
+("the SAVED rig state carries the veil-sim"). Removing it in the GUI removed
+only half the system.
+
+State found this purge: the live blend's FLOOR compositor tree was ALREADY
+empty (prior GUI removals had stripped the veil nodes; only the FORD scene
+carried a vestigial Render Layers→Composite passthrough). Both scenes now
+use_nodes=False, zero compositor nodes, saved to blender/ford-cobble.blend.
+Zero-pixel continuity vs the previous review renders (AE=0 on both
+ZOOM_CAM/FLOOR_CAM) — earlier side-by-side verdicts stand valid.
+
+Amputation (not salvage) in the condemned toolchain, so no re-crank can
+resurrect the veil:
+- auth-cobble.py: build_veil_sim → no-op that sets use_nodes=False; VEIL_FAC
+  deleted; stamp dict drops 'veil_fac'; py_compile clean.
+- bake-cobble.py: the use_compositing=False belt stays, comment updated.
+- bake-cobble.sh: header comment updated.
+Remaining GAME_VEIL/VEIL_FAC references = comments recording the ruling only.
+
+Maintainability verdict recorded: the unmaintainable pattern = live GUI
+state + a suspect regenerator that resurrects removed state + comment-level
+awareness that the two contradict. The gut-and-remake (fresh materials,
+lighting from stones-verbatim as applied, tooling rebuilt fresh) is the fix;
+no further folds-back into auth/bake.
+
+## 2026-10-21 — TEXTURE/COLORING PIPELINE GUTTED + REBUILT (maintainer ruling)
+
+Ruling: "can we get rid of the entire texture/coloring pipeline and start
+again" — after the veil unstickability, the answer executed. FIRST brick of
+the NEW toolchain: `tools/paper-pipeline/mat-fresh.py` (standalone, no
+involvement with auth-cobble/bake, runs in the open session only).
+
+GUTTED (all of it):
+- M_COBBLE (31-node toning stack: 6×Math/4×MapRange/3×MixRGB/WL waterline
+  window, COB_TONE/COB_BED_TONE knobs) — DELETED.
+- M_COBBLEBED (6-node Voronoi bed, WL residue) — DELETED.
+- M_COBBLEMASK (WL waterline → gray ramp → Emission; the shader-rendered
+  wetness channel) — DELETED (had use_fake_user). The fresh mask pass gets
+  rebuilt at the sheet round; wetness data stays a DELIVERY rule (law 2),
+  mesh attributes `in_wet`/`wet_depth` left untouched (geometry decision
+  pending, no new material references them).
+
+REBUILT — stones convention transplanted (graph verbatim, parameters
+re-anchored from .cache/water-ford/mat-stones.txt extraction):
+- M_COBBLE: Noise(Scale 1.2, Detail 8, Rough 0.5) → 2-stop ramp →
+  Principled(Rough 0.85) = 4 nodes. Scale 1.2 from ~18% relative detail
+  (stones: Scale 14 on ~0.35-unit bodies; cobble cells measured 5 units).
+  Dry stops: (0.42,0.39,0.36)@0.3 = L101 pocket → (0.64,0.52,0.35)@0.72 =
+  L136 ochre-sandy (§3 deck band L120–155, pop band, no true blacks).
+- M_COBBLE_WET: SAME graph; wet delta = the measured stones convention
+  (ramp stops lifted toward grey (0.53,0.52,0.47), k=0.34). Orphan fixture
+  (unassigned) until the twin-object/bake round.
+- M_COBBLEBED / M_COBBLEBED_WET: same 4-node shape; stops L39→L72 (joint
+  gravel; gap floor law: not black).
+- Assignments: COBBLE_FLOOR ← M_COBBLE, JOINTBED ← M_COBBLEBED. Renamed
+  off the .001 suffixes; material inventory now exactly the 4 fresh ones.
+- Compositor: still OFF both scenes (veil purge holds).
+- cobble_seed FACE attribute (0..1, 101 buckets): KEPT as mesh data;
+  per-cobble seeded pool variation = available as round 2; deliberately not
+  built in this first pass (simplicity = reviewability).
+
+REVIEW: /tmp/cobble_mats_{ZOOM,FLOOR}_CAM_SBS.png (left = condemned toning
+stack, right = fresh stones-convention) sent to maintainer via gwenview.
+Verdict = maintainer's eyes; my numbers only (L stats above).
+
+## 2026-10-21 rev 2 — WET/DRY = THE MASK PASS (maintainer ruling, piling pattern)
+
+Correction of round 1's read: the wet/dry split is NOT wet art materials.
+"We render just the wet/dry out in a separate render to make a wetness mask.
+It doesn't affect the render to sprites at all. It is purely used for the
+wetness mask render. This is all exactly as for the piling workflow."
+
+- M_COBBLE_WET / M_COBBLEBED_WET (round-1 ramp twins) — REMOVED. Art = dry
+  only, forever; wetness never touches sprite renders.
+- M_COBBLE_MASK built — the 6-node M_PILING_MASK graph verbatim
+  (extract: .cache/water-ford/mat-posts.txt):
+    Attribute("in_wet") -> SegmentGray.Fac (0 -> 0.402 linear = gray 170)
+    Attribute("wet_depth") -> MapRange(0..1, STEPPED, Steps=4) ->
+    WetGrayRamp.Fac (0.0908=85 -> 0.0097=25) -> Emission(1) -> Output.
+  (4.3 gotcha: Steps is an input socket visible under STEPPED, not a node
+  attribute.) Cobble mesh carries the SAME normalized wetness attributes
+  the piling convention uses (in_wet 58.3% >0.5, wet_depth 0..1 mean 0.53).
+- Mask view layer "Mask" with material_override=M_COBBLE_MASK on FLOOR+FORD;
+  default passes untouched; the runtime pass state (Standard/opaque/world-0/
+  dither-0, VL switch) is toggled ONLY during the mask render, as bake-mask.py.
+- Mask verification render @512 ZOOM view: PASS — bg opaque black ✓,
+  crown-170 = 41499 px, wet-85 = 69347 px, fully-wet-25 = 590 px
+  (all three segments present, piling bake-mask thresholds).
+  115..165 seam-antialias = 12806 px — piling's 64px bleed cap was 120 px
+  (~2 rows × the frame); scaled to this 512 view ≈ 7680; observed 1.7×,
+  consistent with the meandering washboard waterline (long boundary), not a
+  dry bleed. MAINTAINER'S EYES: /tmp/cobble_mask_SBS.png open (left = art
+  render, right = the mask pass).
+- Incident: the first mask-pass attempt ABORTED MID-TOGGLES (crash between
+  toggles and restore) and left the live session polluted (world 0, dither
+  0, default VL off); my restore in the second attempt then read the
+  polluted state and "restored" world to 0.0. REPAIRED to the file's
+  standard state (0.55 @ 0.06, dither 1.0, Standard, opaque, VLs on), saved;
+  art continuity proven ZERO-DIFF vs the round-1 fresh-material render.
+- LESSON for the fresh bake (round 3): toggle→render→restore must be
+  ALL-OR-NOTHING (try/finally) — the pass toggles are exactly the kind of
+  partial state that has burned this session twice now.
+- File state: materials = exactly M_COBBLE, M_COBBLEBED, M_COBBLE_MASK; no
+  orphans; slots dry-only; compositor still off; saved.
+
+## 2026-10-21 rev 3 — BED KEYING FIX (maintainer's physical model)
+
+Maintainer: the grounding floor plane is logically UNDER WATER; the cobbles
+rise up through the water, some breaching the surface (dry tops); as
+rendered, the floor exposed between cobbles was keyed DRY — it must key just
+as wet as the bottoms of cobbles.
+
+Diagnosis (measured, not guessed): JOINTBED shipped with NO wetness
+attributes at all → in the mask pass the attribute nodes defaulted to 0 →
+the bed rendered gray-170 (dry). Cobble convention confirmed from the mesh:
+wet_depth = 1.0 at z=0 → ~0 at z≈0.15 waterline; the bed plane sits at z=0 =
+the same depth as cobble bottoms.
+
+FIX: tools/paper-pipeline/wet-fresh.py (fresh toolchain, DATA round —
+owns wetness keying, separate from the materials round): JOINTBED verts now
+in_wet=1.0, wet_depth=1.0 (verified exact), saved.
+
+RESULT (mask pass @512 ZOOM, before → after):
+- fully-wet gray-25: 590 -> 28,077 px (the bed now fully-wet, same bucket
+  as cobble bottoms — "just as wet as the bottoms of cobbles" ✓);
+- dry gray-170: 41,499 -> 35,189 px (the removed 6.3k = dry-keyed bed;
+  the remainder = genuinely emergent crown tops);
+- background opaque black ✓; art continuity: ZERO-DIFF render (the wetness
+  data touches only the mask pass, as ruled).
+- All-or-nothing toggles (try/finally) this round: restore verified
+  (world 0.06, Standard, opaque, dither 1.0).
+MAINTAINER REVIEW: /tmp/cobble_maskwet_SBS.png in gwenview (left = art,
+right = the fixed mask pass).
+Fresh toolchain now: mat-fresh.py (materials incl. M_COBBLE_MASK),
+wet-fresh.py (mesh wetness keying).
+
+## 2026-10-21 — recipe round (increment 1+2)
+
+- docs/export-recipe.md: the recipe (game contract = data-updates.lua:
+  16 sprites/size, sprite = (128·size)², sheets = 16-sprite row / 4×4 sprite
+  grids, 128 px/tile @ scale 0.25; layout law = contiguous areas + in-file
+  cams + row-major variant IDs; render + cut + deploy = committed driver;
+  gates = contract + --twice pixel-equality + deploy byte-equality +
+  maintainer's eyes as the look-approval gate — NOT byte-identity with the
+  old sheets, maintainer clarified). Known faults recorded:
+  staged-vs-deployed generation drift (measured 230k-4.1M px/sheet), layout
+  law unimplemented. NOTE: assets-src/cobble carries ANOTHER session's
+  uncommitted mask/icon work — left alone (ownership rule).
+- tools/paper-pipeline/bake-ladder.py: the exporter skeleton; bpy imported
+  lazily (selftest runs as plain python3); synthetic selftest GREEN:
+  cut/arrange preserves windows 1:1; contract_check catches malformed
+  sheets; verify_bytes catches tampered copies; row-major origin windows
+  verified for sizes 1/2/4. First selftest run caught MY OWN test bug
+  (deploy re-copies over the tamper — restructured to a testable
+  verify_bytes helper); the gate machinery is honest.
+- Stage B (render) deliberately refuses until the Stage-A lattice exists
+  (no rendering against an undefined layout).
+
+## 2026-10-21 — boards builder: proof-cell facts + the looking rule
+
+Maintainer (verbatim intent): STOP trying to visually understand renders —
+"you are very bad at it. Use my eyes for looking." My output = geometric and
+numeric facts only; every visual verdict = theirs (gwenview/in-GUI), for
+this mod's Blender work generally. Reinforces the standing eyes-on law.
+
+Proof cell facts (seed 1000, --cells 0): 7 planks — courses 0/2/3 carry
+interior butts (x = 0.3856 / 0.6000 / 0.5167), course 1 = one full-cell
+plank; plank spans tile the cell exactly (0 gaps in x at every course
+midline); arch h=0 at every plank's own ends; butts flush (no z-steps).
+Coordination fix applied to build_cell (the previous proof had independent
+per-course start jitter + length draws = uncoordinated starts/ends,
+maintainer's catch).
+
+Committed so far this round (uncommitted until eyes pass):
+tools/paper-pipeline/extract-mplank.py, boards-mplank-spec.json (55-node
+M_PLANK + BOLT_METAL + GAP_TONE + 12-entry plank_pool), boards-builder.py
+(builder: factory-empty rebuild, blocks = blessed footprints, cams
+BLK1/2/4 at ortho 4/8/16 = 512/1024/2048 masters).
+
+Join-decoration law (maintainer 2026-10-21): where planks meet within a
+course, the join is decorated with bolts — ONE pair per join (2 bolts at
+1/3 and 2/3 across the plank width, at the join x, flush), shared by both
+planks, emitted once per join line (left cell edge + interior butts; the
+right edge = the neighbor's emit). The old emitter did 2 bolts per plank
+end = 4 per join (over-bolted); fixed in boards-builder.py emit_bolts.
+Proof cell: 8 join lines / 16 bolts.
+
+Bolt visibility fix (maintainer: "I see no bolts"): (a) the emitted bolt was
+a degenerate 1px-tall X-ridge (zero y-extent = invisible regardless of
+material) — my geometry bug; (b) the true spec = near-black iron:
+BOLT_METAL Base Color (0.0645,0.0645,0.068), Roughness 0.22, Specular 0.7;
+the old art's darkness budget = 7.7% of planks-base under L60 (bolts+seams),
+p5 = L43. Now the bolt = a 2D low dome (5x5 vertex grid, r2 falloff, peak
++0.014 over the flush join); bolt zones read L 33-51 vs plank 106-128.
+
+Bolt round 3 (maintainer: bolts square + wrongly at the left edge):
+(1) the TRUE bolt geometry extracted verbatim from git HEAD's old deck:
+462 identical 13-poly/24-vert flat 12-gon washers, 10.2px dia, 1.3px tall —
+committed as bolt_template in boards-mplank-spec.json (extract-mplank.py
+re-runs against the old file); the builder instantiates the template
+(sits +0.004 over the flush join). (2) placement: bolts = ONLY at interior
+butts (where two boards meet within a course within a tile) — cell edges
+carry no bolts now. Proof: butt bolts read L 13-37 vs plank 110-130; left
+edge shows no bolt (min L 51 = edge/cap tone).
+
+Bolt round 4 (maintainer: bolts too close; butts need a gap):
+- the pair now spreads by the 1x:2x space law: edge-space g = (w - 4R)/4 =
+  0.0185 u (2.4px), between = 2g = 0.037 u; centers at 0.0585/0.1755 across
+  the plank width (was the touching-edge 1/3-2/3 pair at 0.078/0.156).
+- interior butts now OPEN a gap: BUTT_GAP = 0.008 u (~1px = half the course
+  seam) between the meeting board ends; the washers span it as splice
+  plates; cell edges stay flush.
+- proof: bolt zones L 42-63 (dark discs against ~110-130 plank); the butt
+  gap column reads like the seam (min 40.8 vs seam 80-84 hmm the AA band).
+
+Grain round (maintainer: rings traced ACROSS all boards + grain unlike the
+original): three WRONG parametrizations in my plank attr emitter, found by
+decoding the old deck's attrs (git-HEAD file):
+- plank_cx/cy emitted as LOCAL FRACTIONS (0.25..0.75) — the old = the
+  plank's WORLD-CENTER x (strip−cx median 0.032) + the center y with an
+  OFF-CANVAS pith shift (old cy = −11.5..11.5 over a ±6 deck);
+- plank_ringfreq = 0.6..1.4 — the old = 8..16 (med 10; rings ~8-16px).
+The local-fraction piths = one near-origin point = the global concentric
+rings the maintainer saw; the wrong rf = the too-wide bands. Fixed:
+cx = x0+L/2; cy = course center + uniform(-5.5,5.5) pith shift;
+ringfreq = uniform(8,16). Verified per-plank (cx = exact plank centers,
+cy varied both sides, rf in band). plank_len = shader-dead informational
+attr (emitted as L). The old deck's ring arcs = per-plank; ring value =
+len(world_pos - pith)·freq + warp/seed phase (13.77·seed) — unchanged
+(graph verbatim from spec).
+
+## 2026-10-21 — SESSION STATE: recipe + builder committing; 2x2 next
+
+Committed this round (all mine): docs/export-recipe.md (the 3-stage recipe:
+LAYOUT law / RENDER / CUT+deploy+gates; contract = data-updates.lua
+16 sprites per size, sprite = (128·size)², 4×4 sprite grids for ALL sizes,
+128px/tile, scale 0.25; the strip retires; the lua line_length 16→4 ships
+in the same commit as the first replaced 1x1 sheet); the fresh toolchain:
+extract-mplank.py + boards-mplank-spec.json (the M_PLANK 55-node grain
+shader + BOLT_METAL/GAP_TONE + the 12-entry plank_pool + the VERBATIM
+bolt_template washer), boards-builder.py (the factory-empty rebuild:
+planks/seams/bolts/blocks/cams/rig from primitives), mat-fresh.py,
+wet-fresh.py (cobble materials + wetness keying), bake-ladder.py (the
+ladder driver skeleton, selftest = cut/arrange/contract/verify_bytes
+GREEN; Stage B refuses until the lattice exists), the veil amputation in
+auth-cobble/bake-cobble(+sh), and the REBUILT blender/ford-boards.blend
+(+blend1): the builder's output, 16/16 approved-look 1x1 cells, NOTHING
+else in the file.
+
+RE-RUN RECIPE: cd mods/water-ford && blender -b blender/ford-boards.blend
+--python tools/paper-pipeline/extract-mplank.py (BLEND env optional) —
+regenerates the spec from the committed look; blender -b --python
+tools/paper-pipeline/boards-builder.py -- --cells all — rebuilds the blend
+idempotently; python3 tools/paper-pipeline/bake-ladder.py --selftest.
+
+NEXT (maintainer order): the 2x2 block (16 designs, boards ~2u crossing
+the internal 1x1 boundary, bolted interior joins), then 4x4, then Stage
+B/C wiring in bake-ladder.py: real renders → identity cut (the blocks =
+the sheet shapes now) → contract gate → deploy = byte-verified copy into
+mod/graphics + the lua flip. The cobble = the SAME recipe with
+--base cobblestone-ford --wetpass (the wetness = the Mask view layer
+render per area; bed keyed wet; piling gray language 170/85/0).
+
+NOT committed (other sessions'): mod/data*.lua/info.json/make-icons.py,
+assets-src/cobble M-files + untracked masks/icons, palette-ladder-cobble.py.

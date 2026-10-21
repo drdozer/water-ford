@@ -15,7 +15,7 @@
 # Run:  blender -b --python tools/paper-pipeline/auth-cobble.py -- <target.blend>
 # Writes <target.blend> (default mods/water-ford/blender/ford-cobble.blend) and
 # prints a mesh fingerprint for the oracle comparison.
-import bpy, bmesh, math, random, os, sys, hashlib
+import bpy, bmesh, math, random, os, sys, hashlib, json, time
 import numpy as np
 
 FLOOR_N = 24          # 24x24 tiles; 1 world unit = 1 game tile
@@ -27,6 +27,18 @@ EDGE = 0.0            # (retired: boundary crease folds into JOINT/2 insets;
 JOINT = 0.0           # NO GAPS (maintainer 2026-10-21): cobbles grown to
 #                      contact; stones meet part way up their sides
 SEED = 20261021
+WET_DRY_ARTRUN_WL = -1.0   # the knob value that renders the deck fully dry
+
+# ---- COLOR RIG (maintainer feedback 2026-10-21: cobble reads too white in
+# game). The GUI knobs (COB_TONE / COB_BED_TONE on M_COBBLE / M_COBBLEBED)
+# are the MAINTAINER'S SCRATCH SPACE — tune live, F12 preview. The COMMITTED
+# state lives here: folding a found value back = edit these two + rerun
+# bake-cobble.sh (the crank re-stamps + re-renders; the rig values ride the
+# stamp). NOTE the maintainer has since ruled the ENTIRE cobble toolchain
+# suspect — auth/bake survive only until the gut-and-remake replaces them;
+# nothing further gets folded back into them.
+TONE_COBBLE = 1.0
+TONE_BED = 1.0
 COBBLE_OBJ = 'COBBLE_FLOOR'
 
 GRAPH = {
@@ -291,8 +303,16 @@ def build_floor_mesh():
     return ob, len(mesh.polygons) if mesh else 0
 
 def build_bed():
+    # bed must underlie EVERY sheet region: the central 24x24 floor AND the
+    # variant field blocks (sq2 @ -22..-14, sq4 @ -46..-30 x -40..-24) —
+    # unmapped voids baked as black art + 0-byte mask cells in the old sheets
     bm = bmesh.new()
-    bmesh.ops.create_grid(bm, x_segments=2, y_segments=2, size=FLOOR_N / 2)
+    for (cx, cy, half) in ((0.0, 0.0, FLOOR_N / 2),
+                           (-18.0, -18.0, 4.0),
+                           (-38.0, -32.0, 8.0)):
+        before = len(bm.verts)
+        bmesh.ops.create_grid(bm, x_segments=2, y_segments=2, size=half)
+        bmesh.ops.translate(bm, verts=bm.verts[before:], vec=(cx, cy, 0.0))
     mesh = bpy.data.meshes.new('JOINTBED')
     bm.to_mesh(mesh); bm.free()
     ob = bpy.data.objects.new('JOINTBED', mesh)
@@ -404,6 +424,108 @@ def build_node_tree(nt, g, label):
     return made
 
 
+def add_tone_knob(m, name, value=None):
+    """COLOR RIG (maintainer request 2026-10-21): one drag-able gray-level
+    knob between the palette mix and the Principled BSDF. 1.0 = as-rendered
+    palette. The node name is the GUI search term (Shading workspace,
+    M_COBBLE's node tree: 'COB_TONE' / 'COB_BED_TONE' — the cobble read too
+    white in-game; tune live and drive the knob, F12 to preview). Default
+    value = the committed TONE_* constant (the knob's scratch edits stay
+    live-only; folding a value back = TONE_COBBLE/TONE_BED + re-crank).
+    """
+    nt = m.node_tree
+    if nt.nodes.get(name):
+        return
+    src = nt.nodes["Mix (Legacy).001"]  # the final palette mix
+    tgt = nt.nodes["Principled BSDF"]
+    tone = nt.nodes.new("ShaderNodeValue"); tone.name = name
+    defaults = {"COB_TONE": TONE_COBBLE, "COB_BED_TONE": TONE_BED}
+    tone.outputs[0].default_value = value if value is not None else defaults.get(name, 1.0)
+    mul = nt.nodes.new("ShaderNodeMath"); mul.operation = "MULTIPLY"; mul.name = name + "_MUL"
+    nt.links.new(src.outputs["Color"], mul.inputs[0])
+    nt.links.new(tone.outputs[0], mul.inputs[1])
+    nt.links.new(mul.outputs[0], tgt.inputs["Base Color"])
+    # framed + parked left of the palette mix so it is findable in the GUI
+    frame = nt.nodes.new("NodeFrame")
+    frame.name = "TONE " + name
+    frame.label = "TONE KNOB — " + ("COBBLE" if name == "COB_TONE" else "BED (grout)") + "  (edit the Value, drag)"
+    frame.use_custom_color = True
+    frame.color = (1.0, 0.65, 0.1)
+    knob_y = src.location.y - 40.0
+    tone.location = (src.location.x - 340.0, knob_y)
+    mul.location = (src.location.x - 180.0, knob_y)
+    tone.parent = frame
+    mul.parent = frame
+
+
+def layout_node_tree(nt, x_step=280.0, y_step=240.0):
+    """Arrange a node tree for humans (4.3 ships no tree-arrange operator; the
+    extraction drops every node at (0,0)). Deterministic longest-path layering
+    from link-free sources toward the sink(s), then rows sorted by name.
+    Cosmetic only — never touches links, only unparented node locations
+    (framed knob pairs keep their parked spots)."""
+    live = [n for n in nt.nodes if n.parent is None]
+    links = {n.name: [l.from_node.name for l in nt.links if l.to_node == n] for n in live}
+    byname = {n.name: n for n in live}
+    depth = {}
+    def d(name, seen):
+        if name in depth:
+            return depth[name]
+        if name not in byname or not links.get(name) or name in seen:
+            depth[name] = 0
+            return 0
+        seen.add(name)
+        depth[name] = max((d(p, seen) for p in links[name]), default=-1) + 1
+        return depth[name]
+    for n in live:
+        d(n.name, set())
+    for name in links:
+        if name not in depth:
+            depth[name] = 0
+    maxd = max(depth.values())
+    layers = {}
+    for n in live:
+        layers.setdefault(depth[n.name], []).append(n)
+    for k in layers:
+        rows = sorted(layers[k], key=lambda n: n.name)
+        for i, n in enumerate(rows):
+            n.location = ((maxd - k) * -x_step, (len(rows) / 2 - i) * y_step)
+
+
+def srgb_lin(gray_byte):
+    """Standard/view-transform inverse: byte -> linear emission that ENCODES back to gray_byte."""
+    v = gray_byte / 255.0
+    return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
+
+
+def fix_mask_material(m):
+    """MAINTAINER RULINGS on the wetness mask, 2026-10-21 (revised same day):
+    wetness masks SHIP as functional sheets (the engine mixes them with the
+    water effects shader to submerge the sprite below the waterline — the
+    pilings pattern: pilings-transition-mask.png / bake-mask.py law).
+    Engine recipe (bake-mask.py): gray 170 = dry (crown); ramp 170 -> 85 over
+    the first 60% of the submerged band; hold 85 to the base; 0 outside.
+    The recovered material rendered 165/76 (its ramp stored single-decode
+    values, i.e. double-encoded) and divided depth by a stale 0.014 from the
+    08:3x-era WL=0.010 build (the knob moved to 0.15, the divisor never did).
+    Fixed here, single-sourced:
+    - ramp stops re-encoded so the Standard transform lands on bytes 170/85;
+    - the depth divisor IS the WL knob (linked, not hard-coded): the ramp's
+      X domain spans the full WL-to-bed depth, giving the ~12px band @128px.
+    """
+    nt = m.node_tree
+    wl_node = nt.nodes["WL"]
+    div = nt.nodes["Math.001"]
+    inp = [s for s in div.inputs if s.identifier == "Value_001"][0]
+    nt.links.new(wl_node.outputs[0], inp)
+    ramp = nt.nodes["Color Ramp"].color_ramp
+    dry, hold = srgb_lin(170), srgb_lin(85)
+    for i, (pos, v) in enumerate(((0.0, dry), (0.6, hold), (1.0, hold))):
+        ramp.elements[i].position = pos
+        ramp.elements[i].color = (v, v, v, 1.0)
+    print("MASK RULINGS: ramp 170/85 re-encoded, depth divisor := WL knob")
+
+
 def build_all_materials():
     for key, g in GRAPH.items():
         if key == "WORLD":
@@ -417,10 +539,27 @@ def build_all_materials():
             # zero-user by design (the bake grabs it at runtime for the Mask
             # view-layer); fake_user so the save/load cycle keeps it alive
             b.use_fake_user = True
+            fix_mask_material(b)
+        if key == "M_COBBLE":
+            add_tone_knob(b, "COB_TONE", TONE_COBBLE)
+        if key == "M_COBBLEBED":
+            add_tone_knob(b, "COB_BED_TONE", TONE_BED)
+        layout_node_tree(b.node_tree)
     w = bpy.data.worlds.new(GRAPH["WORLD"]["name"])
     w.use_nodes = True
     build_node_tree(w.node_tree, GRAPH["WORLD"]["g"], "WORLD")
     return w
+
+
+def build_veil_sim(s):
+    # 2026-10-21, maintainer ruling: there is NO game veil. Repeated removals
+    # kept dying here — this function resurrected the compositor sim on every
+    # auth run. Amputated (not folded back): the scenes build with the
+    # compositor OFF, matching the reference files (no GAME_VEIL anywhere).
+    # The in-game wash is a delivery fact, previewed at the game window, not
+    # simulated in art tooling.
+    s.use_nodes = False
+    return
 
 
 def build_scenes_and_rig(w):
@@ -453,16 +592,20 @@ def build_scenes_and_rig(w):
     cam("BEAUTY_CAM", 10.0, (-13.1, 0.0, 9.2), rot=(55.0, 0.0, -90.0), clip=(1.0, 1000.0))
     cam("COB2_CAM", 8.0, (-18.0, -18.0, 60.0))
     cam("COB4_CAM", 16.0, (-38.0, -32.0, 60.0))
-    for sname, include_water in (("FLOOR", False), ("FORD", True)):
+    for sname, include_water, cam_name, res in (("FLOOR", False, "ZOOM_CAM", 512),
+                                               ("FORD", True, "BEAUTY_CAM", 512)):
+        # the SAVED state is the COLOR RIG: preview-fast (512/48 samples ≈s
+        # per F12), swatch cameras; the bake overrides every knob it needs
         s = bpy.data.scenes.new(sname)
         for cname in ("COBBLE", "WATERBED", "LIGHTING", "CAMERAS") + (("WATER",) if include_water else ()):
             s.collection.children.link(bpy.data.collections[cname])
         s.world = w
         s.render.engine = 'CYCLES'
-        s.render.resolution_x = 1536
-        s.render.resolution_y = 1536
+        s.render.resolution_x = res
+        s.render.resolution_y = res
         s.render.film_transparent = False
         s.render.threads_mode = 'AUTO'
+        s.render.use_compositing = True
         s.view_settings.view_transform = 'Standard'
         s.cycles.samples = 48
         s.cycles.use_adaptive_sampling = True
@@ -471,7 +614,8 @@ def build_scenes_and_rig(w):
         s.cycles.seed = 0
         s.cycles.transparent_max_bounces = 8
         s.cycles.max_bounces = 12
-        s.camera = bpy.data.objects["FLOOR_CAM"]
+        s.camera = bpy.data.objects[cam_name]
+        build_veil_sim(s)
 
 
 def mesh_fingerprint(me):
@@ -510,7 +654,25 @@ def main(target):
     build_water_plane()
     ob, nfaces = build_floor_mesh()
     ob.data.materials.append(bpy.data.materials['M_COBBLE'])
+    # SAVED WL = the DRY product state (the shipped art is dry; the wet look
+    # ships in the mask sheets). Set AFTER the geometry: build_floor_mesh
+    # reads the WL knob for the waterline cut, so it must ride at 0.15 during
+    # the build and may only change afterwards. The WATERSHEET keeps its
+    # built-in z=0.15 (the ford scene still shows the correct waterline).
+    for mn in ('M_COBBLE', 'M_COBBLEBED'):
+        bpy.data.materials[mn].node_tree.nodes['WL'].outputs[0].default_value = WET_DRY_ARTRUN_WL
     fp = mesh_fingerprint(ob.data)
+    # ---- provenance stamp (reproducibility 2026-10-21): the bake refuses any
+    # blend whose stamp is missing or stale, so a crashed auth can never
+    # silently hand the bake an old file again.
+    stamp = {'auth_sha256': hashlib.sha256(open(os.path.abspath(__file__), 'rb').read()).hexdigest(),
+             'generated': time.strftime('%Y-%m-%dT%H:%M:%S%z'),
+             'mesh_hash': fp['hash'],
+             'tone': {'COB_TONE': TONE_COBBLE, 'COB_BED_TONE': TONE_BED},
+             'saved_wl': WET_DRY_ARTRUN_WL}
+    for sn in ('FLOOR', 'FORD'):
+        bpy.data.scenes[sn]['cobble_auth'] = json.dumps(stamp)
+    print('STAMP', json.dumps({'auth_sha256': stamp['auth_sha256'][:12], 'mesh_hash': stamp['mesh_hash']}))
     os.makedirs(os.path.dirname(os.path.abspath(target)), exist_ok=True)
     bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(target), compress=True)
     print("FLOOR OK cobbles faces=%d" % nfaces)
