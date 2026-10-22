@@ -2390,3 +2390,23 @@ breach law, variant identity) go to the maintainer; then the cobble builder.
   lattice-anchored; JOINT now 0 → faces meet at lattice midpoints).
 - Unresolved: ROW_VARIANTS ladder rows 2–5 awaiting eye rulings; tile
   edges (2×2/4×4) and the wetpass (masks/keying) still to come.
+
+## 2026-10-22 (cobble session 3) — wetpass + Stage-A rulings approved; art masters next
+
+- The wetpass round (session died mid-run last time) re-tabulated: the wetpass
+  mask masters (`--wetpass`, WATER_PLANE z = 0.18, sliced stones + 85→25
+  ramp, bed all-wet) DID land on disk before the death. Shown to the
+  maintainer: **LOOK-APPROVED** (ruling 2026-10-22).
+- Stage-A dry look: the three area proofs rendered 11:24–26
+  (area-1/2/4_c = AREA_1X1/2X2/4X4, area-render-only ruling honored) shown
+  to the maintainer: **"They look fine"** — the ROW_VARIANTS rows 2–5
+  unresolved flag from the hard-reset entry CLOSES here; Stage-A eyes done.
+- Committed this wrap: cobble-builder (AREA_2X2/4X4 blocks + CAMS roster +
+  WATER_PLANE knob at z=0.18), bake-ladder `--wetpass`, ford-cobble.blend(+1),
+  the three mask masters.
+- Watch item carried to the wiring round (documented, not blocking): the
+  wetpass gray ladder (flat-170 dry region, 25–70 ramp stops, 25 bed) has
+  not been numerically censused since the pre-approval pixel check; the
+  engine keys gray levels, so the wiring round re-verifies the ladder first.
+- Next: Stage-B art masters (cobblestone-ford-master-{1x1,2x2,4x4}) from the
+  committed cams; then cut --twice → deploy + the size-1 line_length flip.

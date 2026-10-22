@@ -50,6 +50,11 @@ import random
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 U_PX = 128                 # 1 unit = 1 game tile = 128 px (contract)
+WATER_Z = 0.18             # the water height — the wetpass's tuneable (§2):
+                           # the mask's slice/z-ramp datum. WATER_PLANE's z is
+                           # wired to this (maintainer's ball-park ruling,
+                           # 2026-10-22); move it in the GUI to preview the
+                           # mix, then this gets set to match and rebuilt.
 COLS, ROWS = 3, 4          # the packing per 1×1 tile (§3.1)
 JOINT = 0.0                # joint width ZERO (ruling 2026-10-22): nominal extents
                            # fill the cells; walls kiss at the lattice midpoints
@@ -101,8 +106,12 @@ ROW_VARIANTS = {
         "pit_bump": 1.3, "pit_dist": 0.016, "rough_break": 0.14},
 }
 
-BLOCKS = {"AREA_1X1": (-2.0, 2.0, -2.0, 2.0)}
-CAM1 = ("BLK1_CAM", 0.0, 0.0, 4.0)
+BLOCKS = {"AREA_1X1": (-2.0, 2.0, -2.0, 2.0),      # x0,x1,y0,y1 — recipe Stage A
+          "AREA_2X2": (-4.0, 4.0, -12.0, -4.0),    # world positions mirrored from
+          "AREA_4X4": (-8.0, 8.0, -30.0, -14.0)}   # the boards (law for both files)
+CAMS = {"BLK1_CAM": (0.0, 0.0, 4.0, 1024),        # (cx, cy, ortho, res) — boards
+        "BLK2_CAM": (0.0, -8.0, 8.0, 1024),       # roster: one cam per design
+        "BLK4_CAM": (0.0, -22.0, 16.0, 2048)}     # area (recipe Stage A.5)
 
 
 # ------------------------------------------------------------------ materials
@@ -542,6 +551,33 @@ def scene_audit(sc):
     print(f"  first objects: {objs[:4]} ... total mesh objects = {len(meshes)}")
 
 
+def emit_water_plane(target):
+    """The water-height plane (§2 wetpass round): the maintainer's GUI
+    tuning knob, linked into the FLOOR scene tree by the caller. NOT in
+    any render (hide_render = True) — the plane's z IS the WATER_Z
+    constant; the mask stage slices the stones at this height (dry above
+    / wet below) and drives the 85→25 stepped ramp from it. Principled
+    alpha 0.4 = a see-through sheet in the shaded viewport, so the mix of
+    cobbles above and below the water reads while tuning."""
+    me = bpy.data.meshes.new("WATER_PLANE")
+    me.from_pydata([(-9.0, -31.5, 0.0), (9.0, -31.5, 0.0),
+                    (9.0, 3.5, 0.0), (-9.0, 3.5, 0.0)], [], [(0, 1, 2, 3)])
+    me.update()
+    mat = bpy.data.materials.new("M_WATER_PLANE")
+    mat.use_nodes = True
+    p = mat.node_tree.nodes["Principled BSDF"]
+    p.inputs["Base Color"].default_value = (0.15, 0.35, 0.55, 1.0)
+    p.inputs["Alpha"].default_value = 0.4
+    p.inputs["Emission Color"].default_value = (0.25, 0.55, 0.75, 1.0)
+    p.inputs["Emission Strength"].default_value = 1.2
+    ob = bpy.data.objects.new("WATER_PLANE", me)
+    me.materials.append(mat)
+    ob.location = (0.0, 0.0, WATER_Z)      # THE WIRE: plane z = the constant
+    ob.hide_render = True                  # never in the art or the mask render
+    target.collection.objects.link(ob)
+    return ob
+
+
 def build_scene(samples):
     s = bpy.data.scenes.new("FLOOR")
     r = s.render
@@ -591,21 +627,27 @@ def census(report):
         row, col = divmod(k, 4)
         dx0 = x0 + col                      # the design's left lattice line
         y_top = y1b - row                   # the design's top lattice line
+        size = gx // COLS                   # design side (1/2/4)
+        row, col = divmod(k, 4)
+        dx0 = x0 + col * size               # the design's left lattice line
+        y_top = y1b - row * size            # the design's top lattice line
         for (name, ccx, ccy, ax, ay, h, interior, gi, gj) in s_out:
             # EDGE LAW: an edge stone's outer face sits INSIDE the design's
             # lattice line by JOINT/2 ± slide (≤SPILL) ± outline wiggle
             # (variant-invariant; the spill slide = the ruled allowance).
+            # design side = size (the 2X2/4X4 windows cross internal
+            # boundaries; their outer faces still obey the same law).
             if gi == 0:
                 f = ccx - ax
                 want = dx0 + JOINT / 2
                 edge_assert(f, want, name)
             if gi == gx - 1:
                 f = ccx + ax
-                want = dx0 + 1.0 - JOINT / 2
+                want = dx0 + size - JOINT / 2
                 edge_assert(f, want, name)
             if gj == 0:
                 f = ccy - ay
-                want = y_top - 1.0 + JOINT / 2
+                want = y_top - size + JOINT / 2
                 edge_assert(f, want, name)
             if gj == gy - 1:
                 f = ccy + ay
@@ -665,24 +707,32 @@ def main():
     build_rig()
     mats = {"M_COBBLE": build_m_cobble(tune),
             "M_COBBLEBED": build_m_cobblebed(tune)}
-    emit_bed(bpy.data.collections["UNDERLAY"], "AREA_1X1", mats)
+    for blockname in ("AREA_1X1", "AREA_2X2", "AREA_4X4"):
+        emit_bed(bpy.data.collections["UNDERLAY"], blockname, mats)
     content = bpy.data.collections["CONTENT"]
     fill = (0,) if row is not None else tuple(range(16))
     report = {}
-    for k in fill:
-        pack_cell(content, "AREA_1X1", 1, k, seed=SEEDBASE + k, mats=mats, report=report)
+    # one seed base per size (boards roster: 1x1 keeps 1000; 2x2 = 2000;
+    # 4x4 = 4000) — the same lattice, larger design windows (recipe A.3)
+    for size, seedbase in ((1, SEEDBASE), (2, 2000), (4, 4000)):
+        for k in fill:
+            pack_cell(content, f"AREA_{size}X{size}", size, k,
+                      seed=seedbase + k, mats=mats, report=report)
     sc = build_scene(samples)
-    cd = bpy.data.cameras.new("BLK1_CAM")
-    cd.type = "ORTHO"
-    cd.ortho_scale = CAM1[3]
-    cd.clip_start, cd.clip_end = 0.1, 300.0
-    c1 = bpy.data.objects.new("BLK1_CAM", cd)
-    c1.location = (CAM1[1], CAM1[2], 60.0)
-    bpy.data.collections["CAMERAS"].objects.link(c1)
-    sc.camera = c1
-    # proof renders (ruling 2026-10-22: the maintainer needs ONLY the area
-    # render — zoom/close proofs retired from the builder)
-    renders = [("BLK1_CAM", 1024, f"/tmp/cobble-proof{ptag}-area.png")]
+    emit_water_plane(sc)                   # the GUI water knob (§2; §3 tune)
+    for cam_name, (cx, cy, ortho, res) in CAMS.items():
+        cd = bpy.data.cameras.new(cam_name)
+        cd.type = "ORTHO"
+        cd.ortho_scale = ortho
+        cd.clip_start, cd.clip_end = 0.1, 300.0
+        ob = bpy.data.objects.new(cam_name, cd)
+        ob.location = (cx, cy, 60.0)
+        bpy.data.collections["CAMERAS"].objects.link(ob)
+    sc.camera = bpy.data.objects["BLK1_CAM"]
+    # proof renders (ruling 2026-10-22: ONLY the area renders, one per
+    # area — zoom/close cameras retired from the builder)
+    renders = [(nm, res, f"/tmp/cobble-proof{ptag}-area-{nm[3:6].lower()}.png")
+               for nm, res in ((nm, CAMS[nm][3]) for nm in CAMS)]
     saved = (sc.render.resolution_x, sc.render.resolution_y)
     # context binding: the factory-empty smuggled 'Scene' still owns the
     # context — drop it (FLOOR exists now) and render under temp_override

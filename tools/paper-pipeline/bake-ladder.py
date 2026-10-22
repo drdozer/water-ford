@@ -237,6 +237,199 @@ def selftest():
     return 1 if faults else 0
 STAGING = os.path.join(root_dir(2), "assets-src", "boards")
 MODGRAPHICS = os.path.join(root_dir(2), "mod", "graphics")
+COBBLE_STAGING = os.path.join(root_dir(2), "assets-src", "cobble")
+
+
+def wetpass(args):
+    """Stage B-wet (--wetpass, inside blender on the cobble blend): the
+    wetness mask masters, per §2 of cobble-visual-language.md + the
+    maintainer's water-plane design (2026-10-22).
+
+      water height = the in-file WATER_PLANE's z (THE GUI KNOB — its z is
+      the ruling; the bake slices at that height), ZW below.
+      SLICE: each stone -> a DRY piece (above ZW; flat gray 170) + a WET
+      piece (below; NO fill — the open cut, so the top-down ray's first
+      hit = the stone's true submerged surface), the wet gray = the §2.1
+      stepped ramp: gray 85 at the waterline down to 25 at the bed plane
+      (stops 0.0097→25 / 0.0908→85 with a 4-step ladder between, CONSTANT
+      interp, input w = 0.402·z/ZW — the doc's ramp with the in_wet key
+      materialized geometrically by the slice; buried z<0 clamps to 25).
+      the BED = ALL WET (flat 25 — maintainer ruling).
+      outside = gray 0 (world strength 0 + opaque film + dither 0 — the
+      paper-mask pass state, toggled ALL-OR-NOTHING in try/finally).
+      ALIGNMENT LAW (maintainer, 2026-10-22): the mask renders through the
+      SAME in-file cameras at the SAME contract res (AREAS: 512/1024/2048
+      = 128 px/unit at every size) -> the mask pixel grid = the art
+      masters' grid 1:1 by construction; the cut reuses cut_sheet; the
+      --twice pixel-identity gate applies to the mask masters as to art.
+
+      The pieces are RUNTIME-ONLY (created from the saved blend, never
+      saved; re-derivable — the seeds are stable and the plane carries ZW).
+    """
+    import bpy, bmesh
+    import numpy as np
+    from PIL import Image
+    sc = bpy.data.scenes["FLOOR"]
+    r = sc.render
+    zw = bpy.data.objects["WATER_PLANE"].location.z     # THE VARIABLE
+    print(f"WETPASS: water height (WATER_PLANE.z = WATER_Z) = {zw:.4f}")
+    vf = sc.view_settings.view_transform
+    film = r.film_transparent
+    dither = r.dither_intensity
+    world = sc.world
+    bg = next(n for n in world.node_tree.nodes if n.type == "BACKGROUND")
+    wstrength = bg.inputs["Strength"].default_value
+
+    def mask_mat(name, gray=None, ramp=False):
+        m = bpy.data.materials.new(name)
+        m.use_nodes = True
+        nt = m.node_tree
+        for nd in list(nt.nodes):
+            nt.nodes.remove(nd)
+        em = nt.nodes.new("ShaderNodeEmission")
+        out = nt.nodes.new("ShaderNodeOutputMaterial")
+        if not ramp:
+            g = gray / 255.0
+            em.inputs["Color"].default_value = (g, g, g, 1.0)
+            nt.links.new(em.outputs["Emission"], out.inputs["Surface"])
+            return m
+        # the stepped ramp: input w = 0.402·z/ZW; the doc's stops with the
+        # 4-step ladder between, CONSTANT interp; buried z<0 -> w<0 -> the
+        # ramp clamps below the first stop = 25 (the bed + bottoms bucket)
+        cr = nt.nodes.new("ShaderNodeValToRGB")
+        cr.color_ramp.interpolation = "CONSTANT"
+        stops_ = [(0.0097, 25), (0.0300, 40), (0.0501, 55), (0.0705, 70),
+                  (0.0908, 85)]
+        for i, (pos, v) in enumerate(stops_):
+            el = cr.color_ramp.elements[0] if i == 0 else cr.color_ramp.elements.new(pos)
+            el.position = pos
+            el.color = (v / 255.0, v / 255.0, v / 255.0, 1.0)
+        geo = nt.nodes.new("ShaderNodeNewGeometry")
+        sep = nt.nodes.new("ShaderNodeSeparateXYZ")
+        mul = nt.nodes.new("ShaderNodeMath")
+        mul.operation = "MULTIPLY"
+        mul.inputs[1].default_value = 0.402 / zw
+        nt.links.new(geo.outputs["Position"], sep.inputs[0])
+        nt.links.new(sep.outputs["Z"], mul.inputs[0])
+        nt.links.new(mul.outputs[0], cr.inputs["Fac"])
+        nt.links.new(cr.outputs["Color"], em.inputs["Color"])
+        nt.links.new(em.outputs["Emission"], out.inputs["Surface"])
+        return m
+
+    m_dry = mask_mat("M_COBBLE_MASK_DRY", gray=170)
+    m_wet = mask_mat("M_COBBLE_MASK_WET", ramp=True)
+    m_bed = mask_mat("M_COBBLE_MASK_BED", gray=25)
+
+    under = bpy.data.collections["UNDERLAY"]
+    stones = [o for o in sc.objects if o.name.startswith("C_AREA")]
+    pieces = []
+    n_empty = 0
+    for ob in stones:
+        for part in ("dry", "wet"):
+            bm = bmesh.new()
+            bm.from_mesh(ob.data)
+            bmesh.ops.bisect_plane(
+                bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:],
+                plane_co=(0.0, 0.0, zw), plane_no=(0.0, 0.0, 1.0),
+                clear_outer=(part == "wet"), clear_inner=(part == "dry"))
+            if not bm.verts:
+                n_empty += 1
+                bm.free()
+                continue
+            me = bpy.data.meshes.new(f"MP_{ob.name}_{part}")
+            bm.to_mesh(me)
+            me.update()
+            bm.free()
+            po = bpy.data.objects.new(me.name, me)
+            me.materials.append(m_dry if part == "dry" else m_wet)
+            po.hide_render = True
+            under.objects.link(po)
+            pieces.append(po)
+    beds = [o for o in under.objects if o.name.endswith("_BED")]
+    for bd in beds:
+        bd.data.materials[0] = m_bed
+    print(f"WETPASS: ZW={zw:.4f}; sliced {len(stones)} stones -> {len(pieces)} "
+          f"pieces ({n_empty} empty halves skipped); {len(beds)} beds all-wet")
+
+    def set_pass(on):
+        for o in stones:
+            o.hide_render = on
+        for po in pieces:
+            po.hide_render = not on
+        sc.view_settings.view_transform = "Standard"   # the paper-pass state
+        r.film_transparent = False
+        bg.inputs["Strength"].default_value = 0.0 if on else wstrength
+        r.dither_intensity = 0.0 if on else dither
+
+    try:
+        set_pass(True)
+        saved_res = (r.resolution_x, r.resolution_y)
+        masters = []
+        for size, (area, (cam_name, res)) in zip(SIZES, AREAS.items()):
+            sc.camera = bpy.data.objects[cam_name]
+            r.resolution_x = r.resolution_y = res   # THE CONTRACT DEPTH
+            out = os.path.join(COBBLE_STAGING,
+                               f"{args['base']}-mask-master-{SIZE_TAG[size]}.png")
+            r.filepath = out
+            bpy.ops.render.render(write_still=True)
+            masters.append((size, out, cam_name, res))
+        r.resolution_x, r.resolution_y = saved_res
+        if args.get("twice"):
+            for size, master, cam_name, res in masters:
+                sc.camera = bpy.data.objects[cam_name]
+                r.resolution_x = r.resolution_y = res
+                alt = f"/tmp/{args['base']}-mask-master-alt-{SIZE_TAG[size]}.png"
+                r.filepath = alt
+                bpy.ops.render.render(write_still=True)
+                a = np.asarray(Image.open(master).convert("RGBA"), dtype=np.int16)
+                b = np.asarray(Image.open(alt).convert("RGBA"), dtype=np.int16)
+                if not np.array_equal(a, b):
+                    ndiff = int((a != b).any(axis=-1).sum())
+                    raise SystemExit(f"--twice FAILED (mask): {master} differs "
+                                     f"from its re-render on {ndiff} px")
+            r.resolution_x, r.resolution_y = saved_res
+            print("TWICE (mask): all masters pixel-identical across two renders")
+        for size, master, _cam, _res in masters:
+            res = AREAS[f"AREA_{SIZE_TAG[size].upper()}"][1]
+            im = Image.open(master)
+            if im.size != (res, res):
+                raise SystemExit(f"MASK {os.path.basename(master)}: {im.size} != "
+                                 f"the contract ({res}, {res}) — alignment broken")
+            a = np.asarray(im.convert("RGBA"))
+            if a[..., 3].min() != 255:
+                raise SystemExit(f"MASK {os.path.basename(master)}: alpha < 255 (opaque law)")
+            g = a[..., 0].astype(int)
+            dry = ((g >= 168) & (g <= 172)).sum()
+            w85 = ((g >= 83) & (g <= 87)).sum()
+            deep = ((g >= 23) & (g <= 27)).sum()
+            steps = sum(((g >= v - 3) & (g <= v + 3)).sum() for v in (40, 55, 70))
+            if dry < 100 or w85 < 100 or deep < 100 or steps < 3:
+                raise SystemExit(f"MASK {os.path.basename(master)}: bands missing "
+                                 f"(dry {dry}, 85 {w85}, 25 {deep}, steps {steps})")
+            outside = ((g < 15) | (g > 173)).sum()
+            if outside:
+                raise SystemExit(f"MASK {os.path.basename(master)}: {outside} px "
+                                 "outside [15,173] — foreign grays")
+            print(f"MASK GATE {SIZE_TAG[size]}: dry170={dry} wet85={w85} fully25={deep} "
+                  f"steps={steps} px — {os.path.basename(master)}")
+        for size, master, _c, _r in masters:
+            sp = os.path.join(COBBLE_STAGING,
+                              f"{args['base']}{sheet_suffix(size)}-mask.png")
+            cut_sheet(master, size, sp)
+            sp2 = sp + ".twice.png"
+            cut_sheet(master, size, sp2)
+            aa = np.asarray(Image.open(sp).convert("RGBA"), dtype=np.int16)
+            bb = np.asarray(Image.open(sp2).convert("RGBA"), dtype=np.int16)
+            if not np.array_equal(aa, bb):
+                raise SystemExit(f"--twice FAILED (mask cut): {sp} != its second run")
+            os.remove(sp2)
+            print(f"MASK CUT: {os.path.basename(sp)} (identity windows; "
+                  "pixel-locked 1:1 with the art masters)")
+    finally:
+        set_pass(False)
+        for po in list(pieces):
+            bpy.data.objects.remove(po, do_unlink=True)
+    print("WETPASS DONE")
 
 
 def render_area(args):
@@ -349,6 +542,9 @@ if __name__ == "__main__":
     if args["mode"] == "blend":
         import bpy
         bpy.ops.wm.open_mainfile(filepath=args["blend"])
-        render_area(args)
+        if args.get("wetpass"):
+            wetpass(args)
+        else:
+            render_area(args)
     else:
         main_offline(args)
