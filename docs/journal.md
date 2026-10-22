@@ -2410,3 +2410,20 @@ breach law, variant identity) go to the maintainer; then the cobble builder.
   engine keys gray levels, so the wiring round re-verifies the ladder first.
 - Next: Stage-B art masters (cobblestone-ford-master-{1x1,2x2,4x4}) from the
   committed cams; then cut --twice → deploy + the size-1 line_length flip.
+
+## 2026-10-22 (cobble session 3 continues) — art masters look-approved; Stage C begins
+
+- The three new-pipeline masters (cobblestone-ford-master-{1x1,2x2,4x4}, rendered
+  16:41–44 from the committed blend by the committed driver, contract dims 512²/
+  1024²/2048²) shown side-by-side with the old generations: **"The master
+  spritesheets look good and they look correct against the wetness mask."**
+- RULING: the on-disk wetness masks stand as look-approved FINAL (the §2
+  numeric band census is not being re-run; the wiring round keys the gray
+  ladder off the approved masks — watch item stands, journal above).
+- Committed the masters (recipe: masters committed before any cut).
+- bake-ladder offline Stage C gains the cobble branch: staging follows the
+  base family (COBBLE_STAGING), no shared-art pairs, mask-sheet presence in
+  the gate. Boards machinery untouched (selftest re-proved after the edit).
+- Deploy commit carries the sheet+lua pair per recipe law: the size-1
+  cobblestone-ford sprite line_length flips 16→4 (both tiles that share
+  the art) AT THE SAME COMMIT as the first replaced 512² sheet.
