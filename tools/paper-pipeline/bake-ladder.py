@@ -439,10 +439,13 @@ def render_area(args):
     sc = bpy.data.scenes["FLOOR"]
     saved_cam, saved_res = sc.camera.name, (sc.render.resolution_x, sc.render.resolution_y)
     masters = []   # (size, path) row-major by the AREAS roster
+    # staging follows the base family: cobble masters belong in
+    # assets-src/cobble (the boards pair above stays boards-only)
+    staging = COBBLE_STAGING if args["base"].startswith("cobble") else STAGING
     for size, (area, (cam_name, res)) in zip(SIZES, AREAS.items()):
         sc.camera = bpy.data.objects[cam_name]
         sc.render.resolution_x = sc.render.resolution_y = res
-        out = os.path.join(STAGING, f"{args['base']}-master-{SIZE_TAG[size]}.png")
+        out = os.path.join(staging, f"{args['base']}-master-{SIZE_TAG[size]}.png")
         sc.render.filepath = out
         bpy.ops.render.render(write_still=True, scene=sc.name)
         masters.append((size, out))
