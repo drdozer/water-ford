@@ -90,8 +90,14 @@ The deck is a **waterline**, not a texture painted over water:
        aligned to the tile lattice so that NO joint between two arbitrarily
        chosen 1×1 variants reads as broken — edge-touching stones meet
        variant-invariant lattice positions ("pin the boundary, free the
-       interior"). Spill allowance (zero spill vs small spill at fixed
-       lattice positions) = still OPEN; quantify at the proof round.
+       interior").
+     - **Spill law — RULING (2026-10-22, round 2)**: small spill across the
+       tile edge is allowed and expected — it stays small enough that
+       shadows or neighbouring stones hide it (nearly always, per the
+       ruling). The alignment of edge stones stays variant-invariant. The
+       **cobble's top stays entirely within the tile**: what may cross the
+       boundary is only the lower stone mass (base/skirt) — never the
+       crown. Final px bound of "small" = a proof-round check.
      - **Coverage law**: cobbles fill most of the xy space; only very small
        amounts of the floor layer show through — thin joints, minimal bed
        exposure (the joint width = the measurable knob).
@@ -114,10 +120,14 @@ reads black are the failure modes named to date.
        interplay — the floor is a real recessed plane, stones stand proud
        of it, and receive/cast flags are never disabled anywhere in the
        deck family. No baked-flat look: relief is real geometry.
-     - OPEN: crown shape (dome vs flat-cut), max cobble height, the breach
-       fraction target (which stones sit above the waterline), and the
-       `wet_depth` normalization mapping (waterline elevation included —
-       §1.5).
+     - **Crown form — RULING (2026-10-22, round 2)**: a flattened dome —
+       "a bit like a loaf of bread: a rectangle with irregularly rounded
+       corners and edges and an inflated top" (maintainer's archetype). The
+       inflated top lies entirely within the cobble's cell (spill law,
+       §3.1).
+     - OPEN: crown height range, breach fraction target (which stones sit
+       above the waterline), and the `wet_depth` normalization mapping
+       (waterline elevation included — §1.5).
 
 3.4 **Variant identity** — what distinguishes the 16 variants per size:
 seeded arrangement, tone casts, stone mixes, or all three; how identity
