@@ -590,6 +590,55 @@ cobble_path.variants =
 }
 data:extend{cobble_path}
 
+-- Q2 recipe numbers (maintainer, 2026-10-22): scarce-by-design, mirror of the
+-- wooden pattern — the ford costs a bed (the wooden one carries 100 stone /
+-- 200 gravel; the cobble ford consumes a path + the same bed), the path is
+-- cheap tile-tier. Vanilla mix = stone + stone bricks; the py branch swaps
+-- the path's stone for sand (provenance: pycoalprocessing, audit §5) and the
+-- ford's bed for the same gravel the py wooden ford uses. Both unlock with
+-- the single water-ford technology (ticket Q3). localised_name = the pypp
+-- eager-tiling guard, same chain as the wooden recipes.
+-- Ingredients are locals OUTSIDE the extend region (the wooden pattern):
+-- check.py attributes `name = "…"` literals inside data:extend statically,
+-- and inline vanilla ingredient names would self-attribute + locale-fail.
+local vanilla_path_ingredients = {
+  {type = "item", name = "stone",       amount = 2},
+  {type = "item", name = "stone-brick", amount = 1},
+}
+local py_path_ingredients = {
+  {type = "item", name = "sand",        amount = 10},
+  {type = "item", name = "stone-brick", amount = 1},
+}
+local vanilla_ford_ingredients = {
+  {type = "item", name = "cobblestone-path", amount = 1},
+  {type = "item", name = "stone",            amount = 100},
+}
+local py_ford_ingredients = {
+  {type = "item", name = "cobblestone-path", amount = 1},
+  {type = "item", name = "gravel",           amount = 200},
+}
+data:extend
+{
+  {
+    type = "recipe",
+    name = "cobblestone-path",
+    localised_name = {"?", {"recipe-name.cobblestone-path"}, {"item-name.cobblestone-path"}},
+    enabled = false,
+    energy_required = 0.5,
+    ingredients = py_loaded and py_path_ingredients or vanilla_path_ingredients,
+    results = {{type = "item", name = "cobblestone-path", amount = 1}},
+  },
+  {
+    type = "recipe",
+    name = "cobblestone-ford",
+    localised_name = {"?", {"recipe-name.cobblestone-ford"}, {"item-name.cobblestone-ford"}},
+    enabled = false,
+    energy_required = 10,
+    ingredients = py_loaded and py_ford_ingredients or vanilla_ford_ingredients,
+    results = {{type = "item", name = "cobblestone-ford", amount = 1}},
+  },
+}
+
 -- cobblestone-path item: land placement pattern (cf. wooden-flooring /
 -- stone-brick items): condition names water_tile WITHOUT invert = the target
 -- must NOT carry the water_tile layer. NO recipe yet — the bed/cost numbers

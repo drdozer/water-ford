@@ -91,6 +91,8 @@ data:extend{
     effects = {
       {type = "unlock-recipe", recipe = "wooden-flooring"},
       {type = "unlock-recipe", recipe = "wooden-ford"},
+      {type = "unlock-recipe", recipe = "cobblestone-path"},
+      {type = "unlock-recipe", recipe = "cobblestone-ford"},
     },
     unit = {count = 20, ingredients = {{"automation-science-pack", 1}}, time = 10},
     order = "a2[water-ford]",
@@ -99,12 +101,11 @@ data:extend{
 }
 
 -- Cobblestone ford item (1.1.0 Phase A): exists so the Phase A tile is
--- minable/placeable for the harness kit and the windowed hand tests. No
--- recipe/technology yet — the ticket's tech/recipe open questions are
--- Phase B. Stand-in icon references base art (__base__ path — nothing
--- copied); Phase B replaces it. Same place-on-water-only rule as the
--- wooden ford (inverted water_tile condition) and the same control-stage
--- revert guard (control.lua ford_names).
+-- minable/placeable for the harness kit and the hand tests. Recipe lands in
+-- data-updates.lua with the cobble block (Q2 numbers locked 2026-10-22);
+-- unlocked by the same water-ford technology. Same place-on-water-only rule
+-- as the wooden ford (inverted water_tile condition) and the same
+-- control-stage revert guard (control.lua ford_names).
 data:extend{
   {
     type = "item",

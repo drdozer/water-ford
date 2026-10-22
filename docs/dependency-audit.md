@@ -99,6 +99,7 @@ hard dependencies (verified in the dlc install's zips):
 | `treated-wood` | **pycoalprocessing** (`prototypes/items/items.lua`) | `pycoalprocessing >= 3.1.0` |
 | `log` | **pycoalprocessing** | `pycoalprocessing >= 3.1.0` |
 | `gravel` | **pycoalprocessing** | `pycoalprocessing >= 3.1.0` |
+| `sand` | **pycoalprocessing** (`prototypes/items/items.lua`) | `pycoalprocessing >= 3.1.0` |
 | `bolts` | **pypetroleumhandling** (`ITEM` def; every other py mention is an ingredient use) | `pypetroleumhandling >= 3.1.0` |
 | technology `creosote` | **pycoalprocessing** (`prototypes/technologies/creosote.lua`) | `pycoalprocessing >= 3.1.0` |
 

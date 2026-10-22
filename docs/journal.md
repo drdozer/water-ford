@@ -2470,3 +2470,21 @@ maintainer's pick), knob finalisation (item 5).
   (assets-src/cobble, unshipped); per-pixel engine consumption shelved until
   the maintainer asks for it. Phase B leaves: item 4 released surface
   (recipes per the Q2 direction, locale, changelog, portal) + knob ratify.
+
+### Q2 recipes locked and landed (2026-10-22, session 3)
+- RULING: borders stay as-is (item 2 closed, journal above). Q2 numbers →
+  recipes: path = 2 stone + 1 stone-brick (py: 10 sand + 1 stone-brick);
+  ford = 1 path + 100 stone (py: 1 path + 200 gravel). Both energy 0.5/10
+  mirroring the wooden pair; unlocked by the same water-ford technology
+  (both recipes added to its effects); pypp localised_name guard on both.
+- PROVENANCE: `sand` proven = pycoalprocessing items.lua (audit §5 row
+  added). py branch closure sound (py-closure env smoke PASS).
+- GOTCHA fixed in-flight: ingredients defined INLINE in data:extend got
+  statically attributed by check.py (name-collision with vanilla stone /
+  stone-brick / autoplace-control/stone → false locale missing/dead) —
+  hoisted to locals outside the extend region (the wooden pattern).
+  Checker attribution now = exactly the two new recipes (15 attributed).
+- Gates: check-assets OK; dlc-smoke smoke+diff+locale PASS (the recipe/tech
+  diffs are the expected ones, enumerated in the 161525Z log before the
+  baseline refreshed); py-closure smoke PASS; vehicle/pump harness exit 0.
+- Phase B remains: changelog bullets + portal page at release time.
