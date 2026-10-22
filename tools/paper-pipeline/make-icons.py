@@ -16,6 +16,11 @@ land_sheet = Image.open(os.path.join(GRAF, "wooden-flooring.png")).convert("RGBA
 ford_sheet = Image.open(os.path.join(GRAF, "wooden-ford.png")).convert("RGBA")
 stone_sheet = Image.open(os.path.join(GRAF, "ford-decorative-stones.png")).convert("RGBA")
 
+# --- cobble family (2026-10-21 maintainer feedback): icons from the 1x1
+# cobble cells, same recipes as the wooden set. The cobblestone-path land
+# partner SHARES the ford's sheet (one deck ladder consumed by both tiles).
+cobble_sheet = Image.open(os.path.join(GRAF, "cobblestone-ford.png")).convert("RGBA")
+
 def cell(sheet, idx, size):
     x, y = (idx % 10) * size, (idx // 10) * size
     c = sheet.crop((x, y, x + size, y + size))
@@ -57,6 +62,22 @@ for sidx, (px, py) in [(0, (86, -16)), (5, (-18, 82)), (2, (80, 82))]:
 assert 0.5 < opaque_frac(ford_icon) <= 1.0
 ford_icon.save(os.path.join(GRAF, "wooden-ford-icon.png"))
 
+# --- cobblestone-path item icon: one cobble cell, verbatim (land = bare deck,
+# no water under it; the shared cobble ladder's cell is fully opaque)
+cobble_path_icon = cell(cobble_sheet, 0, 128)
+assert opaque_frac(cobble_path_icon) == 1.0, "cobble cell not fully opaque"
+cobble_path_icon.save(os.path.join(GRAF, "cobblestone-path-icon.png"))
+
+# --- cobblestone-ford item icon: water base + cobble cell + same stone heaps
+# (the cobble ford binds the same rock decoratives)
+cobble_ford_icon = Image.new("RGBA", (128, 128), P1_WATER)
+cobble_ford_icon.alpha_composite(cell(cobble_sheet, 0, 128))
+for sidx, (px, py) in [(0, (86, -16)), (5, (-18, 82)), (2, (80, 82))]:
+    s = cell(stone_sheet, sidx, 64)
+    paste_over(cobble_ford_icon, s, px, py)  # alpha-over; edge clips are intentional
+assert 0.5 < opaque_frac(cobble_ford_icon) <= 1.0
+cobble_ford_icon.save(os.path.join(GRAF, "cobblestone-ford-icon.png"))
+
 # --- water-ford tech icon: 2x2 deck cells + stones at the corners/edges
 tech = Image.new("RGBA", (256, 256), P1_WATER)
 for i, cidx in enumerate((0, 5, 9, 13)):
@@ -68,7 +89,8 @@ for sidx, (px, py) in [(0, (188, -18)), (5, (-16, 190)), (2, (196, 192)),
     paste_over(tech, s, px, py)
 tech.save(os.path.join(GRAF, "water-ford-tech-icon.png"))
 
-for nm in ("wooden-flooring-icon.png", "wooden-ford-icon.png", "water-ford-tech-icon.png"):
+for nm in ("wooden-flooring-icon.png", "wooden-ford-icon.png", "water-ford-tech-icon.png",
+           "cobblestone-path-icon.png", "cobblestone-ford-icon.png"):
     im = Image.open(os.path.join(GRAF, nm))
     print(f"ICON {nm}: {im.size} mode={im.mode} opaque={opaque_frac(im):.2f}")
 print("MAKE-ICONS-DONE")

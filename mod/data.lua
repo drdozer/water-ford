@@ -109,8 +109,8 @@ data:extend{
   {
     type = "item",
     name = "cobblestone-ford",
-    icon = "__base__/graphics/icons/refined-hazard-concrete.png",
-    icon_size = 64,
+    icon = "__water-ford__/graphics/cobblestone-ford-icon.png",
+    icon_size = 128, -- was the Phase A stand-in; Phase B composition (make-icons.py: cobble cell + stone heaps + P1 water base)
     subgroup = "terrain",
     order = "c[landfill]-a3[cobblestone-ford]",
     stack_size = 100,

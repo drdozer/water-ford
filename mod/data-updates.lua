@@ -518,6 +518,10 @@ cobble.transition_merges_with_tile = "water"  -- probe 2026-10-16 (wooden): bank
 -- full opacity and would bury the deck; 12.5% alpha lets it show through
 cobble.effect_color = { 51, 51, 51, 63.75 }
 cobble.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}
+-- the SAME rock decoratives the wooden ford binds (maintainer 2026-10-21):
+-- the families are defined above them on the wooden tile; density lives on
+-- the prototypes (shared). The land path stays undecorated.
+cobble.bound_decoratives = {"ford-pebbles", "ford-stones"}
 -- Phase B knob: a distinct minimap grey (wooden carries the ochre family)
 cobble.map_color = {r = 120, g = 120, b = 120}
 -- 2026-10-21 Phase B: authored cobble ladder (tools/paper-pipeline/
@@ -592,8 +596,8 @@ data:extend{
   {
     type = "item",
     name = "cobblestone-path",
-    icon = "__base__/graphics/icons/stone-brick.png",
-    icon_size = 64,
+    icon = "__water-ford__/graphics/cobblestone-path-icon.png",
+    icon_size = 128,
     subgroup = "terrain",
     order = "b[terrain]-zz[cobblestone-path-item]",
     stack_size = 100,
