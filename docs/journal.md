@@ -2488,3 +2488,10 @@ maintainer's pick), knob finalisation (item 5).
   diffs are the expected ones, enumerated in the 161525Z log before the
   baseline refreshed); py-closure smoke PASS; vehicle/pump harness exit 0.
 - Phase B remains: changelog bullets + portal page at release time.
+
+### Ships ruling (2026-10-22, session 3)
+Solo run re-launched with cargo-ships 2.1.8 (+ graphics, Robot256Lib; the
+mod's declared optional-dep pair). MAINTAINER, IN-GAME: "Both ford tiles
+interact well with cargo ships." — ships sail both decks; the `water_tile`
++ collision-layer stamps hold in the shipped pairing. All in-game checks
+for the 1.1.0 surface are now green.
