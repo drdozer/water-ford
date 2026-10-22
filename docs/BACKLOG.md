@@ -45,3 +45,16 @@ Known candidates (add more as discovered; verify each before touching):
 
 Rule for the whole pass: measure before changing, bit-hash before/after, one
 candidate per commit-sized step, journal entry per candidate.
+## STATUS 2026-10-22 (boards arc wrap)
+
+- Items 1-3 above (the param-fcurve hygiene / legacy leftovers / action+modifier
+  naming) TARGETED THE OLD HAND-BUILT ford-boards.blend. That file is GONE:
+  ford-boards.blend is now regenerative BUILD OUTPUT (boards-builder.py,
+  factory-empty, lattice layout, approved B pins) — no fcurves, no legacy
+  objects, builder-clean names. ITEMS 1-3 = SUPERSEDED for ford-boards.
+  (They stand for ford-posts.blend if that file's tidying is ever queued.)
+- Item 4 (.cache hygiene) + the README reconcile = still standing.
+- The boards' outstanding items moved out of this file: the cobble family
+  run (`--base cobblestone-ford --wetpass`), the cobble mask wiring, the
+  release packaging — owned by the cobble session / the maintainer (see
+  docs/journal.md 2026-10-22 wrap entry).

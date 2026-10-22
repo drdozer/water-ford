@@ -2253,3 +2253,38 @@ approved look stands as-is) and item 4 (the 2x2 little-things list: passed).
 Item 3 done: the save stage of bake.sh now pkills the previous factorio
 before regenerating (the .lock + stale-window incident's fix; mirrors the
 view stage). Item 2 (16-distinct gate) = explained, awaiting the go.
+
+## 2026-10-22 — BOARDS ARC WRAP (session handoff: next session = cobble)
+
+End state of the boards tileset arc, all committed:
+- Template geometry CONFIRMED by the maintainer ("looks like the geometry
+  that we discussed as our template"): blender/ford-boards.blend =
+  regenerative output (boards-builder.py -- --cells all): FLOOR-only scene
+  (the factory-Scene incident fixed), the Stage-A lattice (AREA_1X1/2X2/4X4,
+  16 row-major designs each, cams = the contract depth), 520 planks / 294
+  bolts, the approved B materials (M_PLANK + per-size M_PLANK_2/4 with the
+  per-sprite pin window).
+- All 3 ladder sheets deployed through the wired pipeline (bake-ladder.py:
+  render masters + TWICE pixel-repro gate -> identity cut (own twice gate)
+  -> byte-verified deploy -> contract gates PASS); 1x1 = 512^2 4x4-grid,
+  the strip retired, lua line_length flipped (both tiles) in the same commit.
+- In-game CONFIRMED by the maintainer (live-linked factorio on :0).
+- Maintainer rulings recorded: the per-tile shade mechanism = the pin
+  window (shader-side; export-recipe.md material law); pattern-rate
+  calibration = PASSED AS-IS (item 1 accepted); the 2x2 little-things =
+  passed (item 4); the 16-distinct gate = SKIPPED (item 2, not a priority).
+
+OUTSTANDING after this wrap (for later sessions, listed in BACKLOG/repo docs):
+- the cobble family through this recipe (--base cobblestone-ford --wetpass:
+  the lattice re-base + the wetness pass + the drift closing) — THE NEXT
+  SESSION'S WORK (the cobble arc; the cobble files = that session's
+  in-flight work in the shared tree: mod/data*.lua/info.json,
+  assets-src/cobble, make-icons.py, palette-ladder-cobble.py — DO NOT commit
+  other sessions' in-flight files).
+- the cobble mask wiring (a named change after the art run).
+- the release packaging (the version bump + the changelog bullets at release
+  time, per the frozen rule).
+- housekeeping: .cache quarantine + README reconcile; the BACKLOG's blend
+  items 1-3 marked superseded (done this wrap).
+- the bolt-vanish-on-save bug = closed not-reproduced (monitored; the
+  isolate recipe lives in probe-old-deck.py dump-planks).
