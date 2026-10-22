@@ -80,14 +80,24 @@ The deck is a **waterline**, not a texture painted over water:
 
 ## 3. The dry look — authoring decisions (OPEN, maintainer rules each)
 
-3.1 **Pattern law** — how cobbles pack a 1×1 tile: stone size/count range,
-joint (gravel bed) widths, regular vs irregular courses. And the **boundary
-furniture rule** for the lattice: what meets across internal 1×1 tile
-boundaries on 2×2/4×4 designs — the boards analogs were per-tile lattice-
-periodic crowns vs the approved per-sprite pins (materials); the cobble
-equivalent must be chosen, not assumed. (Preliminary shape: a tile-local
-pattern law that is tile-boundary-compliant, so variant identity lives in the
-pattern, not in seams.)
+3.1 **Pattern law** — walkthrough rulings (2026-10-22, round 1):
+     - Cobbles are **oblong, packed 3×4 per 1×1 tile** (12 stones/tile; the
+       oblong transposition and exact stone/joint dimensions resolve at the
+       first proof render).
+     - **Neighbour merges into "large" cobbles** occur occasionally — a
+       seeded authoring knob (frequency not yet fixed).
+     - **Edge law (the R10 analog, cobble form)**: the cobble grid is
+       aligned to the tile lattice so that NO joint between two arbitrarily
+       chosen 1×1 variants reads as broken — edge-touching stones meet
+       variant-invariant lattice positions ("pin the boundary, free the
+       interior"). Spill allowance (zero spill vs small spill at fixed
+       lattice positions) = still OPEN; quantify at the proof round.
+     - **Coverage law**: cobbles fill most of the xy space; only very small
+       amounts of the floor layer show through — thin joints, minimal bed
+       exposure (the joint width = the measurable knob).
+     - 2×2/4×4 designs: the same 1×1-periodic stone lattice across the
+       design's internal tiles; merges may cross internal boundaries
+       within a design area. The design's outer edge carries the edge law.
 
 3.2 **Tone bands** — stones and joint bed are toned **independently**;
 verdicts are judged **DRY** (the WASHED/veil preview column is retired with
@@ -98,10 +108,16 @@ for another deck but measured facts); vanilla `stone-path` as brightness
 context. A dry deck that never reads "dirty white" and no joint bed that
 reads black are the failure modes named to date.
 
-3.3 **Height/crown law** — relief per cobble (rounded crowns, flat cuts,
-irregularity), how much of the deck breaches the waterline ("some"), how the
-height field interacts with the wet_depth normalization (§1.4). Height is
-what makes wetness legible — the decision is structural, not cosmetic.
+3.3 **Height/crown law** — walkthrough rulings (2026-10-22, round 1):
+     - **Shadow law (binding): everything casts AND catches shadows,
+       including the floor layer.** The 3D appearance comes from shadow
+       interplay — the floor is a real recessed plane, stones stand proud
+       of it, and receive/cast flags are never disabled anywhere in the
+       deck family. No baked-flat look: relief is real geometry.
+     - OPEN: crown shape (dome vs flat-cut), max cobble height, the breach
+       fraction target (which stones sit above the waterline), and the
+       `wet_depth` normalization mapping (waterline elevation included —
+       §1.5).
 
 3.4 **Variant identity** — what distinguishes the 16 variants per size:
 seeded arrangement, tone casts, stone mixes, or all three; how identity
