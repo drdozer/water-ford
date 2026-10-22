@@ -16,11 +16,8 @@ pumps can no longer be placed on it.
 
 ## Cobblestone Ford (1.1.0)
 
-The road crossing: **vehicles drive across** while **players are stopped at
-the shore**, and **enemies walk across freely** — a ford is a road, not a
-wall (cobble paving must not become a free, impenetrable biter barrier;
-balance ruling 2026-10-22, the one change from the Phase A sketch).
-Hand-laid cobblestones rise through
+The road crossing: **vehicles drive across** while players, land caravans
+and enemies are stopped at the shore. Hand-laid cobblestones rise through
 the water — some crowns breach the surface, joints stay dark, everything
 below reads submerged. Ships still sail over it; offshore pumps are
 refused. Placeable on water only, like the wooden ford.
@@ -66,7 +63,9 @@ devctl mods build water-ford     # zip from committed mod/ content -> dist/
 devctl mods link water-ford      # live-link for in-game testing
 devctl python run testmods/water-ford/run.py   # pathing-contract harness (exit 0)
 python3 tools/gen-textures.py    # regenerate pilings/mask/planks (seeded)
-python3 tools/gen-branding.py    # regenerate icon; thumbnail -> dist/ scratch
+python3 tools/gen-branding.py    # regenerate thumbnail -> dist/ scratch
+                                 # (retired writer; shipped mod/thumbnail.png is
+                                 # canonical — icon belongs to the paper pipeline)
 ```
 
 Agent-facing notes and invariants: [AGENTS.md](AGENTS.md).

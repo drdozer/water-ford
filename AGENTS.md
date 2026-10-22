@@ -39,14 +39,10 @@ Generative-art briefs (AI-art prompts + committed candidate runs) live in
    text. The **recipe's `localised_name` is load-bearing** (pypostprocessing
    compat — do not remove; `docs/dependency-audit.md` §6).
 5. **The ford collision layers are stamped in `mod/data-final-fixes.lua`** —
-   three mod-custom layers (2026-10-21 split; pedestrian scope amended
-   2026-10-22): `water-ford` (BOTH ford tiles
+   three mod-custom layers (2026-10-21 split): `water-ford` (BOTH ford tiles
    + every `offshore-pump`), `water-ford-vehicle` (wooden ford tile + every
    `car`), `water-ford-pedestrian` (cobblestone ford tile + every
-   `character` ONLY — the 2026-10-22 balance ruling unstamped `unit`:
-   biters/py caravans walk across the cobble ford freely; stamping units
-   would make cobble paving a free, impenetrable biter barrier).
-   They ARE the vehicle/pump/pedestrian exclusion
+   `character`/`unit`). They ARE the vehicle/pump/pedestrian exclusion
    contracts; removing a stamp silently reopens one. Ships and spidertron
    are deliberately unstamped (spidertron: ignored, 2026-10-21 — it walks
    open water anyway). Both ford tiles keep `water_tile`: ships and pump
@@ -84,8 +80,7 @@ Generative-art briefs (AI-art prompts + committed candidate runs) live in
   (space-age) — honored since the 2026-10-21 envspec list-placement fix.
   Must exit 0 with the piling rule intact, the py recipe composed through
   the renamed wooden-flooring item, pypp guards live, and the caravan
-  units unstamped (2026-10-22 balance ruling: units cross the cobble
-  ford; players-only feet exclusion).
+  units stamped with `water-ford-pedestrian`.
 - Visual: seed-pinned scenario harness (superproject `docs/visual-testing.md`;
   harness in `.cache/stage-exp/`, one-off). The critical arrangements are
   open-water rims, ford/shallow border, ford/land border — and the absence of

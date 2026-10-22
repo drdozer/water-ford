@@ -16,11 +16,9 @@ Date: unreleased
   Features:
     - New tile: **Cobblestone Ford** — the promised road crossing. Hand-
       laid cobblestones rise through the water (some crowns breach the
-      surface): vehicles drive across, players are stopped at the shore,
-      offshore pumps are refused, biters and other enemies walk across
-      freely (a ford is a road, not a wall — cobble paving must not be a
-      free biter barrier), and Cargo Ships still sail over it. Place on
-      water only.
+      surface): vehicles drive across, players, land caravans and enemies
+      are stopped at the shore, offshore pumps are refused, and Cargo Ships
+      still sail over it. Place on water only.
     - New tile: **Cobblestone Path** — the land partner paving, same
       16-variant cobblestone family. Place on land only.
     - Authored art across the ladder: 16 sprite variants per size (1×1,

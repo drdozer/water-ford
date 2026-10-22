@@ -7,10 +7,9 @@ as a dedicated server, waits for the results JSON, quits via RCON, and maps the
 verdict onto the exit code:
 
     0  pass        - wooden ford car stopped; cobblestone ford car crossed;
-                     biters have a crossing path onto the cobble ford
-                     (balance ruling 2026-10-22: cobble paving must not be
-                     a biter barrier) and across wooden/shallow/landfill
-                     controls; deepwater stays pathless
+                     biters have no crossing path onto the cobble ford (and
+                     not onto deep water), wooden/shallow/landfill controls
+                     do yield paths
     1  fail        - a contract gate violated (wooden car crossed, cobble car
                      stopped, or a unit path crosses the cobble ford)
     2  harness-error - control lane failed / results missing / server died

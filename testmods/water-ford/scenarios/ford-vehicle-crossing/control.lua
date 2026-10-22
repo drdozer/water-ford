@@ -318,10 +318,8 @@ script.on_nth_tick(1, function(e)
 
     -- GATES. Cars: the wooden ford must stop the car; the cobblestone ford
     -- (the 1.1.0 road ford) must be crossed; landfill is the control.
-    -- Units: biters cross the cobblestone ford (balance ruling 2026-10-22:
-    -- paving must not become a free, impenetrable biter barrier — units are
-    -- unstamped, the feet exclusion is players only); deepwater is the
-    -- negative control; wooden/shallow/landfill stay the unit controls.
+    -- Units: the cobblestone ford must NOT be crossed; wooden/shallow/
+    -- landfill are the unit controls.
     local ford = results.lanes["wooden-ford"]
     if ford.crossed then
       ford.verdict = "FAIL - car crossed the wooden ford"
@@ -352,11 +350,10 @@ script.on_nth_tick(1, function(e)
       control.verdict = "control ok - car crossed the landfill bridge"
     end
 
-    -- UNIT PATH-REQUEST GATES: deep water is the oracle's negative control
-    -- (no crossing path); a reaching path on cobblestone/wooden shallows and
-    -- landfill (the unit-side controls — cobble crossable as of the
-    -- 2026-10-22 balance ruling).
-    local must_not_cross = { ["unit-deepwater"] = true }
+    -- UNIT PATH-REQUEST GATES: no crossing path on the cobblestone ford or
+    -- deep water (the oracle's own negative control); a reaching path on
+    -- wooden shallow and landfill (the unit-side controls).
+    local must_not_cross = { ["unit-cobblestone-ford"] = true, ["unit-deepwater"] = true }
     for _, lane in ipairs(LANES) do
       if lane.unit then
         local pr = path_results[lane.key]
