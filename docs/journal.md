@@ -2504,3 +2504,14 @@ for the 1.1.0 surface are now green.
   releases are empty; the dist/ zips (1.0.0/1.0.1 built 2026-10-20,
   declared factorio 2.1) were never deployed. 1.1.0 would be the FIRST
   portal release — publish gate = maintainer's explicit go.
+
+- CORRECTION (same wrap): the "never published" portal-fact above is WRONG.
+  The live portal page (mods.factorio.com/mod/water-ford) shows the mod
+  PUBLISHED: 1.0.1 declared factorio 2.1, created 8 days ago, release 2 days
+  ago, 10 downloaders. Search invisibility (maintainer report) = the
+  portal's own documented search-index caching ("it can take several hours
+  for new mods and updates to show up in search results" — portal query page).
+  Open small mystery: devctl mods fetch --list still reports "no 2.0/2.1.23
+  release" for a portal release that exists — resolver filter to re-check
+  when touching fetch next. Release-flow consequence unchanged: 1.1.0 = a
+  portal UPDATE, publish gate = maintainer's explicit go.
