@@ -526,17 +526,18 @@ cobble.bound_decoratives = {"ford-pebbles", "ford-stones"}
 cobble.map_color = {r = 120, g = 120, b = 120}
 -- Cobble arc Phase B: the authored ladder = the boards recipe (docs/
 -- export-recipe.md) driven via tools/paper-pipeline/bake-ladder.py
--- (--base cobblestone-ford --wetpass; look spec: docs/cobble-visual-
--- language.md). ART RENDERS DRY — wetness is the wet/dry mask pass (the
--- wetness data block; engine wiring = the pending named change). The
--- condemned cobble crank was purged 2026-10-22 (journal) — the sheets
--- currently deployed here are the retired pre-pipeline generations.
+-- Currently deployed here: the export-recipe generations (look-approved
+-- 2026-10-22): the masters live in assets-src/cobble, the 4x4-grid sheets
+-- cut/deployed by bake-ladder.py. Art renders DRY — wetness is the wet/dry
+-- mask pass (the wetness data block in assets-src/cobble = the approved
+-- masks; engine wiring = the pending named change).
 -- Same 16/16/16 ladder shape as the wooden ford (scale 0.25 / probabilities
--- 1 / y 0, line_lengths 16/4/4).
+-- 1 / y 0, line_lengths 4/4/4 — all sizes 4x4 grids per the recipe revision;
+-- the 16-strip layout retired with the old generation).
 cobble.variants = table.deepcopy(data.raw.tile["water"].variants)
 cobble.variants.main =
 {
-  {picture = "__water-ford__/graphics/cobblestone-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
+  {picture = "__water-ford__/graphics/cobblestone-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 4},
   {picture = "__water-ford__/graphics/cobblestone-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
   {picture = "__water-ford__/graphics/cobblestone-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
 }
@@ -581,7 +582,7 @@ cobble_path.variants =
 {
   main =
   {
-    {picture = "__water-ford__/graphics/cobblestone-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 16},
+    {picture = "__water-ford__/graphics/cobblestone-ford.png", count = 16, size = 1, y = 0, scale = 0.25, line_length = 4},
     {picture = "__water-ford__/graphics/cobblestone-ford-2x2.png", count = 16, size = 2, y = 0, scale = 0.25, probability = 1, line_length = 4},
     {picture = "__water-ford__/graphics/cobblestone-ford-4x4.png", count = 16, size = 4, y = 0, scale = 0.25, probability = 1, line_length = 4},
   },

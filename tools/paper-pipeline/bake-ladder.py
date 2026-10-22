@@ -477,12 +477,19 @@ def sheet_suffix(size):
 
 
 def main_offline(args):
-    """Stage C + deploy + gate, offline from committed masters (no bpy):"""
+    """Stage C + deploy + gate, offline from committed masters (no bpy):
+    family-aware — the boards machinery keeps SHARED_ART; the cobble branch
+    stages/deploys just its base (cobblestone-ford / cobblestone-path share
+    the same FILES, so one staged sheet serves both tiles) and the gate
+    additionally demands the wetness-mask sheets present in assets-src."""
     base = args["base"]
+    cobble = base.startswith("cobble")
+    staging = COBBLE_STAGING if cobble else STAGING
+    art_names = [base] if cobble else list(SHARED_ART)
     stages = [s.strip() for s in (args.get("stages") or "cut,deploy,gate").split(",")]
     masters = []
     for size in SIZES:
-        mp = os.path.join(STAGING, f"{base}-master-{SIZE_TAG[size]}.png")
+        mp = os.path.join(staging, f"{base}-master-{SIZE_TAG[size]}.png")
         if not os.path.exists(mp):
             raise SystemExit(f"MASTER MISSING: {mp} - run the render stage first")
         fa = contract_check(mp, base, size)
@@ -493,7 +500,7 @@ def main_offline(args):
     if "cut" in stages:
         import numpy as np
         for size, mp in masters:
-            sp = os.path.join(STAGING, f"{base}{sheet_suffix(size)}.png")
+            sp = os.path.join(staging, f"{base}{sheet_suffix(size)}.png")
             cut_sheet(mp, size, sp)
             sp2 = sp + ".twice.png"
             cut_sheet(mp, size, sp2)              # the twice-gate: cut runs twice
@@ -504,18 +511,19 @@ def main_offline(args):
             os.remove(sp2)
             print(f"CUT: {base}{sheet_suffix(size)}.png ({sp} == master identity)")
         for size in SIZES:
-            for name in SHARED_ART:
+            for name in art_names:
                 if name == base:
                     continue
-                dst = os.path.join(STAGING, f"{name}{sheet_suffix(size)}.png")
-                shutil.copyfile(os.path.join(STAGING, f"{base}{sheet_suffix(size)}.png"), dst)
-                verify_bytes(os.path.join(STAGING, f"{base}{sheet_suffix(size)}.png"), dst)
-            print(f"STAGED: {name}{sheet_suffix(size)}.png == {base}{sheet_suffix(size)}.png (shared art)")
+                dst = os.path.join(staging, f"{name}{sheet_suffix(size)}.png")
+                src = os.path.join(staging, f"{base}{sheet_suffix(size)}.png")
+                shutil.copyfile(src, dst)
+                verify_bytes(src, dst)
+                print(f"STAGED: {os.path.basename(dst)} == {os.path.basename(src)} (shared art)")
 
     if "deploy" in stages:
         for size in SIZES:
-            for name in SHARED_ART:
-                staged = os.path.join(STAGING, f"{name}{sheet_suffix(size)}.png")
+            for name in art_names:
+                staged = os.path.join(staging, f"{name}{sheet_suffix(size)}.png")
                 if not os.path.exists(staged):
                     raise SystemExit(f"STAGED SHEET MISSING: {staged} - run the cut stage first")
                 deployed = os.path.join(MODGRAPHICS, f"{name}{sheet_suffix(size)}.png")
@@ -525,13 +533,22 @@ def main_offline(args):
     if "gate" in stages:
         faults = []
         for size in SIZES:
-            for name in SHARED_ART:
+            for name in art_names:
                 deployed = os.path.join(MODGRAPHICS, f"{name}{sheet_suffix(size)}.png")
                 faults += contract_check(deployed, name, size)
-                verify_bytes(os.path.join(STAGING, f"{name}{sheet_suffix(size)}.png"), deployed)
-            a = os.path.join(MODGRAPHICS, f"{SHARED_ART[0]}{sheet_suffix(size)}.png")
-            b = os.path.join(MODGRAPHICS, f"{SHARED_ART[1]}{sheet_suffix(size)}.png")
-            verify_bytes(a, b)
+                verify_bytes(os.path.join(staging, f"{name}{sheet_suffix(size)}.png"), deployed)
+        if not cobble:
+            for size in SIZES:
+                a = os.path.join(MODGRAPHICS, f"{SHARED_ART[0]}{sheet_suffix(size)}.png")
+                b = os.path.join(MODGRAPHICS, f"{SHARED_ART[1]}{sheet_suffix(size)}.png")
+                verify_bytes(a, b)
+        else:
+            # recipe gate: the wetness-mask sheets ride in assets-src (the
+            # wiring round consumes them); presence, not generation
+            for size in SIZES:
+                msp = os.path.join(staging, f"{base}{sheet_suffix(size)}-mask.png")
+                if not os.path.exists(msp):
+                    faults.append(f"MASK SHEET MISSING: {msp}")
         if faults:
             raise SystemExit("GATE FAILURES:\n  " + "\n  ".join(faults))
         print(f"GATE: contract + staging/deploy byte-equality + shared-art pairs PASS "

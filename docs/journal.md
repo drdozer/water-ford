@@ -2427,3 +2427,19 @@ breach law, variant identity) go to the maintainer; then the cobble builder.
 - Deploy commit carries the sheet+lua pair per recipe law: the size-1
   cobblestone-ford sprite line_length flips 16→4 (both tiles that share
   the art) AT THE SAME COMMIT as the first replaced 512² sheet.
+
+- Stage C executed and gated: cut (twice-gate green) → deployed 3 sheets
+  (byte-verified) → GATE PASS. Offline machinery gained the family-aware
+  cobble branch (staging=COBBLE_STAGING, no shared-art pairs, mask-sheet
+  presence in the gate).
+- Lua shipped WITH the sheets (same-commit law): size-1 cobblestone-ford
+  sprite line_length 16→4 in BOTH tiles that share the art; comment block
+  updated to the current-pipeline state.
+- Verification: check-assets OK; dlc-smoke smoke PASS; dump-diff vs a
+  baseline re-captured from the pre-change tree = exactly the two expected
+  cobble variants.main flips (note for hygiene: the previous :cache
+  baseline predated yesterday's boards-wrap + icon-commit — its drift was
+  absorbed into the fresh baseline); vehicle/pump harness run.py exit 0;
+  py-closure smoke PASS.
+- The old generations (strip 2048x128 + the Oct-21 sheets) are now git-
+  history archive; staging == deployed from this commit forward.
