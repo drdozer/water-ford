@@ -13,10 +13,30 @@ Date: unreleased
       data-final-fixes) is stamped into the ford tile and every car and
       offshore-pump prototype; it is what enforces both exclusions.
       Automated contract harness: testmods/water-ford (headless, exit 0).
+  Features:
+    - New tile: **Cobblestone Ford** — the promised road crossing. Hand-
+      laid cobblestones rise through the water (some crowns breach the
+      surface): vehicles drive across, players, land caravans and enemies
+      are stopped at the shore, offshore pumps are refused, and Cargo Ships
+      still sail over it. Place on water only.
+    - New tile: **Cobblestone Path** — the land partner paving, same
+      16-variant cobblestone family. Place on land only.
+    - Authored art across the ladder: 16 sprite variants per size (1×1,
+      2×2, 4×4), rendered deck-per-deck in Blender to the 128 px/tile
+      contract, with authored item icons and bound rock decoratives. Roads
+      cross the Ford (fast: 1.1 walking speed on the path, 0.9 on the
+      ford) while the footpath rules stay strict.
+  Recipes:
+    - Cobblestone Path: 2 stone + 1 stone brick.
+    - Cobblestone Ford: 1 path + 100 stone (the bed you carry across).
+    - With Pyanodon's Alien Life: the path crafts from 10 sand + 1 stone
+      brick; the ford consumes 1 path + 200 gravel. Both tiles unlock with
+      the existing water-ford technology.
   Locale:
     - Item, tile and mod descriptions now state the crossing rules:
       walkable and water-navigable, vehicles stopped at the shore, no
       offshore pumps.
+    - Recipe names for the new cobblestone tiles.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 18. 10. 2026

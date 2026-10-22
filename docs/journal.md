@@ -2495,3 +2495,12 @@ mod's declared optional-dep pair). MAINTAINER, IN-GAME: "Both ford tiles
 interact well with cargo ships." — ships sail both decks; the `water_tile`
 + collision-layer stamps hold in the shipped pairing. All in-game checks
 for the 1.1.0 surface are now green.
+
+- Changelog 1.1.0 assembled (session 3 wrap): Phase-A bullets stay; Features/
+  Recipes/Locale sections added for the cobble pair. VERSION FACTS:
+  info.json = 1.1.0 ✓ (nothing to bump, changelog Date stamps at publish);
+  PORTAL STATE ESTABLISHED = water-ford has NEVER been published — portal
+  has no release (sanctioned fetch --list: no 2.x release) and GitHub
+  releases are empty; the dist/ zips (1.0.0/1.0.1 built 2026-10-20,
+  declared factorio 2.1) were never deployed. 1.1.0 would be the FIRST
+  portal release — publish gate = maintainer's explicit go.
