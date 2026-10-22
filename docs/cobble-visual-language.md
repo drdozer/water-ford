@@ -120,7 +120,16 @@ mechanism.
 - Stones and joint bed toned independently; judged DRY (the WASHED/veil
 preview column is retired); tuned + approved at proof rounds like §3.3's
 numbers.
-- OPEN: exact slate L-band, bed tone, speckle/pit balance + scale.
+- **Bed ruling (2026-10-22, round 4)**: the floor joint layer is faux
+  (shader-side, no extra geometry) textured as **sand/pebble rubble in
+  the sandy palette** — the warm sand/ochre families recorded in
+  `boards-visual-language.md` §3 as candidate references; pebble relief
+  = Voronoi-family bump at low amplitude (matte rubble that catches
+  shadows law-compliantly); pebble/fine scale = tuned at proofs. The
+  bed stays recessed/dark-in-shadow via the joint geometry, not via a
+  black tone.
+- OPEN (tuned at proofs, approved by eyes): slate L-band, base roughness
++ breakup strength, speckle + pit tuning, exact sandy bed stops.
 
 3.3 **Height/crown law** — walkthrough rulings (2026-10-22, rounds 1–3):
      - **Shadow law (binding): everything casts AND catches shadows,
