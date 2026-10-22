@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.0
-Date: unreleased
+Date: 22. 10. 2026
   Changes:
     - Vehicles can no longer drive across the Wooden Ford: cars, tanks and
       modded cars are stopped at the shore. The ford is a footpath, not a
