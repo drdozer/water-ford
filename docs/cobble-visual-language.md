@@ -155,10 +155,38 @@ works": approved at proof.
   contract depth), the same light rig — the cobble differs only in mesh
   and materials. The stones-verbatim sun default is **RETIRED** (the sun
   transplant lived in the purged blend; the boards template is the law).
-- **Look materials**: the researched polished-cobblestone technique is
-  the mechanism (§3.2's directive); the 4-node Noise→ramp→Principled
-  shape is convention START only, parameters from §3.2/research/tune;
-  `M_COBBLE_MASK` stays fixed (piling law, §2.1).
+- **Look materials**: the researched polished-stone technique (2026-10-22
+  web round — blender.SE polished-granite accepted answer, a procedural
+  cobblestone tutorial, PBR roughness-map deep dive) = the working
+  recipe, per the "ask the internet" directive: see §3.2a.
+- **§3.2a — the researched polished-stone recipe (candidate mechanism,
+  to be proven at the proof rounds):**
+  1. **Polish = low base roughness + a roughness-breakup layer** — never
+     a uniform gloss: base roughness tuned (~0.25–0.4 candidate), then a
+     low-contrast noise modulation layered on top so reflections break
+     up but never read plastic-or-matte (the "plastic" failure mode =
+     flat uniform roughness).
+  2. **Speckle = scaled-up Voronoi through a ColorRamp mixed into Base
+     Color at low factor** (the granite "crystal fleck" technique) —
+     tonal variety WITHOUT raising metallic/shine.
+  3. **Non-reflective pitting = smooth-Voronoi pit field through Bump at
+     LOW strength (the 0.02-class default), optionally darkening Base
+     Color / raising local roughness in the pits** — pits read as matte
+     grunge catchers, never as shiny dimples ("non-reflective" is the
+     spec, per §3.2).
+  4. **Per-stone value/hue casts** via seeded per-stone attributes (the
+     boards' per-plank cast law as a MECHANISM — geometry jiggle remains
+     primary per §3.4).
+  5. Stone-vs-bed separation (height, contact shadows) comes from the
+     REAL geometry (loaf meshes + recessed floor) + the shadow law
+     (§3.3) — the shader adds no displacement for stone silhouettes
+     (top-down ortho camera; 1 px = 1/128 u ⇒ bump distances in the
+     ~0.008–0.02 u range).
+- `M_COBBLE_MASK` stays fixed (piling law, §2.1); wetness NEVER enters
+  art materials (§2).
+- OPEN (tuned at proofs, approved by eyes): slate L-band, base roughness
+  value + breakup strength/contrast, speckle scale/density, pit scale,
+  bed tone.
 
 ## 4. Condemned heritage (provenance record)
 
