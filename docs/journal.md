@@ -2443,3 +2443,12 @@ breach law, variant identity) go to the maintainer; then the cobble builder.
   py-closure smoke PASS.
 - The old generations (strip 2048x128 + the Oct-21 sheets) are now git-
   history archive; staging == deployed from this commit forward.
+
+- Blend provenance event (same session): a live GUI Blender (the
+  mcp-for-blender bridge started 16:26) saved ford-cobble.blend at
+  16:49:32 — AFTER the masters rendered (16:41–44) and after the Stage-C
+  commit targets existed. Content check, pipeline native: all three AREAS
+  re-rendered from the on-disk blend = PIXEL-IDENTICAL with the committed
+  masters (512²/1024²/2048²) — the save carried non-render state only
+  (boards precedent cd30819 classification). blend(+1) committed with this
+  evidence; masters' provenance = the commit-time bytes d51934a.
