@@ -2246,3 +2246,10 @@ looks correct... the template geometry for designing tilesets".
 Also: pkill -f trick (matched my own shell = exit 143), pattern anchored
 to the cmdline tail. The MCP bridge reports via get_scene_info need
 content[0].text (not .result), fields whitelist = placement-free.
+
+## 2026-10-22 — round closes: calibration + little-things PASSED by the maintainer; bake.sh ordering fixed
+Maintainer accepted item 1 (pattern-rate calibration: NOT applied — the
+approved look stands as-is) and item 4 (the 2x2 little-things list: passed).
+Item 3 done: the save stage of bake.sh now pkills the previous factorio
+before regenerating (the .lock + stale-window incident's fix; mirrors the
+view stage). Item 2 (16-distinct gate) = explained, awaiting the go.

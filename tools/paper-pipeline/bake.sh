@@ -78,6 +78,11 @@ fi
 
 if has save; then
   run_stage save
+  # the save/view stage can collide with a still-running instance: the old
+  # process holds the scratch .lock (the fresh save fails) and the view
+  # stage then reports the OLD window alive off stale state. Kill first
+  # (mirror of the view stage), per the 2026-10-22 incident.
+  pkill -x factorio 2>/dev/null || true; sleep 2
   python3 "$HERE/bake-save.py" --seed "$SEED"
 fi
 
