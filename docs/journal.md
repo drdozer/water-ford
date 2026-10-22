@@ -2612,3 +2612,29 @@ for the 1.1.0 surface are now green.
   and oreguard: repo precedent is portal-only ships (superproject AGENTS
   ship-flow "GitHub Release artifact" bullet notwithstanding — flag for the
   next tooling pass if the leg is wanted live).
+
+### PATH WALKABILITY CLOSED (2026-10-22, session 4) — the path was always walkable
+- MAINTAINER playtest on the CLEAN shipped 1.1.0 zip (isolated mod dir
+  .cache/wf-clean-110, no other mods, no provisioned save): the player
+  walks on the cobblestone path. Matches every recorded artifact.
+- COMMIT TRACE: exactly ONE commit ever wrote a cobble_path line in
+  data-updates.lua — 5aed0e2 (10-21 16:44, ladder wiring), the tile's
+  birth: concrete deepcopy + land placement + walk 1.1, NO collision-mask
+  edit (its own message: "mask wiring = pending named change" — the named
+  change never came). The purge (ade2c31) removed the old cobble ART
+  pipeline (bake-cobble.py et al), not tile behaviour: the path block
+  survives byte-identical across every revision, into the shipped zip.
+  All four dump snapshots (17:15 → shipped) show the path's
+  collision_mask = {ground_tile} — identical to concrete and wooden-flooring.
+- ATTRIBUTION: the earlier "path excludes the player" observation was the
+  COBBLESTONE FORD stopping the player at the shore — the only cobble tile
+  that ever stopped players (characters+units stamped since Phase A in
+  every revision, except the 20:01–20:13 hallucination window which made
+  the ford unit-open).
+- RULING (maintainer, session 4): the cobblestone path STAYS a plain
+  walkable concrete clone, open to all — no new exclusion layer, no 1.1.1.
+  Portal description revised to match and to the wooden sections' style:
+  release numbers stripped from description + summary ("nobody needs to
+  be told release numbers"), the duplicate wooden bullet removed, the
+  stale "road ford planned" line → pointer to the shipped ford, cobble
+  sections rewritten value-first. Pushed --page-only in the next commit.
