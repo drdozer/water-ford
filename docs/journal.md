@@ -2515,3 +2515,23 @@ for the 1.1.0 surface are now green.
   release" for a portal release that exists — resolver filter to re-check
   when touching fetch next. Release-flow consequence unchanged: 1.1.0 = a
   portal UPDATE, publish gate = maintainer's explicit go.
+
+### 2026-10-22 (session 3 close) — 1.1.0 final review (docs / i18n / changelog)
+- Gallery: maintainer grabs committed (04 tank on the cobble ford, 05 car on
+  the cobble path; filename typo 'coblestone'→'cobblestone' fixed at review).
+- Review fixes: info.json description now carries the 1.1.0 cobble pair (the
+  portal's listed one-liner); locale [technology-description] states the
+  stone chain; README gains Cobblestone Ford/Path sections + recipes +
+  the four-tile family paragraph (was 1.0 boards-only); spec §3 heading
+  → "RULINGS LANDED" with journal pointers; export-recipe faults section →
+  RESOLVED + increment plan COMPLETE (wetpass engine consumption = shelved
+  by border ruling); BACKLOG cobble items closed with pointers.
+- Changelog wording tightened ("the cobble path walks slightly faster than
+  bare land 1.1; cobble ford 0.9" — verified against data-updates lines
+  138/238/547/578).
+- Gates re-run: envs had been pruned mid-session (another session's
+  housekeeping) — recreated from the mod's envs/*.toml specs, baselines
+  re-captured pre-change in the rebuilt env (the old baseline carried
+  space-age data-dir prototypes → 2325-removed false diff; the envspec
+  list-placement fix explains the shrunken scope). Final: smoke PASS,
+  diff PASS (0 delta), locale PASS (15 attributed, 0 dead, 0 missing).

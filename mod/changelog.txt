@@ -23,9 +23,10 @@ Date: unreleased
       16-variant cobblestone family. Place on land only.
     - Authored art across the ladder: 16 sprite variants per size (1×1,
       2×2, 4×4), rendered deck-per-deck in Blender to the 128 px/tile
-      contract, with authored item icons and bound rock decoratives. Roads
-      cross the Ford (fast: 1.1 walking speed on the path, 0.9 on the
-      ford) while the footpath rules stay strict.
+      contract, with authored item icons and bound rock decoratives. The
+      cobble path walks slightly faster than bare land (1.1 vs 1.0); the
+      cobble ford runs 0.9, like the wooden one — the footpath rules stay
+      strict.
   Recipes:
     - Cobblestone Path: 2 stone + 1 stone brick.
     - Cobblestone Ford: 1 path + 100 stone (the bed you carry across).

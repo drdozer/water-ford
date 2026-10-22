@@ -54,7 +54,11 @@ candidate per commit-sized step, journal entry per candidate.
   objects, builder-clean names. ITEMS 1-3 = SUPERSEDED for ford-boards.
   (They stand for ford-posts.blend if that file's tidying is ever queued.)
 - Item 4 (.cache hygiene) + the README reconcile = still standing.
-- The boards' outstanding items moved out of this file: the cobble family
-  run (`--base cobblestone-ford --wetpass`), the cobble mask wiring, the
-  release packaging — owned by the cobble session / the maintainer (see
-  docs/journal.md 2026-10-22 wrap entry).
+- CLOSED (2026-10-22, session 3): the cobble family run (deck art shipped,
+  22ed875 — wetpass masks look-approved with engine consumption shelved
+  per the border ruling), the cobble recipes (Q2, 2c0ce4c), and the README
+  reconcile (1.1.0 player-facing sections) — see journal.
+- RELEASE-PACKAGING (moved out of this file; owned by the 1.1.0 release
+  wrap): gallery images (04/05 grabbed), description/summary drafted, build
+  green (strict-clean), publish go = the maintainer's,
+  changelog date-stamp at publish.

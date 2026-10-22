@@ -14,16 +14,39 @@ pumps can no longer be placed on it.
   treated-wood + 1 iron-stick + 8 bolts, and a ford is 1 flooring + 1 log +
   200 gravel (bed ballast).
 
+## Cobblestone Ford (1.1.0)
+
+The road crossing: **vehicles drive across** while players, land caravans
+and enemies are stopped at the shore. Hand-laid cobblestones rise through
+the water — some crowns breach the surface, joints stay dark, everything
+below reads submerged. Ships still sail over it; offshore pumps are
+refused. Placeable on water only, like the wooden ford.
+
+- Recipe: 1 Cobblestone Path + 100 stone (bed ballast — a crossing's worth
+  of material per ford).
+- With Pyanodon Alien Life: 1 path + 200 gravel.
+
+## Cobblestone Path (1.1.0)
+
+The land partner: grey-blue cobbles for roads and yards, reading as one
+family with the ford's deck. Slightly faster walking than bare land
+(1.1; the cobble ford runs 0.9). Not placeable over water — the ford is
+the crossing.
+
+- Recipe: 2 stone + 1 stone brick.
+- With Pyanodon Alien Life: 10 sand + 1 stone brick.
+
 ## Wooden Flooring
 
 The matching land tile: honey-toned plank boards with a wooden bumper edge
 at the waterline and a wooden trim against other terrain. Fords carry
 land caravans across water; flooring is for camps, yards and walkways.
-Not placeable over water — use the Wooden Ford for a crossing.
+Not placeable over water — use the Wooden Ford or the Cobblestone Ford for
+a crossing.
 
 Fords can only be placed on water — illegal placements are reverted in the same
-tick and refunded. Boards are intentionally scarce: one per craft, 10 s craft
-time.
+tick and refunded. Boards (and cobbles) are intentionally scarce: one per
+craft; the cobble ford carries a full bed of ballast per crossing.
 
 ## For players
 

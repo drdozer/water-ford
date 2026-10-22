@@ -4,7 +4,7 @@
   "title": "Water Ford",
   "author": "drdozer",
   "factorio_version": "2.1",
-  "description": "A walkable ford tile over water: land caravans can cross, wooden pilings stand semi-submerged in animated water, and ships still sail over it for Cargo Ships waterways. Includes a matching Wooden Flooring for dry land.",
+  "description": "A walkable ford tile over water: land caravans can cross, wooden pilings stand semi-submerged in animated water, and ships still sail over it for Cargo Ships waterways. Includes Matching Wooden Flooring for dry land — and, at 1.1.0, the Cobblestone pair: the road ford vehicles drive across, plus the Cobblestone Path for dry land.",
   "dependencies": [
     "base >= 2.1.0",
     "? cargo-ships >= 2.1.8",

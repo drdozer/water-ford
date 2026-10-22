@@ -80,7 +80,13 @@ The deck is a **waterline**, not a texture painted over water:
    that change lands. The prototype's `effect_color` values carry a question
    mark from the veil ruling (journal 2026-10-22) — resolved there, not here.
 
-## 3. The dry look — authoring decisions (OPEN, maintainer rules each)
+## 3. The dry look — authoring decisions (RULINGS LANDED 2026-10-22)
+
+STATUS (2026-10-22, session 3): every §3 decision has a recorded maintainer
+ruling — walkthrough rounds 1–4, the hard-reset superellipsoid spec, and
+the in-game rulings (masks, masters, borders "as-is", tiles in the live
+solo run) — see journal 2026-10-22 entries. The subsections below stand as
+the decision record; nothing is awaiting a ruling.
 
 3.1 **Pattern law** — walkthrough rulings (2026-10-22, round 1):
      - Cobbles are **oblong, packed 3×4 per 1×1 tile** (12 stones/tile; the

@@ -101,27 +101,28 @@ Per design area x world scene:
    mask sheets (if any) present in `assets-src`.
 5. Any gate failure aborts loudly with a non-zero exit.
 
-## Known current-state faults against this recipe (to be closed, in order)
+## Known current-state faults against this recipe (RESOLVED 2026-10-22)
 
-- **Generation drift**: committed `assets-src/cobble` staging vs committed
-  `mod/graphics` sheets differ by 230k-4.1M PXELS per sheet (three
-  sheets) — two art generations from the old pipeline, never re-gated.
-  Resolution: the new pipeline replaces BOTH committed generations with its
-  new output once the maintainer approves the look (old sheets retire to
-  archive/restore points); staging and deployed must agree byte-equal from
-  then on.
-- **Layout law not implemented**: boards slabs are scattered/partial (the
-  "bits of the sheets are findable but not contiguous" observation);
-  cobble deck is an irregular 58x52 blob. Both files get re-based onto the
-  Stage-A lattice.
+- **Generation drift**: RESOLVED — the new pipeline replaced BOTH old
+  generations (deck art 22ed875); staging and deployed agree byte-equal
+  from that commit; the old strip/sheets are git-history archive.
+- **Layout law not implemented**: RESOLVED — the cobble deck was re-based
+  onto the Stage-A lattice (AREAS 1X1/2X2/4X4 + cam roster, d51934a); the
+  boards led the re-base (the 2026-10-21/22 wrap).
 - The old tooling (`auth-cobble.py`, `bake-cobble.py/sh`, cranks) was
   PURGED 2026-10-22 (maintainer ruling: "all the old cobble code and blend
   gone — it is all cursed"): the crank + the fresh-toolchain session
   scripts (`mat-fresh.py`/`wet-fresh.py`) + `palette-ladder-cobble.py` +
-  `blender/ford-cobble.blend(+1)` all removed. Nothing carries into the
-  remake; the rebuild consumes `docs/cobble-visual-language.md`.
+  `blender/ford-cobble.blend(+1)` all removed. Nothing carried into the
+  remake; the rebuild consumed `docs/cobble-visual-language.md`.
 
-## Increment plan (working through it, per maintainer)
+## Increment plan (COMPLETE 2026-10-22, session 3)
+
+All four increments landed: the doc (1), the driver machinery (2, d2d2993),
+the cobble ladder (3, 22ed875 + gates), and the wetpass masks (4 — art-side
+rendered, look-approved; engine consumption SHELVED per the border ruling:
+"the borders look good as they are"; masks = unshipped committed data
+block, `journal.md` 2026-10-22).
 
 1. This doc (done).
 2. `bake-ladder.py` + `bake-ladder.sh` skeleton with the cut/deploy/gate
