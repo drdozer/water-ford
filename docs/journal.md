@@ -2288,3 +2288,43 @@ OUTSTANDING after this wrap (for later sessions, listed in BACKLOG/repo docs):
   items 1-3 marked superseded (done this wrap).
 - the bolt-vanish-on-save bug = closed not-reproduced (monitored; the
   isolate recipe lives in probe-old-deck.py dump-planks).
+## 2026-10-22 (cobble session) — THE COBBLE PURGE + the new process frame (maintainer rulings)
+
+Rulings, in order of arrival this session:
+1. **Commit the predecessor's in-flight work** (was the boards-wrap do-not-touch
+   list): done — staging+masks (3055f7f), decoratives/icons/1.1.0 (1a40273),
+   palette-ladder tool (c769b13), boards blend restored to builder output (cd30819,
+   the post-wrap GUI save was UI-state-only: content-verified vs a fresh build,
+   GEO_HASH dad240231648c813 equal), old viewer scratch save dropped (a1b3bd2);
+   superproject ledger Q1/Q2/Q3 update + pointer (7ac0f2d, 6cc65ec).
+2. **No art stand-ins**: planks ≠ cobbles (`boards-visual-language.md` transfers
+   only LAWS, never look anchors); stone heaps ≠ cobbles. The boards mirror keeps
+   its SHAPE (spec-before-Blender) but loses its object: nothing inherited is a
+   look reference.
+3. **THE WATER VEIL DOES NOT EXIST** in any actual rendering path (maintainer,
+   "I am confident"); the wetness mechanism = the WET/DRY MASK (as for the piling
+   workflow). Casualties: palette-ladder-cobble.py's WASHED column (moot — the
+   tool is purged below), the prototype's effect_color/secondary (tuned under the
+   veil assumption at 12.5% alpha — QUESTION MARK for the wiring round; frozen
+   config, untouched).
+4. **THE PURGE** ("all the old cobble code and blend gone — it is all cursed"):
+   - git-removed: auth-cobble.py, bake-cobble.py, bake-cobble.sh (the condemned
+     crank incl. mesh-hash oracle + provenance stamps), mat-fresh.py,
+     wet-fresh.py (fresh-toolchain session scripts — no living object once the
+     blend dies; the graphs' descriptions survive in the 2026-10-21 entries and
+     the spec will re-record what the builder needs), palette-ladder-cobble.py.
+   - untracked build-output removed: blender/ford-cobble.blend(+1) (45MB,
+     gitignored), __pycache__.
+   - kept BY RULING (art, not code/blend): the committed cobble sheet
+     generations (assets-src/cobble + mod/graphics deploys) — they retire to
+     archive per export-recipe.md at look-approval (maintainer may order them
+     purged too if wanted now).
+   - comment-only reference fixes (frozen zone, safe): data-updates.lua cobble
+     comment now points at export-recipe + the spec; tools README cobble stage
+     RETIRED; export-recipe.md purge note; .gitignore cobble-blend entries out.
+5. **THE NEW PROCESS** = the boards mirror, corrected frame: spec-before-Blender
+   with the waterline physical model FIRST ("we need the wet work, so that
+   cobbles can be partially in the water") = docs/cobble-visual-language.md v1.
+
+Next: the spec's decision points (pattern law, tone bands judged DRY, height/
+breach law, variant identity) go to the maintainer; then the cobble builder.

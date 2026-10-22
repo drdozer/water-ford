@@ -114,9 +114,12 @@ Per design area x world scene:
   "bits of the sheets are findable but not contiguous" observation);
   cobble deck is an irregular 58x52 blob. Both files get re-based onto the
   Stage-A lattice.
-- The old tooling (`auth-cobble.py`, `bake-cobble.py/sh`, cranks) is
-  condemned and stays untouched until replaced by this pipeline; nothing
-  further is folded back into it.
+- The old tooling (`auth-cobble.py`, `bake-cobble.py/sh`, cranks) was
+  PURGED 2026-10-22 (maintainer ruling: "all the old cobble code and blend
+  gone — it is all cursed"): the crank + the fresh-toolchain session
+  scripts (`mat-fresh.py`/`wet-fresh.py`) + `palette-ladder-cobble.py` +
+  `blender/ford-cobble.blend(+1)` all removed. Nothing carries into the
+  remake; the rebuild consumes `docs/cobble-visual-language.md`.
 
 ## Increment plan (working through it, per maintainer)
 

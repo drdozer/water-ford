@@ -524,11 +524,13 @@ cobble.effect_color_secondary = {r = 0.031, g = 0.129, b = 0.031, a = 0.361}
 cobble.bound_decoratives = {"ford-pebbles", "ford-stones"}
 -- Phase B knob: a distinct minimap grey (wooden carries the ochre family)
 cobble.map_color = {r = 120, g = 120, b = 120}
--- 2026-10-21 Phase B: authored cobble ladder (tools/paper-pipeline/
--- bake-cobble.sh → assets-src/cobble, sheets deployed here). ART RENDERS
--- DRY: the wet look ships as the companion cobblestone-ford{-2x2,-4x4}-mask
--- wetness sheets (in assets-src/cobble, engine wiring = the pending named
--- change) — until then the shallow wash + water effect carry the wetness.
+-- Cobble arc Phase B: the authored ladder = the boards recipe (docs/
+-- export-recipe.md) driven via tools/paper-pipeline/bake-ladder.py
+-- (--base cobblestone-ford --wetpass; look spec: docs/cobble-visual-
+-- language.md). ART RENDERS DRY — wetness is the wet/dry mask pass (the
+-- wetness data block; engine wiring = the pending named change). The
+-- condemned cobble crank was purged 2026-10-22 (journal) — the sheets
+-- currently deployed here are the retired pre-pipeline generations.
 -- Same 16/16/16 ladder shape as the wooden ford (scale 0.25 / probabilities
 -- 1 / y 0, line_lengths 16/4/4).
 cobble.variants = table.deepcopy(data.raw.tile["water"].variants)
