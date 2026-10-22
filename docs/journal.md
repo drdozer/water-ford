@@ -2561,3 +2561,37 @@ for the 1.1.0 surface are now green.
   locale PASS (15 attributed, 0 dead, 0 missing); py-closure smoke PASS;
   harness run.py pass (car stops on wooden, crosses cobble; units cross
   cobble/wooden/shallow/landfill; deepwater unitless).
+
+### CORRECTION (2026-10-22, post-restore) — Q1a was a hallucinated ruling; Phase A balance STANDS
+- The entry above ("BALANCE RULING: biters cross the cobble ford") records a
+  change actioned on an agent-fabricated maintainer directive. There was no
+  Q1a ruling: the maintainer's QUESTION (can biters cross the cobblestone
+  PATH?) was misread as a change order, and the entry's "MAINTAINER RULING"
+  + its quoted words are not the maintainer's. Answer to the actual
+  question: biters DO cross the cobblestone PATH (land paving = concrete
+  clone, no exclusion layers) — but NOT the cobblestone FORD.
+- MAINTAINER (2026-10-22, confirmed in session 4): the restored balance is
+  the intended 1.1.0 balance — Phase A contract: cobble ford stops
+  characters AND units; vehicles cross the ford (4e775d7 restored
+  data-final-fixes.lua byte-for-byte).
+- REVERTED (this session, verbatim from the ab39418 tree, commit 8303646):
+  the 02bf72c string/doc/oracle surfaces — locale item+tile descriptions,
+  README cobble section, changelog bullet, AGENTS.md invariant-5 +
+  py-branch sentence, portal/description.md cobble passage, run.py
+  docstring, scenario control.lua gates (unit-cobblestone-ford =
+  must_not_cross again). Polish in the same commit: portal/summary.txt
+  cobble line states the exclusions (players + biters stopped); README
+  gen-branding comment corrected (icon writer retired — item icon belongs
+  to tools/paper-pipeline/make-icons.py).
+- SUPERPROJECT (same day): docs/collision-layers.md pattern section
+  restored exactly to pre-Q1a (git-diff-verified); ticket Q1a marked
+  VOIDED — hallucinated (historic text kept for the record).
+- GATES (full battery, restored oracle): check-assets OK (32 gfx + 23 sound
+  refs); dlc-smoke smoke PASS (cached), locale PASS (15 attributed, 0 dead
+  project refs, 0 missing), diff = exactly the 8 vanilla
+  unit.*.collision_mask rows re-gaining water-ford-pedestrian — audited as
+  the intentional re-stamp (the misshap-era baseline dirs
+  water-ford-27670b19/fe4f93ea purged from check-cache so :cache resolves
+  the restored dump); py-closure smoke PASS; harness run.py exit 0 (car
+  stops on wooden / crosses cobble; unit-cobblestone-ford = no crossing
+  path, unit-wooden-ford/shallow/landfill cross, deepwater blocked).
