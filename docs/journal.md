@@ -2355,3 +2355,38 @@ breach law, variant identity) go to the maintainer; then the cobble builder.
   + edge law in situ). Verdict = the maintainer's.
 - Next: rows ruled → fold into TUNE/ROW constants → the full lattice
   (2×2/4×4 + internal jiggle/collision resolve) → save path → wetpass.
+
+## 2026-10-22 — hard reset → superellipsoid rounds (geometry + look)
+
+- HARD RESET executed on the maintainer's order: every ring-ladder/bulge/
+  tuck experiment condemned; builder reset to the first working scene
+  (byte-identical loaf + the OUTLINK fix), then stones rebuilt on the
+  maintainer-sourced SUPERELLIPSOID spec, verbatim: x,y = (extents/2)·
+  sgn·|cos|^r with r per-stone in [0.40,0.50] (squircle plan), z =
+  (h)·sgn·|sin|^t with t 0.2 top/0.8 bottom, H=2h, centre on the bed
+  plane. Renamed: stone_verts_faces/emit_stone (loaf vocabulary gone).
+- Rulings, in sequence (each = a build + fresh-window look):
+  1. better → "lift": centre raised per-stone ¼–⅓ of full height
+     (lift ∈ [0.5, 0.667]·h); crowns 11.9–27.0 px; base still buried.
+  2. "cobbles tend to touch" → JOINT 0.012→0.004 first, then "drop the
+     joint to 0" (drift/spill kept — sub-pixel position jitter is
+     indistinguishable; maintainer confirmed meshes may intersect, and
+     the bbox overlap gate I had authored in v0 is DELETED: it was my
+     invention, not doc law).
+  3. hoops: SUP_NTOP/SUP_NBUT 12/8→24/14, then re-sampled UNIFORM IN Z
+     (the s-uniform sampling put ~22 of 23 upper rings on the top face
+     and 1 on the wall; now bands at exact z = ±h·j/N — wall carries
+     its hoops). 890 verts/stone (37 rings × 24 + poles).
+  4. texture: metallic confirmed 0.0 (shine was dielectric specular +
+     Standard view clipping); rough 0.35→0.55, rough_break 0.10→0.16
+     (matte); base → darker+bluish (0.035,0.038,0.043, ratio R:G:B
+     1:1.07:1.23); sand (M_COBBLEBED "bed") := the stone base tone.
+- Proof workflow ruling: AREA RENDER ONLY (1024² over the 4×4 deck);
+  zoom/close cameras retired from the builder.
+- Numbers on the record: census 16 designs/163 stones/29 merges steady
+  through every round; edge law + height band green (tol now 0.0045);
+  area lum finished at 0.254 mean, max 1.000; renders lit throughout.
+- Gates anchor: edge law + height band only (the packing stays
+  lattice-anchored; JOINT now 0 → faces meet at lattice midpoints).
+- Unresolved: ROW_VARIANTS ladder rows 2–5 awaiting eye rulings; tile
+  edges (2×2/4×4) and the wetpass (masks/keying) still to come.

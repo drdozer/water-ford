@@ -51,24 +51,38 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 U_PX = 128                 # 1 unit = 1 game tile = 128 px (contract)
 COLS, ROWS = 3, 4          # the packing per 1×1 tile (§3.1)
-JOINT = 0.012              # joint width u (~1.5 px) — thin joints
-WIGGLE = 0.0015            # plan jitter (the excursion budget: see §3.1 law comment)
-SPILL = 0.004              # max edge-stone outward slide past lattice
-EXCURSION = 0.006          # outline bow+jitter+ring-off budget (bow amp 0.025)
+JOINT = 0.0                # joint width ZERO (ruling 2026-10-22): nominal extents
+                           # fill the cells; walls kiss at the lattice midpoints
+                           # (sub-pixel position jitter is indistinguishable from none)
+WIGGLE = 0.0006            # §3.1 law: WIGGLE + DRIFT ≤ JOINT/2
+SPILL = 0.0015             # max edge-stone outward slide past lattice
+EXCURSION = 0.002          # outline bow+jitter+ring-off budget doc (bow amp 0.006)
 HMIN, HMAX = 0.06, 0.13    # crown height tuning band (§3.3 knobs)
-ZSKIRT = 0.010             # outline-ring height (the loaf's rounded knee)
+SUP_R = (0.40, 0.50)       # horizontal roundness r band (per-stone jitter):
+                           # low r squares the footprint into a rounded-rect
+                           # squircle so stones nest tightly (spec below)
+SUP_T_TOP = 0.2            # vertical exponent, top half: flat paving face
+SUP_T_BOT = 0.8            # vertical exponent, bottom half: rounded base
+SUP_NTOP, SUP_NBUT = 24, 14 # u-grid rings per half (top face / buried dome) —
+                            # doubled 2026-10-22: the wall read too few hoops
 MERGE_P = 0.22             # neighbour-merge probability per candidate pair
 SEEDBASE = 1000
-RING_R = (1.0, 0.82, 0.60, 0.38, 0.18)   # loaf rings (plan-outward first)
-OUT_K = 24                 # outline verts per loaf
-DRIFT = 0.0015             # max interior position drift (no-overlap-safe)
-SIZE_J = (0.94, 0.99)      # per-stone size jitter: shrink-only (keeps joints)
+OUT_K = 24                 # plan outline verts per stone (v resolution)
+DRIFT = 0.0013             # max interior position drift (no-overlap-safe)
+SIZE_J = (0.98, 1.0)       # per-stone size jitter: shrink-only (keeps joints);
+                           # floor raised 0.98 (touching ruling): worst pair
+                           # gap ≈ JOINT + 2·2% ≈ 1 px, pairs tend to touch
 
 TUNE_DEFAULTS = {
-    "base": (0.082, 0.088, 0.101),      # slate candidate (~L85)
-    "bed":  (0.297, 0.237, 0.169),      # sandy anchor (warm tan, ~L110 linear-ish)
+    "base": (0.035, 0.038, 0.043),      # darker + bluish restored (ruling
+                                        # 2026-10-22): another tone down, the
+                                        # original R:G:B slate ratio (1:1.07:1.23)
+    "bed":  (0.035, 0.038, 0.043),      # sand := the stone base (ruling
+                                        # 2026-10-22: darker+bluish slate tone;
+                                        # the warm tan joints read wrong + tile badly)
     "mottle_s": 0.9, "mottle_light": 1.5,
-    "rough": 0.35, "rough_break": 0.10, "rough_s": 20.0,
+    "rough": 0.55, "rough_break": 0.16, "rough_s": 20.0,   # matte-stone ruling
+    # (2026-10-22: the 0.35/0.10 read as polished metal — silver sheet)
     "speck_s": 14.0, "speck_fac": 0.15, "speck_light": 1.8,
     "pit_s": 28.0, "pit_bump": 0.7, "pit_dist": 0.010, "pit_rough": 0.08,
     "bed_rough": 0.8,
@@ -78,12 +92,13 @@ TUNE_DEFAULTS = {
 # the FIRST look ladder: same geometry (seed chain ignores the tune),
 # material variants only — rows the maintainer looks at and numbers
 ROW_VARIANTS = {
-    1: {"label": "slate L85 + sandy bed (defaults)"},
-    2: {"label": "less shiny", "rough": 0.45, "rough_break": 0.06},
-    3: {"label": "darker slate", "base": (0.047, 0.051, 0.060)},
-    4: {"label": "coarse sparse flecks", "speck_s": 7.0, "speck_fac": 0.22},
-    5: {"label": "strong pitting", "pit_bump": 1.3, "pit_dist": 0.016,
-        "rough_break": 0.14},
+    1: {"label": "slate dark A (linear .09) — the too-dark control"},
+    2: {"label": "slate mid B (linear .16)", "base": (0.158, 0.168, 0.188)},
+    3: {"label": "slate bright C (linear .22)", "base": (0.215, 0.225, 0.245)},
+    4: {"label": "coarse sparse flecks @ B", "base": (0.158, 0.168, 0.188),
+        "speck_s": 7.0, "speck_fac": 0.22},
+    5: {"label": "strong pitting @ B", "base": (0.158, 0.168, 0.188),
+        "pit_bump": 1.3, "pit_dist": 0.016, "rough_break": 0.14},
 }
 
 BLOCKS = {"AREA_1X1": (-2.0, 2.0, -2.0, 2.0)}
@@ -208,6 +223,9 @@ def build_m_cobble(tune):
     n["PITS"].inputs["Scale"].default_value = tune["pit_s"]
     n["MOTTLE"].inputs["Scale"].default_value = tune["mottle_s"]
     n["RBREAK"].inputs["Scale"].default_value = tune["rough_s"]
+    # THE OUTPUT LINK (v1 fault: this was missing — black-render diagnosis
+    # 2026-10-22, maintainer ruling): surface socket must consume the BSDF
+    nt.links.new(n["BSDF"].outputs["BSDF"], n["OUT"].inputs["Surface"])
     return m
 
 
@@ -273,58 +291,95 @@ def build_m_cobblebed(tune):
     n["TINTV"].inputs["Scale"].default_value = tune["peb_mid"]
     n["FINES"].inputs["Scale"].default_value = tune["peb_fine"]
     n["BSDF"].inputs["Roughness"].default_value = tune["bed_rough"]
+    # same v1 fault as M_COBBLE: output link was missing → bed rendered black
+    nt.links.new(n["BSDF"].outputs["BSDF"], n["OUT"].inputs["Surface"])
     return m
 
 
 # ----------------------------------------------------------------- geometry
-def _sstep01(r):
-    """0 at r<=0.35 (top plateau), 1 at r>=0.95 (the rounded knee)."""
-    t = min(max((r - 0.35) / (0.95 - 0.35), 0.0), 1.0)
-    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0)
+def stone_verts_faces(rng, cx, cy, ax, ay, h):
+    """Superellipsoid cobble (maintainer spec, 2026-10-22 — verbatim model):
 
+        x(u,v) = (W/2)·sgn(cos u cos v)·|cos u cos v|^r
+        y(u,v) = (L/2)·sgn(cos u sin v)·|cos u sin v|^r
+        z(u,v) = (H/2)·sgn(sin u)·|sin u|^t      u ∈ [-π/2, π/2], v ∈ [-π, π]
 
-def loaf_verts_faces(rng, cx, cy, ax, ay, h):
-    """Loaf: rounded-rect oblong plan (per-stone superellipse exponent p),
-    irregular edges (outline jitter + 3-lobe bow), flattened dome z
-    (plateau inside ρ≤0.35, smooth knee to the skirt line), base ring at
-    z=0 (bed contact). One shared outline per stone keeps the vertical
-    bands coherent."""
-    p = rng.uniform(2.8, 4.2)
+    W,L = 2·(ax, ay): the lattice-anchor extents the edge law is enforced
+    on (the packing's half-extents pass straight through; gates read the
+    packing, not this mesh). H = 2h so the crown tops out at +h — the
+    heights knob band unchanged. The stone's centre sits ON the bed plane
+    z=0: z<0 is the t≈0.8 rounded base, buried and clipped by the plane
+    ("anchors well into a mortar bed"). r is per-stone jittered inside
+    SUP_R; the spec's shape itself is untouched — the jitters riding on
+    top (3-lobe bow + WIGGLE outline budget, per-band off jitter, z
+    jitter) are the irregular-edge budgets the §3.1 law grants every
+    build, identical to the first working scene's.
+
+    LIFT ruling 2026-10-22: the stone's centre no longer sits on the bed
+    plane — it is raised by a per-stone jittered quarter-to-a-third of
+    the stone's full height (lift ∈ [0.25, 1/3]·2h), so roughly 3/4 of
+    the stone stands above the bed and the rounded base still anchors
+    below it (the plane clips the crossing). Crowns reach h + lift (the
+    shear cap follows the stone up).
+
+    Mesh: horizontal bands sampled UNIFORM IN Z per half (ruling
+    2026-10-22: with t=0.2 the spec's z saturates fast, so s-uniform
+    bands crowded ~22 of 23 rings onto the top face and left the wall one
+    tall band — the maintainer's read was: only ~3 segments spanned the
+    whole height). From the spec, z/h = (1−s^(2/r))^(t/2) inverted:
+        s = (1 − (z/h)^(2/t))^(r/2)
+    each ring still sits exactly ON the spec surface; only the spacing
+    changes. Ring counts are unchanged (23 upper + 13 lower + equator)."""
+    r_e = rng.uniform(SUP_R[0], SUP_R[1])
     phase = rng.uniform(0.0, 2.0 * math.pi)
-    # the caller's (ax, ay) = the stone's FINAL plan half-extents (already
-    # joint-aware + size-jittered); the outline budget (wiggle excursion)
-    # must fit inside the joint: WIGGLE + DRIFT <= JOINT/2 (§3.1 law).
+    lift = rng.uniform(0.25, 1.0 / 3.0) * (2.0 * h)   # the lift ruling
+
+    # plan outline, built ONCE per stone in stone-local coords and scaled
+    # by every horizontal band (coherent vertical bands, as before):
+    # squircle corner falloff |cos θ|^r, 3-lobe bow, WIGGLE budget.
     outline = []
     for i in range(OUT_K):
         th = 2.0 * math.pi * i / OUT_K
-        c, s = math.cos(th), math.sin(th)
-        ex = cx + ax * math.copysign(abs(c) ** (2.0 / p), c)
-        ey = cy + ay * math.copysign(abs(s) ** (2.0 / p), s)
-        bow = 1.0 + 0.025 * math.sin(3.0 * th + phase)
-        outline.append([cx + (ex - cx) * bow + rng.uniform(-WIGGLE, WIGGLE),
-                        cy + (ey - cy) * bow + rng.uniform(-WIGGLE, WIGGLE)])
+        c, sn = math.cos(th), math.sin(th)
+        ex = ax * math.copysign(abs(c) ** r_e, c)
+        ey = ay * math.copysign(abs(sn) ** r_e, sn)
+        bow = 1.0 + 0.006 * math.sin(3.0 * th + phase)   # hairline-joint budget
+        outline.append([ex * bow + rng.uniform(-WIGGLE, WIGGLE),
+                        ey * bow + rng.uniform(-WIGGLE, WIGGLE)])
 
-    verts, faces = [], []
-    ring_defs = [(1.0, 0.0), (1.0, ZSKIRT)]
-    for rho in RING_R[1:]:
-        ring_defs.append((rho, ZSKIRT + (h - ZSKIRT) * (1.0 - _sstep01(rho))))
+    # rings sampled uniform in z per half (see docstring): the spec
+    # inverted per ring, so bands are evenly spaced up the height.
+    def sring(zfrac, t):
+        return (1.0 - zfrac ** (2.0 / t)) ** (r_e / 2.0)
 
-    def ring_pts(rho, z):
-        off = rng.uniform(-0.0010, 0.0010)
+    ring_defs = []                                   # listed bottom→top
+    for j in range(SUP_NBUT - 1, 0, -1):             # buried dome: z ascending
+        ring_defs.append((sring(j / SUP_NBUT, SUP_T_BOT), -h * j / SUP_NBUT))
+    ring_defs.append((1.0, 0.0))                     # equator = lattice anchor
+    for j in range(1, SUP_NTOP):                     # wall → shoulder → top
+        ring_defs.append((sring(j / SUP_NTOP, SUP_T_TOP), h * j / SUP_NTOP))
+
+    def ring_pts(s, z):
+        off = rng.uniform(-0.0004, 0.0004)
         out = []
         for pt in outline:
-            x = cx + (pt[0] - cx) * (rho + off)
-            y = cy + (pt[1] - cy) * (rho + off)
-            zz = z if z == 0.0 else min(h, z + rng.uniform(-0.002, 0.002))
+            x = cx + pt[0] * (s + off)
+            y = cy + pt[1] * (s + off)
+            zz = min(h + lift, z + lift + rng.uniform(-0.002, 0.002))
             out.append([x, y, zz])
         return out
 
-    ringlist = [ring_pts(r, z) for r, z in ring_defs]
-    ringlist.append(ring_pts(0.06, h))
+    verts, faces = [], []
+    ringlist = [ring_pts(s, z) for s, z in ring_defs]
     for rpts in ringlist:
         for v in rpts:
             verts.append(v)
     K, NR = OUT_K, len(ringlist)
+    # buried bottom pole fan (reversed winding: outward = down)
+    verts.append([cx, cy, lift - h + rng.uniform(-0.002, 0.002)])
+    bp = len(verts) - 1
+    for i in range(K):
+        faces.append([bp, (i + 1) % K, i])
     for ri in range(NR - 1):
         for i in range(K):
             a0 = ri * K + i
@@ -332,17 +387,19 @@ def loaf_verts_faces(rng, cx, cy, ax, ay, h):
             b0 = (ri + 1) * K + i
             b1 = (ri + 1) * K + (i + 1) % K
             faces.append([a0, a1, b1, b0])
-    ci = len(verts)
-    verts.append([cx, cy, min(h, h + rng.uniform(-0.002, 0.002))])
+    # crown pole fan — the shear cap (sheared-off flat top ruling); the
+    # shear plane rises with the stone (h + lift)
+    tp = len(verts)
+    verts.append([cx, cy, min(h + lift, h + lift + rng.uniform(-0.002, 0.002))])
     ci_row = (NR - 1) * K
     for i in range(K):
-        faces.append([ci_row + i, ci_row + (i + 1) % K, ci])
+        faces.append([ci_row + i, ci_row + (i + 1) % K, tp])
     return verts, faces
 
 
-def emit_loaf(coll, cx, cy, ax, ay, h, seed, mats, name):
+def emit_stone(coll, cx, cy, ax, ay, h, seed, mats, name):
     rng = random.Random(int(seed))
-    verts, faces = loaf_verts_faces(rng, cx, cy, ax, ay, h)
+    verts, faces = stone_verts_faces(rng, cx, cy, ax, ay, h)
     me = bpy.data.meshes.new(name)
     me.from_pydata(verts, [], faces)
     me.update()
@@ -434,7 +491,7 @@ def pack_cell(coll, blockname, size, k, seed, mats, report):
     stones_out = []
     for (gi, gj), st in sorted(stones.items()):
         name = f"C_{blockname}_{k}_{gi}_{gj}"
-        emit_loaf(coll, st[0], st[1], st[2], st[3], st[4],
+        emit_stone(coll, st[0], st[1], st[2], st[3], st[4],
                   seed * 331 + gi * 97 + gj * 13 + 5, mats, name)
         stones_out.append((name, st[0], st[1], st[2], st[3], st[4], st[5], gi, gj))
     report[(blockname, k)] = (stones_out, merges, gx_tot, gy_tot)
@@ -442,6 +499,49 @@ def pack_cell(coll, blockname, size, k, seed, mats, report):
 
 
 # ----------------------------------------------------------------- scenes/rig
+def render_audit(sc, out):
+    """Post-render numeric audit: read the written file back and print its
+    luminance stats. A render stage that emits black must fail LOUDLY here,
+    not at someone's gwenview."""
+    import numpy
+    im = bpy.data.images.load(out)
+    px = numpy.asarray(im.pixels[:], dtype=numpy.float32).reshape(-1, im.size[0], im.size[1], 4)[..., :3]
+    lum = (0.2126 * px[..., 0] + 0.7152 * px[..., 1] + 0.0722 * px[..., 2]) * (px.max() and 1)
+    # NB: bpy image pixels are linear if colorspace=Linear; png Standard view
+    # writes sRGB-encoded — stats are comparable run-to-run either way.
+    print(f"RENDER AUDIT {out}: {im.size[0]}x{im.size[1]} lum[min={lum.min():.3f} "
+          f"max={lum.max():.3f} mean={lum.mean():.5f}]")
+    if float(lum.max()) < 0.02:
+        print("RENDER AUDIT: near-black output — LIGHTING/SCENE fault (see scene audit above)")
+    bpy.data.images.remove(im)
+    return float(lum.mean())
+
+
+def scene_audit(sc):
+    """Pre-render numeric audit: the discriminating facts (objects the
+    scene's collection tree actually contains; light; camera; world)."""
+    objs = sorted(o.name for o in sc.objects)
+    lights = [o for o in sc.objects if o.type == 'LIGHT']
+    cams = [o for o in sc.objects if o.type == 'CAMERA']
+    meshes = [o for o in sc.objects if o.type == 'MESH']
+    print(f"SCENE AUDIT {sc.name}: objects={len(objs)} "
+          f"[mesh={len(meshes)} light={len(lights)} cam={len(cams)}]")
+    for o in lights:
+        print(f"  LIGHT {o.name} energy={o.data.energy} loc={tuple(round(v,2) for v in o.location)} "
+              f"type={o.data.type} soft={getattr(o.data, 'shadow_soft_size', 'n/a')}")
+    for o in cams:
+        print(f"  CAM {o.name} loc={tuple(round(v,2) for v in o.matrix_world.translation)} "
+              f"ortho={o.data.ortho_scale} rotation={tuple(round(math.degrees(a),1) for a in o.rotation_euler)}")
+    w = sc.world
+    if w and w.use_nodes:
+        for nd in w.node_tree.nodes:
+            if nd.type == 'BACKGROUND':
+                print(f"  WORLD {w.name} color={tuple(round(c,3) for c in nd.inputs['Color'].default_value)} "
+                      f"strength={nd.inputs['Strength'].default_value}")
+    mesh_mats = set(m.materials[0].name if m.materials else 'NONE' for m in "") if False else None
+    print(f"  first objects: {objs[:4]} ... total mesh objects = {len(meshes)}")
+
+
 def build_scene(samples):
     s = bpy.data.scenes.new("FLOOR")
     r = s.render
@@ -486,14 +586,12 @@ def census(report):
     for (blockname, k), (s_out, merges, gx, gy) in report.items():
         stones += len(s_out)
         merges_tot += merges
-    bboxes = []
     for (blockname, k), (s_out, merges, gx, gy) in report.items():
         x0, x1, y0b, y1b = BLOCKS[blockname]
         row, col = divmod(k, 4)
         dx0 = x0 + col                      # the design's left lattice line
         y_top = y1b - row                   # the design's top lattice line
         for (name, ccx, ccy, ax, ay, h, interior, gi, gj) in s_out:
-            bboxes.append((ccx - ax, ccx + ax, ccy - ay, ccy + ay, name))
             # EDGE LAW: an edge stone's outer face sits INSIDE the design's
             # lattice line by JOINT/2 ± slide (≤SPILL) ± outline wiggle
             # (variant-invariant; the spill slide = the ruled allowance).
@@ -514,20 +612,15 @@ def census(report):
                 want = y_top - JOINT / 2
                 edge_assert(f, want, name)
             assert HMIN - 1e-9 <= h <= HMAX + 1e-9, (name, h)
-    bad = 0
-    obs_hmin = obs_hmax = None
-    for i in range(len(bboxes)):
-        for j in range(i + 1, len(bboxes)):
-            A, B = bboxes[i], bboxes[j]
-            if A[0] < B[1] - 1e-6 and B[0] < A[1] - 1e-6 and A[2] < B[3] - 1e-6 and B[2] < A[3] - 1e-6:
-                bad += 1
     merge_map = " ".join(
         f"k{k}:{m}" for (bk, k), (s_out, m, _gx, _gy) in sorted(report.items()) if m)
     hvals = [st[5] for (_b, _k), (s_out, _m, _gx, _gy) in report.items() for st in s_out]
     hmin_px, hmax_px = (min(hvals) * U_PX, max(hvals) * U_PX) if hvals else (0.0, 0.0)
     print(f"== census: designs={len(report)} stones={stones} merges={merges_tot} "
           f"[per-design: {merge_map or 'none'}]")
-    print(f"== overlap gate: {bad} overlaps (0 = the disjoint law)")
+    # NOTE 2026-10-22 maintainer ruling: mesh intersections between cobbles
+    # are FINE — the old bbox 'disjoint law' overlap gate is gone; the
+    # packing remains lattice-anchored by the edge law below.
     print(f"== edge-law + height-band gates: {stones} stones checked, tol={tol:.4f}; "
           f"obs heights px = [{hmin_px:.1f} .. {hmax_px:.1f}] (knobs {HMIN*U_PX:.0f}..{HMAX*U_PX:.0f})")
 
@@ -587,33 +680,26 @@ def main():
     c1.location = (CAM1[1], CAM1[2], 60.0)
     bpy.data.collections["CAMERAS"].objects.link(c1)
     sc.camera = c1
-    # proof renders (boards PROOF_ZOOM idiom: create once, reuse, remove)
-    pcd = bpy.data.cameras.new("PROOF_ZOOM")
-    pcd.type = "ORTHO"
-    pcd.ortho_scale = 1.3
-    pz = bpy.data.objects.new("PROOF_ZOOM", pcd)
-    pz.location = (-1.5, 1.5, 60.0)      # cell (0,0) = AREA_1X1's top-left design
-    bpy.data.collections["CAMERAS"].objects.link(pz)
-    pcd2 = bpy.data.cameras.new("PROOF_CLOSE")
-    pcd2.type = "ORTHO"
-    pcd2.ortho_scale = 0.6
-    pc = bpy.data.objects.new("PROOF_CLOSE", pcd2)
-    pc.location = (-1.5, 1.5, 60.0)
-    bpy.data.collections["CAMERAS"].objects.link(pc)
-    renders = [("PROOF_ZOOM", 512, f"/tmp/cobble-proof{ptag}-zoom.png"),
-               ("PROOF_CLOSE", 2048, f"/tmp/cobble-proof{ptag}-close.png")]
-    if row is None:
-        renders.append(("BLK1_CAM", 1024, f"/tmp/cobble-proof{ptag}-area.png"))
+    # proof renders (ruling 2026-10-22: the maintainer needs ONLY the area
+    # render — zoom/close proofs retired from the builder)
+    renders = [("BLK1_CAM", 1024, f"/tmp/cobble-proof{ptag}-area.png")]
     saved = (sc.render.resolution_x, sc.render.resolution_y)
+    # context binding: the factory-empty smuggled 'Scene' still owns the
+    # context — drop it (FLOOR exists now) and render under temp_override
+    # so every op evaluates FLOOR's own view layer.
+    fs_ = bpy.data.scenes.get("Scene")
+    if fs_ is not None and len(fs_.objects) == 0:
+        bpy.data.scenes.remove(fs_)
+    scene_audit(sc)
     for cam_name, res, out in renders:
         sc.camera = bpy.data.objects[cam_name]
         sc.render.resolution_x = sc.render.resolution_y = res
         sc.render.filepath = out
-        bpy.ops.render.render(write_still=True, scene=sc.name)
+        with bpy.context.temp_override(scene=sc, view_layer=sc.view_layers[0]):
+            bpy.ops.render.render(write_still=True)
+        render_audit(sc, out)
     sc.render.resolution_x, sc.render.resolution_y = saved
     census(report)
-    bpy.data.objects.remove(pz, do_unlink=True)
-    bpy.data.objects.remove(pc, do_unlink=True)
     if no_save:
         print(f"COBBLE PROOF {label} done (renders only, nothing saved)")
         return
