@@ -2595,3 +2595,20 @@ for the 1.1.0 surface are now green.
   the restored dump); py-closure smoke PASS; harness run.py exit 0 (car
   stops on wooden / crosses cobble; unit-cobblestone-ford = no crossing
   path, unit-wooden-ford/shallow/landfill cross, deepwater blocked).
+
+### 1.1.0 SHIPPED (2026-10-22) — portal release upload
+- Build: `devctl mods build water-ford --strict --report` — zip
+  water-ford_1.1.0.zip (24,241,431 B, sha1 b838738947565838b123ac28af08807b2effc671),
+  strict audit ok; changelog date stamped in 0f5dbac.
+- Publish: `devctl mods publish water-ford --yes` after the dry-run plan
+  (.cache/water-ford-110-publish-dryrun.log): release
+  upload (init_upload → multipart → verify) — portal sha1 VERIFIED equal to
+  the local zip. Page polish in the same call: description + summary pushed
+  (summary states the cobble exclusions, 440/500 chars), gallery 04/05
+  (tank-on-cobblestone-ford, car-driving-on-cobblestone-path) uploaded +
+  display order set. Page: mods.factorio.com/mod/water-ford · download:
+  mods.factorio.com/download/water-ford/6ada657a78fd24081755f06a
+- GitHub: no release created — `gh release list` empty for BOTH water-ford
+  and oreguard: repo precedent is portal-only ships (superproject AGENTS
+  ship-flow "GitHub Release artifact" bullet notwithstanding — flag for the
+  next tooling pass if the leg is wanted live).
