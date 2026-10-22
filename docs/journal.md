@@ -2228,3 +2228,21 @@ The repro recipe (whole round):
   python3 tools/paper-pipeline/bake-ladder.py --base wooden-ford --stages cut,deploy,gate
   (the live-factorio run = the maintainer's default install; the scratch
   scenario = baking/qa only)
+
+## 2026-10-22 — the "empty file" GUI incidents: factory Scene root-caused + fixed
+Maintainer saw an empty scene TWICE on GUI opens. Root cause (measured in
+a fresh headless probe): Blender 4.3 read_factory_settings(use_empty=True)
+still births an empty scene "Scene", and scenes.new('FLOOR') does NOT
+switch the active scene — so every builder-saved blend carried
+['FLOOR'(821 objs), 'Scene'(0, ACTIVE)]. GUI opens land on the empty
+scene (the framing was never the problem). Fixes, both committed:
+the builder now drops the empty Scene and saves with FLOOR active
+(re-verified: FILE_SCENES [(FLOOR, 821, True)] ACTIVE FLOOR); the GUI
+poke helper = the load_post-hooked idiom (4.x runs --python scripts
+BEFORE the file arg — the old poke framed the factory scene). Live
+session fixed in-place via the bridge (ACTIVE FLOOR, Scenes [FLOOR],
+821 objects, viewports re-framed material). Maintainer verdict: "this
+looks correct... the template geometry for designing tilesets".
+Also: pkill -f trick (matched my own shell = exit 143), pattern anchored
+to the cmdline tail. The MCP bridge reports via get_scene_info need
+content[0].text (not .result), fields whitelist = placement-free.

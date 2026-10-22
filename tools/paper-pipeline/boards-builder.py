@@ -622,6 +622,16 @@ def main():
     sc.render.resolution_x, sc.render.resolution_y = saved_res
     sc.camera = bpy.data.objects["BLK1_CAM"]
     bpy.data.objects.remove(pz, do_unlink=True)
+    # Blender 4.3's read_factory_settings(use_empty=True) still births an empty
+    # scene "Scene" and scenes.new() does NOT switch the active one — the saved
+    # file used to keep ['FLOOR', 'Scene'] with the EMPTY one active, so every
+    # GUI open landed on an empty scene (maintainer incident 2026-10-22, twice).
+    fs_ = bpy.data.scenes.get("Scene")
+    if fs_ is not None and len(fs_.objects) == 0:
+        bpy.data.scenes.remove(fs_)
+    for w_ in bpy.context.window_manager.windows:
+        w_.scene = sc
+    bpy.context.window.scene = sc
     bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(outfile), compress=True)
     np_ = len([o for o in bpy.data.objects if o.name.startswith("P_")])
     nb = len([o for o in bpy.data.objects if o.name.startswith("BOLT")])
