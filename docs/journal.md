@@ -2463,3 +2463,10 @@ stay as shipped pending any complaint. Open Phase B remains: border-behaviour
 item 2 (incl. the mask consumption shape — veil-only vs piling-pattern
 boundary pieces), the released surface (item 4; Q2 recipe numbers are the
 maintainer's pick), knob finalisation (item 5).
+
+- BORDER RULING (maintainer, in-game): "The borders look good as they are."
+  — item 2 CLOSES as-is: bare edges stay, no boundary pieces, the transition
+  -nil config stands. The wetness masks remain a committed data block
+  (assets-src/cobble, unshipped); per-pixel engine consumption shelved until
+  the maintainer asks for it. Phase B leaves: item 4 released surface
+  (recipes per the Q2 direction, locale, changelog, portal) + knob ratify.
