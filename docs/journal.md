@@ -2328,3 +2328,30 @@ Rulings, in order of arrival this session:
 
 Next: the spec's decision points (pattern law, tone bands judged DRY, height/
 breach law, variant identity) go to the maintainer; then the cobble builder.
+## 2026-10-22 (cobble session 2) — spec walkthrough rounds 1–4 + builder v0 (the look round starts)
+
+- Walkthrough rulings (all in the spec, dated): oblong cobbles 3×4/tile,
+  merges into large cobbles; edge law = variant-invariant lattice faces,
+  small spill allowed (hidden by shadows/neighbours), cobble TOP stays
+  entirely within the tile; crown = flattened dome (the loaf archetype:
+  irregular rounded corners+edges, inflated top); §3.3 numbers =
+  TUNING KNOBS not given constants (heights first, breach follows);
+  hard polished slate + speckle/non-reflective pitting (research-not-
+  reinvent directive → the researched recipe recorded as §3.2a);
+  variants = seeded geometry/packing jiggle (texture jiggle secondary);
+  MANDATORY boards scene template (same lights/cams/staging); 2×2/4×4 =
+  internal-grid jiggle free, outer edges law-bound; bed = faux
+  sand/pebble rubble IN THE SHADER, sandy palette (committed spec).
+- cobble-builder.py v0 committed (8b154d0): the boards skeleton with the
+  cobble geometry/materials; self-check gates green (0 overlaps, edge
+  law tol, heights in band). Ladder lessons: merge law needed
+  edge-column members (interior-only rule = 0 merges everywhere); size
+  jitter must be shrink-only vs the joint budget; outline excursion
+  budget EXCURSION=0.006 (bow 0.025/wiggle 0.0015/ring-off 0.001).
+- LOOK LADDER up for the maintainer's eyes (gwenview):
+  /tmp/cobble-look-ladder.png (5 material rows, zoom 4×),
+  /tmp/cobble-look-ladder-close.png (close ~26×: pits/polish),
+  /tmp/cobble-area-survey.png (all 16 designs, 2×: variants + merges
+  + edge law in situ). Verdict = the maintainer's.
+- Next: rows ruled → fold into TUNE/ROW constants → the full lattice
+  (2×2/4×4 + internal jiggle/collision resolve) → save path → wetpass.
