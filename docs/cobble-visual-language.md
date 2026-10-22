@@ -28,6 +28,8 @@ our data block, exactly as for the piling workflow.
 | Sun transplant: stones-verbatim rig applied in the (now-purged) blend | 2026-10-21 | journal; §3.5 re-homes it |
 | The purge: old cobble code + blend removed | 2026-10-22 | journal; §4 |
 | No art stand-ins; veil nonexistent | 2026-10-22 | header |
+| Polished slate look; speckle/pitting breaks reflections; research-not-reinvent; variants = seeded geometry/packing jiggling (texture jiggle secondary) | 2026-10-22 | §3.2/§3.4 |
+| Mandatory boards scene template (same lights/cams/staging areas); internal-grid jiggle free, outer edges law-bound | 2026-10-22 | §3.1/§3.5 |
 | Game contract (16 sprites/size, all 4×4 grids, 128 px/tile @ 0.25) | 2026-10-21 | docs/export-recipe.md (binding, unchanged) |
 
 ## 1. The physical model (binding — water first)
@@ -105,16 +107,22 @@ The deck is a **waterline**, not a texture painted over water:
        design's internal tiles; merges may cross internal boundaries
        within a design area. The design's outer edge carries the edge law.
 
-3.2 **Tone bands** — stones and joint bed are toned **independently**;
-verdicts are judged **DRY** (the WASHED/veil preview column is retired with
-the veil ruling). Candidate palette reference material (context, not binding):
-the stone-family palettes recorded in `boards-visual-language.md` §3
-(vanilla stone ochre, py gravel/crush families — gathered as ingredient keys
-for another deck but measured facts); vanilla `stone-path` as brightness
-context. A dry deck that never reads "dirty white" and no joint bed that
-reads black are the failure modes named to date.
+3.2 **Tone + surface — RULING (2026-10-22, round 3)**: hard, **polished**
+rocks — base color slate / dark grey; tonal variety arrives as
+**speckling and/or non-reflective pitting**: texture that keeps the
+polished-stone read while breaking up harsh continuous reflections
+(neither shiny-plastic nor matte-fake). Named failure modes: a deck
+reading "dirty white", a joint bed reading black, polish reading plastic.
+- **PROCESS directive: do not re-invent the shader — ask the internet**
+(cobblestone/polished-stone material technique) and adopt a proven
+approach as the working recipe; the researched technique seeds §3.5's
+mechanism.
+- Stones and joint bed toned independently; judged DRY (the WASHED/veil
+preview column is retired); tuned + approved at proof rounds like §3.3's
+numbers.
+- OPEN: exact slate L-band, bed tone, speckle/pit balance + scale.
 
-3.3 **Height/crown law** — walkthrough rulings (2026-10-22, round 1):
+3.3 **Height/crown law** — walkthrough rulings (2026-10-22, rounds 1–3):
      - **Shadow law (binding): everything casts AND catches shadows,
        including the floor layer.** The 3D appearance comes from shadow
        interplay — the floor is a real recessed plane, stones stand proud
@@ -125,22 +133,32 @@ reads black are the failure modes named to date.
        corners and edges and an inflated top" (maintainer's archetype). The
        inflated top lies entirely within the cobble's cell (spill law,
        §3.1).
-     - OPEN: crown height range, breach fraction target (which stones sit
-       above the waterline), and the `wet_depth` normalization mapping
-       (waterline elevation included — §1.5).
+     - **§3.3's numbers are TUNING KNOBS, not given constants (round 3)**:
+       crown height range, breach fraction, waterline elevation, and the
+       `wet_depth` mapping are tuned by the builder, measured numerically,
+       then approved by the maintainer's eyes. "The crown height range
+       will give you the breach fraction" — heights tune first; the
+       breach share follows; §1.5's recorded z-numbers are starting hints
+       only.
 
-3.4 **Variant identity** — what distinguishes the 16 variants per size:
-seeded arrangement, tone casts, stone mixes, or all three; how identity
-survives tiling (boundary-compliant randomness, per §3.1).
+3.4 **Variant identity — RULING (2026-10-22, round 3)**: randomised cobble
+GEOMETRY and packing; everything jiggled so nothing repeats — texture
+jiggles too, geometry primarily. Per-variant seeds drive positions,
+sizes, heights, rounding, and merges (tone casts as needed); the seed
+law respects the lattice edge law (§3.1). Sanctioned pending "if it
+works": approved at proof.
 
-3.5 **Material mechanism + light** — candidate mechanism for look materials:
-the 4-node Noise → 2-stop ramp → Principled convention (the stones-family
-transplant, previously applied to M_COBBLE/M_COBBLEBED); it is a MECHANISM
-transplant, not a look stand-in — parameters are §3.2's to decide. Light rig:
-the stones-verbatim sun (SUN 4.2 W, angle 0.1745, rot (0.829, 0, −1.1345),
-azimuth ENE shadows) as the working default unless ruled otherwise at the
-proof round; world/fill re-decided fresh with the builder (nothing inherited
-carries authority).
+3.5 **Mechanism + light — RULINGS (2026-10-22, round 3)**:
+- **Scene layout: MANDATORY boards template.** The cobble builder
+  reproduces the boards builder's scene skeleton: the same staging areas
+  (AREA_1X1/2X2/4X4), the same cameras (BLK1/2/4_CAM, ortho 4/8/16 at the
+  contract depth), the same light rig — the cobble differs only in mesh
+  and materials. The stones-verbatim sun default is **RETIRED** (the sun
+  transplant lived in the purged blend; the boards template is the law).
+- **Look materials**: the researched polished-cobblestone technique is
+  the mechanism (§3.2's directive); the 4-node Noise→ramp→Principled
+  shape is convention START only, parameters from §3.2/research/tune;
+  `M_COBBLE_MASK` stays fixed (piling law, §2.1).
 
 ## 4. Condemned heritage (provenance record)
 
