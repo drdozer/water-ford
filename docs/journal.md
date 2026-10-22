@@ -2452,3 +2452,14 @@ breach law, variant identity) go to the maintainer; then the cobble builder.
   masters (512²/1024²/2048²) — the save carried non-render state only
   (boards precedent cd30819 classification). blend(+1) committed with this
   evidence; masters' provenance = the commit-time bytes d51934a.
+
+### 2026-10-22 (cobble session 3 wrap) — in-game ruling
+Launch round: solo mod run (`--mod-directory mods-wf-solo`, new save
+wf-solo-test). MAINTAINER EYES ON THE REAL GAME: "The sprites all look good
+in game. Both the land cobbles and the water cobbles." — the deck art +
+icons + path partner are in-game look-approved; the released-config QUESTION
+MARKs (effect/wash/layer at the shipped values) are measured in-game and
+stay as shipped pending any complaint. Open Phase B remains: border-behaviour
+item 2 (incl. the mask consumption shape — veil-only vs piling-pattern
+boundary pieces), the released surface (item 4; Q2 recipe numbers are the
+maintainer's pick), knob finalisation (item 5).
