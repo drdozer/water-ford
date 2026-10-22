@@ -16,8 +16,11 @@ pumps can no longer be placed on it.
 
 ## Cobblestone Ford (1.1.0)
 
-The road crossing: **vehicles drive across** while players, land caravans
-and enemies are stopped at the shore. Hand-laid cobblestones rise through
+The road crossing: **vehicles drive across** while **players are stopped at
+the shore**, and **enemies walk across freely** — a ford is a road, not a
+wall (cobble paving must not become a free, impenetrable biter barrier;
+balance ruling 2026-10-22, the one change from the Phase A sketch).
+Hand-laid cobblestones rise through
 the water — some crowns breach the surface, joints stay dark, everything
 below reads submerged. Ships still sail over it; offshore pumps are
 refused. Placeable on water only, like the wooden ford.

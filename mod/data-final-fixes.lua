@@ -17,9 +17,14 @@
 --                             ONLY, stamped into every "car" prototype
 --                             (cars, tanks, modded cars).
 --   * water-ford-pedestrian — feet exclusion: carried by the cobblestone
---                             ford ONLY, stamped into every "character" and
---                             every "unit" prototype (players on foot,
---                             biters/spitters/worms, py caravans/dingridos).
+--                             ford ONLY, stamped into every "character"
+--                             prototype: players on foot are stopped at the
+--                             shore. Balance ruling 2026-10-22 (maintainer):
+--                             UNITS ARE UNSTAMPED — biters and other units
+--                             (py caravans/dingridos) walk across like on
+--                             any land tile; stamping them would make cobble
+--                             paving a free, impenetrable biter barrier
+--                             ("would not be balanced").
 -- Deliberately unstamped consumers: ships (sail over both fords),
 -- spidertron (ignored by maintainer decision 2026-10-21 — it walks open
 -- water regardless), trains (no rail ford). water_tile stays in both ford
@@ -60,4 +65,8 @@ end
 for _, vehicle in pairs(data.raw["car"]) do stamp(vehicle, "water-ford-vehicle") end
 for _, pump in pairs(data.raw["offshore-pump"]) do stamp(pump, "water-ford") end
 for _, walker in pairs(data.raw["character"]) do stamp(walker, "water-ford-pedestrian") end
-for _, unit in pairs(data.raw["unit"]) do stamp(unit, "water-ford-pedestrian") end
+-- units NOT stamped (balance ruling 2026-10-22: the biter-barrier exploit —
+-- paving as a free impenetrable wall — is why biters and other units cross;
+-- players on foot remain the one feet exclusion)
+-- Ticket record: balance ruling Q1a in inbox/feature-cobblestone-road-ford.md;
+-- harness oracle flipped the same wrap (cobble = unit crossing control).

@@ -2535,3 +2535,29 @@ for the 1.1.0 surface are now green.
   space-age data-dir prototypes → 2325-removed false diff; the envspec
   list-placement fix explains the shrunken scope). Final: smoke PASS,
   diff PASS (0 delta), locale PASS (15 attributed, 0 dead, 0 missing).
+
+### 2026-10-22 (session 3 close) — BALANCE RULING: biters cross the cobble ford
+- CODE QUESTION (from the code, answered): enemy units were excluded from
+  BOTH cobble tiles' walking (the pedestrian stamp carried
+  `character`/`unit`), and the cobble PATH excluded nothing (concrete
+  clone). MAINTAINER RULING (Q1a): players excluded (stay), but UNITS walk
+  across — "otherwise people could use cobble pathing as a free,
+  impenetrable biter barrier, which would not be balanced."
+- CHANGED: `water-ford-pedestrian` = cobblestone ford + `character` ONLY
+  (the unit stamp loop is GONE — biters, spitters, worms, py
+  caravans/dingridos cross; the feet exclusion = players only). Harness
+  oracle flipped: unit-cobblestone-ford = crossing control now; deepwater
+  stays the negative control (no crossing path). Contract text updated in
+  run.py + scenario control gates.
+- STRINGS: [item-description]/[tile-description] cobblestone-ford, README,
+  portal description, changelog bullet, info.json — all now say "enemies
+  walk across freely — a ford is a road, not a wall" and players stopped.
+- DOCS: mod AGENTS invariant-5 + py-branch gate sentence; superproject
+  collision-layers.md pattern section; ticket Q1a (decision log).
+- GATES (full battery): smoke PASS; diff PASS 0-delta against the rolled
+  baseline (the 8-changed step = exactly the 8 vanilla
+  unit.*.collision_mask rows = the unstamping, audited — the check verb
+  has no --expect, so intentional data diffs ride the content-hash roll);
+  locale PASS (15 attributed, 0 dead, 0 missing); py-closure smoke PASS;
+  harness run.py pass (car stops on wooden, crosses cobble; units cross
+  cobble/wooden/shallow/landfill; deepwater unitless).

@@ -21,10 +21,11 @@ plus the **Cobblestone Path** for dry land.
 
 ## Cobblestone Ford (1.1.0)
 
-- The **road crossing**: vehicles drive across while players, land caravans
-  and enemies are stopped at the shore — the feet/wheels divide, built from
-  the same three collision layers as the wooden ford (nothing you place can
-  be run over).
+- The **road crossing**: vehicles drive across while **players are stopped
+  at the shore** — the feet/wheels divide, built from the same collision
+  layers as the wooden ford (nothing you place can be run over). **Enemies
+  walk across freely** — cobble paving must not be a free, impenetrable
+  biter barrier (balance ruling, 2026-10-22).
 - **Hand-laid cobblestones** rise through the water — some crowns breach
   the surface, joints stay dark, everything below reads submerged. 16
   authored variants per size (1×1, 2×2, 4×4).
